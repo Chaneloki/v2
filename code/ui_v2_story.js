@@ -26,17 +26,29 @@ UIManager.prototype.handlePlayStory = function({ type, data, onComplete }) {
         const overlay = document.getElementById('story-overlay');
         const gameMain = document.getElementById('game-main');
 
+        const startStoryPlay = () => {
+            if (type === 'PHASE') {
+                if (overlay) { overlay.style.display = 'flex'; overlay.style.opacity = '1'; }
+            } else {
+                if (overlay) overlay.style.display = 'none';
+                if (gameMain) gameMain.classList.add('in-story'); // 觸發側邊欄暗淡模式
+                const tt = document.getElementById('t-t');
+                if (tt) tt.innerText = "📜 劇情進行中...";
+                this.enableSidebarClick();
+            }
+            this.renderCurrentStoryLine();
+        };
+
+        // 僅針對全螢幕劇場 (PHASE) 進行精準載入過場，避免玩家等待
         if (type === 'PHASE') {
-            if (overlay) { overlay.style.display = 'flex'; overlay.style.opacity = '1'; }
+            this.showPreloader();
+            this.preloadStoryAssets(data).then(() => {
+                this.hidePreloader();
+                startStoryPlay();
+            });
         } else {
-            if (overlay) overlay.style.display = 'none';
-            if (gameMain) gameMain.classList.add('in-story'); // 觸發側邊欄暗淡模式
-            const tt = document.getElementById('t-t');
-            if (tt) tt.innerText = "📜 劇情進行中...";
-            this.enableSidebarClick();
+            startStoryPlay();
         }
-        
-        this.renderCurrentStoryLine();
     }
 
 UIManager.prototype.syncVisualsToCurrentIndex = function() {
@@ -769,4 +781,184 @@ UIManager.prototype.stopEnvAnimation = function() {
         }
         this.currentEnvFolder = null;
     }
+
+// ==========================================
+// [新增]: 劇情精準預載機制 (Pre-story Preloader)
+// ==========================================
+UIManager.prototype.showPreloader = function() {
+    let preloader = document.getElementById('story-preloader');
+    if (!preloader) {
+        preloader = document.createElement('div');
+        preloader.id = 'story-preloader';
+        preloader.style.cssText = `
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, #150f0c 0%, #080504 100%);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: all;
+            font-family: "Microsoft JhengHei", serif;
+        `;
+        preloader.innerHTML = `
+            <div class="magic-loader-ring" style="
+                width: 80px;
+                height: 80px;
+                border: 4px solid rgba(33, 115, 70, 0.2);
+                border-top: 4px solid #217346;
+                border-bottom: 4px solid #ffd700;
+                border-radius: 50%;
+                animation: rotatePreloader 1.5s linear infinite;
+                margin-bottom: 20px;
+                box-shadow: 0 0 25px rgba(33, 115, 70, 0.5);
+            "></div>
+            <div style="font-size: 1.6em; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); margin-bottom: 10px; letter-spacing: 3px; font-weight: bold;">正在吟唱載入魔法...</div>
+            <div style="font-size: 0.95em; color: rgba(255, 255, 255, 0.75); letter-spacing: 1px;" id="story-preloader-text">正在翻閱試算表魔導書...</div>
+        `;
+        document.body.appendChild(preloader);
+        
+        // 注入專屬的旋轉動畫樣式
+        if (!document.getElementById('preloader-style')) {
+            const style = document.createElement('style');
+            style.id = 'preloader-style';
+            style.innerHTML = `
+                @keyframes rotatePreloader {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    preloader.style.display = 'flex';
+    void preloader.offsetWidth; // 強制重繪
+    preloader.style.opacity = '1';
+};
+
+UIManager.prototype.hidePreloader = function() {
+    const preloader = document.getElementById('story-preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 500);
+    }
+};
+
+UIManager.prototype.preloadStoryAssets = function(storyQueue) {
+    return new Promise((resolve) => {
+        if (!storyQueue || storyQueue.length === 0) {
+            resolve();
+            return;
+        }
+
+        const charAssets = {
+            'me': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/main palace.png' : `Charater/main ${window.orchestrator.state.playerConfig.gender}.png`,
+            'fairy': 'Charater/fairy.png',
+            'head': 'Charater/head.png',
+            'system': 'Charater/魔導書.png',
+            'glea': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/glea palace.png' : 'Charater/glea.png',
+            'miro_tired': 'Charater/Miro tired.png',
+            'miro': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/miro palace.png' : ((window.orchestrator.state.currentChapter >= 40) ? 'Charater/Miro new.png' : 'Charater/Miro.png'),
+            'npc1': 'Charater/npc1.png',
+            'npc2': 'Charater/npc2.png',
+            'lange': 'Charater/lange.png',
+            'chate': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/chate palace.png' : ((window.orchestrator.state.currentChapter >= 45) ? 'Charater/chate new.png' : 'Charater/chate.png'),
+            'royi': (window.orchestrator.state.currentChapter == 75) ? 'Charater/royi easy.png' : ((window.orchestrator.state.currentChapter == 70 || window.orchestrator.state.currentChapter == 80) ? 'Charater/royi palace.png' : 'Charater/Royi.png'),
+            'prince': (window.orchestrator.state.currentChapter == 85) ? 'Charater/prince serious.png' : ((window.orchestrator.state.currentChapter == 75) ? 'Charater/prince easy.png' : ((window.orchestrator.state.currentChapter == 70 || window.orchestrator.state.currentChapter == 80) ? 'Charater/prince1.png' : 'Charater/prince boy.png')),
+            'king': 'Charater/king.png',
+            'prince_back': 'Charater/main boy4 back.png',
+            'unknown_figure': 'Charater/main boy3 back.png',
+            'me_rpg': 'Charater/main rpg.png',
+            'fairy_rpg': 'Charater/fairy rpg.png',
+            'glea_rpg': 'Charater/glea rpg.png',
+            'miro_rpg': 'Charater/miro rpg.png',
+            'chate_rpg': 'Charater/chate rpg.png',
+            'me_falling': 'Charater/me_falling.png'
+        };
+
+        const imageURLs = new Set();
+        const audioURLs = new Set();
+
+        storyQueue.forEach(line => {
+            if (line.bg) {
+                const fullPath = line.bg.includes('/') ? line.bg : `BG/${line.bg}`;
+                imageURLs.add(fullPath);
+            }
+            if (line.bgm) {
+                audioURLs.add(`BGM/${line.bgm}`);
+            }
+            if (line.se) {
+                let sfxFile = line.se;
+                const gender = window.orchestrator.state.playerConfig.gender || 'boy';
+                if (sfxFile.startsWith('me_')) {
+                    sfxFile = sfxFile.replace('me_', `${gender}_`);
+                }
+                audioURLs.add(`sound_effect/${sfxFile}`);
+            }
+            if (line.a && charAssets[line.a]) {
+                imageURLs.add(charAssets[line.a]);
+            }
+            if (line.bgSlideshow) {
+                line.bgSlideshow.forEach(bg => {
+                    const fullPath = bg.includes('/') ? bg : `BG/${bg}`;
+                    imageURLs.add(fullPath);
+                });
+            }
+            if (line.env) {
+                const envSrc = line.env.includes('/') ? line.env : `stuff/${line.env}`;
+                imageURLs.add(envSrc);
+            }
+        });
+
+        const total = imageURLs.size + audioURLs.size;
+        let loaded = 0;
+
+        const updateProgress = () => {
+            const el = document.getElementById('story-preloader-text');
+            if (el) el.innerText = `正在注入試算表魔力... (${loaded}/${total})`;
+        };
+
+        if (total === 0) {
+            resolve();
+            return;
+        }
+
+        const promises = [];
+
+        imageURLs.forEach(url => {
+            promises.push(new Promise((res) => {
+                const img = new Image();
+                img.onload = () => { loaded++; updateProgress(); res(); };
+                img.onerror = () => { loaded++; updateProgress(); res(); };
+                img.src = url;
+            }));
+        });
+
+        audioURLs.forEach(url => {
+            promises.push(new Promise((res) => {
+                const audio = new Audio();
+                audio.oncanplaythrough = () => { loaded++; updateProgress(); res(); };
+                audio.onerror = () => { loaded++; updateProgress(); res(); };
+                audio.src = url;
+                audio.preload = 'auto';
+            }));
+        });
+
+        // 5 秒安全閥，超時自動跳過以防遊戲死鎖
+        const timeoutPromise = new Promise((res) => setTimeout(res, 5000));
+
+        Promise.race([
+            Promise.all(promises),
+            timeoutPromise
+        ]).then(() => {
+            resolve();
+        });
+    });
+};
 

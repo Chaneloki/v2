@@ -57,109 +57,48 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 }
 
 // ====================================================
-// 2. RPG 除錯視覺輔助切換系統 (Red Walls & POI Show/Hide Toggle)
+// 2. 暫時隱藏除錯紅色空氣牆 (Hide Debug Red Wall Visuals)
 // ====================================================
-window.rpgDebugVisuals = true; // 預設開啟除錯顯示
-
-window.applyRPGDebugVisuals = function () {
-  if (!window.rpgEngine || !window.rpgEngine.worldEl) return;
-  const show = window.rpgDebugVisuals;
-
-  // A. 切換紅色空氣牆顯示
-  const divs = window.rpgEngine.worldEl.querySelectorAll('div');
-  divs.forEach(div => {
-    const isRedBG = div.style.backgroundColor && div.style.backgroundColor.includes('rgba(255, 0, 0');
-    const isRedBorder = div.style.border && div.style.border.includes('red');
-    if (isRedBG || isRedBorder) {
-      div.style.display = show ? 'block' : 'none';
-    }
-  });
-
-  // B. 切換 POI 標記顯示 (隱藏 icon 與文字，但保留碰撞和 Enter 互動功能)
-  const pois = window.rpgEngine.worldEl.querySelectorAll('.rpg-poi');
-  pois.forEach(poi => {
-    poi.style.opacity = show ? '1' : '0';
-    poi.style.pointerEvents = show ? 'auto' : 'none'; // 隱藏時不可滑鼠點擊，防穿透，只能走路接近按 Enter 互動
-  });
-
-  // C. 更新右上角 UI 按鈕文字
-  const toggleBtn = document.getElementById('rpg-debug-toggle-btn');
-  if (toggleBtn) {
-    toggleBtn.innerText = show ? '👁️ 除錯模式: 開' : '🙈 除錯模式: 關';
-    toggleBtn.style.background = show ? '#ffd700' : '#444';
-    toggleBtn.style.color = show ? '#000' : '#fff';
-  }
-};
-
-window.toggleRPGDebugVisuals = function () {
-  window.rpgDebugVisuals = !window.rpgDebugVisuals;
-  window.applyRPGDebugVisuals();
-
-  // 顯示 Toast 提醒玩家
-  if (window.uiManager && typeof window.uiManager.showMagicToast === 'function') {
-    window.uiManager.showMagicToast(
-      window.rpgDebugVisuals 
-        ? "👁️ 已開啟除錯模式 (顯示空氣牆與 POI)" 
-        : "🙈 已開啟實機遊玩模式 (已隱藏空氣牆與 POI)"
-    );
-  }
-};
-
 window.initHideRedWallsPatch = function () {
   if (window.rpgEngine) {
     if (window.rpgEngine._isHideRedWallsPatched) return;
     window.rpgEngine._isHideRedWallsPatched = true;
 
-    // 1. 攔截 buildMap，使每次建置地圖時都自動套用當前的顯示設定
     const originalBuildMap = window.rpgEngine.buildMap;
     window.rpgEngine.buildMap = function () {
+      // 1. 先執行原本的地圖渲染
       originalBuildMap.call(this);
-      window.applyRPGDebugVisuals();
-    };
 
-    // 2. 在右上角除錯面板動態插入 Toggle 按鈕
-    const insertToggleBtn = () => {
-      const debugInfo = document.getElementById('rpg-debug-info');
-      if (debugInfo && !document.getElementById('rpg-debug-toggle-btn')) {
-        // 將面板 pointer-events 設為 auto 以便點擊
-        debugInfo.style.pointerEvents = 'auto';
-
-        const btn = document.createElement('button');
-        btn.id = 'rpg-debug-toggle-btn';
-        btn.style.marginTop = '6px';
-        btn.style.padding = '4px 8px';
-        btn.style.background = '#ffd700';
-        btn.style.color = '#000';
-        btn.style.border = '1px solid #ffd700';
-        btn.style.borderRadius = '4px';
-        btn.style.cursor = 'pointer';
-        btn.style.fontWeight = 'bold';
-        btn.style.fontSize = '10px';
-        btn.style.transition = '0.2s';
-        btn.innerText = '👁️ 除錯模式: 開';
-        btn.onclick = () => window.toggleRPGDebugVisuals();
-        debugInfo.appendChild(btn);
+      // 2. 搜尋並隱藏除錯用紅色牆壁 div
+      if (this.worldEl) {
+        const divs = this.worldEl.querySelectorAll('div');
+        divs.forEach(div => {
+          const isRedBG = div.style.backgroundColor && div.style.backgroundColor.includes('rgba(255, 0, 0');
+          const isRedBorder = div.style.border && div.style.border.includes('red');
+          if (isRedBG || isRedBorder) {
+            div.style.display = 'none';
+          }
+        });
       }
     };
 
-    insertToggleBtn();
-    window.applyRPGDebugVisuals();
+    // 如果當前已經載入了地圖，立即執行一次隱藏
+    if (window.rpgEngine.worldEl) {
+      const divs = window.rpgEngine.worldEl.querySelectorAll('div');
+      divs.forEach(div => {
+        const isRedBG = div.style.backgroundColor && div.style.backgroundColor.includes('rgba(255, 0, 0');
+        const isRedBorder = div.style.border && div.style.border.includes('red');
+        if (isRedBG || isRedBorder) {
+          div.style.display = 'none';
+        }
+      });
+    }
   }
 };
 
 // 立即執行與載入事件監聽
 window.initHideRedWallsPatch();
-window.addEventListener('load', () => {
-  window.initHideRedWallsPatch();
-  // 註冊全域按鍵監聽：在 RPG 探索時按 H 鍵切換除錯顯示
-  window.addEventListener('keydown', (e) => {
-    if (!window.rpgEngine || !window.rpgEngine.isActive) return;
-    if (e.key.toLowerCase() === 'h' && !window.rpgEngine.state.inDialog) {
-      e.preventDefault();
-      window.toggleRPGDebugVisuals();
-    }
-  });
-});
+window.addEventListener('load', window.initHideRedWallsPatch);
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   window.initHideRedWallsPatch();
 }

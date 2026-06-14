@@ -262,7 +262,7 @@ window.RPG_MAPS = {
         desc: "「歡迎回到宿舍，今天也要好好休息喔！如果有信件或包裹，我會幫您留意的。」"
       },
       {
-        id: "exit_dorm", name: "離開宿舍", icon: "🔙", x: 576, y: 544, w: 128, h: 150,
+        id: "exit_dorm", name: "離開宿舍", icon: "🔙", x: 576, y: 544, w: 128, h: 64,
         action: "TELEPORT", targetMap: "street", targetX: 775, targetY: 690
       }
     ]

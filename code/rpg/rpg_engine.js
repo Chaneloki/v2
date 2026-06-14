@@ -7,6 +7,7 @@ class RPGEngine {
         this.isActive = false;
         this.currentMapId = null;
         this.mapData = null;
+        this.showDebug = true; // [新增]: 預設開啟除錯紅色區塊顯示
         
         this.state = {
             x: 0, y: 0,
@@ -107,7 +108,12 @@ class RPGEngine {
             return;
         }
         
-        this.loadMap(mapId);
+        // 1. 先顯示黑色遮罩並拉高層級，覆蓋未載入的地圖
+        const overlayLayer = document.getElementById('rpg-overlay-layer');
+        if (overlayLayer) {
+            overlayLayer.style.opacity = '1';
+            overlayLayer.style.zIndex = '999';
+        }
         
         // 顯示 UI
         document.getElementById('story-overlay').style.display = 'none';
@@ -115,16 +121,22 @@ class RPGEngine {
         this.container.style.display = 'flex';
         this.container.style.opacity = '1';
         
-        // 淡入畫面
-        const overlayLayer = document.getElementById('rpg-overlay-layer');
-        if (overlayLayer) {
-            overlayLayer.style.opacity = '0';
-            overlayLayer.style.zIndex = '20';
-        }
-        
-        // 啟動遊戲迴圈
-        this.isActive = true;
-        this.gameLoop();
+        // 2. 預載入地圖資源
+        const mapData = window.RPG_MAPS[mapId];
+        this.preloadMapAssets(mapData).then(() => {
+            this.loadMap(mapId);
+            
+            // 3. 淡出畫面並重置 zIndex
+            if (overlayLayer) {
+                overlayLayer.style.transition = 'opacity 0.5s ease';
+                overlayLayer.style.opacity = '0';
+                setTimeout(() => { overlayLayer.style.zIndex = '20'; }, 500);
+            }
+            
+            // 啟動遊戲迴圈
+            this.isActive = true;
+            this.gameLoop();
+        });
     }
 
     loadMap(mapId, spawnX, spawnY) {
@@ -193,7 +205,19 @@ class RPGEngine {
                 el.style.width = `${poi.w}px`;
                 el.style.height = `${poi.h}px`;
                 
-                el.innerHTML = `${poi.icon}<div class="rpg-poi-label">${poi.name}</div>`;
+                // [優化]: 以 span.rpg-poi-icon 包裹圖示以利於獨立隱藏
+                el.innerHTML = `<span class="rpg-poi-icon">${poi.icon}</span><div class="rpg-poi-label">${poi.name}</div>`;
+                
+                // [優化]: 根據目前除錯狀態設定 POI 輔助框與 Emoji 顯示
+                if (!this.showDebug) {
+                    el.style.background = 'transparent';
+                    el.style.border = 'none';
+                    el.style.boxShadow = 'none';
+                    const label = el.querySelector('.rpg-poi-label');
+                    if (label) label.style.display = 'none';
+                    const icon = el.querySelector('.rpg-poi-icon');
+                    if (icon) icon.style.display = 'none';
+                }
                 
                 // 將資料綁定到元素上，方便迴圈讀取
                 el._poiData = poi;
@@ -236,6 +260,7 @@ class RPGEngine {
         if (this.mapData.walls) {
             this.mapData.walls.forEach(wall => {
                 const el = document.createElement('div');
+                el.className = 'rpg-debug-wall'; // [新增]: 加入類別方便一鍵隱藏/顯示
                 el.style.position = 'absolute';
                 el.style.left = `${wall.x}px`;
                 el.style.top = `${wall.y}px`;
@@ -245,6 +270,7 @@ class RPGEngine {
                 el.style.border = '2px dashed red';
                 el.style.pointerEvents = 'none'; // 讓滑鼠可以穿透
                 el.style.zIndex = '4000'; // 確保顯示在背景之上
+                el.style.display = this.showDebug ? 'block' : 'none'; // 依狀態顯示
                 
                 // 顯示牆壁的 ID 名稱，方便除錯
                 el.innerHTML = `<div style="color:white; font-size:16px; font-weight:bold; padding:2px; text-shadow: 1px 1px 2px black;">${wall.id}</div>`;
@@ -477,12 +503,29 @@ class RPGEngine {
         }
 
         if (poi.action === "TELEPORT") {
-            // 切換地圖效果
+            // 切換地圖效果：先用黑色遮罩蓋住，進行精準預載
+            const overlay = document.getElementById('rpg-overlay-layer');
+            if (overlay) {
+                overlay.style.transition = 'opacity 0.2s';
+                overlay.style.zIndex = '999';
+                overlay.style.opacity = '1';
+            }
+            
             this.container.style.transition = "opacity 0.3s";
             this.container.style.opacity = '0';
+            
             setTimeout(() => {
-                this.loadMap(poi.targetMap, poi.targetX, poi.targetY);
-                this.container.style.opacity = '1';
+                const nextMap = window.RPG_MAPS[poi.targetMap];
+                this.preloadMapAssets(nextMap).then(() => {
+                    this.loadMap(poi.targetMap, poi.targetX, poi.targetY);
+                    this.container.style.opacity = '1';
+                    
+                    if (overlay) {
+                        overlay.style.transition = 'opacity 0.4s ease';
+                        overlay.style.opacity = '0';
+                        setTimeout(() => { overlay.style.zIndex = '20'; }, 400);
+                    }
+                });
             }, 300);
             return;
         }
@@ -665,6 +708,90 @@ class RPGEngine {
         if (window.orchestrator) {
             window.orchestrator.loadNextChapter();
         }
+    }
+
+    preloadMapAssets(mapData) {
+        return new Promise((resolve) => {
+            if (!mapData) {
+                resolve();
+                return;
+            }
+            
+            const images = [];
+            if (mapData.bg) images.push(mapData.bg);
+            if (mapData.sprites) {
+                mapData.sprites.forEach(sprite => {
+                    if (sprite.img) images.push(sprite.img);
+                });
+            }
+            
+            if (images.length === 0) {
+                resolve();
+                return;
+            }
+            
+            let loaded = 0;
+            const total = images.length;
+            const done = () => {
+                loaded++;
+                if (loaded >= total) resolve();
+            };
+            
+            images.forEach(src => {
+                const img = new Image();
+                img.onload = done;
+                img.onerror = done; // 即使出錯也要 done，防卡死
+                img.src = src;
+            });
+            
+            // 3 秒超時保護
+            setTimeout(resolve, 3000);
+        });
+    }
+
+    // ==========================================
+    // [新增]: 一鍵隱藏/顯示紅色空氣牆與 POI 外框標籤
+    // ==========================================
+    toggleDebug(show) {
+        this.showDebug = (show !== undefined) ? !!show : !this.showDebug;
+        
+        // 1. 切換空氣牆顯示
+        document.querySelectorAll('.rpg-debug-wall').forEach(el => {
+            el.style.display = this.showDebug ? 'block' : 'none';
+        });
+        
+        // 2. 切換 POI 除錯提示 (隱藏外框與文字，僅保留隱藏互動功能)
+        document.querySelectorAll('.rpg-poi').forEach(el => {
+            const label = el.querySelector('.rpg-poi-label');
+            const icon = el.querySelector('.rpg-poi-icon');
+            if (this.showDebug) {
+                el.style.background = ''; // 恢復原有樣式
+                el.style.border = '';
+                el.style.boxShadow = '';
+                if (label) label.style.display = '';
+                if (icon) icon.style.display = '';
+            } else {
+                el.style.background = 'transparent';
+                el.style.border = 'none';
+                el.style.boxShadow = 'none';
+                if (label) label.style.display = 'none';
+                if (icon) icon.style.display = 'none';
+            }
+        });
+        
+        // 3. 更新實體按鈕文字與背景樣式
+        const btn = document.getElementById('rpg-debug-btn');
+        if (btn) {
+            if (this.showDebug) {
+                btn.innerText = '👁️ 隱藏偵錯牆';
+                btn.style.background = '#217346';
+            } else {
+                btn.innerText = '👁️ 顯示偵錯牆';
+                btn.style.background = '#555555';
+            }
+        }
+        
+        console.log(`🔧 [RPGEngine] Debug Visuals: ${this.showDebug ? 'ENABLED' : 'DISABLED'}`);
     }
 }
 

@@ -97,9 +97,13 @@
             [Esc] 返回系統選單
         </div>
         <div id="rpg-debug-info"
-            style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.8); color:#fff; padding:10px; border-radius:8px; font-size:12px; z-index:30; pointer-events:none; border:1px solid #ffd700; display:flex; flex-direction:column; gap:4px; font-family:monospace;">
+            style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.8); color:#fff; padding:10px; border-radius:8px; font-size:12px; z-index:30; pointer-events:auto; border:1px solid #ffd700; display:flex; flex-direction:column; gap:4px; font-family:monospace;">
             <div id="rpg-debug-coords">X: 0 | Y: 0</div>
             <div id="rpg-debug-poi">Active POI: None</div>
+            <button id="rpg-debug-btn" onclick="window.rpgEngine.toggleDebug()" 
+                style="background:#217346; color:#fff; border:1px solid #ffd700; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:10px; margin-top:5px; font-family:sans-serif; text-align:center; font-weight:bold; transition:0.2s;">
+                👁️ 隱藏偵錯牆
+            </button>
         </div>
 
         <div id="rpg-action-hint"
@@ -1055,14 +1059,13 @@
     <!-- [新增] 欄位篩選下拉選單 (Column Filter) -->
     <div id="filter-dropdown" style="display:none;"></div>
 
-    <script src="code/case_patch.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_maps.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_interactions.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_patch_practice.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_patch_shop.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_patch_system.js?v=1781286453927"></script>
     <script src="code/rpg/story_sleep.js?v=1781368561994"></script>
-    <script src="code/rpg/rpg_engine.js?v=1781369625999"></script>
+    <script src="code/rpg/rpg_engine.js?v=1781373500002"></script>
     <script src="code/utils.js?v=1781286453925"></script>
     <script src="code/orchestrator.js?v=1781286453925"></script>
     <script src="chapter/ch1.js?v=1781286453925"></script>
