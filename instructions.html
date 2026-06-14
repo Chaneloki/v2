@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel 魔法冒險 - 冒險指南</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: #0b0b14 url('BG/bg1.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+        .instruction-book {
+            width: 100%;
+            max-width: 800px;
+            background: #fdfaf0; /* Parchment color */
+            border: 12px double #8b4513;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            color: #3e2723;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            color: #8b4513;
+            font-family: serif;
+            font-size: 36px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #d2b48c;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #217346;
+            border-left: 5px solid #217346;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        p, li {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        .guide-section {
+            margin-bottom: 40px;
+        }
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #8b4513;
+            color: #fdf5e6;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-back:hover {
+            background: #5d4037;
+            transform: scale(1.05);
+        }
+        /* Feedback Form Styles */
+        #feedback-form {
+            background: rgba(139, 69, 19, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px dashed #d2b48c;
+            margin-top: 40px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #8b4513;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d2b48c;
+            border-radius: 5px;
+            background: #fff;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        .btn-submit {
+            background: #217346;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-submit:hover {
+            background: #2da164;
+        }
+        #success-msg {
+            display: none;
+            color: #217346;
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="instruction-book">
+        <h1>📜 試算表魔導書：冒險指南</h1>
+        
+        <div class="guide-section">
+            <h2>✨ 遊戲簡介</h2>
+            <p>歡迎來到魔法學院！在這裡，你將學習如何運用「試算表禁術」(Excel) 來解決各種冒險難題。從整理裝備清單到計算魔法傷害，每一格單元格都蘊含著強大的魔力。</p>
+        </div>
+
+        <div class="guide-section">
+            <h2>🎮 基本操作</h2>
+            <ul>
+                <li><b>選取單元格</b>：點擊表格中的任何位置來聚焦。</li>
+                <li><b>輸入魔咒</b>：在選取的單元格中輸入數值或公式。</li>
+                <li><b>執行禁術</b>：輸入完畢後按下 Enter 鍵，魔法將會生效。</li>
+                <li><b>追隨引導</b>：留意畫面左側的「精靈導師」，她會給予你下一步的指示。</li>
+            </ul>
+        </div>
+
+        <div class="guide-section">
+            <h2>💡 冒險小撇步</h2>
+            <p>當你遇到困難時，可以嘗試查看頂部的「常用」功能列，那裡隱藏著許多強大的輔助工具。記得隨時存檔，以免魔法能量流失！</p>
+        </div>
+
+        <div id="feedback-section">
+            <h2>💬 冒險者回饋</h2>
+            <p>我們非常重視你的冒險體驗。如果你有任何建議或發現了魔法裂痕（Bug），請告訴我們！</p>
+            <form id="feedback-form">
+                <div class="form-group">
+                    <label for="p-name">冒險者大名：</label>
+                    <input type="text" id="p-name" placeholder="請輸入你的稱呼..." required>
+                </div>
+                <div class="form-group">
+                    <label for="p-comment">你的留言：</label>
+                    <textarea id="p-comment" placeholder="寫下你的冒險心得或建議..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">傳送魔法訊息</button>
+                <div id="success-msg">✨ 訊息已成功傳送到大魔導師的手中！感謝你的回饋。</div>
+            </form>
+        </div>
+
+        <a href="index.html" class="btn-back">⬅️ 回到冒險起點</a>
+    </div>
+
+    <script>
+        document.getElementById('feedback-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('p-name').value;
+            const comment = document.getElementById('p-comment').value;
+            const date = new Date().toLocaleString();
+            
+            // 儲存到 localStorage
+            const feedbackList = JSON.parse(localStorage.getItem('adventure_feedback') || '[]');
+            feedbackList.push({ name, comment, date });
+            localStorage.setItem('adventure_feedback', JSON.stringify(feedbackList));
+            
+            // 模擬傳送效果
+            console.log('Feedback saved locally:', { name, comment, date });
+            
+            // 顯示成功訊息並隱藏表單
+            document.getElementById('success-msg').style.display = 'block';
+            this.reset();
+            
+            // 3秒後隱藏訊息
+            setTimeout(() => {
+                document.getElementById('success-msg').style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

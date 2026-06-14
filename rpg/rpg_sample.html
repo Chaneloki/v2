@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>RPG 自由探索模式 (原型測試)</title>
+    <!-- 引入現有的樣式保持字體與基本設定一致 -->
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* 原型專屬樣式 */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0a0f1e;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        #game-viewport {
+            width: 800px;
+            height: 600px;
+            background-color: #2c3e50; /* 地圖邊緣底色 */
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #d2b48c;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        /* 遊戲世界 (地圖本身) */
+        #game-world {
+            position: absolute;
+            width: 1024px; /* 設定為公會場景大約的大小 */
+            height: 1024px;
+            background-image: url('bg/club.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-color: #1a1a1a;
+            transform-origin: 0 0;
+            transition: transform 0.1s linear; /* 讓移動平滑些 */
+            will-change: transform;
+        }
+
+        /* 互動熱區 (Points of Interest) */
+        .poi {
+            position: absolute;
+            width: 80px; height: 80px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 40px;
+            border-radius: 8px;
+            border: 2px dashed rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.2);
+            box-sizing: border-box;
+        }
+        
+        .poi .label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 14px;
+            color: #fff;
+            background: rgba(0,0,0,0.6);
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        /* 環境碰撞牆壁 */
+        /*.wall {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.4); /* 紅色半透明，方便除錯與調整邊界 */
+            /*border: 2px solid red;
+            box-sizing: border-box;
+            z-index: 5;
+        }*/
+
+        #poi-shop { left: 400px; top: 300px; background: rgba(231, 76, 60, 0.2); }
+        #poi-carriage { left: 1000px; top: 800px; background: rgba(241, 196, 15, 0.2); }
+        #poi-quest { left: 800px; top: 200px; background: rgba(46, 204, 113, 0.2); }
+
+        /* 主角 (固定在畫面中央，世界反向移動) */
+        #player {
+            position: absolute;
+            width: 150px; height: 150px; /* 大幅加大人物尺寸以符合場景 NPC 比例 */
+            left: 325px; /* 800/2 - 75 */
+            top: 225px;  /* 600/2 - 75 */
+            z-index: 10;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-image: url('charater/main down left.png'); /* 預設圖片 */
+        }
+
+        /* 操作提示與 UI */
+        #ui-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* 不阻擋點擊 */
+            z-index: 20;
+        }
+
+        #action-hint {
+            position: absolute;
+            bottom: 60px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #ffd700;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .show-hint { opacity: 1 !important; }
+
+        #controls-info {
+            position: absolute;
+            top: 10px; left: 10px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 模擬對話框 */
+        #dialog-box {
+            position: absolute;
+            bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: rgba(20, 20, 30, 0.95);
+            border: 2px solid #d2b48c;
+            border-radius: 8px;
+            padding: 15px;
+            box-sizing: border-box;
+            color: #fff;
+            display: none;
+            pointer-events: auto;
+        }
+
+        #dialog-title { font-weight: bold; color: #ffd700; margin-bottom: 5px; }
+        #dialog-text { font-size: 16px; line-height: 1.5; }
+        .close-dialog { 
+            display: block; margin-top: 10px; text-align: right; 
+            color: #2ed573; cursor: pointer; font-size: 14px; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-viewport">
+        <!-- 地圖世界 -->
+        <div id="game-world">
+            
+            <!-- 阻擋牆壁 (障礙物) -->
+            <!-- 基於 club.png 背景分析的碰撞邊界 -->
+            <!-- 1. 主櫃台區 (向右縮減一點，騰出走道) -->
+            <div class="wall" style="left: 220px; top: 0px; width: 804px; height: 680px;"></div>
+            <!-- 2. 左側小櫃台 (放油燈的地方) -->
+            <div class="wall" style="left: 0px; top: 560px; width: 140px; height: 180px;"></div>
+            <!-- 3. 左上角牆壁 (Storage Room 門的兩側) -->
+            <div class="wall" style="left: 0px; top: 0px; width: 140px; height: 480px;"></div>
+            <!-- 4. 下方左側牆壁 (出口左邊) -->
+            <div class="wall" style="left: 0px; top: 920px; width: 420px; height: 104px;"></div>
+            <!-- 5. 下方右側牆壁 (出口右邊) -->
+            <div class="wall" style="left: 600px; top: 920px; width: 424px; height: 104px;"></div>
+            <!-- 6. 最右側與最左側邊框 (防止超出圖片) -->
+            <div class="wall" style="left: 980px; top: 0px; width: 44px; height: 1024px;"></div>
+            <div class="wall" style="left: 0px; top: 0px; width: 40px; height: 1024px;"></div>
+
+            <!-- 互動熱區 -->
+            <!-- 1. 左側 NPC: 道具屋 -->
+            <div id="poi-shop" class="poi" data-id="shop" data-name="道具屋" style="left: 310px; top: 620px; width: 120px;">
+                🏪<div class="label">道具屋 (Shop)</div>
+            </div>
+            <!-- 2. 中間 NPC: 任務中心 -->
+            <div id="poi-mission" class="poi" data-id="mission" data-name="委託中心" style="left: 550px; top: 620px; width: 120px;">
+                📜<div class="label">委託中心 (Mission)</div>
+            </div>
+            <!-- 3. 右側 NPC: 結算中心 -->
+            <div id="poi-complete" class="poi" data-id="complete" data-name="結算中心" style="left: 790px; top: 620px; width: 120px;">
+                ✅<div class="label">結算中心 (Complete)</div>
+            </div>
+            
+            <div id="poi-quest" class="poi" data-id="quest" data-name="記憶書架" style="left: 80px; top: 460px; width: 100px;">
+                📚<div class="label">記憶書架 (回溯關卡)</div>
+            </div>
+            <div id="poi-carriage" class="poi" data-id="carriage" data-name="旅行馬車" style="left: 450px; top: 920px; width: 120px;">
+                🐴<div class="label">旅行馬車 (世界地圖)</div>
+            </div>
+            <!-- 地圖邊界視覺提示 -->
+            <div style="position:absolute; width:100%; height:10px; background:rgba(0,0,0,0.5); top:0;"></div>
+            <div style="position:absolute; width:100%; height:10px; background:rgba(0,0,0,0.5); bottom:0;"></div>
+            <div style="position:absolute; width:10px; height:100%; background:rgba(0,0,0,0.5); left:0;"></div>
+            <div style="position:absolute; width:10px; height:100%; background:rgba(0,0,0,0.5); right:0;"></div>
+        </div>
+
+        <!-- 主角 (永遠在正中間) -->
+        <div id="player"></div>
+
+        <!-- 介面層 -->
+        <div id="ui-layer">
+            <div id="controls-info">
+                [W][A][S][D] 或方向鍵移動<br>
+                [Enter] 進行互動<br>
+                <a href="../index.html" style="color:#3498db; pointer-events:auto;">← 回主遊戲</a>
+            </div>
+            <div id="action-hint">按 [Enter] 調查</div>
+            
+            <div id="dialog-box">
+                <div id="dialog-title">名稱</div>
+                <div id="dialog-text">對話內容...</div>
+                <div class="close-dialog" onclick="closeDialog()">[Enter] 結束對話</div>
+            </div>
+            
+            <div id="debug-info" style="position: absolute; top: 10px; right: 10px; color: #fff; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 8px; font-family: monospace;">
+                Debug Info
+            </div>
+        </div>
+    </div>
+
+<script>
+/**
+ * 簡易 RPG 引擎原型
+ */
+
+// 遊戲狀態
+const gameState = {
+    x: 512,          // 玩家初始世界座標 X (場景正中)
+    y: 800,          // 玩家初始世界座標 Y (設定在櫃台前方的地板上)
+    speed: 5,        // 移動速度
+    width: 1024,     // 世界寬度 (配合公會背景)
+    height: 1024,    // 世界高度
+    vw: 800,         // 視窗寬度
+    vh: 600,         // 視窗高度
+    keys: {},        // 按鍵狀態
+    activePoi: null, // 目前碰到的熱區
+    inDialog: false, // 是否在對話中
+    
+    // 角色動畫狀態
+    facing: 'down',  // 面向: up, down, left, right
+    step: 'left',    // 腳步: left, right
+    stepCounter: 0   // 步伐計數器
+};
+
+// 取得 DOM
+const worldEl = document.getElementById('game-world');
+const playerEl = document.getElementById('player');
+const hintEl = document.getElementById('action-hint');
+const dialogEl = document.getElementById('dialog-box');
+const dTitle = document.getElementById('dialog-title');
+const dText = document.getElementById('dialog-text');
+const pois = document.querySelectorAll('.poi');
+
+// 確保視窗取得焦點，以接收鍵盤事件
+window.addEventListener('click', () => { window.focus(); });
+window.onload = () => { window.focus(); };
+
+// 監聽鍵盤
+window.addEventListener('keydown', (e) => {
+    gameState.keys[e.key.toLowerCase()] = true;
+    
+    // 互動鍵
+    if(e.key === 'Enter') {
+        if(gameState.inDialog) {
+            closeDialog();
+        } else if(gameState.activePoi) {
+            interactWith(gameState.activePoi);
+        }
+    }
+});
+
+window.addEventListener('keyup', (e) => {
+    gameState.keys[e.key.toLowerCase()] = false;
+});
+
+// 主遊戲迴圈
+function gameLoop() {
+    if (!gameState.inDialog) {
+        let dx = 0;
+        let dy = 0;
+
+        // 判斷移動意圖與面向
+        let isMoving = false;
+        
+        if (gameState.keys['w'] || gameState.keys['arrowup']) { dy -= gameState.speed; gameState.facing = 'up'; isMoving = true; }
+        else if (gameState.keys['s'] || gameState.keys['arrowdown']) { dy += gameState.speed; gameState.facing = 'down'; isMoving = true; }
+        
+        if (gameState.keys['a'] || gameState.keys['arrowleft']) { dx -= gameState.speed; gameState.facing = 'left'; isMoving = true; }
+        else if (gameState.keys['d'] || gameState.keys['arrowright']) { dx += gameState.speed; gameState.facing = 'right'; isMoving = true; }
+
+        // 處理腳步動畫切換
+        if (isMoving) {
+            gameState.stepCounter++;
+            if (gameState.stepCounter > 10) { // 每 10 幀切換一次腳步 (控制動畫速度)
+                gameState.step = (gameState.step === 'left') ? 'right' : 'left';
+                gameState.stepCounter = 0;
+            }
+        } else {
+            // 沒移動時預設站立姿態 (通常為 step 'left' 或特定 idle 幀)
+            gameState.step = 'left';
+            gameState.stepCounter = 0;
+        }
+
+        // 更新精靈圖 (Sprite)
+        // 由於我們去除了所有的 transform 翻轉，改用圖片實體名稱
+        // 名稱格式: "main {facing} {step}.png"
+        playerEl.style.backgroundImage = `url('charater/main ${gameState.facing} ${gameState.step}.png')`;
+
+        // 預測下一步的位置
+        let nextX = gameState.x + dx;
+        let nextY = gameState.y + dy;
+        
+        let canMoveX = true;
+        let canMoveY = true;
+        
+        // 取得所有牆壁
+        const walls = document.querySelectorAll('.wall');
+        
+        // 玩家腳部的碰撞範圍 (縮小寬度，讓玩家更容易擠過狹窄通道)
+        // 假設視覺寬 150。我們只取正中央的 40px 作為實體碰撞 (左右各 20)
+        const pHitWidth = 20;  // 腳部寬度
+        const pHitHeight = 25; // 腳部高度
+        const pOffsetTop = 60; // 腳部離中心點的 Y 偏移 (稍微往下，對齊鞋子)
+
+        walls.forEach(wall => {
+            const style = window.getComputedStyle(wall);
+            const wLeft = parseInt(style.left) || 0;
+            const wTop = parseInt(style.top) || 0;
+            const wWidth = parseInt(style.width) || 0;
+            const wHeight = parseInt(style.height) || 0;
+            
+            const wRect = { left: wLeft, right: wLeft + wWidth, top: wTop, bottom: wTop + wHeight };
+            
+            // X 軸碰撞預測
+            const pRectX = { 
+                left: nextX - pHitWidth, right: nextX + pHitWidth, 
+                top: gameState.y + pOffsetTop - pHitHeight, bottom: gameState.y + pOffsetTop + pHitHeight 
+            };
+            if (pRectX.right > wRect.left && pRectX.left < wRect.right && pRectX.bottom > wRect.top && pRectX.top < wRect.bottom) {
+                canMoveX = false;
+            }
+            
+            // Y 軸碰撞預測
+            const pRectY = { 
+                left: gameState.x - pHitWidth, right: gameState.x + pHitWidth, 
+                top: nextY + pOffsetTop - pHitHeight, bottom: nextY + pOffsetTop + pHitHeight 
+            };
+            if (pRectY.right > wRect.left && pRectY.left < wRect.right && pRectY.bottom > wRect.top && pRectY.top < wRect.bottom) {
+                canMoveY = false;
+            }
+        });
+
+        // 只有在不碰撞牆壁的情況下才更新座標
+        if (canMoveX) gameState.x = nextX;
+        if (canMoveY) gameState.y = nextY;
+
+        // 碰撞邊界 (讓主角走不出地圖極限邊緣)
+        const margin = 40;
+        if (gameState.x < margin) gameState.x = margin;
+        if (gameState.y < margin) gameState.y = margin;
+        if (gameState.x > gameState.width - margin) gameState.x = gameState.width - margin;
+        if (gameState.y > gameState.height - margin) gameState.y = gameState.height - margin;
+
+        updateCamera();
+        checkCollisions();
+    }
+    
+    // 更新 Debug 資訊
+    const debugEl = document.getElementById('debug-info');
+    if(debugEl) {
+        debugEl.innerHTML = `
+            X: ${gameState.x} | Y: ${gameState.y} <br>
+            Keys: ${Object.keys(gameState.keys).filter(k => gameState.keys[k]).join(', ')} <br>
+            Active POI: ${gameState.activePoi ? gameState.activePoi.name : 'None'}
+        `;
+    }
+    
+    requestAnimationFrame(gameLoop);
+}
+
+// 攝影機跟隨邏輯 (移動世界背景)
+function updateCamera() {
+    // 讓玩家在畫面中間，所以世界的位置要是： (視窗寬度/2) - 玩家座標
+    // 但如果走到地圖邊緣，攝影機要停住。
+    let cx = (gameState.vw / 2) - gameState.x;
+    let cy = (gameState.vh / 2) - gameState.y;
+
+    // 限制攝影機不要露出地圖外的黑邊
+    // max cx = 0 (左邊緣)
+    // min cx = vw - width (右邊緣)
+    if (cx > 0) cx = 0;
+    if (cx < gameState.vw - gameState.width) cx = gameState.vw - gameState.width;
+    if (cy > 0) cy = 0;
+    if (cy < gameState.vh - gameState.height) cy = gameState.vh - gameState.height;
+
+    worldEl.style.transform = `translate(${cx}px, ${cy}px)`;
+
+    // 由於世界被卡在邊緣了，但玩家座標還在變，需要調整主角在畫面上的真實絕對位置
+    // 通常主角是在 vw/2, 但如果攝影機卡住，主角要偏移
+    let px = gameState.x + cx - 75; // -75 是主角元素寬度一半 (150/2)
+    let py = gameState.y + cy - 75;
+    playerEl.style.left = `${px}px`;
+    playerEl.style.top = `${py}px`;
+}
+
+// 碰撞與互動偵測
+function checkCollisions() {
+    let touched = null;
+    
+    // 主角的真實範圍 (假設寬高 150)
+    const pRect = { left: gameState.x - 75, right: gameState.x + 75, top: gameState.y - 75, bottom: gameState.y + 75 };
+
+    pois.forEach(poi => {
+        const id = poi.getAttribute('data-id');
+        const name = poi.getAttribute('data-name');
+        
+        // [修正] 使用 getComputedStyle 取得實際座標，避免 inline style 讀不到
+        const style = window.getComputedStyle(poi);
+        const px = parseInt(style.left) || 0;
+        const py = parseInt(style.top) || 0;
+        
+        // 使用元素的真實寬高 (若未設定則預設為 80)
+        const w = parseInt(style.width) || 80;
+        const h = parseInt(style.height) || 80;
+        const rRect = { left: px, right: px + w, top: py, bottom: py + h };
+
+        // 簡單的 AABB 碰撞偵測 (放大一點判定區)
+        const hitZone = 30;
+        if (pRect.right > rRect.left - hitZone && pRect.left < rRect.right + hitZone &&
+            pRect.bottom > rRect.top - hitZone && pRect.top < rRect.bottom + hitZone) {
+            touched = { el: poi, id: id, name: name };
+        }
+    });
+
+    if (touched) {
+        if(gameState.activePoi?.id !== touched.id) {
+            hintEl.classList.add('show-hint');
+            hintEl.innerText = `按 [Enter] 調查：${touched.name}`;
+            gameState.activePoi = touched;
+        }
+    } else {
+        if(gameState.activePoi) {
+            hintEl.classList.remove('show-hint');
+            gameState.activePoi = null;
+        }
+    }
+}
+
+// 觸發事件
+function interactWith(poiData) {
+    gameState.inDialog = true;
+    hintEl.classList.remove('show-hint');
+    dialogEl.style.display = 'block';
+    dTitle.innerText = `◆ ${poiData.name}`;
+
+    // 未來這裡可以呼叫 window.orchestrator.loadChapter(x)
+    if(poiData.id === 'shop') {
+        dText.innerHTML = "「歡迎來到神秘道具屋！」<br><br>👉 [系統說明] 未來這裡可以購買技能點數或更換對話框樣式。";
+    } else if(poiData.id === 'mission') {
+        dText.innerHTML = "「有什麼需要幫忙的委託嗎？」<br><br>👉 [系統說明] 這裡可以承接日常任務、小遊戲或支線劇情。";
+    } else if(poiData.id === 'complete') {
+        dText.innerHTML = "「辛苦了，這是您的報酬。」<br><br>👉 [系統說明] 這裡可以回報任務、領取成就獎勵。";
+    } else if(poiData.id === 'quest') {
+        dText.innerHTML = "古老的書架上擺滿了羊皮紙...<br><br>👉 [系統說明] 這裡可以讓玩家重新讀取之前完成過的章節，重溫對話或達成不同結局。";
+    } else if(poiData.id === 'carriage') {
+        dText.innerHTML = "馬車夫：「要前往下一個城鎮嗎？」<br><br>👉 [系統說明] 點擊後會彈出大地圖 (World Map UI)，切換背景並傳送玩家。";
+    }
+}
+
+function closeDialog() {
+    dialogEl.style.display = 'none';
+    setTimeout(() => { gameState.inDialog = false; }, 100); // 延遲一下避免連續觸發
+}
+
+// 啟動迴圈
+requestAnimationFrame(gameLoop);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2234 @@
+﻿/* ==========================================
+   閰衣�銵券�瘜訫��� v2 - 撌𥪜陸閬𤥁死憓𧼮撥��
+   憸冽聢嚗𡁶𣶹隞��瘜訫飛�� x Microsoft Excel 365
+   [Change Log 2026-06-10]: �啣� syntax-overlay 璅��嚗䔶蒂靽格㺿 grid �� cell.active �箇�撠滚�雿滢誑�舀螱�閙�撖砍漲��
+   ========================================== */
+
+:root {
+    --excel-green: #217346;
+    --excel-green-light: #2da164;
+    --excel-bg: #f3f2f1;
+    --ribbon-bg: #ffffff;
+    --border-color: #e1e1e1;
+    --text-main: #323130;
+    --hover-blue: #eef7ff;
+    --active-blue: #deefff;
+    --sheet-inactive: #f0f0f0;
+    --gold: #ffcf4d;
+    --gold-dark: #b8860b;
+    --magic-purple: #6c5ce7;
+    --parchment: #fdfaf0;
+    --sidebar-bg: #1e1e2e;
+}
+
+body {
+    font-family: 'Segoe UI', 'SF Pro Display', 'Microsoft JhengHei', system-ui;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background: #0b0b14;
+    overflow: hidden;
+    color: var(--text-main);
+}
+
+/* --- ��� UI嚗𡁏�瘚詨���聦 --- */
+#story-overlay { 
+    position: fixed; inset: 0; background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%); 
+    color: #fff; display: flex; flex-direction: column; justify-content: flex-end; z-index: 5000; 
+}
+
+#story-stage { 
+    flex-grow: 1; display: flex; justify-content: center; align-items: flex-end; 
+    padding: 0 5%; gap: 20px; overflow: hidden; position: relative; 
+    transition: background 0.5s ease-out; background-size: cover; background-position: center; 
+    will-change: background-position, background-size, filter;
+    transform: translateZ(0);
+}
+#story-stage::after { 
+    content: ''; position: absolute; inset: 0; 
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%); 
+    pointer-events: none; /* [�𣈯枤靽格迤]: �血����雿讐�蝜芰�暺墧� */
+}
+
+.char-container {
+
+    width: 1000%;
+    height: 100vh;
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+
+    /* 蝘駁膄 drop-shadow 隞交������ */
+
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    pointer-events: none; /* 摰孵膥銝齿𦻖�園��𠺪�霈㯄��羓忽�誩��𣇉� */
+
+} 
+
+/* [雿滨蔭�芸�]嚗帋蜓閫鍦𤐄摰𡁜銁撌血�銝磰�撠𧶏�NPC 蝯曹��箏��冽迤銝剖亢 */
+#main-char-container { 
+    left: 7%; 
+    transform: translateX(-50%) scale(0.5); 
+    transform-origin: bottom;
+    z-index: 4; 
+    transition: none !important; /* 銝餉�摰孵膥�⊿�皜� */
+} 
+#story-stage .char-container:not(#main-char-container) { 
+    left: 50%; 
+    transform: translateX(-50%); 
+}
+
+.char-img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
+    object-position: bottom; 
+    transition: 0.3s ease-out; 
+    opacity: 0; 
+    transform: translateY(30px) scale(0.98); 
+    pointer-events: auto !important; /* [靽格迤]: 敹���� auto �滩��交𤣰暺墧� */
+    cursor: pointer !important;      /* [�啣�]: �鞟內�舫��� */
+}
+
+/* [�啣�]: 銝餉��餃聦�∠鸌�� (Instant appearance for main character) */
+#a-m {
+    transition: none !important;
+    transform: none;
+}
+
+.char-active { opacity: 1 !important; transform: scale(1) translateY(0); z-index: 5; }
+
+#dialogue-box { 
+    height: auto; min-height: 250px; padding: 40px 12% 80px 12%; position: absolute; bottom: 0; left: 0; width: 100%; 
+    z-index: 5500; box-sizing: border-box; cursor: pointer; 
+    background: none; /* 蝘駁膄暺𤏸𠧧�啣蔣�峕艶 */
+}
+#s-name { 
+    color: var(--gold); font-size: 30px; font-weight: 900; margin: 0 0 15px 0; 
+    border-left: 10px solid var(--gold); padding-left: 25px; 
+    text-shadow: 0 0 15px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,1); /* 撘瑕之����啣蔣蝣箔�皜�苊 */
+    letter-spacing: 3px;
+}
+#s-text { 
+    color: #ffffff; font-size: 26px; line-height: 1.6; margin: 0; 
+    text-shadow: 0 0 15px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,1), 0 2px 4px rgba(0,0,0,0.8);
+    font-weight: 600; /* �删�摮烾� */
+}
+
+/* --- �𦠜�銝餌��ｇ�擳娍�閰衣�銵冽沲瑽� --- */
+#game-main { 
+    display: flex; flex-direction: column; width: 100%; height: 100%; 
+    opacity: 0; visibility: hidden; transition: 0.8s ease; 
+    background: var(--excel-bg); 
+}
+#top-row { display: flex; flex-grow: 1; overflow: hidden; position: relative; }
+
+/* �湧�甈��擳𥪜��詨�撣� --- */
+#left-sidebar { 
+    width: 30%; background: var(--sidebar-bg); border-right: 2px solid var(--excel-green); 
+    display: flex; flex-direction: column; z-index: 100; padding: 25px; color: #fff;
+    box-shadow: 15px 0 40px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+    min-width: 320px; /* 靽嗪���雿𡡞�摨血虾霈��� */
+}
+
+#elf-panel { 
+    width: 100%; display: flex; flex-direction: column; align-items: center; 
+    position: relative; margin-bottom: 30px; 
+}
+#elf-img { 
+    width: 100px !important; /* [靽格迤]: 撘瑕����璅⊥挱�典�蝎曉祝摨佗�銝滚蔣�踹����蝜� */
+    
+    animation: magic-float 5s ease-in-out infinite, elf-img-pulse 4s ease-in-out infinite; 
+    cursor: pointer; /* 憓𧼮�暺墧��� */
+    pointer-events: auto;
+}
+@keyframes elf-img-pulse {
+    0%, 100% {  }
+    50% {  }
+}
+@keyframes magic-float { 
+    0%, 100% { transform: translateY(0) rotate(0deg); } 
+    50% { transform: translateY(-15px) rotate(5deg); } 
+}
+
+.elf-wow {
+    animation: elf-wow-anim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+@keyframes elf-wow-anim {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4) rotate(10deg); }
+    100% { transform: scale(1); }
+}
+
+#elf-bubble { 
+    background: var(--parchment); border: none; border-radius: 18px; padding: 20px; 
+    margin-top: 25px; width: 100%; box-sizing: border-box; color: #3e2723; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 60px rgba(139,69,19,0.05);
+    position: relative; border: 2px solid #d2b48c;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#elf-bubble::before {
+    content: ''; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    border-left: 14px solid transparent; border-right: 14px solid transparent;
+    border-bottom: 14px solid #d2b48c;
+}
+
+#e-t { font-size: 20px; font-weight: 600; line-height: 1.6; color: #4e342e; overflow-wrap: break-word; word-break: break-word; }
+#t-t { 
+    display: block; font-weight: 800; color: #b71c1c; font-size: 18px; 
+    border-top: 2px dashed #d2b48c; padding-top: 15px; margin-top: 15px; text-align: center; 
+    text-transform: uppercase; letter-spacing: 1.5px;
+    overflow-wrap: break-word; word-break: break-word;
+}
+
+#player-box { 
+    background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; 
+    margin-top: auto; border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+}
+.p-bubble { color: #e0e0e0; font-size: 19px; font-weight: 500; line-height: 1.5; font-style: italic; overflow-wrap: break-word; word-break: break-word; }
+
+/* --- �㴓 Ribbon嚗𡁶𣶹隞��撠�平撌亙��� --- */
+#excel-container { 
+    width: 70%; display: flex; flex-direction: column; background: #fff; 
+    min-width: 400px; overflow: hidden;
+}
+#excel-area { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+#ribbon { background: var(--ribbon-bg); border-bottom: 1px solid var(--border-color); padding: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 50; }
+.ribbon-tabs { display: flex; padding-left: 15px; background: #fff; border-bottom: 1px solid #efefef; }
+.ribbon-tabs .tab { 
+    padding: 10px 25px; font-size: 14px; cursor: pointer; color: #666; 
+    border-bottom: 3px solid transparent; transition: 0.3s; font-weight: 500;
+}
+.ribbon-tabs .tab:hover { background: #f9f9f9; color: var(--excel-green); }
+.ribbon-tabs .tab.active { color: var(--excel-green); border-bottom-color: var(--excel-green); font-weight: 700; background: #fff; }
+
+.ribbon-buttons { 
+    display: flex; align-items: center; padding: 8px 15px; gap: 10px; height: 95px; 
+    background: linear-gradient(to bottom, #fff, #fcfcfc);
+}
+.ribbon-btn { 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    padding: 10px; border: 1px solid transparent; border-radius: 8px; background: transparent; 
+    cursor: pointer; min-width: 75px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ribbon-btn:hover { 
+    background: var(--hover-blue); border-color: #cde4ff; 
+    transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,120,212,0.1);
+}
+.ribbon-btn:active { background: var(--active-blue); transform: translateY(0); }
+
+.ribbon-btn.big span { font-size: 13px; color: var(--text-main); margin-top: 6px; font-weight: 500; }
+.ribbon-btn img { width: 36px; height: 36px; object-fit: contain;  }
+
+/* [�啣�] 銝剖�璈怠��厰� (�冽䲰鞈��������脤��蠘�) */
+.ribbon-btn.medium-horizontal {
+    flex-direction: row;
+    padding: 5px 12px;
+    min-width: auto;
+    height: 40px;
+    gap: 8px;
+    align-self: flex-start;
+    margin-top: 5px;
+}
+.ribbon-btn.medium-horizontal img {
+    width: 20px;
+    height: 20px;
+}
+.ribbon-btn.medium-horizontal span {
+    font-size: 12px;
+    margin-top: 0;
+    white-space: nowrap;
+}
+
+/* --- �㴓 Grid嚗𡁻�鞈芣�蝬脫聢閮剛� --- */
+.grimoire-right {
+    flex: 2;
+    padding: 30px;
+    overflow-y: auto;
+    position: relative;
+    background: #fff;
+}
+
+/* ==========================================
+   [Phase 3] �閙������鸌�� (Text Glitch & Focus Line)
+   ========================================== */
+
+/* ������撟脫曎�寞� */
+.text-glitch {
+    position: relative;
+    display: inline-block;
+    color: #ff4757;
+    animation: textGlitch 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+.text-glitch::before, .text-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+}
+.text-glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #00ffff;
+    animation: textGlitchAnim 2s infinite linear alternate-reverse;
+}
+.text-glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #ff00ff;
+    animation: textGlitchAnim2 3s infinite linear alternate-reverse;
+}
+@keyframes textGlitch {
+    0% { transform: translate(0) skew(0deg); }
+    20% { transform: translate(-2px, 2px) skew(10deg); }
+    40% { transform: translate(-2px, -2px) skew(-10deg); }
+    60% { transform: translate(2px, 2px) skew(5deg); }
+    80% { transform: translate(2px, -2px) skew(-5deg); }
+    100% { transform: translate(0) skew(0deg); }
+}
+@keyframes textGlitchAnim {
+    0% { clip: rect(24px, 9999px, 98px, 0); }
+    100% { clip: rect(85px, 9999px, 140px, 0); }
+}
+@keyframes textGlitchAnim2 {
+    0% { clip: rect(65px, 9999px, 100px, 0); }
+    100% { clip: rect(10px, 9999px, 90px, 0); }
+}
+
+/* ��葉蝺𡁶鸌�� (�冽䲰擃䀹蔭撠滨蒾) */
+.focus-line-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%), 
+                repeating-conic-gradient(from 0deg, transparent 0deg 10deg, rgba(255,255,255,0.1) 10deg 20deg);
+    animation: focusLineSpin 10s linear infinite;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.focus-line-active {
+    opacity: 1;
+}
+@keyframes focusLineSpin {
+    100% { transform: rotate(360deg) scale(1.5); }
+} 
+.wrapper { 
+    width: 100%; height: 100%; overflow: auto; position: relative; background: #fff; 
+    scroll-behavior: smooth;
+    /* 蝘駁膄�芸�蝢拇虜璅辷��Ｗ儔撠�平�𧢲� */
+}
+.grid { 
+    display: grid; 
+    background: #fff; 
+    width: fit-content; 
+    min-width: 100%; 
+    padding-bottom: 100px;
+    position: relative; /* 蝣箔�蝯訫�摰帋�摮𣂼�蝝删㮾撠齿䲰蝬脫聢摰帋� */
+    /* 蝘駁膄 gap嚗峕㺿�� border 隞交𣈲�渲��祆㬢�� */
+}
+
+.l-head { 
+    background: #f8f9fa; color: #5c5c5c; font-size: 12px; font-weight: 600;
+    display: flex; justify-content: center; align-items: center; position: sticky; 
+    top: 0; z-index: 110; height: 32px; 
+    border-right: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    transition: background 0.2s;
+    cursor: cell; 
+    box-sizing: border-box;
+}
+
+.cell {
+    background: #fff; height: 32px; display: block; line-height: 31px;
+    padding: 0 10px; font-size: 14px; position: relative; outline: none;
+    border-right: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    color: #333; overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    transition: background-color 0.05s linear, border-color 0.1s ease;
+}
+.cell:hover { background: #f5faff; }
+
+/* [�詨��芸�]: �詨�獢���𥟇��閧鸌�� */
+.cell.selected { 
+    box-shadow: inset 0 0 0 2px var(--excel-green); 
+    z-index: 5; background: #f0f9f4 !important;
+}
+
+/* [�啣�]: 瘣餃��潭見撘� (�券��𣇉��滢葉蝒�枂憿舐內) */
+.cell.active {
+    background: #fff !important;
+    box-shadow: inset 0 0 0 2.5px var(--excel-green), 0 4px 10px rgba(0,0,0,0.15) !important;
+    z-index: 100;
+    position: absolute !important;
+    width: max-content !important;
+    min-width: max(100%, max-content) !important;
+    overflow: visible !important;
+    justify-self: start !important;
+}
+
+.cell.active br { display: none !important; }
+
+/* --- [�啣�]: 隞餃��格��脣��� (����鞟內) --- */
+.task-target-cell {
+    animation: target-pulse 1.5s infinite;
+    box-shadow: inset 0 0 0 2.5px #ff9800 !important; /* 璈䁅𠧧�垍𤌍�鞟內 */
+    z-index: 9;
+}
+@keyframes target-pulse {
+    0% { background-color: #fff; }
+    50% { background-color: #fff8e1; }
+    100% { background-color: #fff; }
+}
+
+/* --- [�啣�]: 撟賡�瘚格偌�唳�蝷� (Ghost Text) --- */
+.has-ghost-text:empty::before {
+    content: attr(data-ghost);
+    color: #b0bec5;
+    pointer-events: none;
+    font-style: italic;
+    white-space: nowrap;
+    position: absolute;
+    left: 10px;
+    top: 0;
+    line-height: 31px;
+}
+
+/* --- [�啣�]: 隤墧�銝𡃏𠧧撅� (Syntax Overlay) --- */
+.syntax-overlay {
+    pointer-events: none;
+    padding: 0 10px;
+    font-size: 14px;
+    line-height: 31px;
+    white-space: nowrap;
+    z-index: 101; /* �见銁 active cell 銝𢠃𢒰 */
+    box-sizing: border-box;
+    font-family: inherit;
+    height: 32px;
+    position: absolute !important;
+    width: max-content !important;
+    min-width: max(100%, max-content) !important;
+    overflow: visible !important;
+    justify-self: start !important;
+}
+.syntax-active {
+    color: transparent !important;
+    caret-color: #333; /* 靽脲�皜豢��航� */
+}
+
+/* �詨�獢��閫垍�擳𥪜�敺桀� */
+.cell.selected::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    background: linear-gradient(90deg, var(--excel-green), #ffd700, var(--excel-green)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    opacity: 0.5;
+    animation: magic-border-flow 2s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes magic-border-flow {
+    0% { filter: hue-rotate(0deg); opacity: 0.3; }
+    50% { opacity: 0.8; }
+    100% { filter: hue-rotate(360deg); opacity: 0.3; }
+}
+
+.cell.l-sel { background: rgba(33, 115, 70, 0.08) !important; }
+
+.cell.frozen { 
+    position: sticky !important; top: 28px !important; z-index: 200 !important; 
+    border-bottom: 2px solid #217346 !important; background: #f4faf6 !important;
+    font-weight: 600;
+}
+
+.fill-handle { 
+    position: absolute; width: 8px; height: 8px; background: var(--excel-green); 
+    right: -4px; bottom: -4px; cursor: crosshair; z-index: 300; 
+    border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* --- �㴓 Outline Sidebar (Subtotal levels) --- */
+.outline-sidebar {
+    background: #f3f2f1;
+    border-right: 1px solid #d1d1d1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 32px; /* Offset for header */
+    width: 30px;
+    grid-column: 1;
+    z-index: 800;
+}
+
+.outline-btn {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #999;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 9px;
+    color: #333;
+    user-select: none;
+    transition: background 0.2s;
+}
+.outline-btn:hover { background: #eef7ff; }
+
+.outline-level-line {
+    width: 1px;
+    background: #ccc;
+    flex-grow: 1;
+    margin: 2px 0;
+}
+
+/* --- �㴓 Sheet Bar嚗𡁏挱�罸�蝐� --- */
+#sheet-bar { 
+    display: flex; align-items: center; background: #f3f2f1; height: 36px; 
+    padding-left: 20px; border-top: 1px solid var(--border-color); 
+}
+.sheet { 
+    padding: 8px 30px; font-size: 13px; color: #666; background: #e1e1e1; 
+    border: 1px solid #d1d1d1; border-bottom: none; cursor: pointer; 
+    margin-right: 5px; min-width: 100px; text-align: center; position: relative;
+    border-radius: 4px 4px 0 0; transition: all 0.2s;
+}
+.sheet:hover { background: #ececec; color: #333; }
+.sheet.active { 
+    background: #fff; color: var(--excel-green); font-weight: 700; z-index: 10; 
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    border-top: 3px solid var(--excel-green);
+}
+#add-sheet { 
+    width: 28px; height: 28px; font-size: 20px; color: #666; cursor: pointer; 
+    display: flex; align-items: center; justify-content: center; 
+    border-radius: 50%; transition: 0.2s; margin-left: 10px;
+}
+#add-sheet:hover { background: #d1d1d1; color: var(--excel-green); }
+
+/* --- �典�瘚桀���辣 --- */
+#coin-display { 
+    position: fixed; top: 20px; right: 100px; 
+    background: rgba(255,255,255,0.95); color: var(--excel-green); 
+    padding: 8px 20px; border-radius: 50px; font-weight: 800; 
+    border: 2px solid var(--excel-green); z-index: 5500; 
+    box-shadow: 0 4px 15px rgba(33,115,70,0.2);
+    display: flex; align-items: center; gap: 8px; font-size: 16px;
+}
+
+#s-btn { 
+    position: fixed; right: 25px; top: 15px; width: 55px; height: 55px; 
+    background: var(--excel-green); border-radius: 50%; display: flex; 
+    align-items: center; justify-content: center; font-size: 26px; color: #fff; 
+    cursor: pointer; z-index: 7000; border: 3px solid #fff; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform; /* �𣂼��閧𧞄瘚�噐摨� */
+}
+#s-btn:hover { transform: scale(1.1) rotate(5deg); }
+
+#fs-btn { 
+    position: fixed; right: 25px; top: 155px; width: 45px; height: 45px; 
+    background: #2c3e50; border-radius: 10px; display: flex; 
+    align-items: center; justify-content: center; font-size: 22px; color: #fff; 
+    cursor: pointer; z-index: 7000; border: 2px solid #fff; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.6;
+    will-change: transform, opacity;
+}
+#fs-btn:hover { transform: scale(1.1); opacity: 1; }
+
+/* --- 璅∠�嚗𡁶�銵枏之�� (Skills Modal) --- */
+#s-card { 
+    width: 600px; max-height: 80vh; display: flex; flex-direction: column;
+    background: #fff; border-radius: 20px; overflow: hidden;
+    padding: 0 !important; /* 閬���𡁶鍂敶�� padding嚗𣬚Ⅱ靽脲�憿��鞎潮� */
+    border: 3px solid #d2b48c;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+#s-header { 
+    background: var(--excel-green); color: #fff; padding: 15px 25px; 
+    display: flex; justify-content: space-between; align-items: center;
+    flex-shrink: 0;
+}
+#s-tabs { 
+    display: flex; background: #f8f9fa; border-bottom: 1px solid #eee; 
+    flex-shrink: 0;
+}
+#s-search-box {
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    flex-shrink: 0;
+}
+#skill-search {
+    width: 100%;
+    padding: 8px 15px;
+    border: 2px solid #e0d5c1;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+#skill-search:focus { border-color: var(--excel-green); }
+
+#s-list { 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 10px;
+    background: #fdfaf0; /* 蝢羓铜蝝坔��脫� */
+}
+
+.s-card { 
+    margin: 10px; padding: 15px; border-radius: 12px; 
+    background: #fff; border: 1px solid #e0d5c1; transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.s-card:hover { transform: translateX(5px); border-color: var(--excel-green-light); box-shadow: 0 5px 15px rgba(33,115,70,0.1); }
+
+/* --- 頛𥪜𨭌��鸌�� --- */
+.hl-excel { color: var(--excel-green); font-weight: 800; border-bottom: 1px dashed var(--excel-green); }
+.hl-gold { color: var(--gold-dark); font-weight: 800; text-shadow: 0 0 5px rgba(255, 207, 77, 0.3); }
+
+/* �𠰴予�雴��閧��页��潸�銝� vs �𨀣迫 --- */
+#elf-bubble, #player-box {
+    transition: all 0.4s ease;
+    filter: brightness(0.7) grayscale(0.5); /* �鞱身�箸�瘛� */
+    opacity: 0.8;
+}
+
+#elf-bubble.speaking, #player-box.speaking {
+    filter: brightness(1) grayscale(0);
+    opacity: 1;
+    transform: scale(1.02);
+    border-color: var(--excel-green) !important;
+    box-shadow: 0 0 25px rgba(33, 115, 70, 0.4);
+    z-index: 200;
+}
+
+#elf-bubble.speaking { animation: magic-pulse 2s infinite; }
+#player-box.speaking { animation: player-pulse 2s infinite; }
+
+@keyframes magic-pulse { 
+    0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.5); } 
+    70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); } 
+    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); } 
+}
+
+@keyframes player-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(33, 115, 70, 0.5); } 
+    70% { box-shadow: 0 0 0 15px rgba(33, 115, 70, 0); } 
+    100% { box-shadow: 0 0 0 0 rgba(33, 115, 70, 0); } 
+}
+
+/* 蝣箔�璅⊥挱�冽芋撘譍��鞱身鈭桀漲�Ｗ儔 (�𧼮����) */
+#game-main:not(.in-story) #elf-bubble, 
+#game-main:not(.in-story) #player-box {
+    filter: brightness(1) grayscale(0);
+    opacity: 1;
+}
+
+.gl { position: absolute; width: 4px; background: var(--excel-green); z-index: 500; display: none; pointer-events: none; opacity: 0.6; }
+
+/* --- 蝭拚��蠘�璅�� --- */
+.excel-filter-icon {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border: 1px solid #999;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 1px;
+    color: #333;
+    z-index: 10;
+    transition: 0.2s;
+}
+.excel-filter-icon:hover {
+    background: #0078d4;
+    color: #fff;
+    border-color: #005a9e;
+}
+.cell.has-filter {
+    padding-right: 18px !important;
+}
+
+#filter-dropdown {
+    position: fixed;
+    background: #fff;
+    border: 1px solid #999;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 11000;
+    width: 200px;
+    padding: 0;
+    font-size: 12px;
+    font-family: "Microsoft JhengHei", sans-serif;
+}
+.filter-header {
+    background: #f3f2f1;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #edebe9;
+    color: #323130;
+}
+.filter-search {
+    padding: 5px;
+    border-bottom: 1px solid #edebe9;
+}
+.filter-search input {
+    width: 100%;
+    padding: 3px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+}
+.filter-list {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 5px 0;
+}
+.filter-item {
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+}
+.filter-item:hover {
+    background: #f3f2f1;
+}
+.filter-footer {
+    padding: 10px;
+    border-top: 1px solid #edebe9;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* --- 璅∠�嚗𡁻�𡁶鍂敶�� (Modal Layers) --- */
+.modal-layer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7); /* 蝔滚凝�䭾楛�峕艶隞亥��毺宏�� blur ���閬箸� */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 6000;
+    animation: fadeIn 0.15s ease-out;
+    will-change: opacity; 
+}
+
+/* --- [�啣�] �餃蔣�毺鸌������ (Flash) --- */
+.flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #fff;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.flash-active {
+    animation: flash-anim 0.4s ease-out;
+}
+
+@keyframes flash-anim {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#trial-card, #dev-card, #excel-format-modal .excel-modal-card {
+    background: #fff;
+    width: 500px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+    border: 3px solid #d2b48c;
+    position: relative;
+    transform: translateZ(0); /* 閫貊䔄蝖祇��𣳇�� */
+    contain: content; /* 皜脫��娪𣪧嚗屸俈甇Ｗ��函㺭�訫蔣�踹��其�撅� */
+    animation: slideUp 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from { transform: translateZ(0) translateY(15px); opacity: 0; }
+    to { transform: translateZ(0) translateY(0); opacity: 1; }
+}
+
+#trial-situation {
+    font-size: 18px;
+    color: #5d4037;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.trial-opt-btn {
+    padding: 15px 20px;
+    background: #fdfaf0;
+    border: 2px solid #e0d5c1;
+    border-radius: 12px;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+    color: #4e342e;
+}
+
+.trial-opt-btn:hover {
+    background: #fff;
+    border-color: var(--excel-green);
+    color: var(--excel-green);
+    transform: translateX(10px);
+}
+
+.trial-opt-btn.shake {
+    animation: shake 0.5s ease-in-out;
+    background: #fff5f5;
+    border-color: #ff4757;
+    color: #ff4757;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+
+@keyframes char-rpg-idle {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* --- 璅∠�嚗帋��厰��� (Excel Dropdown) --- */
+.dropdown-layer {
+    position: fixed;
+    z-index: 6000;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    min-width: 220px;
+    padding: 5px 0;
+    border-radius: 4px;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.1s;
+}
+
+.dropdown-item:hover {
+    background: var(--hover-blue);
+    color: var(--excel-green);
+}
+
+.dropdown-item .icon { font-size: 18px; }
+.dropdown-item .text { flex: 1; }
+
+/* �脣�璇萘��� */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 5px; border: 2px solid #f1f1f1; }
+::-webkit-scrollbar-thumb:hover { background: #999; }
+
+/* ==========================================
+   �踵�撘誩��� (Responsive Optimization)
+   ========================================== */
+
+/* 1. 蝑�𤓖/銝剛攟撟訫祝摨� (1024px ~ 1366px) */
+@media screen and (max-width: 1366px) {
+    #left-sidebar { width: 25%; min-width: 280px; padding: 15px; }
+    #excel-container { width: 75%; }
+    .ribbon-btn { min-width: 65px; padding: 6px; }
+    .ribbon-btn img { width: 28px; height: 32px; }
+    .ribbon-btn.big span { font-size: 12px; }
+    #e-t { font-size: 18px; }
+    .p-bubble { font-size: 17px; }
+}
+
+/* 2. 撟單踎撖砍漲 (768px ~ 1023px) */
+@media screen and (max-width: 1023px) {
+    body { flex-direction: column; }
+    #top-row { flex-direction: column; }
+    #left-sidebar { 
+        width: 100%; height: auto; border-right: none; border-bottom: 2px solid var(--excel-green); 
+        padding: 10px 20px; flex-direction: row; align-items: center; gap: 20px;
+    }
+    #elf-panel { width: 80px; margin-bottom: 0; }
+    #elf-img { width: 60px !important; }
+    #elf-bubble { margin-top: 0; padding: 10px 15px; min-height: 80px; }
+    #elf-bubble::before { left: -14px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+    #player-box { display: none; } /* 銵��蝡舫黸�譍蜓閫埝�肽���隞亦���征�� */
+    #excel-container { width: 100%; height: 70vh; }
+    #s-btn { right: 15px; top: 10px; width: 45px; height: 45px; }
+    #coin-display { right: 75px; top: 15px; padding: 5px 15px; font-size: 14px; }
+}
+
+/* 3. ���撠滩店�芸� */
+@media screen and (max-width: 768px) {
+    #s-name { font-size: 24px; padding-left: 15px; }
+    #s-text { font-size: 20px; }
+    #dialogue-box { padding: 20px 8% 40px 8%; }
+    .char-container { width: 80%; }
+}
+
+/* 4. 璆菔稲撟單��擧腹 (�芸����蝎曄Ⅱ���撅祆�找誑�𣂼��扯�) */
+#left-sidebar, #excel-container, #elf-bubble {
+    transition: width 0.3s, height 0.3s, transform 0.3s, opacity 0.3s, background-color 0.3s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ribbon-btn {
+    transition: background-color 0.2s, transform 0.2s, border-color 0.2s;
+}
+/* 鞈賜�蝑��嚗朞澈�琿麬憓��撘瑕�璅�� */
+.fairy-note-body {
+    background: #fdf5e6;
+    background-image: 
+        radial-gradient(circle at 2px 2px, rgba(0,0,0,0.02) 1px, transparent 0),
+        linear-gradient(rgba(139,69,19,0.03) 1px, transparent 1px);
+    background-size: 20px 20px, 100% 1.8em;
+    width: 420px;
+    padding: 50px 40px;
+    border: 1px solid #d2b48c;
+    box-shadow: 
+        3px 3px 0px #c0a080,
+        15px 15px 40px rgba(0,0,0,0.4);
+    transform: rotate(-1.5deg);
+    position: relative;
+    border-radius: 5px 20px 8px 30px / 20px 8px 30px 5px;
+    /* 憓𧼮��羓楠�垍�/�閗����閬箸� */
+    mask-image: linear-gradient(to bottom, #000 95%, transparent 100%), 
+                linear-gradient(to right, #000 98%, transparent 100%);
+}
+
+/* 憓冽偌�湔蕩�寞� - �㛖內瘛瑚���暒�� */
+.ink-splatter {
+    position: absolute;
+    background: #2c1810; /* 瘛梯��脖嗾憓冽偌�� */
+    border-radius: 50%;
+    filter: blur(1.5px);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 5;
+}
+.splatter-1 { top: 15%; right: 10%; width: 12px; height: 12px; }
+.splatter-2 { top: 18%; right: 14%; width: 6px; height: 6px; }
+.splatter-3 { bottom: 25%; left: 8%; width: 20px; height: 18px; opacity: 0.5; transform: rotate(15deg); }
+
+/* 璅⊥挱�乩�銝剜𪃾����� */
+.hl-emergency-streak {
+    display: inline-block;
+    width: 100px;
+    height: 3px;
+    background: #2c1810;
+    vertical-align: middle;
+    transform: rotate(-2deg);
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+/* �箄��寞� */
+.fairy-note-body::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent rgba(0,0,0,0.1) transparent transparent;
+    pointer-events: none;
+}
+
+.fairy-note-body::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 38px 38px 0;
+    border-color: transparent #e0d5c1 transparent transparent;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.note-tag {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    background: var(--excel-green);
+    color: #fff;
+    padding: 4px 15px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+#note-content {
+    color: #2c1810;
+    line-height: 1.8;
+    font-size: 18px; /* 蝔滚凝�惩之摮烾� */
+    white-space: pre-wrap;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+}
+
+/* 憛烾�����芸�嚗𡁶�甇��瘜閖鰐霈�����滚◢頝� */
+.hl-black {
+    background: #000;
+    color: transparent; /* ���摰���𤩺� */
+    border-radius: 2px;
+    padding: 0 6px;
+    margin: 0 2px;
+    box-shadow: 
+        0 0 2px #000,
+        inset 0 0 8px rgba(0,0,0,1),
+        2px 2px 5px rgba(0,0,0,0.3);
+    display: inline-block;
+    user-select: none; /* 蝳�迫�詨� */
+    cursor: default;
+    /* 憓𧼮��见���辶璈�� */
+    transform: rotate(-0.5deg) skewX(-2deg);
+    position: relative;
+    overflow: hidden;
+    filter: blur(0.4px); /* 璅⊥挱憓冽偌�羓楠皛脤�𤩺� */
+}
+
+/* 璅⊥挱憓刻楚�滨����閫貉釭�� */
+.hl-black::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.05),
+        rgba(255,255,255,0.05) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+}
+
+/* �芷膄蝺𡁏��𨅯��� */
+.hl-strike {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    text-decoration-color: rgba(0,0,0,0.4);
+    opacity: 0.8;
+    font-style: italic;
+}
+
+.note-close-btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background: var(--excel-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.2s;
+    box-shadow: 0 4px 10px rgba(33,115,70,0.3);
+}
+
+.note-close-btn:hover {
+    background: var(--excel-green-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(33,115,70,0.4);
+}
+
+/* --- [�啣�] �餃蔣�毺鸌������ (Shake) --- */
+.shake-active {
+    animation: stage-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes stage-shake {
+    10%, 90% { transform: translate3d(-3px, 2px, 0); }
+    20%, 80% { transform: translate3d(5px, -3px, 0); }
+    30%, 50%, 70% { transform: translate3d(-10px, 4px, 0); }
+    40%, 60% { transform: translate3d(10px, -4px, 0); }
+}
+
+/* --- [�啣�] �餃蔣�毺鸌����湔艶頧㗇�/頧匧聦 (Scene Transform) --- */
+.scene-transforming {
+    animation: scene-magic 1.5s ease-in-out forwards;
+}
+
+@keyframes scene-magic {
+    0% { filter: blur(0) brightness(1) saturate(1); transform: scale(1); }
+    40% { filter: blur(8px) brightness(2.5) saturate(2); transform: scale(1.08); }
+    60% { filter: blur(8px) brightness(2.5) saturate(2); transform: scale(1.08); }
+    100% { filter: blur(0) brightness(1) saturate(1); transform: scale(1); }
+}
+
+/* --- [�啣�] �啣��寞�嚗𡁜之瘞��瘚� (Env Drift) --- */
+
+/* --- [�啣�] �峕艶璅∠��寞�撅� --- */
+#story-bg-blur {
+    position: absolute;
+    inset: 0;
+    z-index: 0; /* 雿擧䲰閫坿𠧧摰孵膥 (z-index: 1) */
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px); /* 憓𧼮��讛汗�函㮾摰寞�� */
+    pointer-events: none;
+    transition: backdrop-filter 0.5s ease, -webkit-backdrop-filter 0.5s ease;
+    background-color: rgba(255, 255, 255, 0.01); 
+    transform: translateZ(0);
+}
+
+
+/* [�啣�]: 璅䂿����銵典�撠𤾸��� (頞�撥�𤤿�) */
+.tutorial-highlight-pulse {
+    animation: pivot-pulse-strong 1s infinite !important;
+    position: relative;
+    z-index: 9999 !important;
+    border: 3px solid #ffcf4d !important; /* �𤏸𠧧�𦠜� */
+    background-color: #fff9c4 !important; /* 瘛粹��峕艶 */
+}
+@keyframes pivot-pulse-strong {
+    0% { box-shadow: 0 0 0px #ffcf4d; transform: scale(1); }
+    50% { box-shadow: 0 0 20px #ffcf4d, inset 0 0 10px #ffcf4d; transform: scale(1.02); }
+    100% { box-shadow: 0 0 0px #ffcf4d; transform: scale(1); }
+}
+
+/* [�啣�]: ��𧋦�澆�霅血�撠讐�銝㕑� */
+.text-format-warning {
+    position: relative;
+    text-align: left !important;
+}
+.text-format-warning::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top: 8px solid #2e8b57;
+    border-right: 8px solid transparent;
+    z-index: 10;
+    pointer-events: none;
+}
+.splatter-3 { bottom: 25%; left: 8%; width: 20px; height: 18px; opacity: 0.5; transform: rotate(15deg); }
+
+/* 璅⊥挱�乩�銝剜𪃾����� */
+.hl-emergency-streak {
+    display: inline-block;
+    width: 100px;
+    height: 3px;
+    background: #2c1810;
+    vertical-align: middle;
+    transform: rotate(-2deg);
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+/* �箄��寞� */
+.fairy-note-body::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent rgba(0,0,0,0.1) transparent transparent;
+    pointer-events: none;
+}
+
+.fairy-note-body::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 38px 38px 0;
+    border-color: transparent #e0d5c1 transparent transparent;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.note-tag {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    background: var(--excel-green);
+    color: #fff;
+    padding: 4px 15px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+#note-content {
+    color: #2c1810;
+    line-height: 1.8;
+    font-size: 18px; /* 蝔滚凝�惩之摮烾� */
+    white-space: pre-wrap;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+}
+
+/* 憛烾�����芸�嚗𡁶�甇��瘜閖鰐霈�����滚◢頝� */
+.hl-black {
+    background: #000;
+    color: transparent; /* ���摰���𤩺� */
+    border-radius: 2px;
+    padding: 0 6px;
+    margin: 0 2px;
+    box-shadow: 
+        0 0 2px #000,
+        inset 0 0 8px rgba(0,0,0,1),
+        2px 2px 5px rgba(0,0,0,0.3);
+    display: inline-block;
+    user-select: none; /* 蝳�迫�詨� */
+    cursor: default;
+    /* 憓𧼮��见���辶璈�� */
+    transform: rotate(-0.5deg) skewX(-2deg);
+    position: relative;
+    overflow: hidden;
+    filter: blur(0.4px); /* 璅⊥挱憓冽偌�羓楠皛脤�𤩺� */
+}
+
+/* 璅⊥挱憓刻楚�滨����閫貉釭�� */
+.hl-black::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.05),
+        rgba(255,255,255,0.05) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events: none;
+}
+
+/* �芷膄蝺𡁏��𨅯��� */
+.hl-strike {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    text-decoration-color: rgba(0,0,0,0.4);
+    opacity: 0.8;
+    font-style: italic;
+}
+
+.note-close-btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px;
+    background: var(--excel-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.2s;
+    box-shadow: 0 4px 10px rgba(33,115,70,0.3);
+}
+
+.note-close-btn:hover {
+    background: var(--excel-green-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(33,115,70,0.4);
+}
+
+/* --- [�啣�] �餃蔣�毺鸌������ (Shake) --- */
+.shake-active {
+    animation: stage-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes stage-shake {
+    10%, 90% { transform: translate3d(-3px, 2px, 0); }
+    20%, 80% { transform: translate3d(5px, -3px, 0); }
+    30%, 50%, 70% { transform: translate3d(-10px, 4px, 0); }
+    40%, 60% { transform: translate3d(10px, -4px, 0); }
+}
+
+/* --- [�啣�] �餃蔣�毺鸌����湔艶頧㗇�/頧匧聦 (Scene Transform) --- */
+.scene-transforming {
+    animation: scene-magic 1.5s ease-in-out forwards;
+}
+
+@keyframes scene-magic {
+    0% { filter: blur(0) brightness(1) saturate(1); transform: scale(1); }
+    40% { filter: blur(8px) brightness(2.5) saturate(2); transform: scale(1.08); }
+    60% { filter: blur(8px) brightness(2.5) saturate(2); transform: scale(1.08); }
+    100% { filter: blur(0) brightness(1) saturate(1); transform: scale(1); }
+}
+
+/* --- [�啣�] �啣��寞�嚗𡁜之瘞��瘚� (Env Drift) --- */
+
+/* --- [�啣�] �峕艶璅∠��寞�撅� --- */
+#story-bg-blur {
+    position: absolute;
+    inset: 0;
+    z-index: 0; /* 雿擧䲰閫坿𠧧摰孵膥 (z-index: 1) */
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px); /* 憓𧼮��讛汗�函㮾摰寞�� */
+    pointer-events: none;
+    transition: backdrop-filter 0.5s ease, -webkit-backdrop-filter 0.5s ease;
+    background-color: rgba(255, 255, 255, 0.01); 
+    transform: translateZ(0);
+}
+
+
+/* [�啣�]: 璅䂿����銵典�撠𤾸��� (頞�撥�𤤿�) */
+.tutorial-highlight-pulse {
+    animation: pivot-pulse-strong 1s infinite !important;
+    position: relative;
+    z-index: 9999 !important;
+    border: 3px solid #ffcf4d !important; /* �𤏸𠧧�𦠜� */
+    background-color: #fff9c4 !important; /* 瘛粹��峕艶 */
+}
+@keyframes pivot-pulse-strong {
+    0% { box-shadow: 0 0 0px #ffcf4d; transform: scale(1); }
+    50% { box-shadow: 0 0 20px #ffcf4d, inset 0 0 10px #ffcf4d; transform: scale(1.02); }
+    100% { box-shadow: 0 0 0px #ffcf4d; transform: scale(1); }
+}
+
+/* [�啣�]: ��𧋦�澆�霅血�撠讐�銝㕑� */
+.text-format-warning {
+    position: relative;
+    text-align: left !important;
+}
+.text-format-warning::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top: 8px solid #2e8b57;
+    border-right: 8px solid transparent;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* [�啣�]: �砍�����𦠜��閧𧞄 */
+@keyframes dash-march {
+    to { background-position: 100% 0, 0 100%, 0 0, 100% 100%; }
+}
+.formula-ref-cell {
+    background-color: rgba(52, 152, 219, 0.15) !important;
+    background-image: linear-gradient(90deg, #3498db 50%, transparent 50%), linear-gradient(90deg, #3498db 50%, transparent 50%), linear-gradient(0deg, #3498db 50%, transparent 50%), linear-gradient(0deg, #3498db 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 8px 2px, 8px 2px, 2px 8px, 2px 8px;
+    background-position: 0 0, 100% 100%, 0 100%, 100% 0;
+    animation: dash-march 0.5s linear infinite;
+    z-index: 2000;
+}
+
+/* --- [�啣�] �餃蔣�毺鸌���蝡讠鼓�閙� (Char Animations) --- */
+.char-bounce {
+    animation: char-bounce-anim 0.5s cubic-bezier(0.28, 0.84, 0.42, 1);
+}
+@keyframes char-bounce-anim {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.char-sink {
+    animation: char-sink-anim 0.6s ease-out forwards;
+}
+@keyframes char-sink-anim {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(15px); }
+}
+
+.char-slideIn {
+    animation: char-slideIn-anim 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+@keyframes char-slideIn-anim {
+    0% { transform: translateX(50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+/* --- [�啣�] �餃蔣�毺鸌����Ｗ���� (Glitch) --- */
+.screen-glitch {
+    animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both 3;
+}
+@keyframes glitch-anim {
+    0% { filter: hue-rotate(0deg) contrast(1); transform: translate(0); }
+    20% { filter: hue-rotate(-50deg) contrast(2); transform: translate(-5px, 5px); }
+    40% { filter: hue-rotate(50deg) contrast(2); transform: translate(-5px, -5px); }
+    60% { filter: hue-rotate(-50deg) invert(1); transform: translate(5px, 5px); }
+    80% { filter: hue-rotate(50deg) contrast(2); transform: translate(5px, -5px); }
+    100% { filter: hue-rotate(0deg) contrast(1); transform: translate(0); }
+}
+
+/* --- [�啣�] 蝯���寞�嚗𡁶征�栞�蝮怨�銵� (Crack Pulse) --- */
+/* 瘥� glitch �湔�銋���凒�賜�嚗𣬚鍂�潸�蝮急楲���擃睃撐�𥟇挾�� */
+.screen-crack {
+    animation: crack-pulse-anim 0.5s ease-in-out 3;
+}
+@keyframes crack-pulse-anim {
+    0%   { filter: brightness(1) contrast(1) saturate(1); transform: translate(0) scale(1); }
+    20%  { filter: brightness(3) contrast(4) saturate(0); transform: translate(-4px, 2px) scale(1.015); }
+    40%  { filter: brightness(1) contrast(1) saturate(1); transform: translate(0) scale(1); }
+    60%  { filter: brightness(4) contrast(5) saturate(0) invert(0.2); transform: translate(4px, -3px) scale(1.015); }
+    80%  { filter: brightness(1.5) contrast(2) saturate(0.5); transform: translate(-2px, 2px) scale(1.005); }
+    100% { filter: brightness(1) contrast(1) saturate(1); transform: translate(0) scale(1); }
+}
+
+/* --- [�啣�] �餃蔣�毺鸌���敹�歲蝮格𦆮 (Heartbeat) --- */
+.screen-heartbeat {
+    animation: heartbeat-anim 1.2s ease-in-out;
+}
+@keyframes heartbeat-anim {
+    0% { transform: scale(1); filter: brightness(1); }
+    15% { transform: scale(1.05); filter: brightness(1.2); }
+    30% { transform: scale(1); filter: brightness(1); }
+    45% { transform: scale(1.05); filter: brightness(1.2); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* --- [�啣�] 蝯���寞�嚗𡁏��� (Dissolve) --- */
+.screen-dissolve {
+    animation: dissolveEffect 1s forwards;
+}
+
+/* �啣�嚗𡁜�蝝惩���� (瘝厩辺�脣�/撏抵�) */
+.screen-pixelate {
+    animation: pixelateEffect 2s forwards;
+}
+@keyframes pixelateEffect {
+    0%   { filter: blur(0px) contrast(1); opacity: 1; }
+    50%  { filter: blur(5px) contrast(5); opacity: 0.8; }
+    100% { filter: blur(10px) contrast(10); opacity: 0; }
+}
+
+/* �啣�嚗𡁜�蝝惩��Ｗ儔 (�阡�) */
+.screen-pixelate_clear {
+    animation: pixelateClearEffect 2s forwards;
+}
+@keyframes pixelateClearEffect {
+    0%   { filter: blur(10px) contrast(10); opacity: 0; }
+    50%  { filter: blur(5px) contrast(5); opacity: 0.8; }
+    100% { filter: blur(0px) contrast(1); opacity: 1; }
+}
+
+/* �啣�嚗𡁏�憿�㨃����� (撅�葉�曉之) */
+.screen-title_card {
+    animation: titleCardEffect 3s forwards;
+}
+@keyframes titleCardEffect {
+    0%   { transform: scale(0.8); opacity: 0; filter: brightness(0); }
+    20%  { transform: scale(1); opacity: 1; filter: brightness(1); }
+    80%  { transform: scale(1.05); opacity: 1; filter: brightness(1); }
+    100% { transform: scale(1.5); opacity: 0; filter: blur(10px); }
+}
+
+@keyframes dissolve-anim {
+    0% { filter: blur(0) sepia(0) contrast(1); }
+    100% { filter: blur(4px) sepia(0.3) contrast(1.2); }
+}
+
+/* --- [�啣�] 蝯���寞�嚗𡁜凝撘梁��� (Faint Glow) --- */
+.screen-glow {
+    animation: faint-glow-anim 2s ease-in-out infinite alternate;
+}
+@keyframes faint-glow-anim {
+    0% { filter: brightness(1) contrast(1); box-shadow: inset 0 0 10px rgba(255,255,255,0.0); }
+    100% { filter: brightness(1.15) contrast(1.05); box-shadow: inset 0 0 80px rgba(255,255,255,0.4); }
+}
+
+/* --- [�啣�] 蝯���寞�嚗𡁜��賣楲�� (Whiteout Overlay) --- */
+.whiteout-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #fff;
+    z-index: 8000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-out; /* �冽䲰撘瑕�皜�膄����擧腹 */
+}
+.whiteout-active {
+    animation: whiteout-fade 2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+@keyframes whiteout-fade {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+.env-drift { animation: env-drift-anim 15s linear infinite alternate; transform-origin: center; }
+@keyframes env-drift-anim { 0% { transform: scale(1.1) translate(0, 0); } 100% { transform: scale(1.2) translate(-2%, 2%); } }
+
+/* ================= 蝟餌絞撠舘⏛璅䂿� (System Menu) ================= */
+#sys-menu-btn { position: fixed; right: 25px; top: 25px; width: 50px; height: 50px; background: rgba(30, 30, 30, 0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #fff; cursor: pointer; z-index: 7000; border: 2px solid rgba(255, 215, 0, 0.8); box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.1s ease-out, background 0.1s ease-out, border-color 0.1s ease-out; will-change: transform; }
+#sys-menu-btn:hover { transform: scale(1.1) rotate(15deg); background: rgba(0, 0, 0, 0.9); border-color: #ffd700; }
+#sys-menu-overlay { display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.2s ease; will-change: opacity; transform: translateZ(0); background: rgba(10, 15, 30, 0.98); }
+.sys-overlay-hide { opacity: 0; pointer-events: none; }
+.sys-overlay-show { opacity: 1; pointer-events: auto; }
+.sys-menu-panel { width: 800px; max-width: 90vw; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); color: #fff; transform: translateY(20px) scale(0.98); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); will-change: transform; }
+.sys-overlay-show .sys-menu-panel { transform: translateY(0) scale(1); }
+.sys-menu-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding-bottom: 15px; margin-bottom: 30px; }
+.sys-menu-header h2 { margin: 0; font-size: 28px; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-family: serif; letter-spacing: 2px; }
+.sys-menu-close { background: transparent; border: none; color: #fff; font-size: 40px; cursor: pointer; line-height: 1; transition: 0.2s; opacity: 0.6; }
+.sys-menu-close:hover { opacity: 1; color: #ff4757; transform: scale(1.1); }
+.sys-menu-section { margin-bottom: 40px; }
+.sys-menu-section h3 { font-size: 18px; color: #a4b0be; margin-bottom: 20px; letter-spacing: 1px; }
+.sys-menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
+.sys-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 25px 15px; text-align: center; cursor: pointer; transition: background 0.1s, border-color 0.1s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.sys-card-icon { font-size: 40px; margin-bottom: 15px; text-shadow: 0 4px 6px rgba(0,0,0,0.4); }
+.sys-card-text { font-size: 16px; font-weight: bold; color: #dfe4ea; line-height: 1.4; }
+.sys-card-text span { font-size: 12px; color: #747d8c; font-weight: normal; }
+.active-card:hover { background: rgba(33, 115, 70, 0.6); border-color: #2ed573; }
+.action-card:hover { background: rgba(255, 255, 255, 0.25); border-color: rgba(255, 255, 255, 0.8); }
+.locked-card { opacity: 0.5; background: rgba(0, 0, 0, 0.4); border-style: dashed; }
+.locked-card:hover { opacity: 0.8; background: rgba(255, 71, 87, 0.3); border-color: #ff4757; cursor: not-allowed; }
+.locked-card .sys-card-icon { filter: grayscale(100%); }
+
+/* ================= 摮睃�瑼娪𢒰�� (Save/Load Modal) ================= */
+#save-load-overlay { display: flex; align-items: center; justify-content: center; z-index: 10000; transition: opacity 0.2s ease; will-change: opacity; transform: translateZ(0); background: rgba(10, 15, 30, 0.98); position: fixed; inset: 0; }
+.sl-slot { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.1s, border-color 0.1s; color: #fff; }
+.sl-slot:hover { background: rgba(33, 115, 70, 0.4); border-color: #2ed573; }
+.sl-slot-empty { opacity: 0.5; border-style: dashed; }
+.sl-slot-empty:hover { opacity: 0.8; background: rgba(255, 255, 255, 0.15); border-color: #fff; }
+.sl-info { display: flex; flex-direction: column; gap: 5px; text-align: left; }
+.sl-title { font-size: 18px; font-weight: bold; color: #ffd700; }
+.sl-meta { font-size: 14px; color: #a4b0be; }
+.sl-icon { font-size: 30px; }
+
+/* ================= 閰衣�銵函�銵枏之�� (Skill Book Modal) ================= */
+#s-card {
+    background: #fdfaf0 url('BG/bg1.png') no-repeat center center;
+    background-size: cover;
+    background-blend-mode: overlay;
+    border: 8px solid #8b4513;
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(139,69,19,0.3);
+    width: 600px;
+    max-height: 80vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#s-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed #8b4513;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+#s-header h3 {
+    margin: 0;
+    color: #5d4037;
+    font-size: 28px;
+    font-family: serif;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+}
+
+#s-header .close-btn {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #8b4513;
+    cursor: pointer;
+    transition: 0.2s;
+    line-height: 1;
+}
+#s-header .close-btn:hover { color: #ff4757; transform: scale(1.2) rotate(90deg); }
+
+#s-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.skill-tab {
+    background: rgba(139, 69, 19, 0.1);
+    border: 2px solid #8b4513;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #5d4037;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.05);
+}
+
+.skill-tab:hover {
+    background: rgba(139, 69, 19, 0.2);
+    transform: translateY(-2px);
+}
+
+.skill-tab.active {
+    background: #8b4513;
+    color: #fdfaf0;
+    border-color: #8b4513;
+    box-shadow: 0 -2px 10px rgba(139,69,19,0.4);
+}
+
+#s-search-box {
+    margin-bottom: 15px;
+}
+
+#s-search-box input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #d2b48c;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    color: #3e2723;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    box-sizing: border-box;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+#s-search-box input:focus {
+    border-color: #8b4513;
+    background: #fff;
+}
+
+#s-search-box input::placeholder {
+    color: #a1887f;
+}
+
+#s-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 10px;
+}
+
+/* �毺𥿢蝭�暺� (Skill Tree Node) */
+.skill-node {
+    width: 100px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    border-radius: 12px;
+    padding: 10px 5px;
+}
+
+.skill-node:hover {
+    transform: translateY(-8px) scale(1.05);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 20px rgba(139, 69, 19, 0.15);
+}
+
+.skill-node.active {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+    border: 1px solid #d2b48c;
+}
+
+.skill-node.active .node-icon {
+    transform: scale(1.15);
+}
+
+.node-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 8px;
+    transition: 0.3s;
+    border: 2px solid rgba(255,255,255,0.8);
+}
+
+.node-name {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 5px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+.node-cat {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.skill-node.locked {
+    filter: grayscale(80%) opacity(0.7);
+}
+
+.skill-node.locked:hover {
+    filter: grayscale(0%) opacity(1);
+}
+
+/* �梯��毺��脰遘嚗諹��毺𥿢�港嗾瘛� */
+#s-tree-map::-webkit-scrollbar {
+    width: 6px;
+}
+#s-tree-map::-webkit-scrollbar-thumb {
+    background: rgba(139,69,19,0.3);
+    border-radius: 3px;
+}
+
+
+
+/* ==========================================
+   [Phase 3] �冽鰵撖行�擳𥪜��� (Grimoire) �� System Menu ���
+   ========================================== */
+
+/* --- 蝟餌絞�詨鱓瘥𤤿縧���蝝� (Glassmorphism) --- */
+#sys-menu-overlay {
+    background: rgba(10, 15, 30, 0.7) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+.sys-menu-panel {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(20px);
+}
+.sys-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+.sys-card:hover:not(.locked-card) {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* --- 撖行�擳𥪜��� (Grimoire Layout) --- */
+.grimoire-layout {
+    display: flex !important;
+    width: 900px !important;
+    max-width: 95vw !important;
+    height: 600px !important;
+    max-height: 90vh !important;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3) !important;
+    position: relative;
+}
+
+/* 撌血�嚗𡁜�閬質��𡑒”�� */
+.grimoire-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fdfaf0; /* 敺桅�蝢羓铜蝝坔��� */
+    border-right: 2px solid #e1e1e1;
+}
+
+#s-header {
+    padding: 25px 25px 15px 25px;
+    background: #fff;
+    border-bottom: 1px solid #e1e1e1;
+}
+#s-header h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #3e2723;
+    font-weight: 800;
+}
+.grimoire-subtitle {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+    color: #795548;
+}
+
+.grimoire-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 15px 25px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #e1e1e1;
+}
+.skill-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+.skill-tab:hover { background: #eef7ff; border-color: #bbdefb; }
+.skill-tab.active { background: #e3f2fd; border-color: #2196f3; box-shadow: 0 2px 5px rgba(33,150,243,0.2); }
+.tab-icon { font-size: 20px; }
+.tab-text { font-size: 14px; font-weight: bold; color: #333; line-height: 1.2; }
+.tab-text span { font-size: 11px; color: #777; font-weight: normal; }
+
+#s-search-box {
+    padding: 15px 25px;
+}
+#skill-search {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #dcdcdc;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+#skill-search:focus { border-color: #2196f3; }
+
+.grimoire-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 25px 25px 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.grimoire-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    background: #fff;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.grimoire-card:hover { border-color: #ccc; transform: translateX(5px); }
+.grimoire-card.active { border-color: #2196f3; background: #f0f8ff; }
+.grimoire-card.locked { opacity: 0.6; background: #fafafa; border-style: dashed; }
+
+.card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: white;
+}
+.card-icon img { width: 24px; height: 24px; filter: brightness(0) invert(1); }
+.card-name { font-size: 16px; font-weight: bold; color: #333; }
+.card-cat { font-size: 12px; font-weight: bold; }
+
+/* �喳�嚗朞底蝝唳�摮賊𢒰�� */
+.grimoire-right {
+    width: 380px;
+    background: #fff;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.detail-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+.detail-icon { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+.detail-icon img { width: 35px; height: 35px; filter: brightness(0) invert(1); }
+.detail-title h2 { margin: 0 0 5px 0; font-size: 22px; color: #333; }
+.detail-badge { padding: 4px 10px; border-radius: 20px; color: white; font-size: 12px; font-weight: bold; }
+
+.detail-body { flex: 1; }
+.detail-section { margin-bottom: 25px; padding: 15px; border-radius: 12px; }
+.detail-section h4 { margin: 0 0 10px 0; font-size: 15px; color: #555; border-bottom: 2px dashed #eee; padding-bottom: 5px; }
+.detail-section p { margin: 0; font-size: 14px; color: #444; line-height: 1.6; }
+
+.pain-point { background: #fff5f5; border: 1px solid #ffe3e3; }
+.pain-point h4 { color: #e03131; border-color: #ffc9c9; }
+.effect { background: #f4fce3; border: 1px solid #e9fac8; }
+.effect h4 { color: #2b8a3e; border-color: #d8f5a2; }
+
+.spell-shortcut { margin-top: 15px; padding: 10px; background: #fff; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; font-family: monospace; }
+kbd { background: #eee; padding: 2px 6px; border-radius: 4px; border: 1px solid #ccc; border-bottom: 2px solid #aaa; font-weight: bold; }
+
+.detail-footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #eee; }
+.review-btn { width: 100%; padding: 15px; background: #8b4513; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 0 #5d4037; }
+.review-btn:hover { background: #a0522d; transform: translateY(2px); box-shadow: 0 2px 0 #5d4037; }
+.review-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #5d4037; }
+
+.grimoire-close-btn { position: absolute; top: 15px; right: 15px; width: 35px; height: 35px; border-radius: 50%; background: #f0f0f0; border: none; font-size: 18px; cursor: pointer; transition: 0.2s; z-index: 10; }
+.grimoire-close-btn:hover { background: #e0e0e0; color: red; }
+
+.locked-panel { text-align: center; color: #999; margin-top: 100px; }
+.locked-icon { font-size: 60px; margin-bottom: 20px; opacity: 0.5; }
+.empty-grimoire { text-align: center; padding: 40px; color: #888; }
+
+/* --- 靽桀儔�羓� ID 銵萘� --- */
+.grimoire-layout {
+    flex-direction: row !important;
+    border: none !important;
+    background-image: none !important;
+}
+#s-header {
+    display: block !important;
+    border-bottom: none !important;
+    padding: 25px 25px 15px 25px !important;
+    margin-bottom: 0 !important;
+}
+
+/* ==========================================
+   [Phase 4] RPG 璅∪�鈭鍦��勗�璅��
+   ========================================== */
+.rpg-poi {
+    position: absolute;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 40px;
+    border-radius: 8px;
+    border: 2px dashed rgba(255,215,0,0.5);
+    background: rgba(0,0,0,0.3);
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.rpg-poi:hover {
+    background: rgba(255,215,0,0.2);
+    transform: scale(1.05);
+}
+.rpg-poi-label {
+    position: absolute;
+    bottom: -25px;
+    font-size: 14px;
+    color: #fff;
+    background: rgba(0,0,0,0.8);
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    border: 1px solid #d2b48c;
+    pointer-events: none;
+}
+
+/* --- RPG �讐�銝𣇉��寞� --- */
+@keyframes char-rpg-idle {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.02); }
+}
+.char-rpg-idle {
+    animation: char-rpg-idle 1.2s ease-in-out infinite !important;
+}
+
+.rpg-scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 3px 100%;
+    z-index: 4999;
+    pointer-events: none;
+    opacity: 0.8;
+}
+.rpg-scanlines {
+    animation: crt-flicker 0.15s infinite;
+}
+@keyframes crt-flicker {
+    0% { filter: brightness(1) contrast(1); }
+    50% { filter: brightness(0.98) contrast(1.02); }
+    100% { filter: brightness(1) contrast(1); }
+}
+
+/* --- RPG 蝢文�璅∪� (Ensemble Mode) --- */
+#story-stage.rpg-ensemble .char-container:has(#a-l) { left: 35%; }
+#story-stage.rpg-ensemble .char-container:has(#a-f) { left: 50%; }
+#story-stage.rpg-ensemble .char-container:has(#a-g) { left: 65%; }
+#story-stage.rpg-ensemble .char-container:has(#a-ma) { left: 85%; }
+#story-stage.rpg-ensemble #main-char-container { left: 15%; transform: translateX(-50%) scale(1); }
+#story-stage.rpg-ensemble .char-container:has(.char-active) { z-index: 10 !important; }
+
+/* �函黎�𤩺芋撘譍�嚗峕��匧歇頛匧��� rpg �𣇉��賭�����𤩺��航�嚗諹�䔶��臬��冽�憭� */
+#story-stage.rpg-ensemble .char-img[src*="rpg"] {
+    opacity: 0.5 !important;
+    height: 55vh !important;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transform: translateY(0) scale(1);
+    filter: brightness(0.6);
+    transition: opacity 0.3s, transform 0.3s, filter 0.3s;
+    image-rendering: pixelated; /* �讐��恍俈璅∠� */
+}
+
+/* �嗥䔄閮��� (char-active)嚗峕�摰��鈭株絲銝行𦆮憭� */
+#story-stage.rpg-ensemble .char-img[src*="rpg"].char-active {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1.1);
+    filter: brightness(1) drop-shadow(0 0 15px rgba(255,255,255,0.6));
+    z-index: 10;
+}
+
+/* --- RPG 撠�惇撠滩店獢� (Retro UI) --- */
+#story-stage.rpg-ensemble + #dialogue-box {
+    top: 60px; /* 蝘餉秐銝𦠜䲮嚗屸��钅�撟��閮剖��厰� */
+    bottom: auto;
+    width: 84%;
+    left: 8%; /* 蝵桐葉 */
+    padding: 20px 30px;
+    background: #0000aadd; /* 敺拙𧂈�滚� (蝔滚凝撣園�𤩺�摨�) */
+    border: 4px solid #ffffff; /* 蝎㛖蒾�𦠜� */
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 2px #000000, 0 8px 20px rgba(0,0,0,0.8); /* �批��啣蔣�㯄�删��豢� */
+}
+
+/* 敺拙𧂈撠滩店獢��摮埈�蝐� */
+#story-stage.rpg-ensemble + #dialogue-box #s-name {
+    color: #ffff00; /* 蝬枏�暺�𠧧�滚� */
+    text-shadow: 2px 2px 0 #000000;
+    border-left: none; /* 蝘駁膄�曆誨�毺�撌血��渡� */
+    padding-left: 0;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    background: transparent; /* 蝘駁膄�航������ */
+}
+
+/* 敺拙𧂈撠滩店獢��摮� */
+#story-stage.rpg-ensemble + #dialogue-box #s-text {
+    color: #ffffff;
+    text-shadow: 2px 2px 0 #000000;
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+/* --- RPG 敹恍�笔�����閙見撘� --- */
+.rpg-teleport-btn {
+    background: #2c1e14;
+    color: #ffd700;
+    border: 1px solid #ffd700;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    font-size: 12px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.rpg-teleport-btn:hover {
+    background: #ffd700;
+    color: #2c1e14;
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.rpg-teleport-btn:active {
+    transform: scale(0.95);
+}
+
+
+
+/* Cinematic Char Effects */
+.char-dissolve { animation: char-dissolve-anim 2s ease-out forwards !important; }
+@keyframes char-dissolve-anim {
+    0% { opacity: 1; filter: brightness(1); }
+    50% { filter: brightness(2) blur(2px); }
+    100% { opacity: 0; filter: blur(5px); transform: translateY(-20px) scale(0.95); }
+}
+.char-pixel-dissolve { animation: char-pixel-dissolve-anim 2s ease-out forwards !important; }
+@keyframes char-pixel-dissolve-anim {
+    0% { opacity: 1; filter: contrast(1); clip-path: inset(0 0 0 0); }
+    100% { opacity: 0; filter: contrast(2) blur(3px); transform: translateY(-30px); clip-path: inset(0 0 100% 0); }
+}
+
+/* ----------------------------------------------------
+   World Collapse Effects (Reality Tear & Dissolve to Light)
+   ---------------------------------------------------- */
+.screen-reality-tear {
+    position: relative;
+    animation: reality-tear-tremor 0.1s 8;
+    overflow: hidden;
+}
+
+.screen-reality-tear::before,
+.screen-reality-tear::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-size: cover;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.screen-reality-tear::before {
+    background-color: rgba(255, 0, 0, 0.4);
+    animation: reality-glitch-slice1 2s infinite linear alternate-reverse;
+    left: 4px;
+}
+
+.screen-reality-tear::after {
+    background-color: rgba(0, 255, 255, 0.4);
+    animation: reality-glitch-slice2 3s infinite linear alternate-reverse;
+    left: -4px;
+}
+
+@keyframes reality-glitch-slice1 {
+    0%   { clip-path: inset(10% 0 80% 0); transform: translate(-4px, 2px); }
+    20%  { clip-path: inset(80% 0 5% 0); transform: translate(4px, -2px); filter: hue-rotate(90deg); }
+    40%  { clip-path: inset(30% 0 40% 0); transform: translate(-4px, 2px); }
+    60%  { clip-path: inset(50% 0 30% 0); transform: translate(4px, -2px); }
+    80%  { clip-path: inset(5% 0 80% 0); transform: translate(-4px, 2px); filter: invert(100%); }
+    100% { clip-path: inset(60% 0 10% 0); transform: translate(4px, -2px); }
+}
+
+@keyframes reality-glitch-slice2 {
+    0%   { clip-path: inset(80% 0 5% 0); transform: translate(4px, -2px); }
+    20%  { clip-path: inset(10% 0 80% 0); transform: translate(-4px, 2px); }
+    40%  { clip-path: inset(50% 0 30% 0); transform: translate(4px, -2px); }
+    60%  { clip-path: inset(30% 0 40% 0); transform: translate(-4px, 2px); }
+    80%  { clip-path: inset(60% 0 10% 0); transform: translate(4px, -2px); }
+    100% { clip-path: inset(5% 0 80% 0); transform: translate(-4px, 2px); }
+}
+
+@keyframes reality-tear-tremor {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(-3px, 2px) rotate(-0.5deg); }
+    50%  { transform: translate(3px, -1px) rotate(0.5deg); }
+    75%  { transform: translate(-1px, -3px) rotate(-0.2deg); }
+    100% { transform: translate(2px, 2px) rotate(0.2deg); }
+}
+
+.screen-dissolve-to-light {
+    position: relative;
+    animation: reality-dissolve 5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+}
+
+.screen-dissolve-to-light::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: white;
+    pointer-events: none;
+    z-index: 9999;
+    animation: white-out-extreme 5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+}
+
+@keyframes reality-dissolve {
+    0% { filter: brightness(1) contrast(1) blur(0px) saturate(1); }
+    30% { filter: brightness(1.5) contrast(1.2) blur(2px) saturate(2); }
+    60% { filter: brightness(2.5) contrast(1.5) blur(6px) saturate(0.5); transform: scale(1.02); }
+    85% { filter: brightness(10) contrast(0.5) blur(20px); transform: scale(1.05); }
+    100% { filter: brightness(50) blur(40px); transform: scale(1.1); opacity: 0; }
+}
+
+@keyframes white-out-extreme {
+    0%, 70% { opacity: 0; }
+    100% { opacity: 1; }
+}
+/* --- [新增] 第一人稱睜眼特效 (Eye Open) --- */
+.screen-eye-open {
+    /* Kept clean, all animation handled by pseudo-element */
+}
+
+.screen-eye-open::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 100;
+    pointer-events: none;
+    width: 0vw;
+    height: 0vw;
+    box-shadow: 0 0 0 3000px #000, inset 0 0 50px 50px #000;
+    animation: eye-open-circle 3s ease-in-out forwards;
+}
+
+@keyframes eye-open-circle {
+    0% {
+        width: 0vw;
+        height: 0vw;
+        box-shadow: 0 0 0 3000px #000, inset 0 0 0px 0px #000;
+    }
+    30% {
+        width: 30vw;
+        height: 30vw;
+        box-shadow: 0 0 0 3000px #000, inset 0 0 40px 20px #000;
+    }
+    45% {
+        width: 25vw;
+        height: 25vw;
+        box-shadow: 0 0 0 3000px #000, inset 0 0 60px 30px #000;
+    }
+    100% {
+        width: 150vw;
+        height: 150vw;
+        box-shadow: 0 0 0 3000px rgba(0,0,0,0), inset 0 0 0px 0px rgba(0,0,0,0);
+    }
+}
+
+.screen-reality-tear-slow::before,
+.screen-reality-tear-slow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-size: cover;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.screen-reality-tear-slow::before {
+    background-color: rgba(255, 0, 0, 0.2);
+    animation: reality-glitch-slice1 12s infinite linear alternate-reverse;
+    left: 4px;
+}
+
+.screen-reality-tear-slow::after {
+    background-color: rgba(0, 255, 255, 0.2);
+    animation: reality-glitch-slice2 15s infinite linear alternate-reverse;
+    left: -4px;
+}
+@keyframes charFloatAnim { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(1deg); } 100% { transform: translateY(0) rotate(0deg); } } .char-float { animation: charFloatAnim 6s ease-in-out infinite !important; }
+
+@keyframes charFallingAnim { 0% { transform: translateY(0px) rotate(0deg) scale(1);  } 50% { transform: translateY(-40px) rotate(-3deg) scale(0.95);  } 100% { transform: translateY(0px) rotate(0deg) scale(1);  } } .char-falling { animation: charFallingAnim 4s cubic-bezier(0.35, 0.1, 0.25, 1) infinite !important; } 
+@keyframes bgPanFalling { 0% { background-position: center 0%; } 100% { background-position: center 100%; } } .bg-falling-pan { animation: bgPanFalling 10s linear infinite !important; }
+
+@keyframes mystPulse { 0% { filter: brightness(1) contrast(1) hue-rotate(0deg); } 50% { filter: brightness(1.3) contrast(1.1) hue-rotate(15deg); } 100% { filter: brightness(1) contrast(1) hue-rotate(0deg); } } .bg-myst-falling { background-size: 130% !important; animation: bgPanFalling 12s linear infinite, mystPulse 5s ease-in-out infinite !important; } .bg-myst-falling::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(100,0,255,0.1) 0%, rgba(0,0,0,0.6) 100%); pointer-events: none; z-index: 10; mix-blend-mode: overlay; }

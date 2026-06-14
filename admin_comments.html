@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冒險者留言板 - 管理後台</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: #1e1e2e;
+            color: #fdf5e6;
+            padding: 40px;
+            font-family: sans-serif;
+            overflow-y: auto;
+            height: auto;
+        }
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: var(--gold);
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        .feedback-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .p-name {
+            font-weight: bold;
+            color: var(--gold);
+            font-size: 1.2em;
+        }
+        .p-date {
+            font-size: 0.9em;
+            color: #888;
+        }
+        .p-comment {
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        .no-data {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 50px;
+        }
+        .actions {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-clear { background: #b22222; color: #fff; }
+        .btn-back { background: #217346; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>🔍 冒險者留言板 (管理後台)</h1>
+        
+        <div id="comments-list">
+            <!-- 留言將在這裡動態生成 -->
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-back" onclick="window.location.href='index.html'">⬅️ 返回遊戲</button>
+            <button class="btn btn-clear" onclick="clearComments()">🗑️ 清除所有留言</button>
+        </div>
+    </div>
+
+    <script>
+        function loadComments() {
+            const listDiv = document.getElementById('comments-list');
+            const feedbackList = JSON.parse(localStorage.getItem('adventure_feedback') || '[]');
+            
+            if (feedbackList.length === 0) {
+                listDiv.innerHTML = '<p class="no-data">目前尚無冒險者留言...</p>';
+                return;
+            }
+
+            listDiv.innerHTML = feedbackList.reverse().map(item => `
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <span class="p-name">👤 ${escapeHtml(item.name)}</span>
+                        <span class="p-date">📅 ${item.date}</span>
+                    </div>
+                    <div class="p-comment">${escapeHtml(item.comment)}</div>
+                </div>
+            `).join('');
+        }
+
+        function clearComments() {
+            if (confirm('確定要清除所有魔法留言嗎？此動作無法復原。')) {
+                localStorage.removeItem('adventure_feedback');
+                loadComments();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 初始化加載
+        loadComments();
+    </script>
+</body>
+</html>
