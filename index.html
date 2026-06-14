@@ -134,6 +134,7 @@
                 <button onclick="window.rpgEngine.loadMap('shop_interior')" class="rpg-teleport-btn">💰 道具屋</button>
                 <button onclick="window.rpgEngine.loadMap('library')" class="rpg-teleport-btn">📚 圖書館</button>
                 <button onclick="window.rpgEngine.loadMap('training')" class="rpg-teleport-btn">⚔️ 訓練營</button>
+                <button onclick="window.rpgEngine.loadMap('secret_lab')" class="rpg-teleport-btn">🧪 秘密研究所</button>
             </div>
         </div>
     </div>
@@ -270,6 +271,8 @@
                     style="font-size: 14px; padding: 10px 15px;">📚 圖書館 (Library)</button>
                 <button onclick="window.uiManager.teleportTo('training')" class="rpg-teleport-btn"
                     style="font-size: 14px; padding: 10px 15px;">⚔️ 冒險者訓練營 (Training)</button>
+                <button onclick="window.uiManager.teleportTo('secret_lab')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">🧪 秘密研究所 (Secret Lab)</button>
             </div>
         </div>
     </div>
@@ -1059,11 +1062,13 @@
     <!-- [新增] 欄位篩選下拉選單 (Column Filter) -->
     <div id="filter-dropdown" style="display:none;"></div>
 
-    <script src="rpg/code/rpg_maps.js?v=1781286453927"></script>
+    <script src="rpg/code/rpg_maps.js?v=1781460636000"></script>
     <script src="rpg/code/rpg_interactions.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_patch_practice.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_patch_shop.js?v=1781286453927"></script>
     <script src="rpg/code/rpg_patch_system.js?v=1781286453927"></script>
+    <script src="rpg/code/rpg_missions.js?v=1781460636000"></script>
+    <script src="rpg/code/rpg_mission_engine.js?v=1781460636000"></script>
     <script src="code/rpg/story_sleep.js?v=1781368561994"></script>
     <script src="code/rpg/rpg_engine.js?v=1781373500002"></script>
     <script src="code/utils.js?v=1781286453925"></script>

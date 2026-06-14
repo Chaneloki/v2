@@ -57,7 +57,7 @@ window.V2_CHAPTERS["20"] = {
 
     story: {
         "start": [
-            { n: "系統", t: "（老馬緩緩停靠在那座被浮雲環繞的尖塔之下。）", a: "system", bg: "CG/ch2 school.png"
+            { n: "系統", t: "（老馬緩緩停靠在那座被浮雲環繞的尖塔之下。）", a: "system", bg: "cg/ch2 school.png"
                 , bgm: "school.mp3", env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true, bgPos: "center", bgZoom: 1.2},
             { n: "系統", t: "（高塔的巨大陰影遮蔽了晨曦的溫度。）", a: "system", bgPos: "top", bgZoom: 1.5, bgDur:"10s"},
             { n: "賽爾", t: "少年，在我們正式踏入王城那座權力旋渦之前，你得先在這裡看清楚一件事。 ", a: "fairy" },
@@ -82,7 +82,7 @@ window.V2_CHAPTERS["20"] = {
             { n: "我", t: "（我就已經謝天謝地了。至於優雅……）", a: "me" },
             
             { n: "系統", t: "（在高處那道漢白玉雕花的欄杆旁，一名青年正孤傲地倚在那裡。）", a: "system"
-            , bg: "CG/ch2 start.png",bgPos: "right top", bgZoom: 2.0
+            , bg: "cg/ch2 start.png",bgPos: "right top", bgZoom: 2.0
             ,flash: true, flashSFX: "flash.mp3",env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true 
              },
             { n: "系統", t: "（他冷靜地俯視著下方的眾人。）", a: "system",bgPos: "right top", bgZoom: 1.5, bgDur:"5s" },
@@ -101,7 +101,7 @@ window.V2_CHAPTERS["20"] = {
             { n: "蘭吉教授", t: "既然你是帶著那本傳說中的神聖魔導書而來……", a: "lange" },
             { n: "蘭吉教授", t: "那麼今天的『新生名冊裝幀試煉』，就由夏特來擔任你的對手吧。 ", a: "lange" , se: "paper down.mp3", vol: 0.8 },
             { n: "夏特", t: "（他優雅地整理了一下那塵埃不染的衣袖。）", a: "chate"
-            , bg: "CG/ch2 start.png",env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true },
+            , bg: "cg/ch2 start.png",env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true },
             { n: "夏特", t: "（眼神中閃過一抹銳利的寒芒。）", a: "chate"
             ,flash: true, flashSFX: "flash.mp3",env:null,bg: "bg2.png" },
             { n: "夏特", t: "明白了。既然是學院正式的公開試煉，我會嚴格執行王室最為考究的稽核標準。 ", a: "chate", se: "boy_lowen.mp3", vol: 1.0  },
@@ -138,24 +138,24 @@ window.V2_CHAPTERS["20"] = {
             { n: "系統", t: "（蘭吉教授緩步走到兩人的作品前，整個人屏住呼吸，細細端詳了良久。）", a: "system", se: "walk.mp3", vol: 1.0 },
             { n: "蘭吉教授", t: "（最後，他帶著一絲震撼，用那雙微微顫抖的手讚許地拍了拍我的肩膀。）", a: "lange", se: "put down.mp3", vol: 1.0 , shake: true },
             { n: "蘭吉教授", t: "結構極其嚴謹，配色更是展現出一種罕見的克制。 ", 
-            a: "lange",bg: "CG/ch2 lange.png",bgPos: "right top", bgZoom: 1.5 },
+            a: "lange",bg: "cg/ch2 lange.png",bgPos: "right top", bgZoom: 1.5 },
             { n: "蘭吉教授", t: "這上面完全沒有任何多餘的視覺冗餘，簡直……大巧若拙。 ", a: "lange",bgPos: "center", bgZoom: 1.2, bgDur:"5s" },
             { n: "蘭吉教授", t: "年輕人，你成功地將在倉庫中磨練出來的生命力，注入了枯燥的美學之中。 ", a: "lange" },
             { n: "蘭吉教授", t: "這場關於『秩序』的對決，是你贏了。 ", a: "lange",se:"woman_smile.mp3", vol:1.0},
             { n: "蘭吉教授", t: "這是我親筆簽署的王廷推薦函，是你應得的獎賞。 ", a: "lange",se:"paper down.mp3", vol:1.0, bg: "bg2.png" },
             
-            { n: "系統", t: "（夏特看著那份名冊，眼底的高傲微微收斂了一些。）", a: "system", bgm: "sweet.mp3",bg:"CG/ch2 start.png",bgPos: "right top", bgZoom: 2.0  , se: "paper down.mp3", vol: 0.8 },
+            { n: "系統", t: "（夏特看著那份名冊，眼底的高傲微微收斂了一些。）", a: "system", bgm: "sweet.mp3",bg:"cg/ch2 start.png",bgPos: "right top", bgZoom: 2.0  , se: "paper down.mp3", vol: 0.8 },
             { n: "夏特", t: "……是我輸了。", a: "chate", flash:true, flashSFX:"flash.mp3",vol:1.0 },
             { n: "夏特", t: "（他低聲喃喃自語）徹底打破陳規的切分邏輯……不帶任何諂媚的色彩的流向……", a: "chate",bgPos: "right top", bgZoom: 1.5, bgDur:"5s"},
             { n: "夏特", t: "（我曾經也……）", a: "chate" },
             { n: "系統", t: "（他抬起頭，重新打量著眼前這個不修邊幅的冒險者。）", a: "system"
-            ,bg:"CG/ch2 main.png",bgPos: "right top", bgZoom: 1.5 },
-            { n: "夏特", t: "我原以為在學院這種等級森嚴的地方，沒有人會接受這種實用至上的排版。", a: "chate",bg:"CG/ch2 start.png" },
+            ,bg:"cg/ch2 main.png",bgPos: "right top", bgZoom: 1.5 },
+            { n: "夏特", t: "我原以為在學院這種等級森嚴的地方，沒有人會接受這種實用至上的排版。", a: "chate",bg:"cg/ch2 start.png" },
             { n: "夏特", t: "一個從未受過正統美學訓練的人，竟然能如此理所當然地把它實踐出來。", a: "chate" },
             { n: "夏特", t: "看來，不被規則定義的自由……確實是存在的。", a: "chate" },
             
             { n: "我", t: "（我完全沒有察覺到夏特此刻翻江倒海的內心，只是隨意地把推薦函塞進背包。）", a: "me"
-            ,bg:"CG/ch2 main.png",se:"clothes1.mp3", vol:1.0, flash:true, flashSFX:"flash.mp3",vol:1.0},
+            ,bg:"cg/ch2 main.png",se:"clothes1.mp3", vol:1.0, flash:true, flashSFX:"flash.mp3",vol:1.0},
             { n: "我", t: "（我伸了個懶腰，隨意地揉了揉早已空空如也的肚子）終於收工了！", a: "me"
             , se: "girl_yes.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.2, bgDur:"5s"  },
             { n: "我", t: "拿到了這封保命的推薦信，我的這份『義務勞動』總算是能暫時畫上句號了吧？", a: "me" },
@@ -169,12 +169,12 @@ window.V2_CHAPTERS["20"] = {
             { n: "系統", t: "（就在我即將踏出試煉廳大門的那一刻，身後傳來了一陣急促的腳步聲。）", a: "system"
             , se: "run.mp3", bgm: "no.mp3",bgPos: "center", bgZoom: 1.2},
             { n: "夏特", t: "（他突然大步追了上來，對著我深深地鞠了一躬。）", a: "chate"
-            ,bg: "CG/Ch2.png",bgPos: "bottom", bgZoom: 2.0, flash:true, flashSFX:"flash.mp3",vol:1.0},
+            ,bg: "cg/ch2.png",bgPos: "bottom", bgZoom: 2.0, flash:true, flashSFX:"flash.mp3",vol:1.0},
             { n: "夏特", t: "萬分感謝。這場試煉，確實是我徹底敗北了。 ", a: "chate", bgm: "sweet.mp3",bgPos: "top", bgZoom: 1.5, bgDur:"8s"  },
             { n: "夏特", t: "希望在不久的將來，我也能拿出一本真正具備靈魂、不被束縛的作品……", a: "chate" },
             { n: "夏特", t: "再次請閣下，親自過目。 ", a: "chate" },
             
-            { n: "我", t: "（我有些驚訝地回過頭，有些侷促地抓著後腦勺。）", a: "me",bg:"CG/ch2 main.png", flash:true, flashSFX:"flash.mp3",vol:1.0 },
+            { n: "我", t: "（我有些驚訝地回過頭，有些侷促地抓著後腦勺。）", a: "me",bg:"cg/ch2 main.png", flash:true, flashSFX:"flash.mp3",vol:1.0 },
             { n: "我", t: "（露出豪爽的笑容。）", a: "me" , se: "girl_laugh.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.2, bgDur:"5s" },
             { n: "我", t: "謝我做什麼？你剛才那些表格做得其實也超級厲害啊！", a: "me" },
             { n: "我", t: "每個格子都對得嚴絲合縫，簡直比強迫症還要完美。 ", a: "me",shake:true },
@@ -188,7 +188,7 @@ window.V2_CHAPTERS["20"] = {
             { n: "夏特", t: "（他在風中輕聲呢喃）我們一定，會在王城再見的。 ", a: "chate" },
             
             { n: "系統", t: "（賽爾咻地一聲竄回了我的肩頭，用一種調侃的眼神看著我。）", a: "system"
-            , flash:true, flashSFX:"fun1.mp3",vol:1.0, bg: "CG/ch2 last.png",bgPos: "right", bgZoom: 2.0 },
+            , flash:true, flashSFX:"fun1.mp3",vol:1.0, bg: "cg/ch2 last.png",bgPos: "right", bgZoom: 2.0 },
             { n: "賽爾", t: "好了啦！別在這裡跟那位憂鬱的天才依依不捨了，簡直看得我肉麻。 ", a: "fairy" },
             { n: "賽爾", t: "全速出發吧少年！目標是——王城！！", a: "fairy",shake:true },
             { n: "我", t: "（一開始，真的只是想混口飯吃，活著就好。）", a: "me",bgPos: "center", bgZoom: 1.5, bgDur:"4s", bgm: "sweet2.mp3"  },                             

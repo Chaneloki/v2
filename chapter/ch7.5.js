@@ -98,7 +98,7 @@ window.V2_CHAPTERS["75"] = {
             { n: "系統", t: "（廊道的盡頭響起腳步聲。那聲音並不急促，一輕一沉，節奏分明地在地磚上交疊。）", a: "system",
               se: "walk.mp3", vol: 0.6, bgPos: "left", bgZoom: 1.5, bgDur: "5s" },
             { n: "系統", t: "（柔依的身影率先出現在光影裡。）", a: "system",
-              bg: "CG/ch7.5 royi arrive.png", bgPos: "center", bgZoom: 1.1, bgDur: "5s",
+              bg: "cg/ch7.5 royi arrive.png", bgPos: "center", bgZoom: 1.1, bgDur: "5s",
               flash: true, flashSFX: "trans.mp3", vol: 0.8 },
             { n: "我", t: "（她神情如常，走到庭院邊緣，隨即安靜地停下）", a: "me" },
             { n: "我", t: "（側身退到廊柱後，目光卻頻頻投向來時的走廊。）", a: "me" },

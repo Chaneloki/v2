@@ -101,7 +101,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "系統", t: "（米羅端著兩碗正冒著熱氣的稀粥走進了視野，看著我失態的模樣，不由得愣住了。）", a: "miro", se: "walk.mp3", vol: 1.0  },
             { n: "米羅", t: "隊長，你這麼大聲是在呼喚誰呢？", a: "miro", bgm: "conspiracy.mp3" , se: "bell.mp3", vol: 1.0   },
             { n: "我", t: "賽爾……就是那隻平時一直繞著書飛的精靈。", a: "me",
-            bg:"CG/ch3.5 two.png" ,bgPos: "left", bgZoom: 1.5, bgDur:"5s"},
+            bg:"cg/ch3.5 two.png" ,bgPos: "left", bgZoom: 1.5, bgDur:"5s"},
             { n: "我", t: "昨晚睡前她明明還在的，現在竟然消失得無影無蹤了。", a: "me" },
             { n: "系統", t: "（米羅輕輕地將粥碗擱下，神色前所未有地認真，往四周的陰影中打量了一圈。）", a: "miro", se: "put down.mp3", vol: 1.0
             ,bgPos: "right"},
@@ -148,7 +148,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "米羅", t: "冷靜點。先喝口水，慢慢把情況說清楚。 ", a: "miro" },
 
             { n: "信使", t: "霧谷村被突如其來的大霧封鎖了整整三週……", a: "npc1" 
-            ,bg:"CG/ch3.5 smoke.png",bgPos: "top", bgZoom: 2.0
+            ,bg:"cg/ch3.5 smoke.png",bgPos: "top", bgZoom: 2.0
             , env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.8, envDrift:true},
             { n: "信使", t: "昨日好不容易被某種力量撕開了一道缺口", a: "npc1"
             ,bgPos: "right top", bgZoom: 2.0, bgDur:"2s",flash: true, flashSFX: "flash.mp3", vol: 1.0},
@@ -162,7 +162,7 @@ window.V2_CHAPTERS["35"] = {
             ,bgPos: "right bottom", bgZoom: 2.0, shake:true},
 
             { n: "我", t: "（我沈默地接過那本充滿苦難的名冊", a: "me", se: "put down.mp3", vol: 1.0,env:null
-            ,bg:"CG/ch3.5 read.png",bgPos: "left", bgZoom: 1.5, bgDur:"5s"},
+            ,bg:"cg/ch3.5 read.png",bgPos: "left", bgZoom: 1.5, bgDur:"5s"},
             { n: "我", t: "(翻開的第一眼，那種繁複的混亂便躍入眼簾。）", a: "me",se:"book.mp3" },
             { n: "系統", t: "（米羅也湊到了書案前，看著那些凌亂的筆觸，用力地攥緊了拳頭。）", a: "miro"
             ,bgPos: "right top", bgZoom: 1.5, bgDur:"2s"},
@@ -225,7 +225,7 @@ window.V2_CHAPTERS["35"] = {
             , se: "boy_breath.mp3", vol: 1.0,env:null },
             { n: "我", t: "嗯。我們做到了。 ", a: "me", bg: "bg1.5.png", se: "girl_en1.mp3", vol: 1.0
             ,bgPos: "center", bgZoom: 1.1},
-            { n: "米羅", t: "雖然這一次，精靈姐姐不在身邊時刻『咆哮』……", a: "miro", bg: "CG/ch3.5 letter.png"
+            { n: "米羅", t: "雖然這一次，精靈姐姐不在身邊時刻『咆哮』……", a: "miro", bg: "cg/ch3.5 letter.png"
             ,bgPos: "right", bgZoom: 1.5, bgDur:"3s"},
             { n: "米羅", t: "但隊長你，終究還是憑藉著自己的意志，將那些深奧的禁術全部具現化了呢。 ", a: "miro"},
             { n: "我", t: "（我沈默地將魔導書收回背包深處）", a: "me", se: "paper down.mp3", vol: 1.0
@@ -259,26 +259,26 @@ window.V2_CHAPTERS["35"] = {
             { n: "賽爾", t: "（她那雙敏銳的長耳朵竟然捕捉到了這句低語） ", a: "fairy", bg: "bg1.5.png" },
             { n: "賽爾", t: "誰、誰累了！本仙子現在的魔力……可是充沛得很呢！", a: "fairy", bg: "bg1.5.png",bgPos: "right bottom", bgZoom: 2.0},
 
-            { n: "系統", t: "（我看著她那副逞強的模樣，沒有說出任何揭穿她的大道理，只是沈默地平伸出了我的手掌。）", a: "me", bg: "CG/ch3.5.png"
+            { n: "系統", t: "（我看著她那副逞強的模樣，沒有說出任何揭穿她的大道理，只是沈默地平伸出了我的手掌。）", a: "me", bg: "cg/ch3.5.png"
             , se: "bell.mp3", vol: 1.0,bgPos: "top", bgZoom: 1.5, bgDur:"10s"},
-            { n: "系統", t: "（賽爾在半空中顯然猶豫了片刻，最終她還是緩緩地、安靜地落在了我的掌中心）", a: "me", bg: "CG/ch3.5.png", se: "paper down.mp3", vol: 1.0   },
-            { n: "系統", t: "（那一瞬間的感觸，讓我知道她此刻的重量，竟然比平時感覺要輕了許多、許多。）", a: "me", bg: "CG/ch3.5.png" , flash: true, flashSFX: "flash.mp3" },
-            { n: "我", t: "辛苦妳了，賽爾。這一次，真的謝謝妳。 ", a: "me", bg: "CG/ch3.5.png" },
-            { n: "系統", t: "（她徹底沈默了下來。那對凌亂的翅膀在我的掌心中，發出了近乎透明的顫抖。）", a: "fairy", bg: "CG/ch3.5.png" , shake: true },
-            { n: "系統", t: "（她似乎想出言反駁，但最終，卻只是沈默地低下了頭。）", a: "fairy", bg: "CG/ch3.5.png" },
-            { n: "賽爾", t: "話說回來……那本麻煩到極點的名冊，最後到底……有沒有做完？", a: "fairy", bg: "CG/ch3.5.png",flash:true , se: "paper down.mp3", vol: 0.8 },
-            { n: "我", t: "放心吧。一處瑕疵都沒有。 ", a: "me", bg: "CG/ch3.5.png",bgPos: "center", bgZoom: 1.1},
+            { n: "系統", t: "（賽爾在半空中顯然猶豫了片刻，最終她還是緩緩地、安靜地落在了我的掌中心）", a: "me", bg: "cg/ch3.5.png", se: "paper down.mp3", vol: 1.0   },
+            { n: "系統", t: "（那一瞬間的感觸，讓我知道她此刻的重量，竟然比平時感覺要輕了許多、許多。）", a: "me", bg: "cg/ch3.5.png" , flash: true, flashSFX: "flash.mp3" },
+            { n: "我", t: "辛苦妳了，賽爾。這一次，真的謝謝妳。 ", a: "me", bg: "cg/ch3.5.png" },
+            { n: "系統", t: "（她徹底沈默了下來。那對凌亂的翅膀在我的掌心中，發出了近乎透明的顫抖。）", a: "fairy", bg: "cg/ch3.5.png" , shake: true },
+            { n: "系統", t: "（她似乎想出言反駁，但最終，卻只是沈默地低下了頭。）", a: "fairy", bg: "cg/ch3.5.png" },
+            { n: "賽爾", t: "話說回來……那本麻煩到極點的名冊，最後到底……有沒有做完？", a: "fairy", bg: "cg/ch3.5.png",flash:true , se: "paper down.mp3", vol: 0.8 },
+            { n: "我", t: "放心吧。一處瑕疵都沒有。 ", a: "me", bg: "cg/ch3.5.png",bgPos: "center", bgZoom: 1.1},
 
-            { n: "系統", t: "（賽爾滿意地微微頷首，語氣中終於透出了一絲極其難得的、由衷的驕傲。）", a: "fairy", bg: "CG/ch3.5.png",bgPos: "left", bgZoom: 1.5, bgDur:"10s" },
-            { n: "賽爾", t: "哼。那是自然。畢竟你可是我親手教導出來的唯一學生啊。 ", a: "fairy", bg: "CG/ch3.5.png", se: "fairy_infosmile.mp3", vol: 1.0   },
-            { n: "系統", t: "（她停頓了良久，隨即像是害羞一般，輕輕踢了踢我的指關節。）", a: "fairy", bg: "CG/ch3.5.png",shake:true  },
-            { n: "賽爾", t: "好了啦！別老是這樣托著本仙子，感覺……怪肉麻的。 ", a: "fairy", bg: "CG/ch3.5.png" },
-            { n: "我", t: "可是妳剛才降落的時候，腳踝明明就飄了一下吧？", a: "me", bg: "CG/ch3.5.png",flash:true },
-            { n: "賽爾", t: "那是……那是因為你們這驛站的地板根本沒鋪平！才不是本仙子的問題！", a: "fairy", bg: "CG/ch3.5.png", se: "fairy.mp3", vol: 1.0   },
-            { n: "系統", t: "（米羅一臉認真地蹲了下去，仔細審視著地面。）", a: "miro", bg: "CG/ch3.5.png" },
-            { n: "米羅", t: "奇怪了……這地板明明看起來就很平整啊？", a: "miro", bg: "CG/ch3.5.png" },
-            { n: "賽爾", t: "（她發出了一聲憤怒的驚叫）你這個討厭的新面孔！趕快給我閉上你的嘴巴啦！", a: "fairy", bg: "CG/ch3.5.png",shake:true },
-            { n: "系統", t: "（院落深處的晨霧終於在此刻徹底散去了。金色的陽光在大地之上無私地灑落了下來）", a: "system", bg: "CG/ch3.5.png"
+            { n: "系統", t: "（賽爾滿意地微微頷首，語氣中終於透出了一絲極其難得的、由衷的驕傲。）", a: "fairy", bg: "cg/ch3.5.png",bgPos: "left", bgZoom: 1.5, bgDur:"10s" },
+            { n: "賽爾", t: "哼。那是自然。畢竟你可是我親手教導出來的唯一學生啊。 ", a: "fairy", bg: "cg/ch3.5.png", se: "fairy_infosmile.mp3", vol: 1.0   },
+            { n: "系統", t: "（她停頓了良久，隨即像是害羞一般，輕輕踢了踢我的指關節。）", a: "fairy", bg: "cg/ch3.5.png",shake:true  },
+            { n: "賽爾", t: "好了啦！別老是這樣托著本仙子，感覺……怪肉麻的。 ", a: "fairy", bg: "cg/ch3.5.png" },
+            { n: "我", t: "可是妳剛才降落的時候，腳踝明明就飄了一下吧？", a: "me", bg: "cg/ch3.5.png",flash:true },
+            { n: "賽爾", t: "那是……那是因為你們這驛站的地板根本沒鋪平！才不是本仙子的問題！", a: "fairy", bg: "cg/ch3.5.png", se: "fairy.mp3", vol: 1.0   },
+            { n: "系統", t: "（米羅一臉認真地蹲了下去，仔細審視著地面。）", a: "miro", bg: "cg/ch3.5.png" },
+            { n: "米羅", t: "奇怪了……這地板明明看起來就很平整啊？", a: "miro", bg: "cg/ch3.5.png" },
+            { n: "賽爾", t: "（她發出了一聲憤怒的驚叫）你這個討厭的新面孔！趕快給我閉上你的嘴巴啦！", a: "fairy", bg: "cg/ch3.5.png",shake:true },
+            { n: "系統", t: "（院落深處的晨霧終於在此刻徹底散去了。金色的陽光在大地之上無私地灑落了下來）", a: "system", bg: "cg/ch3.5.png"
             , env: "light/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true},
 
             { n: "系統", t: "（賽爾疲憊地靠在我的肩膀上，聲音比剛才明顯衰弱了許多。）", a: "fairy", bg: "road dust.png" },

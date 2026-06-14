@@ -87,7 +87,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "夏特", t: "只有盲目樂觀的人才會覺得實話難聽。", a: "chate" },
 
             { n: "系統", t: "（轉過一個平緩的山坳，風裡忽然捎來一陣若有似無的歌聲。）", a: "system", bgm: "sunset.mp3"
-            ,bg:"CG/ch5 sing.png",bgPos: "left top", bgZoom: 2.5, bgDur:"10s"},
+            ,bg:"cg/ch5 sing.png",bgPos: "left top", bgZoom: 2.5, bgDur:"10s"},
             { n: "系統", t: "（清脆、稚嫩，是個孩子在哼唱。）", a: "system" },
             { n: "系統", t: "「日頭落了炊煙起，阿娘喚我回家去。」", a: "system" },
             { n: "系統", t: "（就在這句歌詞飄進耳朵的瞬間，米羅的腳步，猛地釘在了原處。）", a: "system",bgPos: "right", bgZoom: 2.5, se: "walk.mp3", vol: 1.0 , flash: true, flashSFX: "flash.mp3" },
@@ -133,7 +133,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "村正", t: "幾位客人是從遠方過路的？", a: "npc2" },
             { n: "我", t: "是。我們看見村子在分配物資，氣氛不錯，就過來打個招呼。", a: "me", se: "girl_en1.mp3", vol: 1.0},
             { n: "村正", t: "（重重地嘆了口氣）唉，分是想分，可現在手頭上的帳全亂套了。", a: "npc2" 
-            , se: "girl_ow.mp3", vol: 1.0,shake:true,bg:"CG/ch5 comic.png"},
+            , se: "girl_ow.mp3", vol: 1.0,shake:true,bg:"cg/ch5 comic.png"},
             { n: "村正", t: "各家送來的東西，由三個不同的登記人各自記帳。"
             , a: "npc2",bgPos: "left top", bgZoom: 2.0},
             { n: "村正", t: "糧食、藥材、布匹還有柴火，全一股腦混在一張單子上。", a: "npc2"
@@ -263,13 +263,13 @@ window.V2_CHAPTERS["50"] = {
             { n: "米羅", t: "（把心一橫，拋出一個只有在那座村子生活過的人才懂的細節）", a: "miro",shake:true},
 
             { n: "米羅", t: "我們那兒，曬穀場的井邊有一棵巨大的老柳樹。", a: "miro"
-            ,bg: "CG/ch5 memory.png", bgPos: "left top", bgZoom: 2.0,isMemory:true},
+            ,bg: "cg/ch5 memory.png", bgPos: "left top", bgZoom: 2.0,isMemory:true},
             { n: "米羅", t: "每到趕集日，小孩子都喜歡爬到樹頂去看熱鬧，你見過嗎？", a: "miro"
             , bgPos: "right top", bgZoom: 2.0 , bgDur:"2s",isMemory:true},
             { n: "夏特", t: "（心頭像是被什麼東西撞了一下。井、趕集日、爬樹……）", a: "chate", se: "heartbeat.mp3", vol: 1.0
             ,bg: "bg5.png",shake:true},
             { n: "夏特", t: "（這些畫面，在他的腦海中竟然是如此清晰。）", a: "chate"
-            ,bg: "CG/ch5 memory.png", bgPos: "left top", bgZoom: 2.0 , bgDur:"10s",isMemory:true,flash: true, flashSFX: "flash.mp3", vol: 1.0},
+            ,bg: "cg/ch5 memory.png", bgPos: "left top", bgZoom: 2.0 , bgDur:"10s",isMemory:true,flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "夏特", t: "（可他家住在村落後的半山腰，平日裡很少往曬穀場跑)", a: "chate"
             , bgPos: "right bottom", bgZoom: 2.0, isMemory:true},
             { n: "夏特", t: "（那棵樹究竟是不是柳樹，他現在竟然有些想不真切了）", a: "chate" 
@@ -300,7 +300,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "系統", t: "（曬穀場上的歌聲依舊。微風吹過，彷彿將時間吹回了那個已經回不去的小時候。）", a: "system", se: "bell.mp3", vol: 1.0  },
 
             // ── 上帝視角：童年的擦身 ─────────────────────
-            { n: "系統", t: "許多年以前。螢火村。熱鬧的趕集日。", a: "system", bg: "CG/ch5 childhood.png"
+            { n: "系統", t: "許多年以前。螢火村。熱鬧的趕集日。", a: "system", bg: "cg/ch5 childhood.png"
             , bgPos: "right", bgZoom: 1.5, bgm: "sunset.mp3" , isMemory: true },
             { n: "系統", t: "井邊那棵高大的老柳樹下，一個滿身是泥的小孩仰著頭望向樹梢，嘴裡含含糊糊地哼著旋律。", a: "system"},
             { n: "泥巴小孩", t: "日頭落了炊煙起…………欸。後面那句是怎麼唱來著？"},
@@ -334,7 +334,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "村正", t: "（笑了笑）那姑娘在附近頗有名氣，挺多人替她說話的，只是……這種事說不清楚。", a: "npc2" },
             { n: "米羅", t: "（隨口問道）管事的姑娘？是什麼樣的人？", a: "miro"},
             { n: "村正", t: "金色短髮，說話快，雷厲風行那種。", a: "npc2"
-            ,bg:"CG/ch2.5 coin.png",isMemory:true,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.5},
+            ,bg:"cg/ch2.5 coin.png",isMemory:true,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.5},
             { n: "系統", t: "（我和賽爾對看了一眼。）", a: "system" , se: "clothes1.mp3", vol: 1.0,bg:"bg5.png", bgPos: "center", bgZoom: 1.1},
             { n: "賽爾", t: "（懶洋洋地伸了個懶腰）……金穗鎮順路嘛。", a: "fairy", se: "fairy_sleep.mp3", vol: 1.0},
 
@@ -345,7 +345,7 @@ window.V2_CHAPTERS["50"] = {
 
             { n: "系統", t: "（四個人漸漸離開了村子。）", a: "system", bg: "road dust.png", bgm: "sweet2.mp3"
             , bgPos: "center", bgZoom: 1.5,bgDur:"10s"},
-            { n: "系統", t: "（在他們身後，那首古老的歌謠依然在曬穀場上空輕輕地盤旋著。）", a: "system",bg:"CG/ch5 childhood.png",bgBlur:10},
+            { n: "系統", t: "（在他們身後，那首古老的歌謠依然在曬穀場上空輕輕地盤旋著。）", a: "system",bg:"cg/ch5 childhood.png",bgBlur:10},
             { n: "系統", t: "（他們誰都沒有回頭去看。）", a: "system",bgBlur:5},
             { n: "系統", t: "（但走出很遠之後，那兩個人的腳步，竟然不約而同地慢了半拍……）", a: "system",bgBlur:0, se: "walk.mp3", vol: 1.0 , shake: true }
         ],

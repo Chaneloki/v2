@@ -44,7 +44,7 @@ window.V2_CHAPTERS["65"] = {
               env: "light/1", envFrames: 25, envspeed: 80, envOpacity: 0.4, envDrift: true },
  
             { n: "我", t: "（靠在船舷上，胳膊壓著魔導書，有一搭沒一搭地看江岸。）", a: "me" 
-            , se: "sea.mp3", vol: 1.0,bg:"CG/ch6.5 main.png",flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1},
+            , se: "sea.mp3", vol: 1.0,bg:"cg/ch6.5 main.png",flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1},
             { n: "我", t: "（昨晚跟葛蕾聊到太晚，腦袋裡灌了漿糊似的。）", a: "me", se: "sea.mp3", vol: 1.0, bgPos: "bottom", bgZoom: 1.5,bgDur:"5s" },
             { n: "我", t: "（我瞇起眼，任由江風在臉頰上刮過。）", a: "me", bgPos: "bottom", bgZoom: 1.5, se: "bell.mp3", vol: 1.0},
             { n: "米羅", t: "（盤腿坐在甲板角落啃乾餅，餅屑掉了一襟）……還要多久才能到啊。", a: "miro", se: "boy_breath.mp3",bg: "bg6_boat.png",shake:true },
@@ -62,11 +62,11 @@ window.V2_CHAPTERS["65"] = {
              { n: "系統", t: "（船艙前段，幾口木箱旁邊，有兩個人。）", a: "system"
               ,bgm:"showup.mp3",bg: "bg6_boat.png", bgPos: "right", bgZoom: 2.0, se: "put down.mp3", vol: 1.0},
             { n: "我", t: "（我先看到一截淡青色。)", a: "me"
-            ,bgBlur:10, bgPos: "right", bgZoom: 2.5,bgDur:"2s",bg: "CG/ch6.5 royi.png", se: "trans.mp3", vol: 1.0},
+            ,bgBlur:10, bgPos: "right", bgZoom: 2.5,bgDur:"2s",bg: "cg/ch6.5 royi.png", se: "trans.mp3", vol: 1.0},
             { n: "我", t: "（風吹起來的時候才看清，是髮尾。)", a: "me"
-            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "right", bgZoom: 2.0,bg: "CG/ch6.5 royi.png"},
+            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "right", bgZoom: 2.0,bg: "cg/ch6.5 royi.png"},
             { n: "我", t: "(她蹲在箱子邊上，指尖在貨單上跑得很快，甲縫裡卡著墨漬。）柔依？", a: "me"
-            , bgPos: "center", bgZoom: 1.1,bg:"10s",bg: "CG/ch6.5 royi.png"},
+            , bgPos: "center", bgZoom: 1.1,bg:"10s",bg: "cg/ch6.5 royi.png"},
 
             { n: "米羅", t: "誰？", a: "miro",bg: "bg6_boat.png" },
             { n: "我", t: "馬尾那個。之前的義診所管理員。", a: "me" },
@@ -91,7 +91,7 @@ window.V2_CHAPTERS["65"] = {
             { n: "柔依", t: "診所的藥一直是我在跑採購的。北境的青蓮根今年產季提早了，得親自去看一趟行情。", a: "royi",bg: "bg6_boat.png", bgPos: "center", bgZoom: 1.5 },
  
             { n: "晏", t: "（少年直起身，隨手將皮水袋拋向米羅。)"
-            , a: "prince", se: "walk.mp3", vol: 0.7,bg:"CG/ch6.5 prince.png"
+            , a: "prince", se: "walk.mp3", vol: 0.7,bg:"cg/ch6.5 prince.png"
             ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "left bottom", bgZoom: 2.0,bgm:"prince.mp3"},
             { n: "晏", t: "(浪剛好打在船身，甲板猛地一晃，他站起來的時候腰間的帶子晃了一下)"
             , a: "prince", se: "sea.mp3", vol: 0.7, se: "bell.mp3", vol: 1.0,shake:true, bgPos: "bottom", bgZoom: 2.0},
@@ -113,7 +113,7 @@ window.V2_CHAPTERS["65"] = {
             , bgPos: "bottom", bgZoom: 1.1,flash: true, flashSFX: "trans.mp3", vol: 1.0},
             { n: "夏特", t: "你的指節沒有搬運過箱木的繭，氣質也不像是長期在貨艙走動的人。", a: "chate" },
             { n: "晏", t: "（晏笑了笑，大方地把雙手攤開在我們面前。)"
-            , a: "prince",bg:"CG/ch6.5 hand.png",flash: true, flashSFX: "trans.mp3", vol: 1.0, bgPos: "right", bgZoom: 2.0},
+            , a: "prince",bg:"cg/ch6.5 hand.png",flash: true, flashSFX: "trans.mp3", vol: 1.0, bgPos: "right", bgZoom: 2.0},
             { n: "晏", t: "（那雙手乾淨得過分，指尖輪廓流暢，沒有一點長期搬運貨物留下的粗糙痕跡。)", a: "prince", bgPos: "center", bgZoom: 2.0,bgDur:"10s"},
             { n: "晏", t: "（他在我面前晃了晃手心，動作舒展得像是在舞臺上謝幕，透著一股這地方少見的從容。）", a: "prince",shake:true},
             { n: "晏", t: "被揭穿了。", a: "prince", bgPos: "center", bgZoom: 1.1},
@@ -121,17 +121,17 @@ window.V2_CHAPTERS["65"] = {
             { n: "晏", t: "不過這幾天看她細心打理這些貨物，確實挺辛苦。", a: "prince" },
  
             { n: "米羅", t: "（小聲對我說）這人說話好風趣，而且感覺挺好相處的。", a: "miro",bg: "bg6_boat.png" },
-            { n: "我", t: "（我看著晏。他笑起來的時候眼睛會瞇成一條線，嘴角先動，聲音後到。)", a: "me",bg:"CG/ch6.5 prince.png", bgPos: "right", bgZoom: 1.1 , bgDur:"10s", se: "girl_laugh.mp3", vol: 1.0 },
+            { n: "我", t: "（我看著晏。他笑起來的時候眼睛會瞇成一條線，嘴角先動，聲音後到。)", a: "me",bg:"cg/ch6.5 prince.png", bgPos: "right", bgZoom: 1.1 , bgDur:"10s", se: "girl_laugh.mp3", vol: 1.0 },
             { n: "我", t: "(我不知道自己什麼時候也跟著笑了。）", a: "me" , se: "fairy_smile.mp3", vol: 1.0,shake:true},
  
             { n: "系統", t: "（柔依再次蹲下。風吹動了她的髮絲。）", a: "system", bgm: "conspiracy.mp3"
-            ,bg: "CG/ch6.5 royi.png", se: "wind1.mp3", vol: 1.0, bgPos: "left", bgZoom: 1.5 , bgDur:"10s"},
+            ,bg: "cg/ch6.5 royi.png", se: "wind1.mp3", vol: 1.0, bgPos: "left", bgZoom: 1.5 , bgDur:"10s"},
             { n: "系統", t: "（她手指在貨單邊緣不安地扣弄著，眉頭擰成了一個結。）", a: "system"},
             { n: "柔依", t: "（她發出一聲很輕的嘆息。）", a: "royi", se: "boy_breath.mp3", vol: 1.0},
             { n: "柔依", t: "（那聲音混雜在藥草的苦味和水聲裡，連帶著周圍的空氣都沉重了幾分。）", a: "royi"},
             { n: "柔依", t: "帳目太多了。五個產地，四十幾筆記錄。手算慢得讓人發瘋。", a: "royi", bgPos: "left", bgZoom: 1.1},
             { n: "晏", t: "（晏轉向柔依，眼裡的笑意褪去了不少，只剩下細碎的擔憂）", a: "prince"
-            ,se: "put down.mp3", vol: 1.0,bg:"CG/ch6.5 worry.png", bgPos: "top", bgZoom: 2.0 , bgDur:"10s"},
+            ,se: "put down.mp3", vol: 1.0,bg:"cg/ch6.5 worry.png", bgPos: "top", bgZoom: 2.0 , bgDur:"10s"},
             { n: "晏", t: "柔依昨晚對帳到蠟燭熄滅。", a: "prince"},
             { n: "晏", t: "今年物價波動大，要是均價算不準，這趟北境之行恐怕要虧在運費上了。", a: "prince" },
             { n: "晏", t: "（目光落在魔導書上，停留了極短的一瞬）", a: "prince",flash: true, flashSFX: "flash.mp3", vol: 1.0 },
@@ -206,24 +206,24 @@ window.V2_CHAPTERS["65"] = {
             { n: "米羅", t: "你不懂！", a: "miro",shake:true},
  
             { n: "系統", t: "（晏站在眾人中心。橘色的餘暉落在他半邊臉上。）", a: "system"
-            , bgPos: "left", bgZoom: 1.5,bgm:"prince2.mp3",bg:"CG/ch6.5 bye.png"},
+            , bgPos: "left", bgZoom: 1.5,bgm:"prince2.mp3",bg:"cg/ch6.5 bye.png"},
             { n: "晏", t: "遇見妳們令這趟水路很精彩。這本書的用法尤其有趣。", a: "prince", bgPos: "center", bgZoom: 1.1,bgDur:"10s" },
             { n: "我", t: "有機會再教妳操作。說到做到。", a: "me",bg:"bg6.5 dock.png",flash: true, flashSFX: "bell.mp3", vol: 1.0},
-            { n: "晏", t: "（他爽朗地大笑起來，手指在腦袋旁晃了晃。）", a: "prince",bg:"CG/ch6.5 bye.png"},
+            { n: "晏", t: "（他爽朗地大笑起來，手指在腦袋旁晃了晃。）", a: "prince",bg:"cg/ch6.5 bye.png"},
             { n: "晏", t: "真的？那我可得好好等著了。朋友們，後會有期。"
-            , a: "prince",shake:true,bg:"CG/ch6.5 bye.png", bgPos: "center", bgZoom: 1.5,bgDur:"10s" },
+            , a: "prince",shake:true,bg:"cg/ch6.5 bye.png", bgPos: "center", bgZoom: 1.5,bgDur:"10s" },
             { n: "米羅", t: "記得找我們吃飯啊！晏兄！", a: "miro",bg:"bg6.5 dock.png" },
-            { n: "晏", t: "好。主城挺大的，說不定又碰到呢。", a: "prince",bg:"CG/ch6.5 bye.png"},
+            { n: "晏", t: "好。主城挺大的，說不定又碰到呢。", a: "prince",bg:"cg/ch6.5 bye.png"},
             { n: "葛蕾", t: "（頭也不抬，目光依舊鎖在那些密密麻麻的規劃冊上，隨口就拋出句）", a: "glea",bg:"bg6.5 dock.png"  },
             { n: "葛蕾", t: "主城東門進去比較近。你要是不認路，問守衛就行。", a: "glea" },
             { n: "夏特", t: "（合上書，看了晏一眼）路上小心。", a: "chate"},
-            { n: "晏", t: "（笑了笑）嗯。你們也是。", a: "prince" ,bg:"CG/ch6.5 bye.png" },
+            { n: "晏", t: "（笑了笑）嗯。你們也是。", a: "prince" ,bg:"cg/ch6.5 bye.png" },
             { n: "系統", t: "（他轉身走進了那片熱鬧的煙火氣裡，身影沒多久就和那些趕路的人群重疊在一起。)"
-            ,bg:"CG/ch6.5 prince back.png",flash: true, flashSFX: "trans.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.1 , bgDur:"5s" ,a: "system"},
+            ,bg:"cg/ch6.5 prince back.png",flash: true, flashSFX: "trans.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.1 , bgDur:"5s" ,a: "system"},
             { n: "系統", t: "（那個背影走得這樣從容，下一次見面時，一定會很有意思。）", a: "system" },
  
             { n: "系統", t: "（碼頭的味道，魚腥、濕繩、烤餅煙撲面而來。）", a: "system",
-              bg: "CG/ch6.5 all.png", bgm: "finish.mp3", bgPos: "right", bgZoom: 4.0},
+              bg: "cg/ch6.5 all.png", bgm: "finish.mp3", bgPos: "right", bgZoom: 4.0},
             { n: "柔依", t: "（聲音混著碼頭的風聲傳過來）採購的下一站也在城東商貿區。", a: "royi"
             , bgPos: "center", bgZoom: 1.1,bgDur:"25s" ,se: "wind1.mp3", vol: 1.0},
             { n: "柔依", t: "如果不嫌棄，進城這段路，結個伴？", a: "royi" },
@@ -241,7 +241,7 @@ window.V2_CHAPTERS["65"] = {
             , se: "fairy_sleep.mp3", vol: 1.0},
  
             { n: "系統", t: "（六個人並肩走進了港口的深處。晚霞將大家的影子拉得很長。）", a: "system",
-              bg: "CG/ch6.5 last.png", bgPos: "center", bgZoom: 1.5, bgDur: "5s", se: "sea.mp3",bgm:"sweet2.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0 },
+              bg: "cg/ch6.5 last.png", bgPos: "center", bgZoom: 1.5, bgDur: "5s", se: "sea.mp3",bgm:"sweet2.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0 },
             { n: "我", t: "（米羅還在和夏特為了晚飯吃什麼拌嘴。）", a: "me"},
             { n: "我", t: "（江風刮過，魔導書的硬皮貼著我懷裡，涼得厲害。）", a: "me" },
             { n: "我", t: "(我趕緊快走幾步，跟上他們的腳步。）", a: "me", bgPos: "center", bgZoom: 1.1, se: "walk.mp3", vol: 1.0 },

@@ -296,9 +296,9 @@ class UIManager {
                 stage.style.backgroundImage = `url('${fullPath}')`;
                     
                     // [新增]: 像素世界掃描線與群像判定
-                    if (lastBG.includes('pixel') || lastBG === 'CG/ch8_5_cg1.png') {
+                    if (lastBG.includes('pixel') || lastBG === 'cg/ch8_5_cg1.png') {
                         stage.classList.add('rpg-scanlines', 'rpg-ensemble');
-                    } else if (lastBG !== 'black.png' && lastBG !== 'white.png' && !lastBG.includes('flash') && lastBG !== 'CG/ch8_5_cg1.png') {
+                    } else if (lastBG !== 'black.png' && lastBG !== 'white.png' && !lastBG.includes('flash') && lastBG !== 'cg/ch8_5_cg1.png') {
                         stage.classList.remove('rpg-scanlines', 'rpg-ensemble');
                     }
                 
@@ -486,7 +486,7 @@ class UIManager {
 
             // [關鍵優化]: 紀錄並更新當前是否為 CG 模式
             if (line.bg) {
-                this.isCurrentCG = line.bg.startsWith('CG/');
+                this.isCurrentCG = line.bg.startsWith('cg/');
             }
 
             if (!this.isCurrentCG && line.a !== 'system') {
@@ -525,14 +525,14 @@ class UIManager {
             if (line.bg) {
                 const stage = document.getElementById('story-stage');
                 if (stage) {
-                    // [修正]: 如果路徑已經包含目錄(如 CG/)，則不重複加上 BG/
+                    // [修正]: 如果路徑已經包含目錄(如 cg/)，則不重複加上 BG/
                     const fullPath = (line.bg.includes('/') ) ? line.bg : `BG/${line.bg}`;
                     stage.style.backgroundImage = `url('${fullPath}')`;
                     
                     // [新增]: 像素世界掃描線與群像判定
-                    if (line.bg.includes('pixel') || line.bg === 'CG/ch8_5_cg1.png') {
+                    if (line.bg.includes('pixel') || line.bg === 'cg/ch8_5_cg1.png') {
                         stage.classList.add('rpg-scanlines', 'rpg-ensemble');
-                    } else if (line.bg !== 'black.png' && line.bg !== 'white.png' && !line.bg.includes('flash') && line.bg !== 'CG/ch8_5_cg1.png') {
+                    } else if (line.bg !== 'black.png' && line.bg !== 'white.png' && !line.bg.includes('flash') && line.bg !== 'cg/ch8_5_cg1.png') {
                         stage.classList.remove('rpg-scanlines', 'rpg-ensemble');
                     }
                 }

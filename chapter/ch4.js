@@ -79,7 +79,7 @@ window.V2_CHAPTERS["40"] = {
     story: {
         start: [
             { n: "系統", t: "（結伴上路的第一天。三個人一匹馬，還有一本在夕陽餘暉下泛著微光的魔導書）", a: "system"
-            , bg: "CG/ch4 three.png", bgm: "daily.mp3",bgPos: "center", bgZoom: 1.1, bgDur:"2s"},
+            , bg: "cg/ch4 three.png", bgm: "daily.mp3",bgPos: "center", bgZoom: 1.1, bgDur:"2s"},
             { n: "系統", t: "（官道上的泥土還帶著雨後的潮氣。那匹老馬喘著粗氣，勉強負載三個人的行囊。）", a: "system"
             , env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.2, envDrift:true},
             { n: "賽爾", t: "（它輕盈地陷在行李包最柔軟的褶皺裡，悠閒地晃動著透明的小腳丫。）", a: "fairy",
@@ -115,14 +115,14 @@ window.V2_CHAPTERS["40"] = {
             { n: "我", t: "沒辦法，可能是這幾天整理表格留下的職業病吧。", a: "me", se: "girl_attraction.mp3", vol: 1.0 },
 
             { n: "柔依", t: "（一名扎著俐落高馬尾的女孩神色匆匆，猛地從診所那扇厚重的木門後衝了出來。）", a: "royi", se: "pa.mp3", vol: 1.0
-            ,bg:"CG/ch4.png",bgPos: "center", bgZoom: 1.1,flash:true,flashSFX:"flash.mp3"},
+            ,bg:"cg/ch4.png",bgPos: "center", bgZoom: 1.1,flash:true,flashSFX:"flash.mp3"},
             { n: "柔依", t: "（她懷裡死死抱著一疊邊緣捲曲、厚重的紙張，險些撞上迎面的路人。）", a: "royi", se: "run.mp3", vol: 1.0,shake:true},
             { n: "柔依", t: " 借過！請大家讓一讓，急診！", a: "royi",shake:true},
             { n: "柔依", t: "（她急促的腳步猛地釘在石階上，驚訝地打量了你們三個一眼。）", a: "royi"
             ,bgPos: "top", bgZoom: 2.0},
             { n: "柔依", t: "你們……是剛好路過的冒險者嗎？", a: "royi" },
             { n: "我", t: "沒錯，我們只是路過這裡。", a: "me", se: "girl_en1.mp3", vol: 1.0,bg:"bg4.png"},
-            { n: "柔依", t: "既然是路過的，你們能不能行個好幫個忙？", a: "royi",flash:true,flashSFX:"flash.mp3",bg:"CG/ch4.png"},
+            { n: "柔依", t: "既然是路過的，你們能不能行個好幫個忙？", a: "royi",flash:true,flashSFX:"flash.mp3",bg:"cg/ch4.png"},
             { n: "柔依", t: "今天病患突然多了三倍，診所的名冊完全沒有進行排序。", a: "royi" , se: "paper down.mp3", vol: 0.8 , flash: true, flashSFX: "flash.mp3" },
             { n: "柔依", t: "醫生現在根本沒辦法按照輕重緩急來看診。", a: "royi" },
             { n: "柔依", t: "（她一臉焦急地把那疊凌亂不堪、甚至還沾著墨漬的紙張遞了過來。）", a: "royi", se: "paper down.mp3", vol: 1.0,shake:true},
@@ -132,7 +132,7 @@ window.V2_CHAPTERS["40"] = {
             ,bgPos: "center", bgZoom: 2.0, bgDur:"4s",bg:"bg4.png"},
             { n: "我", t: "（毫無章法可言。重症與輕症的數據糾纏不清，看得我眉頭緊鎖。）", a: "me" },
             { n: "我", t: "……到底是誰設計了這麼不科學的名冊啊？", a: "me" , se: "paper down.mp3", vol: 0.8 },
-            { n: "柔依", t: "是七八個義工輪流登記的，大家當時都忙瘋了。", a: "royi",bg:"CG/ch4.png",bgPos: "top", bgZoom: 2.0},
+            { n: "柔依", t: "是七八個義工輪流登記的，大家當時都忙瘋了。", a: "royi",bg:"cg/ch4.png",bgPos: "top", bgZoom: 2.0},
             { n: "我", t: "（我合上名冊，表情嚴肅地將它夾在腋下） 帶我們進去診所吧。", a: "me", se: "put down.mp3", vol: 1.0,shake:true,bg:"bg4.png"},
             { n: "賽爾", t: "（它輕巧地飛回我的肩膀上，貼著耳邊壓低聲音戲謔道） ", a: "fairy", se: "fun1.mp3", vol: 1.0 
             ,bgPos: "center", bgZoom: 1.1, bgDur:"10s"},
@@ -216,7 +216,7 @@ window.V2_CHAPTERS["40"] = {
             { n: "我", t: "我們是從楓鈴驛站那邊過來的，只是路過這裡。不必太在意。", a: "me", se: "girl_attraction.mp3", vol: 1.0  },
             { n: "柔依", t: "那麼，你們接下來打算往哪個方向繼續前進？", a: "royi" },
             { n: "我", t: "我們也還沒定。哪裡有緊急任務，我們就往哪裡走吧。", a: "me" },
-            { n: "柔依", t: "（她突然把手裡最後一份厚重、泛黃的統計記錄遞了過來。） ", a: "royi", bg: "CG/ch4 royi.png", se: "paper down.mp3"
+            { n: "柔依", t: "（她突然把手裡最後一份厚重、泛黃的統計記錄遞了過來。） ", a: "royi", bg: "cg/ch4 royi.png", se: "paper down.mp3"
             , vol: 1.0, bgm:"conspiracy.mp3",bgPos: "top", bgZoom: 2.0},
             { n: "柔依", t: "這份是今天的就診統計，你們順便幫我歸檔，作為謝禮。", a: "royi",bgPos: "center", bgZoom: 1.1,bgDur:"10s"},
             { n: "我", t: "居然拿「派發新工作」來當作謝禮？我說，妳以後肯定會是個不得了的人物。", a: "me"},
@@ -239,7 +239,7 @@ window.V2_CHAPTERS["40"] = {
             { n: "我", t: "你在楓鈴驛站管了三年帳冊，心裡早就明白什麼叫做真正的公平。", a: "me" },
             { n: "我", t: "這種對於秩序的洞察力，是靠學習任何工具都換不來的財富。", a: "me" },
             { n: "米羅", t: "（他聽完沉默了很久，最後才在夜色中聲音很輕地說道） 謝謝你，隊長。", a: "miro",shake:true },
-            { n: "賽爾", t: "（它趴在行李包頂端，懶洋洋地補了一刀） ", a: "fairy" ,bg:"CG/ch4 all.png",bgPos: "left", bgZoom: 2.0},
+            { n: "賽爾", t: "（它趴在行李包頂端，懶洋洋地補了一刀） ", a: "fairy" ,bg:"cg/ch4 all.png",bgPos: "left", bgZoom: 2.0},
             { n: "賽爾", t: "雖然技術層面上只是最基本的魔法應用，別太驕傲哦小伙子。", a: "fairy", se: "fairy_smile.mp3", vol: 1.0},
             { n: "米羅", t: "賽爾！妳難道就不能讓這種氣氛多維持幾秒鐘嗎！", a: "miro", se: "boy_attraction.mp3", vol: 1.0
             ,bgPos: "right", bgZoom: 2.0},

@@ -81,7 +81,7 @@ window.V2_CHAPTERS["55"] = {
     story: {
 
         start: [
-            { n: "系統", t: "（房間安靜得讓人有些發冷。）", a: "system", bg: "CG/ch5.5 head.png"
+            { n: "系統", t: "（房間安靜得讓人有些發冷。）", a: "system", bg: "cg/ch5.5 head.png"
             , bgm: "conspiracy.mp3", bgPos: "bottom", bgZoom: 2.0,bgBlur: 20},
             { n: "系統", t: "（窗外的光影在地板上靜靜挪動，感受不到半絲風的流動。）", a: "system"
             , env: "light/1", envFrames: 25, envspeed:40, envOpacity: 0.2, envDrift:true, bgPos: "center", bgZoom: 1.1 , bgDur:"10s",bgBlur: 20 },
@@ -106,7 +106,7 @@ window.V2_CHAPTERS["55"] = {
             { n: "鎮民甲", t: "（臉色瞬間沉了下來）唉，葛蕾姑娘這次是攤上大麻煩了。", a: "npc1",se: "man ha.mp3", vol: 1.0 
             , bgPos: "center", bgZoom: 1.1},
             { n: "鎮民甲", t: "帳目對不上。上頭派來的審查員硬說帳上的數字比實際物資多了不少。", a: "npc1"
-            ,bg:"CG/ch5.5 comic.png", bgPos: "left bottom", bgZoom: 1.5},
+            ,bg:"cg/ch5.5 comic.png", bgPos: "left bottom", bgZoom: 1.5},
             { n: "鎮民甲", t: "說是物資去向不明，葛蕾姑娘難辭其咎。", a: "npc1"
             , bgPos: "top", bgZoom: 1.5 , flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "我", t: "（我皺了皺眉。雖然相處時間不長，但我知道葛蕾絕不是那種人。）", a: "me"
@@ -121,20 +121,20 @@ window.V2_CHAPTERS["55"] = {
             { n: "賽爾", t: "本仙子在旁邊盯著。 ", a: "fairy" },
 
             { n: "系統", t: "（掀開帳篷，一股墨水與蠟燭燃燒後的氣味撲面而來。）", a: "system"
-            , bg: "CG/ch5.5_tent.png",se: "paper down.mp3", vol: 1.0, bgm: "kingdom sad.mp3",env:null},
+            , bg: "cg/ch5.5_tent.png",se: "paper down.mp3", vol: 1.0, bgm: "kingdom sad.mp3",env:null},
             { n: "系統", t: "（葛蕾依舊坐在那張凌亂的桌前，眼下的青黑濃得有些嚇人。）", a: "system", bgPos: "top", bgZoom: 1.1 , bgDur:"5s"},
 
             { n: "葛蕾", t: "三月初七，藥材八十。", a: "glea",flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "葛蕾", t: "這個數字無論怎麼算都對不上，可我就是抓不住那個原因。", a: "glea", shake:true},
             { n: "我", t: "葛蕾。", a: "me", bgPos: "center", bgZoom: 1.1,bg:"bg5.5.png"},
             { n: "葛蕾", t: "（她猛地抬頭，看清是你後，下意識地將桌上最亂的一疊帳冊推向暗處。）", a: "glea"
-            ,flash:true, flashSFX: "bell.mp3", vol: 1.0,shake:true, bg: "CG/ch5.5_tent.png"},
+            ,flash:true, flashSFX: "bell.mp3", vol: 1.0,shake:true, bg: "cg/ch5.5_tent.png"},
             { n: "葛蕾", t: "你怎麼來了？", a: "glea"},
             { n: "我", t: "路過。順便聽到了一些不大好聽的消息。", a: "me",bg:"bg5.5.png"},
-            { n: "葛蕾", t: "（嘴唇抿成一條線）熱紅茶還沒來得及泡，你這傢伙來得真不是時候。", a: "glea", bg: "CG/ch5.5_tent.png"},
+            { n: "葛蕾", t: "（嘴唇抿成一條線）熱紅茶還沒來得及泡，你這傢伙來得真不是時候。", a: "glea", bg: "cg/ch5.5_tent.png"},
             { n: "我", t: "茶可以等會兒再說。", a: "me" ,bg:"bg5.5.png"},
             { n: "我", t: "先告訴我，你這邊具體是怎麼回事。", a: "me", bgPos: "center", bgZoom: 1.5},
-            { n: "葛蕾", t: "帳目裡混進了幾個不該出現的數字。", a: "glea", bg: "CG/ch5.5_tent.png" },
+            { n: "葛蕾", t: "帳目裡混進了幾個不該出現的數字。", a: "glea", bg: "cg/ch5.5_tent.png" },
             { n: "葛蕾", t: "我在查。這沒什麼大不了的。", a: "glea",flash: true, flashSFX: "flash.mp3", vol: 1.0},
 
             { n: "米羅", t: "（小心翼翼地從帳篷外探進頭來）隊長？", a: "miro"
@@ -245,12 +245,12 @@ window.V2_CHAPTERS["55"] = {
             ,flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "米羅", t: "（猛地愣住）誒？葛蕾姑娘……你要離開金穗鎮？", a: "miro" , se: "boy_ah1.mp3", vol: 1.0,shake:true},
             { n: "葛蕾", t: "（她利落地收拾起行囊說道）這不是在尋求你們的庇護。", a: "glea" , se: "clothes1.mp3", vol: 1.0
-            , bgPos: "right", bgZoom: 1.1 , bgDur:"10s",bg:"CG/ch5.5 join.png"},
+            , bgPos: "right", bgZoom: 1.1 , bgDur:"10s",bg:"cg/ch5.5 join.png"},
             { n: "葛蕾", t: "而是等價交換。", a: "glea" },
             { n: "葛蕾", t: "我看過你們這支隊伍了。有強大的禁術，敏銳的眼光，還有個還算細心的記帳員。", a: "glea" },
             { n: "葛蕾", t: "但若想在那座吃人不吐骨頭的王城立足，還缺一個能將萬千物資調度得精準的人。",bg:"bg3 kingdom.png"
             , bgPos: "center", bgZoom: 1.5,flash: true, flashSFX: "flash.mp3", vol: 1.0},
-            { n: "葛蕾", t: "金穗鎮的日常我已交代妥當", a: "glea",bg:"bg5.5.png", bgPos: "left", bgZoom: 1.1 , bgDur:"10s",bg:"CG/ch5.5 join.png"},
+            { n: "葛蕾", t: "金穗鎮的日常我已交代妥當", a: "glea",bg:"bg5.5.png", bgPos: "left", bgZoom: 1.1 , bgDur:"10s",bg:"cg/ch5.5 join.png"},
             { n: "葛蕾", t: "她們即便沒有我，靠著那幾道『驗證禁術』也能再撐一年半載。", a: "glea" },
             { n: "葛蕾", t: "留在這裡，我終究會在那種低劣的權力博弈下枯萎。", a: "glea" },
             { n: "葛蕾",t: "唯有去到更高、更混亂的地方，我的『能力』才有真正的發揮餘地。", a: "glea"},
@@ -273,7 +273,7 @@ window.V2_CHAPTERS["55"] = {
 
             { n: "系統", t: "（夕陽的餘暉將五個人的影子拉得極長。）", a: "system", bg: "road dust.png", bgm: "sweet2.mp3", bgPos: "center", bgZoom: 1.5 , bgDur:"10s"},
             { n: "系統", t: "（在那片漸漸模糊的暮色中，他們緩緩離開了這片重歸秩序的金穗鎮。）", a: "system",se:"horse run.mp3",vol:1.0},
-            { n: "系統", t: "（走出鎮門的那一刻，葛蕾回頭望向那片金色的麥田，看了很久。）", a: "system",bg:"CG/ch5.5 road.png",flash: true, flashSFX: "flash.mp3", vol: 1.0},
+            { n: "系統", t: "（走出鎮門的那一刻，葛蕾回頭望向那片金色的麥田，看了很久。）", a: "system",bg:"cg/ch5.5 road.png",flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "系統", t: "（隨後她毅然轉身，腳步踏在官道的塵土上，再無半點遲疑。）", a: "system", se:"clothes1.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1}
         ],
 

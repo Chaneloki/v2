@@ -155,7 +155,7 @@ window.V2_CHAPTERS["70"] = {
             { n: "我", t: "（我原本只是漫不經心地掃過，庭院裡的梅樹修得太過規整，看久了眼球會發酸）", a: "me",
               bgPos: "right", bgZoom: 1.5 },
             { n: "我", t: "（正準備把目光挪開時，角落裡的一抹亮色卻像鉤子一樣，強行扯住了我的視線)"
-            , a: "me", flash: true, flashSFX: "bell.mp3",bg:"CG/ch7 prince.png",bgm:"showup.mp3"  },
+            , a: "me", flash: true, flashSFX: "bell.mp3",bg:"cg/ch7 prince.png",bgm:"showup.mp3"  },
             { n: "我", t: "(那是個背對著我的身影。）", a: "me" },
             { n: "我", t: "（她的手搭在粗糙的石柱上，指節細得過分，白得像是不沾一點塵土的細瓷。）"
             , a: "me", bgPos: "center", bgZoom: 2.0, bgDur: "5s", se: "wind1.mp3", vol: 1.0
@@ -165,7 +165,7 @@ window.V2_CHAPTERS["70"] = {
             { n: "我", t: "（記憶中某個片段像被點燃的引信，猛地竄了上來。）", a: "me", se: "high peach.mp3", vol: 1.0},
             // 葛蕾注意到的是另一件事
             { n: "葛蕾", t: "（低聲）那兩個人的衣袍，不是宮中役使的裁法。", a: "glea"
-            , se: "paper down.mp3",bg:"CG/ch7 two.png", bgPos: "center", bgZoom: 2.0,flash: true, flashSFX: "flash.mp3", vol: 1.0},
+            , se: "paper down.mp3",bg:"cg/ch7 two.png", bgPos: "center", bgZoom: 2.0,flash: true, flashSFX: "flash.mp3", vol: 1.0},
 
             // 米羅注意到站著那個人
             { n: "米羅", t: "（壓低聲音，有些粗魯地拉了拉我的袖子，指尖的力道帶著一絲難以掩飾的驚愕）", a: "miro", shake: true, se: "clothes1.mp3" },
@@ -195,19 +195,19 @@ window.V2_CHAPTERS["70"] = {
 
             // 那個人轉過來——臉熟悉，但腦子一時跟不上
             { n: "我", t: "（那個人轉過身來。我看見了熟悉的眉眼，那雙笑起來會瞇成碎金線的眼睛。）", a: "me",
-            flash: true, flashSFX: "flash.mp3", vol: 1.0,bg:"CG/no.png",
+            flash: true, flashSFX: "flash.mp3", vol: 1.0,bg:"cg/no.png",
             bgm: "prince.mp3", bgPos: "center", bgZoom: 1.1,stuff:"prince eyes.png",stuffScale: 1.7},
             { n: "我", t: "（只是，他身上沒了船上那件袍子。)"
-            , a: "me", bgPos: "bottom", bgZoom: 1.5,bg:"CG/ch7 prince2.png",flash: true, flashSFX: "flash.mp3", vol: 1.0 },
+            , a: "me", bgPos: "bottom", bgZoom: 1.5,bg:"cg/ch7 prince2.png",flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "我", t: "（取而代之的是一襲純白色的長裙。）", a: "me", bgPos: "center", bgZoom: 1.5,bgDur:"10s"},
             { n: "我", t: "（層層疊疊的衣料像雲朵一樣順著身形傾瀉而下，領口處繡著繁複而精緻的銀紋。）"
             , a: "me" , bgPos: "top", bgZoom: 1.5, bgDur: "10s"},
             { n: "我", t: "（那樣乾淨的白色映著他清秀的臉龐。）", a: "me"},
             { n: "我", t: "（裙擺搖曳的弧度帶著一股說不出的從容，跟在船上的那個樣子，其實也沒什麼兩樣。）", a: "me"},
             { n: "我", t: "（「王子殿下」四個字在空氣中震盪，我腦子裡空白了一瞬，好不容易才將那個遞水袋的少年與眼前這個身影重疊在一起。）"
-            , a: "me", se: "bell.mp3",bg:"CG/ch6.5 prince.png"},
+            , a: "me", se: "bell.mp3",bg:"cg/ch6.5 prince.png"},
             { n: "我", t: "（晏。竟然是晏。）"
-            , a: "me",bg:"CG/ch7 prince2.png" ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1},
+            , a: "me",bg:"cg/ch7 prince2.png" ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1},
 
             // 群像反應——各自的那一刻
             { n: "米羅", t: "（原本的興奮消退，取而代之的是過度衝擊後的呆滯）晏？……晏是王子？", a: "miro", bg: "bg7 garden.png", shake: true },
@@ -219,7 +219,7 @@ window.V2_CHAPTERS["70"] = {
             { n: "我", t: "（不管身份不管穿著，站在那裡的晏還是一樣的從容，一樣的瀟灑。）", a: "me", se: "girl_smile1.mp3" },
 
             // ——只有玩家能看到：王子的記憶——
-            { bg: "CG/prince card.png", flash: true, flashSFX: "boom.mp3", vol: 0.8,
+            { bg: "cg/prince card.png", flash: true, flashSFX: "boom.mp3", vol: 0.8,
               bgm: "rose.mp3", bgPos: "center", bgZoom: 1.1 },
             { n: "系統", t: "（廊道長得沒了邊際，壓得人透不過氣。）", a: "system",
               bg: "bg7 corridor.png", bgm: "conspiracy.mp3", bgPos: "center", bgZoom: 1.5, bgDur: "10s", env: "white smoke/1", envOpacity: 0.3 },
@@ -240,19 +240,19 @@ window.V2_CHAPTERS["70"] = {
             { n: "系統", t: "(因為無論性別，皆是王國血脈，理應享有同等尊貴而沉重的厚愛。）", a: "system"},
             // ——記憶結束——
             { n: "系統", t: "（記憶結束）", a: "system",
-              bg: "CG/ch7_prince.png", flash: true, flashSFX: "memory_out.mp3", vol: 0.8,
+              bg: "cg/ch7_prince.png", flash: true, flashSFX: "memory_out.mp3", vol: 0.8,
               bgm: "prince.mp3", bgPos: "center", bgZoom: 2.0, env: null },
 
             { n: "王子", t: "（他轉身揮了揮手，示意身後的宮人退下。）"
             ,bg: "bg7 garden.png", a: "prince", se: "girl_smile1.mp3", vol: 0.8},
-            { n: "王子", t: "（宮人躬身離開後，他毫無貴族架子地在那方矮欄杆上坐了下來。）",bg: "CG/ch7 sit.png", bgPos: "center", bgZoom: 1.1, bgDur:"10s" },
+            { n: "王子", t: "（宮人躬身離開後，他毫無貴族架子地在那方矮欄杆上坐了下來。）",bg: "cg/ch7 sit.png", bgPos: "center", bgZoom: 1.1, bgDur:"10s" },
             { n: "王子", t: "（嘴角那抹笑意先是暈開，隨後眼眸微彎，眼神明亮得晃人。）"},
             { n: "王子", t: "說好後會有期，比我猜的要快。", a: "prince" },
             { n: "王子", t: "我還以為你們得先在主城那迷宮一樣的街道裡繞個幾圈，才能找著這兒。", a: "prince" },
-            { n: "王子", t: "（他目光轉向米羅，帶出一點戲謔）", a: "prince",bg: "CG/ch7 sit.png", bgPos: "left", bgZoom: 1.5},
+            { n: "王子", t: "（他目光轉向米羅，帶出一點戲謔）", a: "prince",bg: "cg/ch7 sit.png", bgPos: "left", bgZoom: 1.5},
             { n: "王子", t: "怎麼，這才幾天沒見，眼圈就黑成這樣？看來主城的床墊沒船上的貨箱好睡啊。", a: "prince"},
             { n: "米羅", t: "（被他這熟悉的調侃一激，繃著的身體反而鬆了下來）你還真認得我啊", a: "miro", bg: "bg7 garden.png", shake: true},
-            { n: "王子", t: "（他笑意漸收，換上一種玩味的認真）", a: "prince", bg: "CG/ch7 sit.png", flash: true, flashSFX: "flash.mp3", bgPos: "center", bgZoom: 1.2 },
+            { n: "王子", t: "（他笑意漸收，換上一種玩味的認真）", a: "prince", bg: "cg/ch7 sit.png", flash: true, flashSFX: "flash.mp3", bgPos: "center", bgZoom: 1.2 },
             { n: "王子", t: "船上第一夜，我看見書頁裡透出的光，那光色跟船上的燈火完全不同。", bgPos: "center", bgZoom: 1.5,bgDur:"10s"},
             { n: "王子", t: "我就想，這群人有意思，帶著與眾不同的底牌。當時就覺得，遲早得再碰一次。"},
 
@@ -399,7 +399,7 @@ window.V2_CHAPTERS["70"] = {
             { n: "米羅", t: "（忍不住問道）……晏，這宮裡真的哪裡都能走嗎？", a: "miro"  },
             { n: "王子", t: "大多數地方都行。你們是客人。", a: "prince" },
             { n: "王子", t: "（他忽然停下腳步，回過頭看向我們，那雙漂亮的眼眸裡閃過一抹難得的雀躍）"
-            , a: "prince", flash: true, flashSFX: "bell.mp3",bg:"CG/ch7 last.png",bgm:"prince2.mp3"
+            , a: "prince", flash: true, flashSFX: "bell.mp3",bg:"cg/ch7 last.png",bgm:"prince2.mp3"
             , env: "light/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true, bgPos: "left top", bgZoom: 2.0 },
             { n: "王子", t: "對了，明天有個地方想帶你們去。住在這裡的人才知道在哪，外面找不著。", a: "prince", bgPos: "center", bgZoom: 1.1 , bgDur:"10s"},
             { n: "王子", t: "(微微歪過頭，語氣裡透著邀請朋友去私藏秘密基地的口吻）去嗎？", a: "prince"},
@@ -409,7 +409,7 @@ window.V2_CHAPTERS["70"] = {
             { n: "我", t: "(我迎向晏帶笑的目光，心裡那點初入宮廷的焦慮徹底煙消雲散）", a: "me" , se: "girl_laugh.mp3", vol: 1.0 },
             { n: "我", t: "我們都在。", a: "me", bgPos: "right", bgZoom: 1.5},
             { n: "王子", t: "（滿意地笑了，邁開腳步朝廊道的深處走去，裙擺掠過地面，步履瀟灑如初）", a: "prince"
-            , se: "walk.mp3",bg:"CG/ch7 last.png", bgPos: "center", bgZoom: 1.1,bgDur:"10s" },
+            , se: "walk.mp3",bg:"cg/ch7 last.png", bgPos: "center", bgZoom: 1.1,bgDur:"10s" },
             { n: "王子", t: "那明天見。吃完早飯在這個庭院等。", a: "prince" },
             { n: "我", t: "（我看著她的背影緩緩隱入廊道那片橘紅色的光影裡。腳步聲漸漸消失。）", a: "me"
             , flash: true, flashSFX: "trans.mp3",bg: "bg7 garden.png"},
