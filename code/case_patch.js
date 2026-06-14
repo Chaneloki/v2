@@ -18,19 +18,30 @@
     "cg/ch3 two.png": "CG/ch3 two.png"
   };
 
-  // 自動糾正路徑大小寫的輔助函數
+  // 自動糾正路徑大小寫與格式轉換的輔助函數
   function fixPathCase(url) {
     if (!url || typeof url !== 'string') return url;
+    
+    // 1. 大小寫敏感糾正
     let lowerUrl = url.toLowerCase();
+    let fixedUrl = url;
     for (let key in pathCaseMap) {
       if (lowerUrl.includes(key)) {
         let index = lowerUrl.indexOf(key);
         let prefix = url.substring(0, index);
         let suffix = url.substring(index + key.length);
-        return prefix + pathCaseMap[key] + suffix;
+        fixedUrl = prefix + pathCaseMap[key] + suffix;
+        break;
       }
     }
-    return url;
+    
+    // 2. 自動將大圖 (BG 或 CG 目錄下的 png 圖片) 重新導向為輕量化 WebP 格式
+    let lowerFixed = fixedUrl.toLowerCase();
+    if ((lowerFixed.includes('bg/') || lowerFixed.includes('cg/')) && lowerFixed.endsWith('.png')) {
+      fixedUrl = fixedUrl.substring(0, fixedUrl.length - 4) + '.webp';
+    }
+    
+    return fixedUrl;
   }
 
   // A. 攔截 Image.src 設定
