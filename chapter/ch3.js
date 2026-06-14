@@ -191,7 +191,7 @@ window.V2_CHAPTERS["30"] = {
             ,bgPos: "left"},
             { n: "米羅", t: "（他點了點頭，眼神中展現出一種脫胎換骨般的清澈）想清楚了。 ", a: "miro new"
             ,bgPos: "right",flash:true,flashSFX:"flash.mp3" },
-            { n: "米羅", t: "你那天跟我說過：唯有當我先徹底理清了驛站的這場亂象……", a: "miro new" , bg: "CG/Ch3 bond.png"
+            { n: "米羅", t: "你那天跟我說過：唯有當我先徹底理清了驛站的這場亂象……", a: "miro new" , bg: "CG/ch3 bond.png"
             , bgm: "sweet2.mp3",bgPos: "left", bgZoom: 1.1, bgDur:"10s" },
             { n: "米羅", t: "我才有資格，去與你談論所謂的『走』與『不走』。 ", a: "miro new" },
             { n: "米羅", t: "（他用那佈滿老繭的手掌，用力拍了拍那本名冊） ", a: "miro new" , se: "paper down.mp3", vol: 0.8 , shake: true },

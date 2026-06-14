@@ -300,7 +300,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "系統", t: "（曬穀場上的歌聲依舊。微風吹過，彷彿將時間吹回了那個已經回不去的小時候。）", a: "system", se: "bell.mp3", vol: 1.0  },
 
             // ── 上帝視角：童年的擦身 ─────────────────────
-            { n: "系統", t: "許多年以前。螢火村。熱鬧的趕集日。", a: "system", bg: "CG/Ch5 childhood.png"
+            { n: "系統", t: "許多年以前。螢火村。熱鬧的趕集日。", a: "system", bg: "CG/ch5 childhood.png"
             , bgPos: "right", bgZoom: 1.5, bgm: "sunset.mp3" , isMemory: true },
             { n: "系統", t: "井邊那棵高大的老柳樹下，一個滿身是泥的小孩仰著頭望向樹梢，嘴裡含含糊糊地哼著旋律。", a: "system"},
             { n: "泥巴小孩", t: "日頭落了炊煙起…………欸。後面那句是怎麼唱來著？"},

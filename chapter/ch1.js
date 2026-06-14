@@ -42,7 +42,7 @@ window.V2_CHAPTERS["10"] = {
     story: {
         start: [
             { n: "我", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: "story_bgm1.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s" },
-            { n: "我", t: "看著我的背影吧！沒錯，我就是那個傳說中的王牌冒險者，公會最鋒利的那把劍。", bg: "CG/Ch1 main.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
+            { n: "我", t: "看著我的背影吧！沒錯，我就是那個傳說中的王牌冒險者，公會最鋒利的那把劍。", bg: "CG/ch1 main.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "我", t: "無論是多麼險惡的戰役，只要我踏入戰場，局勢就會立刻倒向我們這一邊。" },
             { n: "我", t: "因為這座公會需要我，這個國家的人民依賴著我的力量，我是所有人最後的希望。" },
             { n: "我", t: "想要挑戰我？在那之前，先學會怎麼仰望我那輝煌的背影吧！", bg: "war.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
