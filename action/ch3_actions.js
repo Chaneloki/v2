@@ -116,12 +116,34 @@ window.ch3Actions = {
         window.ch3Actions._frSelectedFormat = null; 
     },
 
+    // [新增]: 判斷目前任務是否為「模糊搜尋」類任務 (需要按【全部尋找】才能標記所有結果)
+    _isFuzzyTask: (currentTask) => {
+        return currentTask && ['FUZZY_TASK', 'PRECISE_FUZZY_TASK', 'FUZZY_WU_TASK', 'FUZZY_INFANT_TASK'].includes(currentTask.id);
+    },
+
     executeFind: () => {
-        const val = document.getElementById('fr-find').value; 
+        const val = document.getElementById('fr-find').value;
         if (!val) return;
         const state = window.orchestrator.state;
         const data = state.gridData;
-        
+        const currentTask = state.activeChapterModule.simulator.tasks[state.currentTaskIndex];
+
+        // [反向教學]: 取代任務卻按了「找下一個」
+        if (currentTask && currentTask.id === 'REPLACE_TASK') {
+            const m = document.getElementById('excel-fr-modal');
+            if (m) m.style.display = 'none';
+            window.orchestrator.playStorySegment('fail_REPLACE_use_find');
+            return;
+        }
+
+        // [反向教學]: 模糊搜尋任務卻按了「找下一個」(只會找到一個，不會全部標記)
+        if (window.ch3Actions._isFuzzyTask(currentTask)) {
+            const m = document.getElementById('excel-fr-modal');
+            if (m) m.style.display = 'none';
+            window.orchestrator.playStorySegment('fail_FUZZY_use_find_next');
+            return;
+        }
+
         let currentR = state.selectedCell.r;
         let startIdx = (currentR + 1) % data.length;
         
@@ -164,16 +186,31 @@ window.ch3Actions = {
     },
 
     executeFindAll: () => {
-        const val = document.getElementById('fr-find').value; 
+        const val = document.getElementById('fr-find').value;
         if (!val) return;
 
         // [反向教學]: 檢查是否在需要模糊搜尋的任務中忘記加萬用字元
         const state = window.orchestrator.state;
         const currentTask = state.activeChapterModule.simulator.tasks[state.currentTaskIndex];
-        
+
+        // [反向教學]: 取代任務卻按了「全部尋找」
+        if (currentTask && currentTask.id === 'REPLACE_TASK') {
+            const m = document.getElementById('excel-fr-modal');
+            if (m) m.style.display = 'none';
+            window.orchestrator.playStorySegment('fail_REPLACE_use_find');
+            return;
+        }
+
+        // [反向教學]: 一般尋找任務卻按了「全部尋找」
+        if (currentTask && currentTask.id === 'SEARCH_TASK') {
+            const m = document.getElementById('excel-fr-modal');
+            if (m) m.style.display = 'none';
+            window.orchestrator.playStorySegment('fail_SEARCH_use_findall');
+            return;
+        }
+
         // [反向教學]: 檢查是否在需要模糊搜尋的任務中忘記加萬用字元
-        if ((currentTask.id === 'FUZZY_TASK' || currentTask.id === 'PRECISE_FUZZY_TASK' || 
-             currentTask.id === 'FUZZY_WU_TASK' || currentTask.id === 'FUZZY_INFANT_TASK') && 
+        if (window.ch3Actions._isFuzzyTask(currentTask) &&
             !val.includes('*') && !val.includes('?')) {
             const m = document.getElementById('excel-fr-modal');
             if (m) m.style.display = 'none';
@@ -182,9 +219,7 @@ window.ch3Actions = {
         }
 
         // [反向教學]: 檢查是否在需要標記格式的任務中忘記設定格式
-        if ((currentTask.id === 'FUZZY_TASK' || currentTask.id === 'PRECISE_FUZZY_TASK' || 
-             currentTask.id === 'FUZZY_WU_TASK' || currentTask.id === 'FUZZY_INFANT_TASK') && 
-            !window.ch3Actions._frSelectedFormat) {
+        if (window.ch3Actions._isFuzzyTask(currentTask) && !window.ch3Actions._frSelectedFormat) {
             const m = document.getElementById('excel-fr-modal');
             if (m) m.style.display = 'none';
             window.orchestrator.playStorySegment('fail_FUZZY_no_format');
@@ -242,6 +277,14 @@ window.ch3Actions = {
             const m = document.getElementById('excel-fr-modal');
             if (m) m.style.display = 'none';
             window.orchestrator.playStorySegment('fail_SEARCH_use_replace');
+            return;
+        }
+
+        // [反向教學]: 模糊搜尋任務卻按了「全部取代」(這次是要標記，不是改寫文字)
+        if (window.ch3Actions._isFuzzyTask(currentTask)) {
+            const m = document.getElementById('excel-fr-modal');
+            if (m) m.style.display = 'none';
+            window.orchestrator.playStorySegment('fail_FUZZY_use_replace');
             return;
         }
 

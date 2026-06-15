@@ -183,7 +183,7 @@ window.ch4Actions = {
             if (isCorrect) {
                 window.orchestrator.validateAction("SORT_CUSTOM");
             } else {
-                window.uiManager.showMagicToast("記得在「病情等級」欄位套用「自訂清單」喔！", "error");
+                window.orchestrator.playStorySegment("fail_SORT_wrong_column");
             }
         } else if (currentTask.id === "MULTI_SORT_TASK") {
             // [嚴格驗證]: 必須至少兩層，且順序正確
@@ -202,11 +202,11 @@ window.ch4Actions = {
                 window.orchestrator.validateAction("SORT_MULTI");
             } else {
                 if (levels.length < 2) {
-                    window.uiManager.showMagicToast("米羅提醒：需要「新增層級」來同時考慮等待時間喔！", "error");
+                    window.orchestrator.playStorySegment("fail_SORT_selection");
                 } else if (!isLv0Correct) {
-                    window.uiManager.showMagicToast("第一條件應為「病情等級」的自訂序列。", "error");
+                    window.orchestrator.playStorySegment("fail_SORT_wrong_column");
                 } else if (!isLv1Correct) {
-                    window.uiManager.showMagicToast("第二條件應為「等待時數」且從 Z 到 A 排序。", "error");
+                    window.orchestrator.playStorySegment("fail_SORT_wrong_order");
                 }
             }
         }

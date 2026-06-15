@@ -356,6 +356,18 @@ class GridRenderer {
                 },
                 onmousedown: colIdx >= 0 ? (e) => {
                     if (e.button !== 0) return;
+
+                    // [修復]: 標題列底部與第一列儲存格視覺上緊鄰，滑鼠稍微往上一點點就會誤觸「選取整欄」。
+                    // 若按下位置在標題列底部邊緣附近，視為點擊第一列的儲存格，改交給該格的選取邏輯處理。
+                    if (e.offsetY >= this.rowHeight - 3) {
+                        const targetCell = this.cellMap.get(`0,${colIdx}`);
+                        if (targetCell) {
+                            e.stopPropagation();
+                            targetCell.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0, clientX: e.clientX, clientY: e.clientY }));
+                            return;
+                        }
+                    }
+
                     e.stopPropagation();
                     state.selectedCell = { r: 0, c: colIdx };
                     state.selectedRange = { minRow: 0, maxRow: data.length - 1, minCol: colIdx, maxCol: colIdx };
@@ -363,6 +375,20 @@ class GridRenderer {
                     state.draggedColIdx = colIdx;
                     this._updateVisuals(data, maxC, startIdx, endIdx);
                     window.orchestrator.handleHeaderClick(colIdx);
+                } : null,
+                onmouseover: colIdx >= 0 ? () => {
+                    // [修復]: 拖曳選取範圍時，滑鼠若稍微滑到標題列上方，仍依目前所在欄位延伸選取範圍，
+                    // 避免「往上一點點」就中斷橫向選取 (例如選取 A1:E1)
+                    if (state.isSelecting && !state.formulaRangeSelection && state.selectedCell) {
+                        const start = state.selectedCell;
+                        state.selectedRange = {
+                            minRow: Math.min(start.r, 0),
+                            maxRow: Math.max(start.r, 0),
+                            minCol: Math.min(start.c, colIdx),
+                            maxCol: Math.max(start.c, colIdx)
+                        };
+                        this._updateVisuals(data, maxC, startIdx, endIdx);
+                    }
                 } : null
             });
 
@@ -536,6 +562,15 @@ class GridRenderer {
                         if (e.key === 'Enter' && !e.ctrlKey) {
                             e.preventDefault();
                             e.target.blur(); // 模擬 Excel 按下 Enter 完成編輯
+                        } else if (e.key === 'Escape') {
+                            // [新增]: Esc 取消編輯，還原原始值，避免公式參照模式卡住無法跳出
+                            e.preventDefault();
+                            e.target.textContent = e.target._oldValue || '';
+                            data[rIdx][cIdx] = e.target._oldValue || '';
+                            state.formulaRangeSelection = null;
+                            state.formulaRefRanges = null;
+                            state.isSelecting = false;
+                            e.target.blur();
                         } else if (e.key === 'F4') {
                             e.preventDefault();
                             const sel = window.getSelection();
@@ -575,7 +610,16 @@ class GridRenderer {
                                         const newText = text.substring(0, start) + nextRef + text.substring(end);
                                         e.target.textContent = newText;
                                         data[rIdx][cIdx] = newText;
-                                        
+
+                                        // [新增]: F4 切換後重新同步 Syntax Overlay 寬度，避免公式變長後超出框外卻沒撐開
+                                        if (this.syntaxOverlay && newText.startsWith('=')) {
+                                            this.syntaxOverlay.innerHTML = this._highlightFormula(newText);
+                                            const textWidth = this.syntaxOverlay.scrollWidth;
+                                            const newWidth = Math.max(150, textWidth + 20) + 'px';
+                                            e.target.style.width = newWidth;
+                                            this.syntaxOverlay.style.width = newWidth;
+                                        }
+
                                         const newOffset = start + nextRef.length;
                                         const newRange = document.createRange();
                                         if (e.target.firstChild) {

@@ -1021,7 +1021,9 @@ class UIManager {
         // [優化]: 下拉選單邏輯 - 使用傳入的 anchorEl 定位
         if (actionKey === 'freezepanes') {
             this.showDropdown([
-                { icon: '🔝', text: '凍結頂端列', action: 'freeze_top' }
+                { icon: '🔝', text: '凍結頂端列', action: 'freeze_top' },
+                { icon: '📏', text: '凍結首欄', action: 'freeze_first_col' },
+                { icon: '🧊', text: '凍結窗格', action: 'freeze_logic' }
             ], anchorEl);
             return;
         }

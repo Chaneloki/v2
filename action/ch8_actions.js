@@ -56,6 +56,8 @@ window.ch8Actions = {
                 state.ch8_correct_formula_cell = { r: rIdx, c: cIdx, task: taskId };
                 // 不自動填充，等玩家手動往下拖拉
                 if (window.gridRenderer) window.gridRenderer.render();
+            } else {
+                window.orchestrator.playStorySegment("fail_IF_BASIC_generic");
             }
         }
         else if (taskId === "IFS_TASK") {
@@ -79,6 +81,8 @@ window.ch8Actions = {
                 data[rIdx][cIdx] = result;
                 state.ch8_correct_formula_cell = { r: rIdx, c: cIdx, task: taskId };
                 if (window.gridRenderer) window.gridRenderer.render();
+            } else {
+                window.orchestrator.playStorySegment("fail_IFS_generic");
             }
         }
         else if (taskId === "IF_PLUS_TASK") {
@@ -93,6 +97,8 @@ window.ch8Actions = {
                     data[rIdx][cIdx] = region === "北境" ? 10 : 0;
                     state.ch8_correct_formula_cell = { r: rIdx, c: cIdx, task: taskId };
                     if (window.gridRenderer) window.gridRenderer.render();
+                } else {
+                    window.orchestrator.playStorySegment("fail_IF_PLUS_H_generic");
                 }
             }
             else if (cIdx === 8) { // I 欄
@@ -102,6 +108,8 @@ window.ch8Actions = {
                     data[rIdx][cIdx] = gVal + hVal;
                     state.ch8_correct_formula_cell = { r: rIdx, c: cIdx, task: "IF_PLUS_TOTAL" };
                     if (window.gridRenderer) window.gridRenderer.render();
+                } else {
+                    window.orchestrator.playStorySegment("fail_IF_PLUS_I_generic");
                 }
             }
         }
@@ -122,9 +130,11 @@ window.ch8Actions = {
                 const z = parseFloat(data[rIdx][3]) || 0;
                 const l = parseFloat(data[rIdx][5]) || 0;
                 data[rIdx][cIdx] = (z >= 80 && l >= 80) ? "特別推薦" : "";
-                
+
                 state.ch8_correct_formula_cell = { r: rIdx, c: cIdx, task: taskId };
                 if (window.gridRenderer) window.gridRenderer.render();
+            } else {
+                window.orchestrator.playStorySegment("fail_IF_AND_generic");
             }
         }
     },

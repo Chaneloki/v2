@@ -788,7 +788,9 @@ class Orchestrator {
 
         // 1. 檢查是否以 = 開頭
         if (!val.startsWith('=')) {
-            if (taskId === "FORMULA_ARITH_TASK") this.playStorySegment("fail_FORMULA_no_equal");
+            if (taskId === "FORMULA_ARITH_TASK" || taskId === "ABS_REF_TASK" || taskId === "RANK_TASK" || taskId === "SUM_SKIP_TASK") {
+                this.playStorySegment("fail_FORMULA_no_equal");
+            }
             return;
         }
 

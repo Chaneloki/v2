@@ -295,6 +295,18 @@ window.V2_CHAPTERS["30"] = {
         ],
         fail_EMPTY_no_ctrl_enter: [
             { n: "賽爾", t: "「等等！你只填了一格？我們現在要一次填滿所有空格，輸入公式後要按下 [[Ctrl + Enter|gold]] 才能發動全體魔法！」", a: "fairy" }
+        ],
+        fail_REPLACE_use_find: [
+            { n: "賽爾", t: "「等等，這次是要『改寫』名冊上的文字，不是單純找出來看看而已！按下『全部取代』才能真正發動魔法！」", a: "fairy" }
+        ],
+        fail_SEARCH_use_findall: [
+            { n: "賽爾", t: "「先按『找下一個』，一次找一個熟悉一下流程吧，這次還不需要『全部尋找』喔！」", a: "fairy" }
+        ],
+        fail_FUZZY_use_find_next: [
+            { n: "賽爾", t: "「『找下一個』只會找到一個人喔！這次要把『所有』符合條件的人都標記出來，請按『全部尋找』！」", a: "fairy" }
+        ],
+        fail_FUZZY_use_replace: [
+            { n: "賽爾", t: "「等等，這次任務是要把找到的人『標記』出來，不是要改寫他們的資料！按下『全部尋找』才對！」", a: "fairy" }
         ]
     },
 

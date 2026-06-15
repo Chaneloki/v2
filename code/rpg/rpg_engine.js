@@ -646,6 +646,7 @@ class RPGEngine {
         }
 
         // 若有 bg 要求：切換場景圖片 (例如 rpg/bg/library.png)，或 black.png 讓畫面變黑
+        // 若該行沒有 bg，則還原為地圖畫面（避免上一行的場景圖一直蓋住後續對話）
         if (line.bg) {
             const overlayLayer = document.getElementById('rpg-overlay-layer');
             if (overlayLayer) {
@@ -662,6 +663,8 @@ class RPGEngine {
                     overlayLayer.style.backgroundPosition = 'center';
                 }
             }
+        } else {
+            this.resetSceneOverlay();
         }
 
         // 若有 BGM 播放要求

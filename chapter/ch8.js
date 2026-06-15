@@ -197,11 +197,11 @@ window.V2_CHAPTERS["80"] = {
 
         discovery_IF_PLUS: [
             { n: "賽爾", t: "H欄——地區加分欄。規則：來自北境的人，加10分；其他地區加0分。", a: "fairy" },
-            { n: "賽爾", t: "你可以用 =IF(C2=\"北境\",$N$1,0) 做一個簡單IF", a: "fairy" },
+            { n: "賽爾", t: "你可以用 =IF(C2=[[(\"北境\")|gold]],$N$1,0) 做一個簡單IF", a: "fairy" },
             { n: "賽爾", t: "北境係數存在N1，用絕對引用鎖住。", a: "fairy" },
             { n: "賽爾", t: "但更快的方法是[[回避IF嵌套（+連接）|gold]]——利用 TRUE=1、FALSE=0 的性質：", a: "fairy" },
             { n: "賽爾", t: "[[=(C2=\"北境\")*$N$1|gold]]——條件成立就乘以10，不成立就乘以0，不需要IF。", a: "fairy" },
-            { n: "賽爾", t: "如果有多個加分條件，只要把它們加起來：=(C2=\"北境\")*10 + (D2>=85)*5", a: "fairy" },
+            { n: "賽爾", t: "如果有多個加分條件，只要把它們加起來：[[=(C2=\"北境\")|gold]]*10 + (D2>=85)*5", a: "fairy" },
             { n: "賽爾", t: "這樣就不需要嵌套了。", a: "fairy" },
         ],
 
@@ -311,6 +311,21 @@ window.V2_CHAPTERS["80"] = {
         fail_IF_BASIC_wrong_col: [
             { n: "賽爾", t: "「推薦判斷用的是I欄——總計，不是G欄總分。", a: "fairy" },
             { n: "賽爾", t: "北境加分還沒算進去的話，總計會跟總分一樣，但它們不是同一格。」", a: "fairy" }
+        ],
+        fail_IF_BASIC_generic: [
+            { n: "賽爾", t: "「嗯……公式好像哪裡不太對。再檢查一下：[[=IF(I2>=80,\"推薦\",\"不推薦\")|gold]]，欄位、符號跟逗號都要對齊喔。」", a: "fairy" }
+        ],
+        fail_IFS_generic: [
+            { n: "賽爾", t: "「公式好像哪裡不太對。再檢查一下：[[=IFS(I2>=90,\"優\",I2>=80,\"良\",TRUE,\"待察\")|gold]]，條件順序跟逗號都要對齊喔。」", a: "fairy" }
+        ],
+        fail_IF_PLUS_H_generic: [
+            { n: "賽爾", t: "「H欄的公式好像哪裡不太對。再檢查一下：[[=(C2=\"北境\")*$N$1|gold]]，括號跟引號都要對齊喔。」", a: "fairy" }
+        ],
+        fail_IF_PLUS_I_generic: [
+            { n: "賽爾", t: "「I欄的公式好像哪裡不太對。再檢查一下：[[=G2+H2|gold]]，把G欄總分跟H欄加分加起來就好。」", a: "fairy" }
+        ],
+        fail_IF_AND_generic: [
+            { n: "賽爾", t: "「公式好像哪裡不太對。再檢查一下：[[=IF(AND(D2>=80,F2>=80),\"特別推薦\",\"\")|gold]]，括號跟逗號都要對齊喔。」", a: "fairy" }
         ] },
 
     simulator: {
@@ -318,10 +333,10 @@ window.V2_CHAPTERS["80"] = {
         tasks: [
             {
                 id:           "IF_BASIC_TASK",
-                tutorHint: "【任務：標記推薦】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：在 K2 輸入公式：<br>[[=IF(I2>=80,\\\"推薦\\\",\\\"不推薦\\\")|gold]]<br>輸入完成後，向下拖拉到 K21。</span>",
+                tutorHint: "【任務：標記推薦】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：在 K2 輸入公式：<br>[[=IF(I2>=80,\"推薦\",\"不推薦\")|gold]]<br>輸入完成後，向下拖拉到 K21。</span>",
                 playerText:   "【 K欄：推薦標記 】<br>📌 規則：總計(I欄) >= 80，標記「推薦」，否則「不推薦」。<br>💡 技巧：[[IF(條件, 真值, 假值)|#ff9800]]。",
                 targetCell:   { r: 1, c: 10 },
-                ghostText:    "=IF(I2>=80,\"推薦\",\"不推薦\")",
+                ghostText:    "[[=IF(I2>=80,\"推薦\",\"不推薦\")|gold]]",
                 unlockSkillId:"IF_BASIC",
                 expectedCondition: { type: "ACTION", actionId: "IF_APPLY", col: 10 },
                 storySegmentBefore: "discovery_IF_BASIC",
@@ -329,10 +344,10 @@ window.V2_CHAPTERS["80"] = {
             },
             {
                 id:           "IFS_TASK",
-                tutorHint: "【任務：判定等第】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：在 J2 輸入公式：<br>[[=IFS(I2>=90,\\\"優\\\",I2>=80,\\\"良\\\",TRUE,\\\"待察\\\")|gold]]<br>輸入完成後，向下拖拉到 J21。</span>",
+                tutorHint: "【任務：判定等第】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：在 J2 輸入公式：<br>[[=IFS(I2>=90,\"優\",I2>=80,\"良\",TRUE,\"待察\")|gold]]<br>輸入完成後，向下拖拉到 J21。</span>",
                 playerText:   "【 J欄：等第判定 】<br>📌 規則：>=90「優」，80~89「良」，<80「待察」。<br>💡 技巧：使用 [[IFS|#ff9800]] 函數，條件必須由[[嚴格|#f44336]]排到[[寬鬆|#4caf50]]，最後用 TRUE 收尾。",
                 targetCell:   { r: 1, c: 9 },
-                ghostText:    "=IFS(I2>=90,\"優\",I2>=80,\"良\",TRUE,\"待察\")",
+                ghostText:    "[[=IF(K2=\"推薦\",\"[推薦]\",\"\")&IF(J2=\"優\",\"優等\",IF(J2=\"良\",\"良等\",\"待察\"))|gold]]",
                 unlockSkillId:"IFS",
                 expectedCondition: { type: "ACTION", actionId: "IFS_APPLY", col: 9 },
                 storySegmentBefore: "discovery_IFS",
@@ -341,7 +356,7 @@ window.V2_CHAPTERS["80"] = {
             },
             {
                 id:           "IF_PLUS_TASK",
-                tutorHint: "【任務：計算地區加分與更新總計】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：1️⃣ 在 H2 輸入：[[=(C2=\\\"北境\\\")*$N$1|gold]]，拖拉到 H21。<br>2️⃣ 在 I2 輸入：[[=G2+H2|gold]]，拖拉到 I21 覆蓋舊總計。</span>",
+                tutorHint: "【任務：計算地區加分與更新總計】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：1️⃣ 在 H2 輸入：[[=(C2=\"北境\")*$N$1|gold]]，拖拉到 H21。<br>2️⃣ 在 I2 輸入：[[=G2+H2|gold]]，拖拉到 I21 覆蓋舊總計。</span>",
                 playerText:   "【 H & I 欄：加分與總計 】<br>📌 規則：北境來的人加10分(鎖定N1)。<br>💡 技巧：利用 [[(條件)*數值|#ff9800]] 的方式取代 IF。<br>⚠️ 注意：I欄更新後，前面的等第與推薦會[[自動變動|#4caf50]]！",
                 targetCell:   { r: 1, c: 7 },
                 ghostText:    "=(C2=\"北境\")*$N$1",
@@ -352,7 +367,7 @@ window.V2_CHAPTERS["80"] = {
             },
             {
                 id:           "IF_AND_TASK",
-                tutorHint: "【任務：篩選特別推薦名單】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：在 L2 輸入公式：<br>[[=IF(AND(D2>=80,F2>=80),\\\"特別推薦\\\",\\\"\\\")|gold]]<br>輸入完成後，向下拖拉到 L21。</span>",
+                tutorHint: "【任務：篩選特別推薦名單】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：在 L2 輸入公式：<br>[[=IF(AND(D2>=80,F2>=80),\"特別推薦\",\"\")|gold]]<br>輸入完成後，向下拖拉到 L21。</span>",
                 playerText:   "【 L欄：特別推薦 】<br>📌 規則：政績與廉潔皆需 >= 80。<br>💡 技巧：[[AND(條件1, 條件2)|#ff9800]] 可以將多個條件綁定，全部成立才算 TRUE。",
                 targetCell:   { r: 1, c: 11 },
                 ghostText:    "=IF(AND(D2>=80,F2>=80),\"特別推薦\",\"\")",

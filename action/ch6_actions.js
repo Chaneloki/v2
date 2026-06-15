@@ -292,7 +292,10 @@ window.ch6Actions = {
     },
 
     confirm_method_change() {
-        if (this._selectedMethod !== 'avg') return;
+        if (this._selectedMethod !== 'avg') {
+            window.orchestrator.playStorySegment("fail_METHOD_wrong");
+            return;
+        }
         document.getElementById('ch6-pivot-method-modal').style.display = 'none';
         this._pivotState.shouldHighlightA1 = false; this._pivotState.currentMethod = 'avg';
         this._generatePivotData(this._getColConfig());
@@ -314,7 +317,7 @@ window.ch6Actions = {
         
         // 判定是否點選了標頭行中的時間標籤
         if (!((r === 0 || r === 1) && isTimeLabel)) {
-            window.uiManager.showMagicToast(`「請右鍵點選報表標題中的『時間欄位』（如：月份）標籤。」`, "error"); 
+            window.orchestrator.playStorySegment("fail_GROUP_wrong");
             return;
         }
 
