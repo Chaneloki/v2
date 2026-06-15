@@ -650,7 +650,7 @@ class RPGEngine {
             const overlayLayer = document.getElementById('rpg-overlay-layer');
             if (overlayLayer) {
                 overlayLayer.style.transition = 'opacity 0.5s';
-                overlayLayer.style.zIndex = '999';
+                overlayLayer.style.zIndex = '20';
                 overlayLayer.style.opacity = '1';
                 if (line.bg === "black.png") {
                     overlayLayer.style.backgroundColor = '#000';

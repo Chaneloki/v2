@@ -533,7 +533,7 @@ class GridRenderer {
                         // 移除聚焦時全選內容的邏輯，讓瀏覽器原生行為決定游標位置 (點哪就在哪)
                     },
                     onkeydown: (e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === 'Enter' && !e.ctrlKey) {
                             e.preventDefault();
                             e.target.blur(); // 模擬 Excel 按下 Enter 完成編輯
                         } else if (e.key === 'F4') {

@@ -630,6 +630,7 @@ document.addEventListener('keydown', (e) => {
             return; 
         }
         if (e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault();
             if (isCell) {
                 window.ch3Actions.handleCtrlEnter(focused.innerText.trim());
             }
