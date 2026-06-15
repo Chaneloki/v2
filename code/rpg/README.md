@@ -19,11 +19,27 @@
 - **`rpg_practice_mode.js`** — 特訓/練習模式的存檔保護（避免覆寫主線進度）。
 - **`rpg_dialog_ui.js`** — 對話框版面微調與除錯牆顯示。
 - **`story_sleep.js`** — 房間睡覺/章節銜接相關邏輯。
-- **`missions/`** — （規劃中，尚未建立）未來放置任務線（mission line）註冊表與
-  各角色任務資料。
+- **`missions/`** — 自由模式任務線（mission line）：
+  - `mission_engine.js` — 通用任務派發引擎 (`window.missionEngine`)。負責追蹤每條
+    `window.FREE_MISSIONS` 任務目前的階段 (`state.missions[id] = { stage, done }`)，
+    並在 `rpgEngine.interactWith(poi)` 中依 POI 的 `mission`/`missionStages`
+    判斷是否要接管互動、播放對話、或啟動內嵌的 Excel 檢核點
+    (`launchExcelTask`，借用 SIMULATOR 階段，完成後自動還原 RPG 模式)。
+  - `training_records.js` — 第一條任務「訓練營記錄失蹤案」
+    (`window.FREE_MISSIONS["training_records"]`)，示範新任務的資料格式。
+  - **新增任務的方式**：建立 `code/rpg/missions/<id>.js`，內容為
+    `window.FREE_MISSIONS["<id>"] = { id, title, unlocksFlag, <stationKey>: [...對話陣列...], flow: [...] }`。
+    `flow` 是依序執行的階段陣列，每項為
+    `{ stage, lines: "<stationKey>", next, auto?, setFlags? }`（對話階段）
+    或 `{ stage, type: "excel", excelConfig, next }`（Excel 檢核點）。
+    `auto: true` 的階段會在前一階段結束後自動串接執行，不需玩家額外互動。
+    然後在 `maps/mapN_xxx.js` 對應的 POI 上加上
+    `mission: "<id>", missionStages: ["<stageId>", ...]`，
+    並在 `index.html` 加入該檔案的 `<script>` 標籤。
 
 ## 資源位置
 
 - `rpg/bg/` — 地圖背景圖
 - `rpg/charater/` — 主角/可玩角色的行走精靈圖
-- `rpg/npc/` — NPC 圖片
+- `rpg/npc/` — NPC 圖片（含任務 NPC，例如 `npc_instructor.png`、`npc_librarian.png` 等，
+  檔名對應對話資料中的 `a:` 欄位；圖片不存在時頭像會自動隱藏，不影響對話顯示）

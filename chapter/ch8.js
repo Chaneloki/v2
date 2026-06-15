@@ -115,7 +115,7 @@ window.V2_CHAPTERS["80"] = {
             { n: "國王", t: "皇宮備有薄宴，若有招待不周之處，告知下人便是。", a: "king" },
 
             { n: "系統", t: "（宴席開始，各桌官員的話聲像潮水般浮了起來。）", a: "system",
-              bg: "bg8 hall.png", bgm: "Daily.mp3", bgPos: "center", bgZoom: 1.1,
+              bg: "bg8 hall.png", bgm: "daily.mp3", bgPos: "center", bgZoom: 1.1,
               flash: true, flashSFX: "bell.mp3", vol: 0.7 },
             { n: "柔依", t: "（靜靜地站在我們這桌身後的陰影裡，視線冷冽地掃視著場內。）", a: "royi",
               bgPos: "left", bgZoom: 1.5 },

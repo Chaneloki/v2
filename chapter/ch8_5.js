@@ -487,7 +487,7 @@ window.V2_CHAPTERS["85"] = {
               a: "system", se: "book.mp3", vol: 0.9,
               bg: "black.png",
               flash: true, flashSFX: "trans.mp3", vol: 0.7,
-              bgm: "Begin.mp3", bgmFade: "in" },
+              bgm: "begin.mp3", bgmFade: "in" },
             { n: "系統", t: "（世界在瞬間變得沈重且真實。）",
               a: "system" },
             { n: "系統", t: "……",
@@ -746,7 +746,7 @@ window.handleChoiceYes = function() {
     queue.push({ n: "我", t: "殘酷是我的事。但蒙蔽我，是你的事。我不接受被蒙蔽。", a: "me_falling", keepChar: true });
     queue.push({ n: "系統", t: "能量正在極緩慢地積累。每走過一遍過去的路，每復原一份殘存的數據，這世界的結構便會清晰一分。", a: "system", keepChar: true });
     queue.push({ n: "系統", t: "等到足夠的那一天，真相會重啟。", a: "system", keepChar: true });
-    queue.push({ n: "系統", t: "【 第一部自由模式已解鎖 】", a: "system", bg: "black.png", bgm: "Begin.mp3", bgmFade: "in", bgPos: "center", bgZoom: 1.0, bgDur: "8s", screenEffect: "clear", se: "click up.mp3", vol: 0.6 });
+    queue.push({ n: "系統", t: "【 第一部自由模式已解鎖 】", a: "system", bg: "black.png", bgm: "begin.mp3", bgmFade: "in", bgPos: "center", bgZoom: 1.0, bgDur: "8s", screenEffect: "clear", se: "click up.mp3", vol: 0.6 });
     window.uiManager.nextStoryLine();
 };
 

@@ -49,6 +49,7 @@ class RPGEngine {
                         this.sequenceQueue = null;
                         this.state.inDialog = false;
                         this.dialogEl.style.display = 'none';
+                        this.resetSceneOverlay();
                         if (this.sequenceOnComplete) {
                             const cb = this.sequenceOnComplete;
                             this.sequenceOnComplete = null;
@@ -61,7 +62,8 @@ class RPGEngine {
             } else if (e.key === 'Tab') {
                 e.preventDefault();
                 this.switchAvatar();
-            } else if (e.key.toLowerCase() === 'd' && !this.state.inDialog) {
+            } else if (e.key === 'F9' && !this.state.inDialog) {
+                e.preventDefault();
                 this.toggleDebug();
             }
         });
@@ -439,6 +441,8 @@ class RPGEngine {
     }
 
     interactWith(poi) {
+        if (poi.mission && window.missionEngine?.tryInteract(poi)) return;
+
         const state = window.orchestrator?.state || {};
         const isFreeMode = state.currentChapter === '85' || state.currentChapter === 85;
 
@@ -621,9 +625,16 @@ class RPGEngine {
         // 頭像邏輯
         if (this.dAvatar) {
             if (line.a && line.a !== "system" && line.a !== "me" && line.a !== "head") {
-                this.dAvatar.src = `Charater/${line.a}.png`; // 載入角色圖片
+                if (line.a.startsWith("npc_")) {
+                    this.dAvatar.onerror = () => { this.dAvatar.style.display = 'none'; this.dAvatar.onerror = null; };
+                    this.dAvatar.src = `rpg/npc/${line.a}.png`;
+                } else {
+                    this.dAvatar.onerror = null;
+                    this.dAvatar.src = `Charater/${line.a}.png`; // 載入角色圖片
+                }
                 this.dAvatar.style.display = 'block';
             } else {
+                this.dAvatar.onerror = null;
                 this.dAvatar.style.display = 'none';
             }
         }
@@ -634,15 +645,21 @@ class RPGEngine {
             this.dialogEl.style.display = 'block'; // 修正: 原本是 flex 導致排版錯亂
         }
 
-        // 若有 bg 要求 (例如 black.png 讓畫面變黑)
+        // 若有 bg 要求：切換場景圖片 (例如 rpg/bg/library.png)，或 black.png 讓畫面變黑
         if (line.bg) {
-            if (line.bg === "black.png") {
-                const overlayLayer = document.getElementById('rpg-overlay-layer');
-                if (overlayLayer) {
-                    overlayLayer.style.transition = 'opacity 0.5s';
-                    overlayLayer.style.zIndex = '999';
+            const overlayLayer = document.getElementById('rpg-overlay-layer');
+            if (overlayLayer) {
+                overlayLayer.style.transition = 'opacity 0.5s';
+                overlayLayer.style.zIndex = '999';
+                overlayLayer.style.opacity = '1';
+                if (line.bg === "black.png") {
                     overlayLayer.style.backgroundColor = '#000';
-                    overlayLayer.style.opacity = '1';
+                    overlayLayer.style.backgroundImage = 'none';
+                } else {
+                    overlayLayer.style.backgroundColor = '';
+                    overlayLayer.style.backgroundImage = `url('${line.bg}')`;
+                    overlayLayer.style.backgroundSize = 'cover';
+                    overlayLayer.style.backgroundPosition = 'center';
                 }
             }
         }
@@ -664,6 +681,7 @@ class RPGEngine {
                         this.sequenceQueue = null;
                         this.state.inDialog = false;
                         this.dialogEl.style.display = 'none';
+                        this.resetSceneOverlay();
                         if (this.sequenceOnComplete) {
                             const cb = this.sequenceOnComplete;
                             this.sequenceOnComplete = null;
@@ -675,12 +693,27 @@ class RPGEngine {
         }
     }
 
+    // 清除 playRPGSequence 期間透過 line.bg 切換的場景圖層，還原為地圖背景
+    resetSceneOverlay() {
+        const overlayLayer = document.getElementById('rpg-overlay-layer');
+        if (overlayLayer) {
+            overlayLayer.style.transition = 'opacity 0.4s ease';
+            overlayLayer.style.opacity = '0';
+            setTimeout(() => {
+                overlayLayer.style.zIndex = '20';
+                overlayLayer.style.backgroundImage = 'none';
+                overlayLayer.style.backgroundColor = '';
+            }, 400);
+        }
+    }
+
     closeDialog() {
         this.dialogEl.style.display = 'none';
         setTimeout(() => { this.state.inDialog = false; }, 100);
-        
+
         if (this.sequenceQueue) {
             this.sequenceQueue = null;
+            this.resetSceneOverlay();
             if (this.sequenceOnComplete) {
                 const cb = this.sequenceOnComplete;
                 this.sequenceOnComplete = null;

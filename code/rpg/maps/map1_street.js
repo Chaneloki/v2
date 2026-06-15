@@ -93,6 +93,7 @@ window.RPG_MAPS = Object.assign(window.RPG_MAPS || {}, {
 
       {
         id: "door_lab", name: "研究所", icon: "🧪", x: 2633, y: 1250, w: 100, h: 80,
+        mission: "training_records", missionStages: ["lab_door"],
         action: "TELEPORT", targetMap: "secret_lab", targetX: 512, targetY: 800, requiresFlag: "unlocked_lab"
       }
     ]
@@ -135,6 +136,7 @@ window.RPG_MAPS = Object.assign(window.RPG_MAPS || {}, {
       },
       {
         id: "complete", name: "結算與佈告欄", icon: "📜", x: 1032, y: 236, w: 172, h: 118,
+        mission: "training_records", missionStages: ["counter_pickup", "counter_complete"],
         desc: "「佈告欄上貼滿了各項任務的懸賞令與結算中心，辛苦了，這是您的報酬。」"
       },
       {
@@ -207,6 +209,7 @@ window.RPG_MAPS = Object.assign(window.RPG_MAPS || {}, {
     pois: [
       {
         id: "instructor", name: "訓練營教官", icon: "⚔️", x: 720, y: 256, w: 262, h: 85,
+        mission: "training_records", missionStages: ["training_arrive", "training_return"],
         desc: "「欲速則不達，勇者大人。練習是掌握試算表禁術的唯一捷徑。」<br><br>👉 [系統提示] 這裡可以進行挑戰關卡的複習與自主練習。",
         action: "EVAL", evalCode: "window.openTrainingMenu()"
       },
@@ -375,6 +378,7 @@ window.RPG_MAPS = Object.assign(window.RPG_MAPS || {}, {
     pois: [
       {
         id: "librarian", name: "圖書館員", icon: "📚", x: 720, y: 300, w: 240, h: 132,
+        mission: "training_records", missionStages: ["library_arrive", "library_format_arrive"],
         desc: "「歡迎來到皇家圖書館，沿著紅地毯走就不會迷路了。」"
       },
       {
@@ -396,6 +400,32 @@ window.RPG_MAPS = Object.assign(window.RPG_MAPS || {}, {
       {
         id: "exit_library", name: "離開圖書館", icon: "🔙", x: 768, y: 864, w: 192, h: 96,
         action: "TELEPORT", targetMap: "street", targetX: 1325, targetY: 1300
+      }
+    ]
+  },
+
+  // ----------------------------------------------------
+  // 9. 神秘研究所大廳 (Secret Lab) - 佔位地圖
+  // 目前僅供「訓練營記錄失蹤案」結算後永久通行使用，
+  // 內部探索屬於未來任務線，之後可替換 bg 並補上更多 POI。
+  // ----------------------------------------------------
+  "secret_lab": {
+    name: "神秘研究所",
+    bg: "rpg/bg/black.png",
+    bgm: "conspiracy.mp3",
+    width: 1024,
+    height: 1024,
+    spawnPoint: { x: 512, y: 800 },
+    walls: [
+      { id: "bound_top", x: 0, y: 0, w: 1024, h: 20 },
+      { id: "bound_bot", x: 0, y: 1004, w: 1024, h: 20 },
+      { id: "bound_left", x: 0, y: 0, w: 20, h: 1024 },
+      { id: "bound_right", x: 1004, y: 0, w: 20, h: 1024 }
+    ],
+    pois: [
+      {
+        id: "exit_secret_lab", name: "離開研究所", icon: "🔙", x: 450, y: 900, w: 120, h: 80,
+        action: "TELEPORT", targetMap: "street", targetX: 2633, targetY: 1300
       }
     ]
   }
