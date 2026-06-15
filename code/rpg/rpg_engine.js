@@ -61,6 +61,8 @@ class RPGEngine {
             } else if (e.key === 'Tab') {
                 e.preventDefault();
                 this.switchAvatar();
+            } else if (e.key.toLowerCase() === 'd' && !this.state.inDialog) {
+                this.toggleDebug();
             }
         });
 
@@ -221,21 +223,6 @@ class RPGEngine {
                 
                 // 將資料綁定到元素上，方便迴圈讀取
                 el._poiData = poi;
-                this.worldEl.appendChild(el);
-            });
-        }
-
-        // 生成獨立精靈圖 (例如 NPC，不受 POI 隱藏影響)
-        if (this.mapData.sprites) {
-            this.mapData.sprites.forEach(sprite => {
-                const el = document.createElement('img');
-                el.src = sprite.img;
-                el.style.position = 'absolute';
-                el.style.left = `${sprite.x}px`;
-                el.style.top = `${sprite.y}px`;
-                if (sprite.w) el.style.width = `${sprite.w}px`;
-                if (sprite.h) el.style.height = `${sprite.h}px`;
-                el.style.pointerEvents = 'none'; // 讓滑鼠可以穿透，不影響 POI 互動
                 this.worldEl.appendChild(el);
             });
         }

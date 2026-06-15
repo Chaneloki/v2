@@ -39,8 +39,11 @@ class GameState {
         this.editingCell = null; // [新增]: 追蹤當前正在編輯的儲存格 (用於公式點選)
         
         // [新增]: 角色切換狀態
-        this.unlockedAvatars = ['main']; 
+        this.unlockedAvatars = ['main'];
         this.currentAvatar = 'main';
+
+        // [新增]: 自由模式任務進度 { [missionId]: { stage, done } }
+        this.missions = {};
     }
 
     get gridData() {
@@ -256,6 +259,7 @@ class Orchestrator {
                 flags: this.state.flags,
                 unlockedAvatars: this.state.unlockedAvatars,
                 currentAvatar: this.state.currentAvatar,
+                missions: this.state.missions,
                 timestamp: new Date().getTime()
             };
             
@@ -356,6 +360,7 @@ class Orchestrator {
             if (data.flags) this.state.flags = data.flags;
             if (data.unlockedAvatars) this.state.unlockedAvatars = data.unlockedAvatars;
             if (data.currentAvatar) this.state.currentAvatar = data.currentAvatar;
+            if (data.missions) this.state.missions = data.missions;
 
             await this.loadChapter(this.state.currentChapter);
             
