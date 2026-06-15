@@ -3,10 +3,11 @@
  */
 
 UIManager.prototype.handlePlayStory = function({ type, data, onComplete }) {
-        this.storyQueue = data;
-        
         // [關鍵優化]: 無論是 PHASE 還是 SEGMENT，讀檔時都恢復精確行號
+        // 必須在覆寫 storyQueue 前比較，否則 isSameStory 永遠是 true (與自己比較)
         const isSameStory = (this.storyQueue === data);
+        this.storyQueue = data;
+
         if (window.orchestrator._isLoadingFromSave) {
             this.currentStoryIndex = window.orchestrator.state.currentStoryIndex || 0;
             console.log(`🎬 [UIManager] 偵測到存檔斷點，恢復第 ${this.currentStoryIndex} 行`);
