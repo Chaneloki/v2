@@ -315,10 +315,10 @@ class UIManager {
             }
         } else {
             gl.style.display = 'none';
-            // 提示玩家需要按住 Shift
-            const pt = document.getElementById('p-t');
-            if (pt && !pt.innerText.includes('Shift')) {
-                pt.innerHTML = `<span style="color:#ff4757">「咦？沒按住 Shift 的話，這不是交換空間，是『取代術』啊！」</span>`;
+            // 提示玩家需要按住 Shift（由賽爾提醒，不是主角自白）
+            const et = document.getElementById('e-t');
+            if (et && !et.innerText.includes('Shift')) {
+                et.innerHTML = `<span style="color:#ff4757">咦？沒按住 Shift 的話，這不是交換空間，是『取代術』啊！記得先按住 Shift 再拖曳喔！</span>`;
             }
         }
     }

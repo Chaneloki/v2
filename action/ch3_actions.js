@@ -525,12 +525,33 @@ window.ch3Actions = {
         }
     },
 
+    // [新增]: 高亮活動格正上方的參照格，模擬 Excel =↑ 的視覺回饋
+    _highlightAboveCell: (cellEl) => {
+        document.querySelectorAll('.referencing').forEach(el => el.classList.remove('referencing'));
+        if (!cellEl || !cellEl.id) return;
+        const match = cellEl.id.match(/^([A-Z]+)(\d+)$/);
+        if (!match) return;
+        const rowNum = parseInt(match[2]);
+        if (rowNum <= 1) return;
+        const aboveEl = document.getElementById(match[1] + (rowNum - 1));
+        if (!aboveEl) return;
+        aboveEl.classList.add('referencing');
+        // 離開格子時自動清除
+        cellEl.addEventListener('blur', () => {
+            aboveEl.classList.remove('referencing');
+        }, { once: true });
+    },
+
+    _clearReferencing: () => {
+        document.querySelectorAll('.referencing').forEach(el => el.classList.remove('referencing'));
+    },
+
     handleCtrlEnter: (val) => {
         const state = window.orchestrator.state;
         const data = state.gridData;
         const range = state.selectedRange;
         const multi = state.multiSelectedCells || [];
-        
+
         // [反向教學]: 若未選取多個單元格，提示需要 Ctrl + Enter
         const hasRange = range && (range.minRow !== range.maxRow || range.minCol !== range.maxCol);
         const hasMulti = multi.length > 1;
@@ -539,7 +560,7 @@ window.ch3Actions = {
             window.orchestrator.playStorySegment('fail_EMPTY_no_ctrl_enter');
             return;
         }
-        
+
         const normVal = val.toUpperCase().replace('＝', '=');
         if (normVal === "=↑" || normVal === "=UP") {
             if (hasMulti) {
@@ -559,6 +580,7 @@ window.ch3Actions = {
                     }
                 }
             }
+            window.ch3Actions._clearReferencing();
             if (window.gridRenderer) window.gridRenderer.render();
             window.orchestrator.validateStateChange({ type: 'ACTION', id: 'FILL_DONE' });
         } else {
@@ -642,11 +664,15 @@ document.addEventListener('keydown', (e) => {
             if (text === '=' || text === '＝') {
                 e.preventDefault();
                 let symbol = '';
-                if (e.key === 'ArrowUp') symbol = '↑';
+                if (e.key === 'ArrowUp') {
+                    symbol = '↑';
+                    // [新增]: 高亮正上方格，模擬 Excel 公式參照視覺回饋
+                    requestAnimationFrame(() => window.ch3Actions._highlightAboveCell(focused));
+                }
                 if (e.key === 'ArrowDown') symbol = '↓';
                 if (e.key === 'ArrowLeft') symbol = '←';
                 if (e.key === 'ArrowRight') symbol = '→';
-                
+
                 focused.innerText = text + symbol;
                 
                 // 將光標移至末尾
