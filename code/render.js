@@ -487,10 +487,13 @@ class GridRenderer {
                                 "IFS":           "IFS",
                                 "IF_AND":        "AND"
                             };
-                            // 只把已解鎖技能對應的函數放入白名單
+                            // 已解鎖技能 + 當前任務正在教的技能，都放入白名單
+                            // （讓玩家在任務開始時就能看到該函數，而不是完成後才顯示）
                             const _unlocked = state.unlockedSkills || [];
+                            const _curTask = state.activeChapterModule?.simulator?.tasks?.[state.currentTaskIndex];
+                            const _curSkill = _curTask?.unlockSkillId;
                             const _allowedFuncs = Object.entries(_skillFuncMap)
-                                .filter(([skillId]) => _unlocked.includes(skillId))
+                                .filter(([skillId]) => _unlocked.includes(skillId) || skillId === _curSkill)
                                 .map(([, funcName]) => funcName);
 
                             const upperVal = cleanVal.toUpperCase().substring(1);
