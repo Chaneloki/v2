@@ -528,7 +528,12 @@ class GridRenderer {
                         const sheetFormulas = state.formulas?.[state.activeSheetId];
                         if (sheetFormulas && sheetFormulas[cellId]) {
                             e.target.textContent = sheetFormulas[cellId];
+                            // [修復]: 公式格還原後強制靠左，防止數字格 textAlign:right 導致遊標跑到右側與 overlay 錯位
+                            e.target.style.textAlign = 'left';
                         }
+                        // [修復]: focus 時移除 ghost text，避免提示字與遊標重疊造成視覺混亂
+                        e.target.classList.remove('has-ghost-text');
+                        e.target.removeAttribute('data-ghost');
 
                         // 定位並顯示 Syntax Overlay（此時 textContent 已是公式字串）
                         if (this.syntaxOverlay) {
@@ -590,10 +595,10 @@ class GridRenderer {
                             if (sel.rangeCount > 0) {
                                 const range = sel.getRangeAt(0);
                                 if (range.startContainer === e.target || range.startContainer.parentNode === e.target) {
-                                    // [修復]: 公式優先從 state.formulas 讀取（onfocus 後 data 可能仍是計算結果），
-                                    // 其次才 fallback 到 data[rIdx][cIdx]，確保 F4 在「重新點開已計算格」時也能運作。
+                                    // [修復]: 永遠從 e.target.textContent（即時 DOM）讀取公式，
+                                    // state.formulas 只在 onblur 更新，在輸入期間會是舊值，導致 F4 offset 對不上。
                                     const _sheetForms = state.formulas?.[state.activeSheetId];
-                                    const text = (_sheetForms?.[cellId] ?? data[rIdx][cIdx] ?? '').toString();
+                                    const text = (e.target.textContent || _sheetForms?.[cellId] || data[rIdx][cIdx] || '').toString();
                                     // offset: 若 cursor 在文字節點，取字元 offset；否則 0。
                                     const offset = (range.startContainer.nodeType === Node.TEXT_NODE)
                                         ? range.startOffset
@@ -629,6 +634,10 @@ class GridRenderer {
                                         const newText = text.substring(0, start) + nextRef + text.substring(end);
                                         e.target.textContent = newText;
                                         data[rIdx][cIdx] = newText;
+                                        // [修復]: 同步更新 state.formulas，讓連續按 F4 時每次都能讀到最新公式
+                                        if (!state.formulas) state.formulas = {};
+                                        if (!state.formulas[state.activeSheetId]) state.formulas[state.activeSheetId] = {};
+                                        state.formulas[state.activeSheetId][cellId] = newText;
 
                                         // [修復]: 重新確保 syntax-active 與 Overlay 可見，
                                         // 防止 textContent 賦值或 sel.removeAllRanges 在某些瀏覽器

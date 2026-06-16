@@ -14,8 +14,8 @@ window.ch2Actions = {
         const range = state.selectedRange;
         const chapterId = state.currentChapter.toString();
 
-        // 1. 驗證選取範圍是否正確 (A1:E1 -> r:0, c:0-4)
-        if (!range || range.minRow !== 0 || range.maxRow !== 0 || range.minCol !== 0 || range.maxCol !== 4) {
+        // 1. 驗證選取範圍：必須從 A1 開始 (minCol=0, minRow=0)，且至少延伸到 E 欄 (maxCol>=4)，允許右側超出
+        if (!range || range.minCol !== 0 || range.minRow !== 0 || range.maxCol < 4) {
             window.orchestrator.playStorySegment('fail_MERGE_wrong_range');
             return;
         }
