@@ -265,6 +265,7 @@ UIManager.prototype.updateVisuals = function(line) {
             'fairy_rpg': 'Charater/fairy rpg.png',
             'glea_rpg': 'Charater/glea rpg.png',
             'miro_rpg': 'Charater/miro rpg.png',
+            'chate_rpg': 'Charater/chate rpg.png',
             'me_falling': 'Charater/me_falling.png'
         };
 

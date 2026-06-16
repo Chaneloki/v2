@@ -332,6 +332,11 @@
                     class="dev-opt"
                     style="width:100%; text-align:center; background:#ffeeba; color:#856404; border-color:#ffeeba;">重置「無所謂了」記憶</button>
             </div>
+            <div style="margin-top:8px;">
+                <button onclick="window.uiManager.clearTeleportUnlock()"
+                    class="dev-opt"
+                    style="width:100%; text-align:center; background:#f8d7da; color:#721c24; border-color:#f5c6cb;">🔒 清除傳送陣解鎖記憶</button>
+            </div>
             <button onclick="window.uiManager.openDevMenu()"
                 style="margin-top:20px; width:100%; padding:10px; background:#eee; border:none; border-radius:5px; cursor:pointer;">關閉</button>
         </div>
@@ -1120,7 +1125,19 @@
             // [新增] 擴充空間傳送相關方法
             if (window.uiManager) {
                 window.uiManager.openTeleportModal = function () {
-                    document.getElementById('teleport-modal').style.display = 'flex';
+                    const UNLOCK_KEY = 'magic_excel_teleport_unlocked';
+                    if (localStorage.getItem(UNLOCK_KEY) === '1') {
+                        document.getElementById('teleport-modal').style.display = 'flex';
+                        return;
+                    }
+                    const pw = prompt('🔒 空間傳送陣已封印\n請輸入解封密碼以進入自由探索模式：');
+                    if (pw === null) return;
+                    if (pw === '7338') {
+                        localStorage.setItem(UNLOCK_KEY, '1');
+                        document.getElementById('teleport-modal').style.display = 'flex';
+                    } else {
+                        alert('❌ 密碼錯誤，空間傳送陣拒絕你的進入。');
+                    }
                 };
                 window.uiManager.teleportTo = function (mapId) {
                     // 關閉傳送彈窗
