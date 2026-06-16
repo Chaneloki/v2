@@ -545,6 +545,18 @@ class GridRenderer {
                                 const newWidth = Math.max(150, textWidth + 20) + 'px';
                                 e.target.style.width = newWidth;
                                 this.syntaxOverlay.style.width = newWidth;
+                                // [修復]: textContent 賦值後瀏覽器會全選文字，選取藍底會透過透明文字顯現。
+                                // 用 rAF 把游標移到公式末端，消除選取背景。
+                                requestAnimationFrame(() => {
+                                    const sel = window.getSelection();
+                                    if (sel && e.target.firstChild && e.target.firstChild.nodeType === Node.TEXT_NODE) {
+                                        const r = document.createRange();
+                                        r.setStart(e.target.firstChild, e.target.firstChild.length);
+                                        r.collapse(true);
+                                        sel.removeAllRanges();
+                                        sel.addRange(r);
+                                    }
+                                });
                             } else {
                                 e.target.classList.remove('syntax-active');
                                 this.syntaxOverlay.innerHTML = "";

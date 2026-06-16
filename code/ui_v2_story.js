@@ -14,7 +14,8 @@ UIManager.prototype.handlePlayStory = function({ type, data, onComplete }) {
             
             // [新增]: 讀檔時必須向前掃描以恢復背景與環境
             this.syncVisualsToCurrentIndex();
-        } else if (isSameStory && this.currentStoryIndex > 0 && window.orchestrator.state.currentStoryIndex > 0) {
+        } else if (type === 'PHASE' && isSameStory && this.currentStoryIndex > 0 && window.orchestrator.state.currentStoryIndex > 0) {
+            // [修復]: 僅 PHASE（全螢幕過場）才保留行號，SEGMENT（側欄提示/錯誤警告）每次都從頭播放
             console.warn(`🎬 [UIManager] 攔截重複播放觸發，保留目前行號: ${this.currentStoryIndex}`);
         } else {
             this.currentStoryIndex = 0;
