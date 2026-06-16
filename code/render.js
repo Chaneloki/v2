@@ -577,8 +577,13 @@ class GridRenderer {
                             if (sel.rangeCount > 0) {
                                 const range = sel.getRangeAt(0);
                                 if (range.startContainer === e.target || range.startContainer.parentNode === e.target) {
-                                    const offset = range.startOffset;
-                                    const text = e.target.textContent;
+                                    // [修復]: 從 data 讀取公式而非 textContent，避免 IME 組字或瀏覽器注入
+                                    // 的隱藏 span 使 textContent 包含雜訊，導致公式字串被污染。
+                                    const text = (data[rIdx][cIdx] ?? '').toString();
+                                    // offset: 若 cursor 在文字節點，取字元 offset；否則 0。
+                                    const offset = (range.startContainer.nodeType === Node.TEXT_NODE)
+                                        ? range.startOffset
+                                        : 0;
                                     const regex = /\$?[A-Za-z]+\$?\d+/g;
                                     let match;
                                     let targetMatch = null;
@@ -600,19 +605,25 @@ class GridRenderer {
                                         const isRowAbs = rowMatch[0].startsWith('$');
                                         const col = colMatch[1].toUpperCase();
                                         const row = rowMatch[1];
-                                        
+
                                         let nextRef = ref;
                                         if (!isColAbs && !isRowAbs) nextRef = `$${col}$${row}`;
                                         else if (isColAbs && isRowAbs) nextRef = `${col}$${row}`;
                                         else if (!isColAbs && isRowAbs) nextRef = `$${col}${row}`;
                                         else nextRef = `${col}${row}`;
-                                        
+
                                         const newText = text.substring(0, start) + nextRef + text.substring(end);
                                         e.target.textContent = newText;
                                         data[rIdx][cIdx] = newText;
 
-                                        // [新增]: F4 切換後重新同步 Syntax Overlay 寬度，避免公式變長後超出框外卻沒撐開
+                                        // [修復]: 重新確保 syntax-active 與 Overlay 可見，
+                                        // 防止 textContent 賦值或 sel.removeAllRanges 在某些瀏覽器
+                                        // 觸發 blur → syntax-active 被移除 → 儲存格文字與 Overlay 雙重顯示造成亂碼。
                                         if (this.syntaxOverlay && newText.startsWith('=')) {
+                                            e.target.classList.add('syntax-active');
+                                            this.syntaxOverlay.style.display = 'block';
+                                            this.syntaxOverlay.style.gridRow = e.target.style.gridRow;
+                                            this.syntaxOverlay.style.gridColumn = e.target.style.gridColumn;
                                             this.syntaxOverlay.innerHTML = this._highlightFormula(newText);
                                             const textWidth = this.syntaxOverlay.scrollWidth;
                                             const newWidth = Math.max(150, textWidth + 20) + 'px';
@@ -620,13 +631,17 @@ class GridRenderer {
                                             this.syntaxOverlay.style.width = newWidth;
                                         }
 
-                                        const newOffset = start + nextRef.length;
+                                        const newOffset = Math.min(start + nextRef.length, newText.length);
                                         const newRange = document.createRange();
-                                        if (e.target.firstChild) {
+                                        if (e.target.firstChild && e.target.firstChild.nodeType === Node.TEXT_NODE) {
                                             newRange.setStart(e.target.firstChild, newOffset);
                                             newRange.setEnd(e.target.firstChild, newOffset);
                                             sel.removeAllRanges();
                                             sel.addRange(newRange);
+                                            // [修復]: sel.removeAllRanges 可能在部分瀏覽器引發 blur，
+                                            // 在 addRange 後明確補回 syntax-active 與 overlay 狀態。
+                                            e.target.classList.add('syntax-active');
+                                            if (this.syntaxOverlay) this.syntaxOverlay.style.display = 'block';
                                         }
                                     }
                                 }
