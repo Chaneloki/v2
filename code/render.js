@@ -133,6 +133,37 @@ class GridRenderer {
         });
 
         document.addEventListener('mouseup', stopScroll);
+
+        // [修復]: 滑鼠往上拖出 wrapper 範圍時，依據 X 座標推算欄位，維持橫向選取不中斷
+        document.addEventListener('mousemove', (e) => {
+            const state = window.orchestrator.state;
+            if (!state.isSelecting || state.formulaRangeSelection || !state.selectedCell) return;
+            const rect = wrapper.getBoundingClientRect();
+            if (e.clientY >= rect.top) return; // 還在 wrapper 內，交給 cell onmouseover 處理
+            // 游標已飄到 wrapper 上方：用 X 位置找最近的欄頭
+            const els = document.elementsFromPoint(e.clientX, rect.top + 4);
+            const header = els.find(el => el.classList.contains('l-head') && el.classList.contains('letter'));
+            if (!header) return;
+            const colIdx = [...document.querySelectorAll('.l-head.letter')].indexOf(header);
+            if (colIdx < 0) return;
+            const start = state.selectedCell;
+            const newRange = {
+                minRow: Math.min(start.r, 0),
+                maxRow: Math.max(start.r, 0),
+                minCol: Math.min(start.c, colIdx),
+                maxCol: Math.max(start.c, colIdx)
+            };
+            if (!state.selectedRange ||
+                state.selectedRange.minCol !== newRange.minCol ||
+                state.selectedRange.maxCol !== newRange.maxCol) {
+                state.selectedRange = newRange;
+                this._updateVisuals(
+                    window.orchestrator.state.gridData,
+                    Object.keys(window.orchestrator.state.gridData[0] || {}).length,
+                    0, window.orchestrator.state.gridData.length
+                );
+            }
+        });
     }
 
     /**
