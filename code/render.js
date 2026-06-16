@@ -697,10 +697,13 @@ class GridRenderer {
                         }
                         
                         // [修復]: 若玩家只是點開有公式的格子並直接按下 Enter（沒有修改），則恢復原本計算好的數值，不要變成公式字串
+                        // sameFormula=true 時仍需呼叫 handleCellEdit，讓 ch7/ch8 的錯誤公式可以反覆觸發提示
+                        let sameFormula = false;
                         if (newVal.startsWith('=') && newVal === existingFormula) {
                             e.target.textContent = oldVal;
                             data[rIdx][cIdx] = oldVal;
-                            didChange = false; // 強制標記為無變動，跳過 handleCellEdit
+                            didChange = false; // 無真正變動，跳過 saveGame
+                            sameFormula = true;
                         } else {
                             data[rIdx][cIdx] = newVal;
                         }
@@ -722,9 +725,9 @@ class GridRenderer {
                             }
                         }, 200);
 
-                        if (didChange) {
+                        if (didChange || sameFormula) {
                             window.orchestrator.handleCellEdit(rIdx, cIdx, oldVal, newVal);
-                            window.orchestrator.saveGame();
+                            if (didChange) window.orchestrator.saveGame();
                         }
                     },
                     onmousedown: (e) => {

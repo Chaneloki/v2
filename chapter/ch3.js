@@ -289,6 +289,11 @@ window.V2_CHAPTERS["30"] = {
             { n: "賽爾", t: "「只搜尋不標記的話，一千行名冊還是會看花眼的！點開右下角的【選項 >>】，在格式裡設定一個醒目的綠色吧！」", a: "fairy" , se: "paper down.mp3", vol: 0.8 },
             { n: "我", t: "「喔對，標記出來才好分類送人回家。」", a: "me" }
         ],
+        before_EMPTY: [
+            { n: "賽爾", t: "「少年，在使用特殊定位之前，先點選任意一個有資料的儲存格，讓游標停在表格裡面喔！」", a: "fairy" },
+            { n: "我", t: "「先點一個格子再定位？為什麼？」", a: "me" },
+            { n: "賽爾", t: "「因為魔導書需要知道你在哪一張表——游標在表格裡，它才知道要對哪份名冊施法！」", a: "fairy" }
+        ],
         fail_EMPTY_wrong_formula: [
             { n: "賽爾", t: "「公式下錯了！我們要把上面的日期抓下來，正確的禁語是『=↑』或是輸入『=』後按『↑』方向鍵！」", a: "fairy" },
             { n: "我", t: "「公式這東西還真是嚴謹啊……」", a: "me" }
@@ -355,7 +360,8 @@ window.V2_CHAPTERS["30"] = {
             },
             {
                 id: "EMPTY_TASK",
-                tutorHint: "【任務：特殊定位與多重填充】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：1️⃣ 按下尋找後按【到...】 → 【特殊定位】 → 【空格】。<br>2️⃣ 在 E3 輸入『=↑』。<br>3️⃣ 按下 [[Ctrl + Enter|gold]] 瞬間填滿！</span>",
+                storySegmentBefore: "before_EMPTY",
+                tutorHint: "【任務：特殊定位與多重填充】<br><br><span style='color:var(--text-grey); font-size:13px'>⚠️ 請先點選任意一個有資料的儲存格！<br>▍ 目標：1️⃣ 按下尋找後按【到...】 → 【特殊定位】 → 【空格】。<br>2️⃣ 在 E3 輸入『=↑』。<br>3️⃣ 按下 [[Ctrl + Enter|gold]] 瞬間填滿！</span>",
                 playerText: "【 時空斷層 】<br>📌 難題：名冊理得差不多了，但最後還有個大麻煩：『報到日期』這一欄。驛站的人潮是成批到達的，前任書記只記了每一批領頭人的日期，後面的隨行人員全空著。<br>⚠️ 警告：如果日期不準，物資就沒法按天核對。<br>💡 技巧：特殊定位抓住所有空白，加上相對引用瞬間填滿！",
                 unlockBtnId: "find_group",
                 unlockSkillId: "EMPTY",

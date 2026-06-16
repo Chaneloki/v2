@@ -364,6 +364,10 @@ window.V2_CHAPTERS["35"] = {
             { n: "我", t: "（我尷尬地停下動作，忘記設定格式標記了。）", a: "me" }
         ],
 
+        before_EMPTY: [
+            { n: "米羅", t: "隊長，用特殊定位之前，要先點一個有資料的儲存格喔，不然系統不知道你要操作哪張表。", a: "miro" },
+            { n: "我", t: "（我點了 A2 儲存格）對，先讓游標停在表格裡面。", a: "me" }
+        ],
         fail_EMPTY_no_ctrl_enter: [
             { n: "米羅", t: "隊長，你竟然在那裡一格一格地填寫啊，你真的很有耐心。", a: "miro" },
             { n: "我", t: "（我的手微微抖了一下） 我這並不是在練習耐力修煉。", a: "me" }
@@ -471,7 +475,8 @@ window.V2_CHAPTERS["35"] = {
             },
             {
                 id: "EMPTY_TASK",
-                tutorHint: "【任務：定位空格】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：定位空格 ➡️ 輸入 =↑ ➡️ 最後按下 Ctrl + Enter，一次性填滿空白戶號</span>",
+                storySegmentBefore: "before_EMPTY",
+                tutorHint: "【任務：定位空格】<br><br><span style='color:var(--text-grey); font-size:13px'>⚠️ 請先點選任意一個有資料的儲存格！<br>▍ 目標：定位空格 ➡️ 輸入 =↑ ➡️ 最後按下 Ctrl + Enter，一次性填滿空白戶號</span>",
                 playerText: "【 實戰演練 】<br>📌 內心OS：戶號欄有一半是空的。發放糧食憑條是按戶點算的，同一戶的人要有相同戶號。這些空白應該和上面同一批人的戶號一樣。我記得在第三章用過一個巧妙辦法，可以一口氣填完。<br>💡 技巧：這是一場無引導的試煉，請回憶過去的知識。",
                 unlockBtnId: "find_group",
                 unlockSkillId: "EMPTY",
