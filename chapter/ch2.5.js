@@ -251,6 +251,10 @@ window.V2_CHAPTERS["25"] = {
         "success_SLASH": [{ n: "系統", t: "空間禁術：儲存格[[斜線|excel]] 切割完成。因果兩分。", a: "system" }],
         "success_COLOR": [{ n: "系統", t: "色彩魔法：[[填滿色彩|excel]] 噴塗完成。視覺重心已鎖定。", a: "system" }],
         "success_FORMAT": [{ n: "系統", t: "權能拓印：[[格式刷|excel]] 複製完成。美學與維度同步。", a: "system" }],
+        "fail_FORMAT_wrong_target": [
+            { n: "系統", t: "拓印失敗。格式魔力已擴散至錯誤的次元座標。", a: "system" },
+            { n: "賽爾", t: "「目標應該是 [[A4:E10|gold]]！重新框選那個範圍，把樣式蓋印上去！」", a: "fairy" }
+        ],
         "success_NUMBER": [{ n: "系統", t: "最終武裝：[[自訂數字格式|excel]] 著裝完畢。數值已具備神性。", a: "system" }],
         "success_SUM": [{ n: "系統", t: "終極結算：[[自動加總|excel]] 運算完成。數據之長河歸於真理。", a: "system" }]
     },

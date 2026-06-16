@@ -295,7 +295,7 @@ UIManager.prototype.updateVisuals = function(line) {
         if (this.currentStoryType === 'PHASE') {
             document.querySelectorAll('.char-img').forEach(img => {
                 img.classList.remove('char-active');
-                img.classList.remove('fairy-appear'); // 清除舊動畫
+                img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake'); // [Fix] 清除所有殘留動畫
             });
 
             // [關鍵點]: 記錄並更新目前是否為 CG 模式

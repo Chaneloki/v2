@@ -135,7 +135,11 @@ window.V2_CHAPTERS["15"] = {
         success_SWAP: [{ n: "賽爾", t: "居然還記得怎麼對調欄位，本仙子對你有點刮目相看了。", a: "fairy" }],
         success_S: [{ n: "賽爾", t: "開闢新分頁的動作挺熟練的，繼續保持。", a: "fairy" }],
         success_FILL: [{ n: "賽爾", t: "自動填滿這招用得不錯，看來你掌握了訣竅。", a: "fairy" }],
-        success_DATE: [{ n: "賽爾", t: "最後的日期也順利蓋上了！這下子大功告成啦！", a: "fairy" }]
+        success_DATE: [{ n: "賽爾", t: "最後的日期也順利蓋上了！這下子大功告成啦！", a: "fairy" }],
+        fail_DATE_chinese_input: [
+            { n: "賽爾", t: "「等等！你是不是用了中文輸入法的分號？那個『；』跟魔法咒文的『;』長得像，卻是兩種完全不同的符號！」", a: "fairy" },
+            { n: "賽爾", t: "「記得先切換回英文輸入法，再按下 [[Ctrl + ;|gold]] 才能正確施展日期禁術喔！」", a: "fairy" }
+        ]
     },
 
     initialGridData: generateCh1_5Data(),

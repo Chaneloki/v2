@@ -507,15 +507,18 @@ window.ch3Actions = {
                     }
                 };
 
-                // 立即聚焦，再於 30ms 後補一次 (短於 rAF 的 ~16ms 後的 toast/按鈕殘留焦點)
-                triggerFocus();
-                setTimeout(triggerFocus, 30);
+                // [Fix] 用 rAF 確保 render() 已完成才聚焦，避免 scroll 二次 render 破壞元素
+                requestAnimationFrame(() => {
+                    triggerFocus();
+                    setTimeout(triggerFocus, 50);
+                });
 
                 setTimeout(() => {
                     const colLabel = String.fromCharCode(65 + firstBlank.c);
                     const cellId = colLabel + (firstBlank.r + 1);
                     window.uiManager.showMagicToast(`已精確定位所有空格。活動格 (${cellId}) 已準備就緒，請直接鍵入『=↑』並按 Ctrl + Enter。`, 'success');
                     setTimeout(triggerFocus, 50);
+                    setTimeout(triggerFocus, 300); // [Fix] 保底延長至 300ms，防止 toast 搶焦
                 }, 80);
 
                 window.orchestrator.validateStateChange({ type: 'ACTION', id: 'GOTO_DONE' });

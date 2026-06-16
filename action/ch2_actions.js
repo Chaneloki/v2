@@ -135,9 +135,13 @@ window.ch2Actions = {
         const state = window.orchestrator.state;
         const range = state.selectedRange;
 
-        // 初始化追蹤標記
-        if (state.hasHeaderColor === undefined) state.hasHeaderColor = false;
-        if (state.hasRowColor === undefined) state.hasRowColor = false;
+        // [Fix] 每次進入新 COLOR_TASK 時重置 flag，防止跨章節污染
+        const colorTaskKey = `${state.currentChapter}_${state.currentTaskIndex}`;
+        if (state._colorTaskKey !== colorTaskKey) {
+            state.hasHeaderColor = false;
+            state.hasRowColor = false;
+            state._colorTaskKey = colorTaskKey;
+        }
 
         // 驗證選取範圍
         const isHeader = range && range.minRow === 1 && range.maxRow === 1 && range.minCol === 0 && range.maxCol === 4;

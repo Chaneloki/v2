@@ -515,6 +515,12 @@ class Orchestrator {
                 this.validateAction("FORMAT_PAINTER");
                 return;
             }
+            // [Fix] 玩家拖選了明顯完整的 2D 範圍但位置錯誤 → 顯示失敗提示
+            const is2DRange = range && (range.maxRow > range.minRow) && (range.maxCol > range.minCol);
+            if (is2DRange) {
+                this.playStorySegment('fail_FORMAT_wrong_target');
+            }
+            return;
         }
         
         const tasks = this.state.activeChapterModule.simulator.tasks;

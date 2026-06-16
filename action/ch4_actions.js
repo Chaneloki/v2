@@ -48,6 +48,13 @@ window.ch4Actions = {
 
         state.sheets[state.activeSheetId] = [header, ...body];
         window.gridRenderer.render();
+
+        // [Fix] 若當前任務要求 SORT_DESC，提示方向錯誤
+        const _task = state.activeChapterModule?.simulator?.tasks?.[state.currentTaskIndex];
+        if (_task?.expectedCondition?.actionId === 'SORT_DESC') {
+            window.orchestrator.playStorySegment('fail_SORT_wrong_order');
+            return;
+        }
         window.orchestrator.validateAction("SORT_ASC");
     },
 

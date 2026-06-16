@@ -235,6 +235,22 @@ class UIManager {
             if (e.ctrlKey && (k === 'arrowdown' || k === 'down')) { e.preventDefault(); this.triggerAction('quickjump'); return; }
             if (e.ctrlKey && (k === 'arrowup' || k === 'up')) { e.preventDefault(); this.triggerAction('jumpup'); return; }
             if (e.ctrlKey && (k === ';' || k === ':')) { e.preventDefault(); this.triggerAction('insertdate'); return; }
+            // [Fix] Ctrl+中文分號 / Ctrl+；無反應提示
+            if (e.ctrlKey && (k === '；' || k === '：' || (e.code === 'Semicolon' && k === 'process'))) {
+                e.preventDefault();
+                window.orchestrator.playStorySegment('fail_DATE_chinese_input');
+                return;
+            }
+            // [Fix] 無 Ctrl 的中文全形分號：只在 INSERT_DATE 任務中提示切換輸入法
+            if (!e.ctrlKey && k === '；') {
+                const _s = window.orchestrator?.state;
+                const _t = _s?.activeChapterModule?.simulator?.tasks?.[_s?.currentTaskIndex];
+                if (_t?.expectedCondition?.actionId === 'INSERT_DATE') {
+                    e.preventDefault();
+                    window.orchestrator.playStorySegment('fail_DATE_chinese_input');
+                    return;
+                }
+            }
             if (e.ctrlKey && k === 'e') { e.preventDefault(); this.triggerAction('open_format_dialog'); return; }
             if (k === 'alt' && !e.ctrlKey && !e.shiftKey) { e.preventDefault(); this.triggerAction('freezepanes'); return; }
         };

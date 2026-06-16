@@ -295,7 +295,7 @@ window.V2_CHAPTERS["40"] = {
             },
             {
                 id: "CUSTOM_SORT_TASK",
-                tutorHint: "【任務：自訂排序】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：在【自訂排序】對話框中，點擊順序欄位的下拉選單。<br>選擇【自訂清單...】並輸入等級順序。</span>",
+                tutorHint: "【任務：自訂排序】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：開啟【自訂排序】，將欄設為「病情等級」，點擊順序的下拉選單選【自訂清單...】。<br>在輸入框中<b>每行輸入一個等級</b>（重症 / 中症 / 輕症），輸入完畢後記得點【新增】，再按確定。</span>",
                 playerText: "【 重新定義秩序 】<br>📌 難題：魔法不通人性。我得親自定義什麼才是「嚴重」。<br>💡 技巧：利用自訂清單，教導魔導書什麼才是真正的優先順序！",
                 unlockBtnId: "sort_filter_group",
                 unlockSkillId: "SORT_CUSTOM",
