@@ -475,22 +475,27 @@ class GridRenderer {
                         state.formulaRefRanges = this._parseFormulaReferences(cleanVal);
                         this._updateVisuals(data, maxC, startIdx, endIdx);
                         
-                        // [新增]: 公式自動完成提示
-                        if (cleanVal.startsWith('=')) {
+                        // [新增]: 公式自動完成提示（僅限 ch7/7.5/8/8.5，且只顯示已教過的函數）
+                        const _acChap = state.currentChapter.toString();
+                        const _acChapOk = ["70", "75", "80", "85"].includes(_acChap);
+                        if (cleanVal.startsWith('=') && _acChapOk) {
+                            // skill ID → 對應函數名稱（依教學順序排列）
+                            const _skillFuncMap = {
+                                "FORMULA_BASIC": "SUM",
+                                "FUNC_RANK":     "RANK",
+                                "IF_BASIC":      "IF",
+                                "IFS":           "IFS",
+                                "IF_AND":        "AND"
+                            };
+                            // 只把已解鎖技能對應的函數放入白名單
+                            const _unlocked = state.unlockedSkills || [];
+                            const _allowedFuncs = Object.entries(_skillFuncMap)
+                                .filter(([skillId]) => _unlocked.includes(skillId))
+                                .map(([, funcName]) => funcName);
+
                             const upperVal = cleanVal.toUpperCase().substring(1);
-                            const suggestions = [];
-                            
-                            const allFuncs = ["SUM", "RANK", "IF", "IFS", "AND"];
-                            allFuncs.forEach(f => {
-                                if (f.startsWith(upperVal)) suggestions.push(f);
-                            });
-                            
-                            // 保留先前要求：如果輸入 S 或 R，同時顯示 SUM 和 RANK
-                            if (upperVal === "S" || upperVal === "R") {
-                                if (!suggestions.includes("SUM")) suggestions.push("SUM");
-                                if (!suggestions.includes("RANK")) suggestions.push("RANK");
-                            }
-                            
+                            const suggestions = _allowedFuncs.filter(f => f.startsWith(upperVal) || upperVal === "");
+
                             if (suggestions.length > 0) {
                                 this._showAutocomplete(e.target, suggestions);
                             } else {
