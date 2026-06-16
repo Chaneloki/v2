@@ -522,14 +522,21 @@ class GridRenderer {
                         // 紀錄編輯前的值，以便還原或比對
                         e.target._oldValue = e.target.textContent;
                         state.editingCell = { r: rIdx, c: cIdx, el: e.target };
-                        
-                        // [新增]: 定位並顯示 Syntax Overlay
+
+                        // [修復]: 先還原真實公式字串，再定位 Syntax Overlay，
+                        // 否則 overlay 會以「計算結果」而非「公式」來排版，導致 syntax-active 不啟動且游標對不齊。
+                        const sheetFormulas = state.formulas?.[state.activeSheetId];
+                        if (sheetFormulas && sheetFormulas[cellId]) {
+                            e.target.textContent = sheetFormulas[cellId];
+                        }
+
+                        // 定位並顯示 Syntax Overlay（此時 textContent 已是公式字串）
                         if (this.syntaxOverlay) {
                             this.syntaxOverlay.style.display = 'block';
                             this.syntaxOverlay.style.gridRow = e.target.style.gridRow;
                             this.syntaxOverlay.style.gridColumn = e.target.style.gridColumn;
                             const val = e.target.textContent.replace(/\r?\n|\r/g, "");
-                            
+
                             if (val.startsWith('=')) {
                                 e.target.classList.add('syntax-active');
                                 this.syntaxOverlay.innerHTML = this._highlightFormula(val);
@@ -545,13 +552,7 @@ class GridRenderer {
                                 this.syntaxOverlay.style.width = "";
                             }
                         }
-                        
-                        // [新增]: 切換為真實公式字串
-                        const sheetFormulas = state.formulas?.[state.activeSheetId];
-                        if (sheetFormulas && sheetFormulas[cellId]) {
-                            e.target.textContent = sheetFormulas[cellId];
-                        }
-                        
+
                         // [終極修復]: 如果儲存格是空的，直接清空其 HTML，消滅隱形 <br> 或幽靈文字節點
                         if (e.target.textContent.trim() === '') {
                             e.target.innerHTML = '';
@@ -577,9 +578,10 @@ class GridRenderer {
                             if (sel.rangeCount > 0) {
                                 const range = sel.getRangeAt(0);
                                 if (range.startContainer === e.target || range.startContainer.parentNode === e.target) {
-                                    // [修復]: 從 data 讀取公式而非 textContent，避免 IME 組字或瀏覽器注入
-                                    // 的隱藏 span 使 textContent 包含雜訊，導致公式字串被污染。
-                                    const text = (data[rIdx][cIdx] ?? '').toString();
+                                    // [修復]: 公式優先從 state.formulas 讀取（onfocus 後 data 可能仍是計算結果），
+                                    // 其次才 fallback 到 data[rIdx][cIdx]，確保 F4 在「重新點開已計算格」時也能運作。
+                                    const _sheetForms = state.formulas?.[state.activeSheetId];
+                                    const text = (_sheetForms?.[cellId] ?? data[rIdx][cIdx] ?? '').toString();
                                     // offset: 若 cursor 在文字節點，取字元 offset；否則 0。
                                     const offset = (range.startContainer.nodeType === Node.TEXT_NODE)
                                         ? range.startOffset
