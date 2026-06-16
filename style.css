@@ -124,12 +124,13 @@ body {
 #top-row { display: flex; flex-grow: 1; overflow: hidden; position: relative; }
 
 /* �湧�甈��擳𥪜��詨�撣� --- */
-#left-sidebar { 
-    width: 30%; background: var(--sidebar-bg); border-right: 2px solid var(--excel-green); 
+#left-sidebar {
+    width: 30%; background: var(--sidebar-bg); border-right: 2px solid var(--excel-green);
     display: flex; flex-direction: column; z-index: 100; padding: 25px; color: #fff;
     box-shadow: 15px 0 40px rgba(0,0,0,0.4);
     flex-shrink: 0;
-    min-width: 320px; /* 靽嗪���雿𡡞�摨血虾霈��� */
+    min-width: 320px;
+    max-width: 420px;
 }
 
 #elf-panel { 
@@ -193,8 +194,8 @@ body {
 .p-bubble { color: #e0e0e0; font-size: 19px; font-weight: 500; line-height: 1.5; font-style: italic; overflow-wrap: break-word; word-break: break-word; }
 
 /* --- �㴓 Ribbon嚗𡁶𣶹隞��撠�平撌亙��� --- */
-#excel-container { 
-    width: 70%; display: flex; flex-direction: column; background: #fff; 
+#excel-container {
+    flex: 1; display: flex; flex-direction: column; background: #fff;
     min-width: 400px; overflow: hidden;
 }
 #excel-area { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -871,8 +872,7 @@ body {
 
 /* 1. 蝑�𤓖/銝剛攟撟訫祝摨� (1024px ~ 1366px) */
 @media screen and (max-width: 1366px) {
-    #left-sidebar { width: 25%; min-width: 280px; padding: 15px; }
-    #excel-container { width: 75%; }
+    #left-sidebar { width: 25%; min-width: 280px; max-width: 360px; padding: 15px; }
     .ribbon-btn { min-width: 65px; padding: 6px; }
     .ribbon-btn img { width: 28px; height: 32px; }
     .ribbon-btn.big span { font-size: 12px; }
