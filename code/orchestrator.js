@@ -70,6 +70,7 @@ class GameState {
         this.isDraggingFill = false;
         this.isFilterActive = false;
         this.isOutlineVisible = false;
+        this.isFrozen = false;
     }
 }
 
