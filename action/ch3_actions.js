@@ -480,17 +480,21 @@ window.ch3Actions = {
                     const wrapper = document.getElementById('wrapper');
                     const rowHeight = window.gridRenderer.rowHeight || 32;
                     if (wrapper) {
-                        wrapper.scrollTop = firstBlank.r * rowHeight - wrapper.clientHeight / 2;
+                        const targetScroll = firstBlank.r * rowHeight - wrapper.clientHeight / 2;
+                        wrapper.scrollTop = targetScroll;
+                        // [修復]: 同步更新 lastScrollTop，防止 onscroll → rAF 觸發二次 render()
+                        // 二次 render 會重建 DOM，令剛聚焦的儲存格元素被銷毀，導致焦點遺失。
+                        window.gridRenderer.lastScrollTop = targetScroll;
                     }
                     window.gridRenderer.render();
                 }
-                
+
                 // [權威聚焦]: 確保活動格 (Active Cell) 立即獲得焦點並可輸入，無需點擊
                 const triggerFocus = () => {
                     const colLabel = String.fromCharCode(65 + firstBlank.c);
                     const cellId = colLabel + (firstBlank.r + 1);
                     const el = document.getElementById(cellId);
-                    
+
                     if (el) {
                         el.focus();
                         const range = document.createRange();
@@ -503,17 +507,16 @@ window.ch3Actions = {
                     }
                 };
 
-                // 分兩次聚焦確保穩定性 (一次立即，一次在渲染與 Toast 後)
+                // 立即聚焦，再於 30ms 後補一次 (短於 rAF 的 ~16ms 後的 toast/按鈕殘留焦點)
                 triggerFocus();
+                setTimeout(triggerFocus, 30);
 
                 setTimeout(() => {
                     const colLabel = String.fromCharCode(65 + firstBlank.c);
                     const cellId = colLabel + (firstBlank.r + 1);
                     window.uiManager.showMagicToast(`已精確定位所有空格。活動格 (${cellId}) 已準備就緒，請直接鍵入『=↑』並按 Ctrl + Enter。`, 'success');
-                    
-                    // Toast 顯示後再次確保焦點，防止被 UI 元件搶走
-                    setTimeout(triggerFocus, 100);
-                }, 100);
+                    setTimeout(triggerFocus, 50);
+                }, 80);
 
                 window.orchestrator.validateStateChange({ type: 'ACTION', id: 'GOTO_DONE' });
             }
