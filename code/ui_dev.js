@@ -120,14 +120,16 @@ UIManager.prototype.showColumnFilterDropdown = async function(colIdx, anchorEl) 
         dropdown.style.left = (rect.right - 200) + 'px'; // 靠右對齊
         dropdown.style.display = 'block';
 
-        // 4. 點擊外部關閉
-        const closer = (e) => {
+        // #18b 先移除舊 closer，避免多次打開時堆疊 document 監聽器
+        if (this._filterCloser) document.removeEventListener('mousedown', this._filterCloser);
+        this._filterCloser = (e) => {
             if (!dropdown.contains(e.target) && !anchorEl.contains(e.target)) {
                 this.hideFilterDropdown();
-                document.removeEventListener('mousedown', closer);
+                document.removeEventListener('mousedown', this._filterCloser);
+                this._filterCloser = null;
             }
         };
-        setTimeout(() => document.addEventListener('mousedown', closer), 10);
+        setTimeout(() => document.addEventListener('mousedown', this._filterCloser), 10);
     };
 
 UIManager.prototype.toggleFilterSelectAll = async function(isChecked) {

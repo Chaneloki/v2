@@ -15,12 +15,16 @@ UIManager.prototype.switchTab = function(tabId) {
 UIManager.prototype.renderRibbon = function(config) {
         const container = document.getElementById('ribbon-btns');
         if (!container || !config) return;
-        container.innerHTML = "";
-        
+
+        // #17 快取 key：若章節 + 任務沒有變化，跳過重建
         const state = window.orchestrator.state;
         const tasks = config.tasks;
         const currentTask = tasks[state.currentTaskIndex];
         const chapterId = state.currentChapter.toString();
+        const cacheKey = `${chapterId}_${state.currentTaskIndex}`;
+        if (container.dataset.cacheKey === cacheKey) return;
+        container.dataset.cacheKey = cacheKey;
+        container.innerHTML = "";
         const isChallenge = ["25", "35", "55"].includes(chapterId); // 移除 "15"，使其與 Ch1 同步
 
         // [挑戰模式]: 顯示所有該章節需要的技能

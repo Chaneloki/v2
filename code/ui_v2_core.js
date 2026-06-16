@@ -129,10 +129,8 @@ class UIManager {
 
             this.updateTutorUI(data.config?.tasks[window.orchestrator.state.currentTaskIndex]);
             this.updatePlayerSBtn();
-            this.renderSheetBar(); 
-            
-            // [關鍵修正]: 強制執行一次渲染，確保表格出現
-            if (window.gridRenderer) window.gridRenderer.render();
+            this.renderSheetBar();
+            // Q1 移除重複 render()：render.js 已訂閱 startSimulator 事件並執行 render()，不需再呼叫一次
             
             const firstTask = data.config?.tasks[window.orchestrator.state.currentTaskIndex];
             if (firstTask && firstTask.quiz) {
@@ -225,12 +223,17 @@ class UIManager {
     }
 
     initKeyboardListeners() {
-        document.onkeydown = (e) => {
+        // #24 改用 addEventListener，避免 document.onkeydown 賦值覆蓋其他模組的鍵盤監聽器
+        if (this._keydownHandler) {
+            document.removeEventListener('keydown', this._keydownHandler);
+            document.removeEventListener('keyup', this._keyupHandler);
+        }
+        this._keydownHandler = (e) => {
             const state = window.orchestrator.state;
             if (state.currentPhase !== 'SIMULATOR' || this.isTrialActive) return;
 
             const k = e.key.toLowerCase();
-            
+
             if (e.key === 'Shift') this.isShiftDown = true;
             if (e.ctrlKey && (k === 'arrowdown' || k === 'down')) { e.preventDefault(); this.triggerAction('quickjump'); return; }
             if (e.ctrlKey && (k === 'arrowup' || k === 'up')) { e.preventDefault(); this.triggerAction('jumpup'); return; }
@@ -254,10 +257,11 @@ class UIManager {
             if (e.ctrlKey && k === 'e') { e.preventDefault(); this.triggerAction('open_format_dialog'); return; }
             if (k === 'alt' && !e.ctrlKey && !e.shiftKey) { e.preventDefault(); this.triggerAction('freezepanes'); return; }
         };
-
-        document.onkeyup = (e) => {
+        this._keyupHandler = (e) => {
             if (e.key === 'Shift') this.isShiftDown = false;
         };
+        document.addEventListener('keydown', this._keydownHandler);
+        document.addEventListener('keyup', this._keyupHandler);
 
         // --- 性能優化：節流處理全域滑鼠移動 ---
         let moveTick = false;
@@ -279,25 +283,24 @@ class UIManager {
 
         // --- 處理填充柄拖拽 (Auto Fill Expansion) ---
         if (state.isDraggingFill) {
-            const cells = document.elementsFromPoint(e.clientX, e.clientY);
-            const targetCell = cells.find(el => el.classList.contains('cell'));
-            if (targetCell) {
-                const id = targetCell.id; // e.g., "A5"
-                const colLabel = id.match(/[A-Z]+/)[0];
-                const rowNum = parseInt(id.match(/\d+/)[0]);
-                const cIdx = colLabel.charCodeAt(0) - 65;
-                const rIdx = rowNum - 1;
-
-                // 擴展目前的選取範圍 (僅限垂直擴展)
+            // #5 用座標數學取代 document.elementsFromPoint，避免每幀 hit-test 觸發 layout
+            const renderer = window.gridRenderer;
+            const wrapper = document.getElementById('wrapper');
+            if (renderer && wrapper) {
+                const wRect = wrapper.getBoundingClientRect();
+                const relY = e.clientY - wRect.top + wrapper.scrollTop;
+                const rIdx = Math.max(0, Math.floor(relY / renderer.rowHeight) - 1);
+                const relX = e.clientX - wRect.left + wrapper.scrollLeft - renderer.rowHeadWidth;
+                const cIdx = Math.max(0, Math.floor(relX / renderer.colWidth));
                 const source = state.fillSourceRange;
-                if (source) {
+                if (source && rIdx >= 0 && cIdx >= 0) {
                     state.selectedRange = {
                         minRow: Math.min(source.minRow, rIdx),
                         maxRow: Math.max(source.maxRow, rIdx),
                         minCol: source.minCol,
                         maxCol: source.maxCol
                     };
-                    window.gridRenderer._updateVisuals(state.gridData, state.gridData[0].length);
+                    renderer._updateVisuals(state.gridData, state.gridData[0].length);
                 }
             }
             return;
@@ -331,8 +334,9 @@ class UIManager {
             }
         } else {
             gl.style.display = 'none';
-            // 提示玩家需要按住 Shift（toast 提示，不屬於任何角色）
-            if (window.uiManager) {
+            // #4 每次拖曳只提示一次，避免每幀 mousemove 都觸發 toast
+            if (window.uiManager && !this._shiftHintShown) {
+                this._shiftHintShown = true;
                 window.uiManager.showMagicToast("咦？沒按住 Shift 的話，這不是交換空間，是『取代術』啊！記得先按住 Shift 再拖曳！", 'error');
             }
         }
@@ -352,6 +356,7 @@ class UIManager {
             }
             state.isDraggingCol = false;
             if (gl) gl.style.display = 'none';
+            this._shiftHintShown = false; // #4 重置，讓下次拖曳可以再次提示
         }
         // 2. 處理填充柄拖拽
         if (state.isDraggingFill) {

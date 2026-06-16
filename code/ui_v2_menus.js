@@ -7,9 +7,11 @@ UIManager.prototype.toggleSystemMenu = function() {
     if (!overlay) return;
     if (overlay.classList.contains('sys-overlay-hide')) {
         overlay.style.display = 'flex';
-        void overlay.offsetWidth;
-        overlay.classList.remove('sys-overlay-hide');
-        overlay.classList.add('sys-overlay-show');
+        // Q3 rAF 雙幀取代 void offsetWidth，消除同步 reflow
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            overlay.classList.remove('sys-overlay-hide');
+            overlay.classList.add('sys-overlay-show');
+        }));
     } else {
         overlay.classList.remove('sys-overlay-show');
         overlay.classList.add('sys-overlay-hide');
@@ -76,9 +78,11 @@ UIManager.prototype.openSaveLoadMenu = function(mode) {
     });
     
     overlay.style.display = 'flex';
-    void overlay.offsetWidth;
-    overlay.classList.remove('sys-overlay-hide');
-    overlay.classList.add('sys-overlay-show');
+    // Q3 rAF 雙幀取代 void offsetWidth
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        overlay.classList.remove('sys-overlay-hide');
+        overlay.classList.add('sys-overlay-show');
+    }));
 };
 
 UIManager.prototype.closeSaveLoadMenu = function() {
@@ -193,9 +197,11 @@ UIManager.prototype.openAvatarShop = function() {
     });
     
     overlay.style.display = 'flex';
-    void overlay.offsetWidth;
-    overlay.classList.remove('sys-overlay-hide');
-    overlay.classList.add('sys-overlay-show');
+    // Q3 rAF 雙幀取代 void offsetWidth
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        overlay.classList.remove('sys-overlay-hide');
+        overlay.classList.add('sys-overlay-show');
+    }));
 };
 
 UIManager.prototype.closeAvatarShop = function() {
@@ -286,9 +292,11 @@ UIManager.prototype.openMemoryDiary = function() {
     `;
     
     overlay.style.display = 'flex';
-    void overlay.offsetWidth;
-    overlay.classList.remove('sys-overlay-hide');
-    overlay.classList.add('sys-overlay-show');
+    // Q3 rAF 雙幀取代 void offsetWidth
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        overlay.classList.remove('sys-overlay-hide');
+        overlay.classList.add('sys-overlay-show');
+    }));
 };
 
 UIManager.prototype.closeMemoryDiary = function() {

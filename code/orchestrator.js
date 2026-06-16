@@ -99,7 +99,12 @@ class Orchestrator {
             'CELL_VALUE': (cond) => {
                 const data = this.state.gridData;
                 const v = data[cond.r] ? data[cond.r][cond.c] : "";
-                return cond.regex ? new RegExp(cond.regex).test(v) : v === cond.value;
+                // #21 快取編譯好的 RegExp，避免每次條件判斷都重建
+                if (cond.regex) {
+                    if (!cond._cachedRegex) cond._cachedRegex = new RegExp(cond.regex);
+                    return cond._cachedRegex.test(v);
+                }
+                return v === cond.value;
             },
             'MATRIX_COLUMN_CONTENT': (cond) => {
                 const data = this.state.gridData;
@@ -615,9 +620,8 @@ class Orchestrator {
         const flow = ['STORY_START', 'SIMULATOR', 'STORY_END'];
         const currentIdx = flow.indexOf(this.state.currentPhase);
         const nextIdx = currentIdx + 1;
-        this.saveGame(); // 存檔目前章節進度
         if (nextIdx < flow.length) {
-            this.triggerPhase(flow[nextIdx]);
+            this.triggerPhase(flow[nextIdx]); // #16 triggerPhase 內已呼叫 saveGame，移除重複調用
         } else if (this.state.currentPhase === 'STORY_END' || this.state.currentPhase === 'RPG_MODE') {
             // ch8.5 完結後進入自由探索模式需要密碼
             if (this.state.currentChapter.toString() === '85') {
@@ -947,18 +951,25 @@ class Orchestrator {
      * 模擬往下拖拉填滿 (為 Ch7 提供視覺反饋)
      */
     _simulateDragFill(startRow, cIdx, calcFn) {
+        // #6 清除前一次未完成的填充動畫，防止多次觸發時 setInterval 堆疊
+        if (this._fillIntervalId) {
+            clearInterval(this._fillIntervalId);
+            this._fillIntervalId = null;
+        }
+
         const data = this.state.gridData;
         let r = startRow;
-        
+
         const sourceRow = startRow - 1;
         const colLabel = String.fromCharCode(65 + cIdx);
         const sourceCellId = `${colLabel}${sourceRow + 1}`;
         const sourceFormula = this.state.formulas?.[this.state.activeSheetId]?.[sourceCellId];
-        
+
         // 簡單的動畫效果，一格格填滿
-        const interval = setInterval(() => {
+        this._fillIntervalId = setInterval(() => {
             if (r > 20) {
-                clearInterval(interval);
+                clearInterval(this._fillIntervalId);
+                this._fillIntervalId = null;
                 return;
             }
             data[r][cIdx] = calcFn(r);
@@ -1006,36 +1017,41 @@ class Orchestrator {
         }
     }
 
+    // #22 在 init 時建立 skillId → {chId, storyKey, storyObj} 查表，避免 playSkillReplay 每次 O(chapters×tasks)
+    _buildSkillReplayIndex() {
+        this._skillReplayIndex = {};
+        if (!window.V2_CHAPTERS) return;
+        for (const chId of Object.keys(window.V2_CHAPTERS)) {
+            const ch = window.V2_CHAPTERS[chId];
+            if (!ch || !ch.simulator || !ch.simulator.tasks) continue;
+            for (const task of ch.simulator.tasks) {
+                if (task.unlockSkillId && !this._skillReplayIndex[task.unlockSkillId]) {
+                    this._skillReplayIndex[task.unlockSkillId] = {
+                        chId,
+                        storyKey: task.storySegmentAfter || task.storySegmentBefore,
+                        storyObj: ch.story
+                    };
+                }
+            }
+        }
+        // 特別處理 Ch1 的搜尋技能
+        if (window.V2_CHAPTERS['1']) {
+            this._skillReplayIndex['SEARCH'] = { chId: '1', storyKey: 'discovery_F', storyObj: window.V2_CHAPTERS['1'].story };
+        }
+    }
+
     // [新增] 禁術大全專用：回顧特定禁術的教學劇情
     playSkillReplay(skillId) {
         const sModal = document.getElementById('s-modal');
         if (sModal) sModal.style.display = 'none';
 
-        let targetChapterId = null;
-        let targetStoryKey = null;
-        let targetStoryObj = null;
+        // 延遲建立索引（V2_CHAPTERS 需要在章節載入後才齊全）
+        if (!this._skillReplayIndex) this._buildSkillReplayIndex();
+        const entry = this._skillReplayIndex[skillId];
 
-        const allChapters = Object.keys(window.V2_CHAPTERS);
-        for (const chId of allChapters) {
-            const ch = window.V2_CHAPTERS[chId];
-            if (ch && ch.simulator && ch.simulator.tasks) {
-                for (const task of ch.simulator.tasks) {
-                    if (task.unlockSkillId === skillId) {
-                        targetChapterId = chId;
-                        targetStoryKey = task.storySegmentAfter || task.storySegmentBefore;
-                        targetStoryObj = ch.story;
-                        break;
-                    }
-                }
-            }
-            if (targetStoryKey) break;
-        }
-
-        // 特別處理 Ch1 的搜尋技能 (discovery_F)
-        if (skillId === 'SEARCH' && window.V2_CHAPTERS['1']) {
-            targetStoryKey = 'discovery_F';
-            targetStoryObj = window.V2_CHAPTERS['1'].story;
-        }
+        let targetChapterId = entry ? entry.chId : null;
+        let targetStoryKey = entry ? entry.storyKey : null;
+        let targetStoryObj = entry ? entry.storyObj : null;
 
         if (!targetStoryKey || !targetStoryObj || !targetStoryObj[targetStoryKey]) {
             alert('這項禁術的教學回顧影片似乎遺失了！');
@@ -1068,7 +1084,12 @@ class Orchestrator {
     }
 
     emit(n, d) { this.eventBus.dispatchEvent(new CustomEvent(n, { detail: d })); }
-    on(n, cb) { this.eventBus.addEventListener(n, (e) => cb(e.detail)); }
+    on(n, cb) {
+        // #15 返回 remove 函數，讓呼叫方可在需要時取消訂閱，避免事件監聽器積累
+        const handler = (e) => cb(e.detail);
+        this.eventBus.addEventListener(n, handler);
+        return () => this.eventBus.removeEventListener(n, handler);
+    }
 }
 
 window.orchestrator = new Orchestrator();

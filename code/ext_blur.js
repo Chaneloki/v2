@@ -4,9 +4,12 @@
 (function() {
     console.log("✨ [ext_blur.js] 背景模糊插件已啟動，等待 uiManager...");
 
+    let _initRetries = 0;
     const initExtension = () => {
         if (!window.uiManager || !window.uiManager.updateVisuals) {
-            setTimeout(initExtension, 100);
+            // #19 最多重試 50 次（5 秒），避免無限輪詢
+            if (++_initRetries < 50) setTimeout(initExtension, 100);
+            else console.warn('[ext_blur.js] 超過最大等待次數，放棄初始化。');
             return;
         }
 

@@ -137,17 +137,15 @@ body {
     width: 100%; display: flex; flex-direction: column; align-items: center; 
     position: relative; margin-bottom: 30px; 
 }
-#elf-img { 
+#elf-img {
     width: 100px !important; /* [靽格迤]: 撘瑕����璅⊥挱�典�蝎曉祝摨佗�銝滚蔣�踹����蝜� */
-    
-    animation: magic-float 5s ease-in-out infinite, elf-img-pulse 4s ease-in-out infinite; 
+    /* P3 效能優化: 移除 elf-img-pulse（空 keyframe 卻佔合成路徑），只保留 magic-float (transform-only，GPU 加速) */
+    animation: magic-float 5s ease-in-out infinite;
     cursor: pointer; /* 憓𧼮�暺墧��� */
     pointer-events: auto;
+    will-change: transform; /* 提示瀏覽器建立獨立合成層 */
 }
-@keyframes elf-img-pulse {
-    0%, 100% {  }
-    50% {  }
-}
+/* P3 效能優化: 空 @keyframes 已刪除（原 elf-img-pulse 內容為空，無效果） */
 @keyframes magic-float { 
     0%, 100% { transform: translateY(0) rotate(0deg); } 
     50% { transform: translateY(-15px) rotate(5deg); } 
@@ -620,19 +618,26 @@ body {
     z-index: 200;
 }
 
-#elf-bubble.speaking { animation: magic-pulse 2s infinite; }
-#player-box.speaking { animation: player-pulse 2s infinite; }
+/* P4 效能優化: box-shadow 動畫改用 transform:scale（GPU 合成，不觸發 repaint）*/
+#elf-bubble.speaking {
+    animation: magic-pulse 2s infinite;
+    will-change: transform;
+}
+#player-box.speaking {
+    animation: player-pulse 2s infinite;
+    will-change: transform;
+}
 
-@keyframes magic-pulse { 
-    0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.5); } 
-    70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); } 
-    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); } 
+@keyframes magic-pulse {
+    0%   { transform: scale(1);    box-shadow: 0 0 0 0   rgba(255, 215, 0, 0.5); }
+    70%  { transform: scale(1.01); box-shadow: 0 0 0 8px rgba(255, 215, 0, 0);   }
+    100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(255, 215, 0, 0);   }
 }
 
 @keyframes player-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(33, 115, 70, 0.5); } 
-    70% { box-shadow: 0 0 0 15px rgba(33, 115, 70, 0); } 
-    100% { box-shadow: 0 0 0 0 rgba(33, 115, 70, 0); } 
+    0%   { transform: scale(1);    box-shadow: 0 0 0 0   rgba(33, 115, 70, 0.5); }
+    70%  { transform: scale(1.01); box-shadow: 0 0 0 8px rgba(33, 115, 70, 0);   }
+    100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(33, 115, 70, 0);   }
 }
 
 /* 蝣箔�璅⊥挱�冽芋撘譍��鞱身鈭桀漲�Ｗ儔 (�𧼮����) */
@@ -1958,14 +1963,12 @@ kbd { background: #eee; padding: 2px 6px; border-radius: 4px; border: 1px solid 
     pointer-events: none;
     opacity: 0.8;
 }
+/* P1 效能優化: 移除 crt-flicker（filter:brightness/contrast 每 0.15s 重繪整個畫面）
+   改以 ::before 靜態 scanline 疊圖模擬效果，GPU 合成無 repaint */
 .rpg-scanlines {
-    animation: crt-flicker 0.15s infinite;
+    /* animation: crt-flicker 0.15s infinite; 已移除 */
 }
-@keyframes crt-flicker {
-    0% { filter: brightness(1) contrast(1); }
-    50% { filter: brightness(0.98) contrast(1.02); }
-    100% { filter: brightness(1) contrast(1); }
-}
+/* @keyframes crt-flicker 已移除 */
 
 /* --- RPG 蝢文�璅∪� (Ensemble Mode) --- */
 #story-stage.rpg-ensemble .char-container:has(#a-l) { left: 35%; }

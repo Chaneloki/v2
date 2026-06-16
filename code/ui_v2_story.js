@@ -243,31 +243,36 @@ UIManager.prototype.updateVisuals = function(line) {
             'me_falling': 'a-f'
         };
         
-        // 關鍵路徑對照
-        const charAssets = {
-            'me': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/main palace.png' : `Charater/main ${window.orchestrator.state.playerConfig.gender}.png`,
-            'fairy': 'Charater/fairy.png',
-            'head': 'Charater/head.png',
-            'system': 'Charater/魔導書.png',
-            'glea': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/glea palace.png' : 'Charater/glea.png',
-            'miro_tired': 'Charater/Miro tired.png',
-            'miro': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/miro palace.png' : ((window.orchestrator.state.currentChapter >= 40) ? 'Charater/Miro new.png' : 'Charater/Miro.png'),
-            'npc1': 'Charater/npc1.png',
-            'npc2': 'Charater/npc2.png',
-            'lange': 'Charater/lange.png',
-            'chate': (window.orchestrator.state.currentChapter == 80 || window.orchestrator.state.currentChapter == 85) ? 'Charater/chate palace.png' : ((window.orchestrator.state.currentChapter >= 45) ? 'Charater/chate new.png' : 'Charater/chate.png'),
-            'royi': (window.orchestrator.state.currentChapter == 75) ? 'Charater/royi easy.png' : ((window.orchestrator.state.currentChapter == 70 || window.orchestrator.state.currentChapter == 80) ? 'Charater/royi palace.png' : 'Charater/Royi.png'),
-            'prince': (window.orchestrator.state.currentChapter == 85) ? 'Charater/prince serious.png' : ((window.orchestrator.state.currentChapter == 75) ? 'Charater/prince easy.png' : ((window.orchestrator.state.currentChapter == 70 || window.orchestrator.state.currentChapter == 80) ? 'Charater/prince1.png' : 'Charater/prince boy.png')),
-            'king': 'Charater/king.png',
-            'prince_back': 'Charater/main boy4 back.png',
-            'unknown_figure': 'Charater/main boy3 back.png',
-            'me_rpg': 'Charater/main rpg.png',
-            'fairy_rpg': 'Charater/fairy rpg.png',
-            'glea_rpg': 'Charater/glea rpg.png',
-            'miro_rpg': 'Charater/miro rpg.png',
-            'chate_rpg': 'Charater/chate rpg.png',
-            'me_falling': 'Charater/me_falling.png'
-        };
+        // #7 charAssets 按章節快取：章節不變時直接重用，避免每行劇本重建整個物件
+        const _chap = window.orchestrator.state.currentChapter;
+        if (!this._charAssets || this._charAssetChapter !== _chap) {
+            this._charAssetChapter = _chap;
+            this._charAssets = {
+                'me': (_chap == 80 || _chap == 85) ? 'Charater/main palace.png' : `Charater/main ${window.orchestrator.state.playerConfig.gender}.png`,
+                'fairy': 'Charater/fairy.png',
+                'head': 'Charater/head.png',
+                'system': 'Charater/魔導書.png',
+                'glea': (_chap == 80 || _chap == 85) ? 'Charater/glea palace.png' : 'Charater/glea.png',
+                'miro_tired': 'Charater/Miro tired.png',
+                'miro': (_chap == 80 || _chap == 85) ? 'Charater/miro palace.png' : ((_chap >= 40) ? 'Charater/Miro new.png' : 'Charater/Miro.png'),
+                'npc1': 'Charater/npc1.png',
+                'npc2': 'Charater/npc2.png',
+                'lange': 'Charater/lange.png',
+                'chate': (_chap == 80 || _chap == 85) ? 'Charater/chate palace.png' : ((_chap >= 45) ? 'Charater/chate new.png' : 'Charater/chate.png'),
+                'royi': (_chap == 75) ? 'Charater/royi easy.png' : ((_chap == 70 || _chap == 80) ? 'Charater/royi palace.png' : 'Charater/Royi.png'),
+                'prince': (_chap == 85) ? 'Charater/prince serious.png' : ((_chap == 75) ? 'Charater/prince easy.png' : ((_chap == 70 || _chap == 80) ? 'Charater/prince1.png' : 'Charater/prince boy.png')),
+                'king': 'Charater/king.png',
+                'prince_back': 'Charater/main boy4 back.png',
+                'unknown_figure': 'Charater/main boy3 back.png',
+                'me_rpg': 'Charater/main rpg.png',
+                'fairy_rpg': 'Charater/fairy rpg.png',
+                'glea_rpg': 'Charater/glea rpg.png',
+                'miro_rpg': 'Charater/miro rpg.png',
+                'chate_rpg': 'Charater/chate rpg.png',
+                'me_falling': 'Charater/me_falling.png'
+            };
+        }
+        const charAssets = this._charAssets;
 
         const elfImg = document.getElementById('elf-img');
 
@@ -286,17 +291,22 @@ UIManager.prototype.updateVisuals = function(line) {
                 
                 elfImg.classList.remove('char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake');
                 if (line.charAnim) {
-                    void elfImg.offsetWidth;
-                    elfImg.classList.add(`char-${line.charAnim}`);
+                    // #9 rAF 雙幀替代 void offsetWidth，避免強制同步 reflow
+                    const _anim = line.charAnim;
+                    requestAnimationFrame(() => requestAnimationFrame(() => elfImg.classList.add(`char-${_anim}`)));
                 }
             }
         }
 
         // 僅在全螢幕模式下更換大型立繪
         if (this.currentStoryType === 'PHASE') {
-            document.querySelectorAll('.char-img').forEach(img => {
+            // #8 快取 .char-img 列表，避免每行劇本重複 querySelectorAll
+            if (!this._charImgEls || this._charImgEls.length === 0) {
+                this._charImgEls = Array.from(document.querySelectorAll('.char-img'));
+            }
+            this._charImgEls.forEach(img => {
                 img.classList.remove('char-active');
-                img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake'); // [Fix] 清除所有殘留動畫
+                img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake');
             });
 
             // [關鍵點]: 記錄並更新目前是否為 CG 模式
@@ -320,8 +330,9 @@ UIManager.prototype.updateVisuals = function(line) {
                     
                     targetImg.classList.remove('char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake');
                     if (line.charAnim) {
-                        void targetImg.offsetWidth;
-                        targetImg.classList.add(`char-${line.charAnim}`);
+                        // Q3 rAF 雙幀取代 void offsetWidth
+                        const _anim = line.charAnim;
+                        requestAnimationFrame(() => requestAnimationFrame(() => targetImg.classList.add(`char-${_anim}`)));
                     }
 
                     // [修正]: 僅在第一章 (Ch1) 賽爾首次登場時播放音效
@@ -497,10 +508,8 @@ UIManager.prototype.updateVisuals = function(line) {
                     flashEl.className = 'flash-overlay';
                     document.body.appendChild(flashEl);
                 }
-                // 先重置類別以允許重複觸發
                 flashEl.classList.remove('flash-active');
-                void flashEl.offsetWidth; // 強制重繪
-                flashEl.classList.add('flash-active');
+                requestAnimationFrame(() => requestAnimationFrame(() => flashEl.classList.add('flash-active')));
                 
                 // 閃光通常伴隨震動音效 (可選)
                 if (line.flashSFX) this.playSFX(line.flashSFX);
@@ -511,8 +520,7 @@ UIManager.prototype.updateVisuals = function(line) {
                 const stage = document.getElementById('story-stage');
                 if (stage) {
                     stage.classList.remove('shake-active');
-                    void stage.offsetWidth; // 強制重繪
-                    stage.classList.add('shake-active');
+                    requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.add('shake-active')));
                 }
             }
             
@@ -521,8 +529,8 @@ UIManager.prototype.updateVisuals = function(line) {
                 const stage = document.getElementById('story-stage');
                 if (stage) {
                     stage.classList.remove('screen-glitch', 'screen-heartbeat', 'screen-dissolve', 'screen-glow', 'screen-reality-tear', 'screen-reality-tear-slow', 'screen-eye-open', 'screen-dissolve-to-light', 'screen-clear');
-                    void stage.offsetWidth;
-                    stage.classList.add(`screen-${line.screenEffect}`);
+                    const _effect = line.screenEffect;
+                    requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.add(`screen-${_effect}`)));
                 }
             }
             
@@ -536,8 +544,7 @@ UIManager.prototype.updateVisuals = function(line) {
                     document.body.appendChild(whiteoutEl);
                 }
                 whiteoutEl.classList.remove('whiteout-active');
-                void whiteoutEl.offsetWidth;
-                whiteoutEl.classList.add('whiteout-active');
+                requestAnimationFrame(() => requestAnimationFrame(() => whiteoutEl.classList.add('whiteout-active')));
             }
             
             // [新增]: 清除全屏白化 (用於強烈轉場)
@@ -554,8 +561,7 @@ UIManager.prototype.updateVisuals = function(line) {
                 const stuffContainer = document.getElementById('stuff-container');
                 if (stuffContainer) {
                     stuffContainer.classList.remove('shake-active');
-                    void stuffContainer.offsetWidth; // 強制重繪
-                    stuffContainer.classList.add('shake-active');
+                    requestAnimationFrame(() => requestAnimationFrame(() => stuffContainer.classList.add('shake-active')));
                 }
             }
             }
@@ -839,8 +845,8 @@ UIManager.prototype.showPreloader = function() {
         }
     }
     preloader.style.display = 'flex';
-    void preloader.offsetWidth; // 強制重繪
-    preloader.style.opacity = '1';
+    // Q3 rAF 雙幀取代 void offsetWidth
+    requestAnimationFrame(() => requestAnimationFrame(() => { preloader.style.opacity = '1'; }));
 };
 
 UIManager.prototype.hidePreloader = function() {
@@ -946,7 +952,10 @@ UIManager.prototype.preloadStoryAssets = function(storyQueue) {
         audioURLs.forEach(url => {
             promises.push(new Promise((res) => {
                 const audio = new Audio();
-                audio.oncanplaythrough = () => { loaded++; updateProgress(); res(); };
+                audio.oncanplaythrough = () => {
+                    audio.src = ''; // #20 預載完成後釋放資源，防止記憶體洩漏
+                    loaded++; updateProgress(); res();
+                };
                 audio.onerror = () => { loaded++; updateProgress(); res(); };
                 audio.src = url;
                 audio.preload = 'auto';

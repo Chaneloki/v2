@@ -908,8 +908,9 @@
 
         /* [新增] 賽爾登場特效 */
         .fairy-appear {
+            /* P2 效能優化: magic-glow 改為播一次（forwards）後停止，避免對話全程無限重繪 filter:drop-shadow */
             animation: fairy-entrance 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-                magic-glow 2s infinite alternate;
+                magic-glow 2s 1 forwards;
         }
 
         @keyframes fairy-entrance {

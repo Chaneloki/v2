@@ -81,8 +81,12 @@ class GridRenderer {
      * [內部] 自動捲動邏輯 (使用 requestAnimationFrame 確保流暢)
      */
     _setupAutoScroll(wrapper) {
+        // #11 防止多次 init() 重複堆疊 document 級監聽器
+        if (this._autoScrollSetup) return;
+        this._autoScrollSetup = true;
+
         let scrollTick = null;
-        
+
         const stopScroll = () => { if (scrollTick) { cancelAnimationFrame(scrollTick); scrollTick = null; } };
 
         wrapper.addEventListener('mousemove', (e) => {
@@ -140,11 +144,16 @@ class GridRenderer {
             if (!state.isSelecting || state.formulaRangeSelection || !state.selectedCell) return;
             const rect = wrapper.getBoundingClientRect();
             if (e.clientY >= rect.top) return; // 還在 wrapper 內，交給 cell onmouseover 處理
-            // 游標已飄到 wrapper 上方：用 X 位置找最近的欄頭
+            // #23 用欄頭反向 Map 取代 querySelectorAll + indexOf，O(n) → O(1)
             const els = document.elementsFromPoint(e.clientX, rect.top + 4);
             const header = els.find(el => el.classList.contains('l-head') && el.classList.contains('letter'));
             if (!header) return;
-            const colIdx = [...document.querySelectorAll('.l-head.letter')].indexOf(header);
+            // 若尚未建立欄頭 Map，立即建立（欄頭在渲染後不會移動）
+            if (!this._headerIndexMap) {
+                this._headerIndexMap = new Map();
+                document.querySelectorAll('.l-head.letter').forEach((el, i) => this._headerIndexMap.set(el, i));
+            }
+            const colIdx = this._headerIndexMap.has(header) ? this._headerIndexMap.get(header) : -1;
             if (colIdx < 0) return;
             const start = state.selectedCell;
             const newRange = {
@@ -278,7 +287,9 @@ class GridRenderer {
 
         let maxC = 0;
         data.forEach(row => { if (row.length > maxC) maxC = row.length; });
-        
+
+        // #1 強制全量重建時清除 diff 快取
+        this._lastRenderData = null;
         this._renderFull(data, maxC);
     }
 
@@ -308,15 +319,26 @@ class GridRenderer {
         const wrapper = document.getElementById('wrapper');
         const styles = state.cellStyles || {};
         
-        this.cellMap.clear();
-        this.headerMap.clear();
-
         // 1. 計算可見範圍
         const scrollTop = wrapper.scrollTop;
         const wrapperHeight = wrapper.clientHeight || 600; // 增加回退值避免計算為 0
-        
+
         const startIdx = Math.max(0, Math.floor(scrollTop / this.rowHeight) - this.bufferRows);
         const endIdx = Math.min(data.length - 1, Math.ceil((scrollTop + wrapperHeight) / this.rowHeight) + this.bufferRows);
+
+        // #1 虛擬捲動 diff：若渲染範圍與資料指針相同，跳過整個 DOM 重建（只重整 visuals）
+        if (this._lastRenderStart === startIdx &&
+            this._lastRenderEnd === endIdx &&
+            this._lastRenderData === data) {
+            this._updateVisuals(data, maxC, startIdx, endIdx);
+            return;
+        }
+        this._lastRenderStart = startIdx;
+        this._lastRenderEnd = endIdx;
+        this._lastRenderData = data;
+
+        this.cellMap.clear();
+        this.headerMap.clear();
 
         // 2. 設定容器總高度 (維持捲動軸感) 與 Grid 佈局
         // 重要：必須設定 gridTemplateRows 以確保 grid-row 定位正確
@@ -501,61 +523,72 @@ class GridRenderer {
                         // [修復]: 強制移除所有換行符，避免數據污染，改讀 textContent (斜線儲存格除外)
                         const cleanVal = e.target.style.whiteSpace === 'pre' ? e.target.textContent : e.target.textContent.replace(/\r?\n|\r/g, "");
                         data[rIdx][cIdx] = cleanVal;
-                        
-                        // 動態解析整個公式，高亮所有被參照的儲存格
-                        state.formulaRefRanges = this._parseFormulaReferences(cleanVal);
-                        this._updateVisuals(data, maxC, startIdx, endIdx);
-                        
-                        // [新增]: 公式自動完成提示（僅限 ch7/7.5/8/8.5，且只顯示已教過的函數）
-                        const _acChap = state.currentChapter.toString();
-                        const _acChapOk = ["70", "75", "80", "85"].includes(_acChap);
-                        if (cleanVal.startsWith('=') && _acChapOk) {
-                            // skill ID → 對應函數名稱（依教學順序排列）
-                            const _skillFuncMap = {
-                                "FORMULA_BASIC": "SUM",
-                                "FUNC_RANK":     "RANK",
-                                "IF_BASIC":      "IF",
-                                "IFS":           "IFS",
-                                "IF_AND":        "AND"
-                            };
-                            // 已解鎖技能 + 當前任務正在教的技能，都放入白名單
-                            // （讓玩家在任務開始時就能看到該函數，而不是完成後才顯示）
-                            const _unlocked = state.unlockedSkills || [];
-                            const _curTask = state.activeChapterModule?.simulator?.tasks?.[state.currentTaskIndex];
-                            const _curSkill = _curTask?.unlockSkillId;
-                            const _allowedFuncs = Object.entries(_skillFuncMap)
-                                .filter(([skillId]) => _unlocked.includes(skillId) || skillId === _curSkill)
-                                .map(([, funcName]) => funcName);
 
-                            const upperVal = cleanVal.toUpperCase().substring(1);
-                            const suggestions = _allowedFuncs.filter(f => f.startsWith(upperVal) || upperVal === "");
+                        // #2 rAF debounce：每次按鍵只在下一個 animation frame 執行一次 _updateVisuals + syntax highlight
+                        if (this._inputRafId) cancelAnimationFrame(this._inputRafId);
+                        const _target = e.target;
+                        this._inputRafId = requestAnimationFrame(() => {
+                            this._inputRafId = null;
 
-                            if (suggestions.length > 0) {
-                                this._showAutocomplete(e.target, suggestions);
+                            // 動態解析整個公式，高亮所有被參照的儲存格
+                            state.formulaRefRanges = this._parseFormulaReferences(cleanVal);
+                            this._updateVisuals(data, maxC, startIdx, endIdx);
+
+                            // [新增]: 公式自動完成提示（僅限 ch7/7.5/8/8.5，且只顯示已教過的函數）
+                            const _acChap = state.currentChapter.toString();
+                            const _acChapOk = ["70", "75", "80", "85"].includes(_acChap);
+                            if (cleanVal.startsWith('=') && _acChapOk) {
+                                const _skillFuncMap = {
+                                    "FORMULA_BASIC": "SUM",
+                                    "FUNC_RANK":     "RANK",
+                                    "IF_BASIC":      "IF",
+                                    "IFS":           "IFS",
+                                    "IF_AND":        "AND"
+                                };
+                                const _unlocked = state.unlockedSkills || [];
+                                const _curTask = state.activeChapterModule?.simulator?.tasks?.[state.currentTaskIndex];
+                                const _curSkill = _curTask?.unlockSkillId;
+                                const _allowedFuncs = Object.entries(_skillFuncMap)
+                                    .filter(([skillId]) => _unlocked.includes(skillId) || skillId === _curSkill)
+                                    .map(([, funcName]) => funcName);
+
+                                const upperVal = cleanVal.toUpperCase().substring(1);
+                                const suggestions = _allowedFuncs.filter(f => f.startsWith(upperVal) || upperVal === "");
+
+                                if (suggestions.length > 0) {
+                                    this._showAutocomplete(_target, suggestions);
+                                } else {
+                                    this._hideAutocomplete();
+                                }
                             } else {
                                 this._hideAutocomplete();
                             }
-                        } else {
-                            this._hideAutocomplete();
-                        }
-                        
-                        // [新增]: 更新 Syntax Overlay 且動態同步寬度
-                        if (cleanVal.startsWith('=')) {
-                            e.target.classList.add('syntax-active');
-                            if (this.syntaxOverlay) {
-                                this.syntaxOverlay.innerHTML = this._highlightFormula(cleanVal);
-                                // [終極修復]: 讀取不受限制的 overlay 寬度，並強制賦予輸入框，徹底打破 CSS Grid 的封印
-                                const textWidth = this.syntaxOverlay.scrollWidth;
-                                const newWidth = Math.max(150, textWidth + 20) + 'px';
-                                e.target.style.width = newWidth;
-                                this.syntaxOverlay.style.width = newWidth;
+
+                            // [新增]: 更新 Syntax Overlay 且動態同步寬度
+                            if (cleanVal.startsWith('=')) {
+                                _target.classList.add('syntax-active');
+                                if (this.syntaxOverlay) {
+                                    // #12 快取 _highlightFormula 結果，只在公式實際改變時重算
+                                    if (this._lastHighlightInput !== cleanVal) {
+                                        this._lastHighlightInput = cleanVal;
+                                        this._lastHighlightResult = this._highlightFormula(cleanVal);
+                                    }
+                                    this.syntaxOverlay.innerHTML = this._lastHighlightResult;
+                                    // #3 延後讀取 scrollWidth，避免 innerHTML 寫入後立即讀取造成 layout thrashing
+                                    requestAnimationFrame(() => {
+                                        const textWidth = this.syntaxOverlay.scrollWidth;
+                                        const newWidth = Math.max(150, textWidth + 20) + 'px';
+                                        _target.style.width = newWidth;
+                                        this.syntaxOverlay.style.width = newWidth;
+                                    });
+                                }
+                            } else {
+                                _target.classList.remove('syntax-active');
+                                if (this.syntaxOverlay) this.syntaxOverlay.innerHTML = "";
+                                _target.style.width = "";
+                                this.syntaxOverlay.style.width = "";
                             }
-                        } else {
-                            e.target.classList.remove('syntax-active');
-                            if (this.syntaxOverlay) this.syntaxOverlay.innerHTML = "";
-                            e.target.style.width = "";
-                            this.syntaxOverlay.style.width = "";
-                        }
+                        });
                     },
                     onfocus: (e) => {
                         // 紀錄編輯前的值，以便還原或比對
@@ -975,11 +1008,16 @@ class GridRenderer {
         });
 
         // 2. 更新 Cell 狀態 (僅針對已繪製的 Cell)
+        // #10 將 multiSelectedCells 轉為 Set 以 O(1) 查找，取代逐格 O(n) 線性搜尋
+        const multiSet = state.multiSelectedCells
+            ? new Set(state.multiSelectedCells.map(c => `${c.r},${c.c}`))
+            : null;
+
         this.cellMap.forEach((cell, key) => {
             const coords = key.split(',').map(Number);
             const rIdx = coords[0], cIdx = coords[1];
-            
-            const isMulti = state.multiSelectedCells && state.multiSelectedCells.some(c => c.r === rIdx && c.c === cIdx);
+
+            const isMulti = multiSet && multiSet.has(key);
             const isInRange = (range && rIdx >= range.minRow && rIdx <= range.maxRow && 
                                       cIdx >= range.minCol && cIdx <= range.maxCol) || isMulti;
             

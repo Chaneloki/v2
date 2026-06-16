@@ -107,7 +107,14 @@ class SoundManager {
      * 播放單次音效
      */
     playSFX(url, volume = 1.0) {
-        const sfx = new Audio(url);
+        // #13 Audio 物件池：每個 URL 保留一個基底物件，重複播放時用 cloneNode 避免重建
+        if (!this._sfxCache) this._sfxCache = new Map();
+        let base = this._sfxCache.get(url);
+        if (!base) {
+            base = new Audio(url);
+            this._sfxCache.set(url, base);
+        }
+        const sfx = base.cloneNode();
         sfx.volume = volume;
         sfx.play().then(() => {
             console.log(`[SoundManager] 成功播放 SFX: ${url}`);
