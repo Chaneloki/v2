@@ -509,7 +509,7 @@ class GridRenderer {
                     id: cellId,
                     className: `cell r-${rNum}${extraClass}`,
                     textContent: cellVal.toString(), // [修復]: 移除 trim() 保留「斜線任務」需要的開頭空格
-                    contentEditable: "plaintext-only", // [優化]: 僅限純文字，防止 HTML 與換行注入
+                    contentEditable: this._isCellEditable(rIdx, cIdx, state, currentTask) ? "plaintext-only" : "false", // [2026-06-17] 儲存格保護
                     ...ghostAttr,
                     style: {
                         gridRow: gridRowPos,
@@ -897,11 +897,14 @@ class GridRenderer {
                         this._updateVisuals(data, maxC, startIdx, endIdx);
 
                         // [修復拖曳卡頓]: 避免原生文字選取干擾儲存格拖曳
+                        // [2026-06-17] 鎖定格 (contentEditable=false) 跳過 preventDefault，保留原生文字選取能力供玩家 copy
                         const editingCell = state.editingCell;
                         if (!editingCell || editingCell.el !== e.currentTarget) {
                             if (e.target.tagName !== 'BUTTON' && !e.target.classList.contains('excel-filter-icon')) {
-                                e.preventDefault();
-                                e.currentTarget.focus();
+                                if (e.currentTarget.contentEditable !== 'false') {
+                                    e.preventDefault();
+                                    e.currentTarget.focus();
+                                }
                             }
                         }
                     },
@@ -1139,6 +1142,36 @@ class GridRenderer {
         }
         pushToken('normal');
         return out;
+    }
+
+    // [2026-06-17] 儲存格保護：判斷指定儲存格是否允許玩家輸入
+    _isCellEditable(rIdx, cIdx, state, currentTask) {
+        const chapter = state.currentChapter?.toString();
+        if (state.currentPhase !== 'SIMULATOR') return false;
+
+        // Ch1 / Ch1.5：INSERT_DATE 任務時開放 E 欄（col 4）供玩家點選並按 Ctrl+;
+        if (chapter === '10' || chapter === '15') {
+            return currentTask?.id === 'INSERT_DATE' && rIdx > 0 && cIdx === 4;
+        }
+
+        // Ch3 / Ch3.5：只在 EMPTY_TASK 時開放目標欄位（E 或 F）的非標題列
+        const emptyTaskCol = { '30': 4, '35': 5 };
+        if (Object.prototype.hasOwnProperty.call(emptyTaskCol, chapter)) {
+            return currentTask?.id === 'EMPTY_TASK' && rIdx > 0 && cIdx === emptyTaskCol[chapter];
+        }
+
+        // 公式章節 (Ch7/7.5/8/8.5)：只開放當前任務的 targetCell
+        if (['70', '75', '80', '85'].includes(chapter)) {
+            if (!currentTask?.targetCell) return false;
+            const tc = currentTask.targetCell;
+            if (rIdx === tc.r && cIdx === tc.c) return true;
+            // IF_PLUS_TASK 需要同時開放 H 欄 (7) 與 I 欄 (8)
+            if (currentTask.id === 'IF_PLUS_TASK' && tc.c === 7 && rIdx === tc.r && cIdx === 8) return true;
+            return false;
+        }
+
+        // 其他章節：全部鎖定，不允許輸入
+        return false;
     }
 }
 

@@ -880,7 +880,7 @@
                             </div>
                         </div>
                     </div>
-                    <p id="custom-list-hint" style="font-size:11px; color:#666; margin-top:10px;">
+                    <p id="custom-list-hint" style="font-size:11px; color:#666; margin-top:10px; user-select:text; -webkit-user-select:text;">
                         提示：在右側輸入「重症」、「中症」、「輕症」（每行一個），然後點擊新增。</p>
                 </div>
 
@@ -1019,6 +1019,11 @@
         input, textarea, select {
             -webkit-user-select: text;
             user-select: text;
+        }
+        #e-t strong.emphasize {
+            -webkit-user-select: text;
+            user-select: text;
+            cursor: text;
         }
 
         /* 核心全域樣式 */

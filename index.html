@@ -322,6 +322,9 @@ kbd{background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.18);
 </head>
 <body>
 
+<!-- ══ BGM ══ -->
+<audio id="bgm-audio" src="BGM/magic.mp3" loop preload="auto"></audio>
+
 <!-- ══ TOPBAR ══ -->
 <nav id="topbar">
   <span class="logo-icon">✨</span>
@@ -329,6 +332,7 @@ kbd{background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.18);
   <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">遊戲介紹</button>
   <button class="nav-btn" id="nb-cheat" onclick="togglePanel('cheat')">Excel技能表</button>
   <button class="nav-btn" id="nb-patch" onclick="togglePanel('patch')">更新日誌</button>
+  <button class="nav-btn" id="bgm-btn" onclick="toggleBGM()" title="背景音樂">🔇</button>
   <button class="btn-game" onclick="openModal()">⚔ 進入遊戲</button>
 </nav>
 
@@ -539,6 +543,31 @@ const PT=[
 document.getElementById('body-patch').innerHTML=`<div class="pt-line">${PT.map(p=>`
 <div class="pt-item"><h3><span class="pt-ver">${p.v}</span>${p.t}</h3><p>${p.d}</p></div>`).join('')}</div>`;
 
+// ══ BGM ══
+(function(){
+  const audio = document.getElementById('bgm-audio');
+  const btn = document.getElementById('bgm-btn');
+  let playing = false;
+
+  function startBGM(){
+    audio.volume = 0.45;
+    audio.play().then(()=>{ playing = true; btn.textContent = '🔊'; }).catch(()=>{});
+  }
+
+  function toggleBGM(){
+    if(playing){ audio.pause(); playing = false; btn.textContent = '🔇'; }
+    else { startBGM(); }
+  }
+  window.toggleBGM = toggleBGM;
+
+  // 嘗試自動播放；若瀏覽器攔截，等首次互動後再播
+  startBGM();
+  if(!playing){
+    const onFirst = ()=>{ startBGM(); document.removeEventListener('click', onFirst); };
+    document.addEventListener('click', onFirst);
+  }
+})();
+
 // ══ GAME MODAL ══
 function openModal(){ document.getElementById('gmodal').classList.add('show'); }
 function launchGame(fs){
@@ -551,6 +580,16 @@ function launchGame(fs){
     sessionStorage.setItem('game_want_fullscreen','1');
     document.documentElement.requestFullscreen?.().catch(()=>{});
   }
+  // BGM 淡出：進入遊戲後 1.5 秒內漸漸靜音
+  (function(){
+    const _bgm = document.getElementById('bgm-audio');
+    if(_bgm && !_bgm.paused){
+      const _fade = setInterval(()=>{
+        if(_bgm.volume > 0.05){ _bgm.volume = Math.max(0, _bgm.volume - 0.05); }
+        else { clearInterval(_fade); _bgm.pause(); _bgm.volume = 0; }
+      }, 80);
+    }
+  })();
   setTimeout(()=>{
     // Load game.html inside an iframe to preserve fullscreen (don't remove DOM — that exits fullscreen)
     const iframe = document.createElement('iframe');
