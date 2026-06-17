@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel 魔法冒險 - 冒險指南</title>
+    <title>Excel 擳?? - ???</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -120,46 +120,46 @@
 </head>
 <body>
     <div class="instruction-book">
-        <h1>📜 試算表魔導書：冒險指南</h1>
+        <h1>?? 閰衣?銵券?撠嚗??芣???/h1>
         
         <div class="guide-section">
-            <h2>✨ 遊戲簡介</h2>
-            <p>歡迎來到魔法學院！在這裡，你將學習如何運用「試算表禁術」(Excel) 來解決各種冒險難題。從整理裝備清單到計算魔法傷害，每一格單元格都蘊含著強大的魔力。</p>
+            <h2>???蝪∩?</h2>
+            <p>甇∟?靘擳?摮賊嚗?ㄐ嚗?撠飛蝧?雿??具岫蝞”蝳???Excel) 靘圾瘙箏?蝔桀??芷憿??渡?鋆?皜?啗?蝞?瘜摰喉?瘥??澆??質??怨?撘瑕之????/p>
         </div>
 
         <div class="guide-section">
-            <h2>🎮 基本操作</h2>
+            <h2>? ?箸??</h2>
             <ul>
-                <li><b>選取單元格</b>：點擊表格中的任何位置來聚焦。</li>
-                <li><b>輸入魔咒</b>：在選取的單元格中輸入數值或公式。</li>
-                <li><b>執行禁術</b>：輸入完畢後按下 Enter 鍵，魔法將會生效。</li>
-                <li><b>追隨引導</b>：留意畫面左側的「精靈導師」，她會給予你下一步的指示。</li>
+                <li><b>?詨??桀???/b>嚗??”?潔葉?遙雿?蝵桐????/li>
+                <li><b>頛詨擳?</b>嚗?詨???銝剛撓?交?潭??砍???/li>
+                <li><b>?瑁?蝳?</b>嚗撓?亙??Ｗ??? Enter ?蛛?擳?撠?????/li>
+                <li><b>餈賡撘?</b>嚗???Ｗ椰?渡??移??撣怒?憟寞?蝯虫?雿?銝甇亦??內??/li>
             </ul>
         </div>
 
         <div class="guide-section">
-            <h2>💡 冒險小撇步</h2>
-            <p>當你遇到困難時，可以嘗試查看頂部的「常用」功能列，那裡隱藏著許多強大的輔助工具。記得隨時存檔，以免魔法能量流失！</p>
+            <h2>? ?撠?甇?/h2>
+            <p>?嗡???圈???臭誑?岫?亦???虜?具??賢?嚗鋆⊿??閮勗?撘瑕之???拙極?瑯?敺??瑼?隞亙?擳??賡?瘚仃嚗?/p>
         </div>
 
         <div id="feedback-section">
-            <h2>💬 冒險者回饋</h2>
-            <p>我們非常重視你的冒險體驗。如果你有任何建議或發現了魔法裂痕（Bug），請告訴我們！</p>
+            <h2>? ???擖?/h2>
+            <p>??撣賊?閬????芷?撽????遙雿遣霅唳??潛鈭?瘜???Bug嚗?隢?閮湔???</p>
             <form id="feedback-form">
                 <div class="form-group">
-                    <label for="p-name">冒險者大名：</label>
-                    <input type="text" id="p-name" placeholder="請輸入你的稱呼..." required>
+                    <label for="p-name">??之??</label>
+                    <input type="text" id="p-name" placeholder="隢撓?乩??迂??.." required>
                 </div>
                 <div class="form-group">
-                    <label for="p-comment">你的留言：</label>
-                    <textarea id="p-comment" placeholder="寫下你的冒險心得或建議..." required></textarea>
+                    <label for="p-comment">雿???嚗?/label>
+                    <textarea id="p-comment" placeholder="撖思?雿??敹??遣霅?.." required></textarea>
                 </div>
-                <button type="submit" class="btn-submit">傳送魔法訊息</button>
-                <div id="success-msg">✨ 訊息已成功傳送到大魔導師的手中！感謝你的回饋。</div>
+                <button type="submit" class="btn-submit">?喲?瘜???/button>
+                <div id="success-msg">??閮撌脫???憭折?撠葦??銝哨???雿?????/div>
             </form>
         </div>
 
-        <a href="index.html" class="btn-back">⬅️ 回到冒險起點</a>
+        <a href="game.html" class="btn-back">漎? ??韏琿?</a>
     </div>
 
     <script>
@@ -169,19 +169,19 @@
             const comment = document.getElementById('p-comment').value;
             const date = new Date().toLocaleString();
             
-            // 儲存到 localStorage
+            // ?脣???localStorage
             const feedbackList = JSON.parse(localStorage.getItem('adventure_feedback') || '[]');
             feedbackList.push({ name, comment, date });
             localStorage.setItem('adventure_feedback', JSON.stringify(feedbackList));
             
-            // 模擬傳送效果
+            // 璅⊥?喲???
             console.log('Feedback saved locally:', { name, comment, date });
             
-            // 顯示成功訊息並隱藏表單
+            // 憿舐內??閮銝阡?”??
             document.getElementById('success-msg').style.display = 'block';
             this.reset();
             
-            // 3秒後隱藏訊息
+            // 3蝘??梯?閮
             setTimeout(() => {
                 document.getElementById('success-msg').style.display = 'none';
             }, 3000);

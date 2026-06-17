@@ -1726,9 +1726,9 @@ body {
 
 /* --- 蝟餌絞�詨鱓瘥𤤿縧���蝝� (Glassmorphism) --- */
 #sys-menu-overlay {
-    background: rgba(10, 15, 30, 0.7) !important;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    /* Opaque so the browser occlusion-culls everything behind it (no per-frame
+       compositing of the title screen) and NO backdrop blur (per-frame GPU killer). */
+    background: #10141f !important;
 }
 .sys-menu-panel {
     background: rgba(255, 255, 255, 0.1) !important;

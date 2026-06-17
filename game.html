@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
+    <title>Excel 魔法冒險 V2 - 巔峰視覺版</title>
+    <!-- [基因還原] 使用 v45 原始樣式表 -->
+    <link rel="stylesheet" href="style.css?v=1781330285593">
+    <style>
+    /* === Cinematic Title Buttons === */
+    .cinematic-btn-primary {
+      position: relative;
+      width: 300px;
+      padding: 18px 0;
+      font-family: serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(18,12,4,0.92), rgba(45,28,6,0.92));
+      border: 1px solid rgba(255,215,0,0.55);
+      border-radius: 2px;
+      cursor: pointer;
+      overflow: hidden;
+      text-shadow: 0 0 22px rgba(255,200,0,0.9), 0 1px 3px #000;
+      box-shadow: 0 0 30px rgba(255,175,0,0.12), inset 0 0 25px rgba(255,155,0,0.04);
+      transition: all 0.3s ease;
+    }
+    .cinematic-btn-primary::before {
+      content:'';
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .cinematic-btn-primary::after {
+      content:'';
+      position:absolute; top:0; left:-120%;
+      width:55%; height:100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transform: skewX(-18deg);
+      animation: shimmerSweep 3.5s ease-in-out infinite;
+    }
+    .cinematic-btn-primary:hover {
+      border-color: rgba(255,215,0,0.9);
+      box-shadow: 0 0 60px rgba(255,185,0,0.35), inset 0 0 35px rgba(255,160,0,0.08);
+      transform: scale(1.04);
+      color: #fff8d0;
+    }
+
+    .cinematic-btn-secondary {
+      position: relative;
+      width: 240px;
+      padding: 12px 0;
+      font-family: sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: rgba(255,225,140,0.8);
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,200,80,0.3);
+      border-radius: 2px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .cinematic-btn-secondary:hover {
+      background: rgba(255,200,80,0.08);
+      border-color: rgba(255,200,80,0.65);
+      color: #fff;
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(255,185,0,0.2);
+    }
+
+    /* purple variant for teleport */
+    .cinematic-btn-secondary.purple {
+      color: rgba(210,175,255,0.85);
+      border-color: rgba(150,80,255,0.35);
+    }
+    .cinematic-btn-secondary.purple:hover {
+      background: rgba(130,60,255,0.1);
+      border-color: rgba(175,120,255,0.75);
+      color: #e8d5ff;
+      box-shadow: 0 0 20px rgba(138,43,226,0.3);
+    }
+
+    @keyframes shimmerSweep {
+      0%   { left: -120%; opacity:0; }
+      10%  { opacity:1; }
+      50%  { left: 160%; opacity:1; }
+      51%  { opacity:0; }
+      100% { left: 160%; opacity:0; }
+    }
+
+    /* === Title WordArt === */
+    .title-word-excel {
+      font-family: 'Times New Roman', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(3rem, 7vw, 6rem);
+      color: #217346;
+      line-height: 1;
+      text-shadow:
+        1px 1px 0 #1a5c38,
+        2px 2px 0 #154a2d,
+        3px 4px 6px rgba(0,0,0,0.45);
+    }
+    .title-word-magic {
+      font-family: 'Noto Serif TC', 'KaiTi', serif;
+      font-weight: 900;
+      font-size: clamp(3rem, 7vw, 6rem);
+      color: #c7a96b;
+      line-height: 1;
+      letter-spacing: 4px;
+      text-shadow:
+        1px 1px 0 #a98b4f,
+        2px 2px 0 #8f7340,
+        4px 6px 10px rgba(0,0,0,0.5);
+    }
+
+    /* === Title Screen Layout === */
+    .cg-bg-layer {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+      transition: opacity 1.8s ease-in-out;
+    }
+    .intro-char {
+      position: absolute;
+      bottom: 0;
+      object-fit: contain;
+      z-index: 2;
+      pointer-events: none;
+      animation: introCharFadeIn 2s ease-out forwards;
+    }
+    .intro-char-left {
+      left: -1%;
+      height: 105%;
+      max-height: 105vh;
+      -webkit-mask-image: linear-gradient(to right, black 55%, transparent 90%);
+      mask-image: linear-gradient(to right, black 55%, transparent 90%);
+      filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
+    }
+    .intro-char-right {
+      right: -1%;
+      height: 100%;
+      max-height: 100vh;
+      -webkit-mask-image: linear-gradient(to left, black 65%, transparent 95%);
+      mask-image: linear-gradient(to left, black 65%, transparent 95%);
+    }
+    @keyframes introCharFadeIn {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* Circle start button */
+    .title-circle-btn {
+      width: 155px; height: 155px;
+      border-radius: 50%;
+      position: relative; overflow: hidden;
+      background: radial-gradient(circle at 40% 35%, rgba(55,35,8,0.95), rgba(18,10,2,0.95));
+      border: 2px solid rgba(255,215,0,0.65);
+      color: #fff;
+      font-family: serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      line-height: 1.5;
+      cursor: pointer;
+      text-shadow: 0 0 18px rgba(255,200,0,0.9), 0 1px 3px #000;
+      box-shadow: 0 0 40px rgba(255,175,0,0.22), 0 0 80px rgba(255,140,0,0.1), inset 0 0 30px rgba(255,140,0,0.05);
+      transition: all 0.3s ease;
+    }
+    .title-circle-btn::after {
+      content:''; position:absolute; top:-40%; left:-40%;
+      width:80%; height:80%;
+      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%);
+      pointer-events:none;
+    }
+    .title-circle-btn:hover {
+      border-color: rgba(255,215,0,1);
+      box-shadow: 0 0 70px rgba(255,185,0,0.45), 0 0 120px rgba(255,140,0,0.2), inset 0 0 40px rgba(255,160,0,0.1);
+      transform: scale(1.06);
+    }
+
+    /* === System Menu Triangles (GPU-layered, clip rasterized once) === */
+    .sys-tri-row {
+      position: absolute;
+      right: 2vw; top: 0; bottom: 0;
+      display: flex;
+      align-items: stretch;
+      z-index: 2;
+    }
+    /* Each triangle is a pre-baked canvas bitmap (like the smooth char-button imgs) */
+    .sys-tri-wrap {
+      position: relative;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
+      /* pre-promote to GPU layer so hover transform is composite-only (same as .char-btn) */
+      will-change: transform;
+    }
+    .sys-tri-wrap:hover { transform: translateY(-14px); z-index: 5; }
+    /* interlock: bring close without visible overlap */
+    .sys-tri-wrap + .sys-tri-wrap { margin-left: -150px; }
+    .sys-tri-wrap-center { z-index: 2; }
+    canvas.sys-tri { display: block; }
+    .sys-tri-label {
+      position: absolute;
+      top: 28%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 3px;
+      text-align: center;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.95), 0 0 24px rgba(0,0,0,0.7);
+      line-height: 1.7;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .sys-tri-wrap-center .sys-tri-label { top: auto; bottom: 24%; }
+
+    /* Corner icon buttons */
+    .sys-corner-icon {
+      position: absolute;
+      width: 72px; height: 72px;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.55);
+      color: #fff;
+      font-size: 1.8rem;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .sys-corner-icon:hover {
+      background: rgba(255,255,255,0.38);
+      transform: scale(1.12);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .sys-corner-circle { border-radius: 50%; }
+
+    /* === Character Button (title screen) === */
+    .char-btn {
+      cursor: pointer;
+      pointer-events: auto;
+      position: relative;
+      display: inline-block;
+      transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94),
+                  opacity 0.38s ease;
+      will-change: transform;
+    }
+    .char-btn:hover {
+      transform: translateY(-18px) scale(1.04);
+    }
+    .char-btn.char-dimmed {
+      opacity: 0.32;
+      transform: scale(0.98);
+    }
+    .char-btn-label {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: rgba(10,6,0,0.82);
+      color: #ffd700;
+      padding: 7px 20px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+      pointer-events: none;
+      border: 1px solid rgba(255,215,0,0.45);
+    }
+    .char-btn:hover .char-btn-label {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Sparkle particle */
+    .sparkle-dot {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #ffd700;
+      pointer-events: none;
+      animation: sparkleFly var(--dur, 1.4s) ease-out forwards;
+      z-index: 9999;
+    }
+    @keyframes sparkleFly {
+      0%   { transform: translate(0,0) scale(1); opacity:1; }
+      100% { transform: translate(var(--tx,0px), var(--ty,-40px)) scale(0); opacity:0; }
+    }
+    </style>
+</head>
+
+<body>
+    <!-- [Title Screen] 全新 RPG 標題畫面 -->
+    <div id="title-screen-overlay"
+        style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background:url('BG/intro/all.png') center/cover no-repeat;">
+
+        <!-- 漸層遮罩 -->
+        <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.08) 100%);"></div>
+
+        <!-- 中央三角色按鈕群 (glea正中, chate偏左, miro偏右) -->
+        <div id="intro-char-group" style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;width:760px;height:100%;z-index:4;pointer-events:none;">
+
+            <!-- 3_glea.png：正中央 (z:1) -->
+            <div class="char-btn" id="char-glea"
+                 style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;z-index:1;"
+                 onclick="window.uiManager.openSaveLoadMenu('load')">
+                <img src="BG/intro/3_glea.png" style="height:90vh;object-fit:contain;display:block;" alt="">
+                <div class="char-btn-label">📜 讀取記憶</div>
+            </div>
+
+            <!-- 2_miro.png：glea右側 (z:3) -->
+            <div class="char-btn" id="char-miro"
+                 style="position:absolute;left:58%;bottom:0;z-index:3;"
+                 onclick="window.uiManager.openTeleportModal()">
+                <img src="BG/intro/2_miro.png" style="height:52vh;object-fit:contain;display:block;" alt="">
+                <div id="miro-lock-badge" style="position:absolute;top:10%;left:50%;transform:translateX(-50%);background:rgba(10,5,20,0.82);border:1px solid rgba(150,80,255,0.6);color:#c39eff;padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;letter-spacing:2px;white-space:nowrap;pointer-events:none;box-shadow:0 0 12px rgba(138,43,226,0.4);">🔒 需要解封密碼</div>
+                <div class="char-btn-label">🌌 空間傳送陣</div>
+            </div>
+
+            <!-- 4_chate.png：glea左側 (z:4) -->
+            <div class="char-btn" id="char-chate"
+                 style="position:absolute;right:55%;bottom:0;z-index:4;"
+                 onclick="window.uiManager.startNewGame()">
+                <img src="BG/intro/4_chate.png" style="height:68vh;object-fit:contain;display:block;" alt="">
+                <div class="char-btn-label">✨ 開始新冒險</div>
+            </div>
+        </div>
+
+        <!-- 全版面絕對定位內容 -->
+        <div id="title-content" style="position:absolute;inset:0;z-index:5;animation:fadeInDown 1.5s ease-out;pointer-events:none;">
+
+            <!-- 標題 WordArt：左 Excel(綠) + 右 魔法冒險(金) -->
+            <div style="position:absolute;top:6vh;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:24px;white-space:nowrap;">
+                <span class="title-word-excel">Excel</span>
+                <span class="title-word-magic">魔法冒險</span>
+            </div>
+
+            <!-- 版本資訊 -->
+            <p style="position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;color:rgba(255,255,255,0.5);text-shadow:1px 1px 2px #000;letter-spacing:2px;white-space:nowrap;">
+                V2 終極版</p>
+        </div>
+    </div>
+
+    <div id="coin-display">💰 <span id="coin-count">0</span> G</div>
+
+    <!-- [Story Phase] v45 劇場結構 -->
+    <div id="story-overlay" style="display:none; opacity:0; transition:opacity 0.5s;"
+        onclick="window.uiManager.nextStoryLine()">
+
+        <div id="story-stage">
+            <!-- [新增] 背景模糊層：位於背景之上，人物之下 -->
+            <div id="story-bg-blur"></div>
+            <div class="char-container"><img src="" id="a-ma" class="char-img"></div>
+            <div class="char-container"><img src="" id="a-f" class="char-img"></div>
+            <div class="char-container"><img src="" id="a-l" class="char-img"></div>
+            <div class="char-container" id="main-char-container"><img src="" id="a-m" class="char-img"></div>
+            <!-- [新增] 物品/元素/道具層 -->
+            <div id="stuff-container"
+                style="position:absolute; inset:0; pointer-events:none; z-index:10; display:flex; justify-content:center; align-items:center;">
+                <img src="" id="story-stuff"
+                    style="max-width:80%; max-height:80%; opacity:0; transition:0.3s; transform:scale(0.8);">
+            </div>
+            <!-- [新增] 環境大氣特效層 (如：煙霧、霧氣、魔法粒子) -->
+            <div id="env-container"
+                style="position:absolute; inset:0; pointer-events:none; z-index:12; overflow:hidden; opacity:0; transition:opacity 1.5s;">
+                <img src="" id="story-env"
+                    style="width:120%; height:120%; position:absolute; top:-10%; left:-10%; object-fit:cover;">
+            </div>
+            <div class="char-container"><img src="" id="a-g" class="char-img"></div>
+            <div class="char-container"><img src="" id="a-b" class="char-img"></div>
+        </div>
+        <div id="dialogue-box">
+            <p id="s-name">START GAME</p>
+            <p id="s-text">Press the 繼續</p>
+            <div style="position:absolute; right:5%; bottom:20px; display:flex; gap:10px;">
+                <button onclick="event.stopPropagation(); window.uiManager.skipStory()" class="btn-next"
+                    style="background:#5d4037; position:static">跳過劇情</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- [RPG Mode] -->
+    <div id="rpg-container" class="rpg-scanlines"
+        style="display:none; opacity:0; transition:opacity 0.5s; width:816px; height:624px; max-width:95vw; max-height:95vh; overflow:hidden; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index:5; background:#000; border:4px solid #e0d5c1; border-radius:12px; box-shadow:0 0 30px rgba(0,0,0,0.8); image-rendering: pixelated;">
+        <div id="rpg-world"
+            style="position:absolute; width:2000px; height:2000px; background-size:cover; transition:transform 0.1s linear; image-rendering: pixelated;">
+        </div>
+        <div id="rpg-player"
+            style="position:absolute; width:120px; height:120px; z-index:10; transition:all 0.1s linear; background-size:contain; background-repeat:no-repeat; background-position:center; image-rendering: pixelated;">
+        </div>
+        <div id="rpg-overlay-layer"
+            style="position:absolute; inset:0; background:black; opacity:0; pointer-events:none; transition:opacity 0.5s; z-index:20;">
+        </div>
+
+        <!-- [UI Info Panels from Pic 2] -->
+        <div id="rpg-controls-info"
+            style="position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.5); color:#fff; padding:10px; border-radius:8px; font-size:12px; z-index:30; pointer-events:none; border:1px solid rgba(255,255,255,0.2);">
+            [W][A][S][D] 或方向鍵移動<br>
+            [Enter] 進行互動<br>
+            [Tab] 切換角色<br>
+            [D] 切換偵錯顯示<br>
+            [Esc] 返回系統選單
+        </div>
+        <div id="rpg-debug-info"
+            style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.8); color:#fff; padding:10px; border-radius:8px; font-size:12px; z-index:30; pointer-events:auto; border:1px solid #ffd700; display:flex; flex-direction:column; gap:4px; font-family:monospace;">
+            <div id="rpg-debug-coords">X: 0 | Y: 0</div>
+            <div id="rpg-debug-poi">Active POI: None</div>
+            <button id="rpg-debug-btn" onclick="window.rpgEngine.toggleDebug()" 
+                style="background:#217346; color:#fff; border:1px solid #ffd700; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:10px; margin-top:5px; font-family:sans-serif; text-align:center; font-weight:bold; transition:0.2s;">
+                👁️ 隱藏偵錯牆
+            </button>
+        </div>
+
+        <div id="rpg-action-hint"
+            style="position:absolute; bottom:20%; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:#fff; padding:10px 20px; border-radius:20px; display:none; z-index:30; font-size:14px; font-weight:bold;">
+            [Enter] 進行互動</div>
+        <div id="rpg-dialog-box"
+            style="position:absolute; top:40px; left:8%; width:84%; background:#0000aadd; color:#fff; padding:20px 30px; border:4px solid #ffffff; border-radius:6px; box-shadow:inset 0 0 0 2px #000000, 0 8px 20px rgba(0,0,0,0.8); display:none; z-index:40; box-sizing:border-box;">
+            <img id="rpg-dialog-avatar" src=""
+                style="width:100px; height:100px; object-fit:contain; float:left; margin-right:20px; display:none;">
+            <div id="rpg-dialog-title"
+                style="color:#ffff00; font-weight:bold; margin-bottom:10px; font-size:1.4rem; text-shadow:2px 2px 0 #000;">
+            </div>
+            <div id="rpg-dialog-text" style="line-height:1.6; font-size:1.2rem; text-shadow:2px 2px 0 #000;"></div>
+            <div style="font-size:12px; color:#aaa; margin-top:10px; text-align:right;">[Enter] 繼續</div>
+        </div>
+
+        <!-- [新增] RPG 地圖快速傳送快捷鍵 (Teleport Shortcut Menu) -->
+        <div id="rpg-teleport-menu"
+            style="position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,0.85); color:#fff; padding:10px; border-radius:8px; font-size:12px; z-index:30; border:1px solid #ffd700; display:flex; flex-direction:column; gap:6px; pointer-events:auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+            <div onclick="const list = document.getElementById('rpg-teleport-list'); list.style.display = list.style.display === 'none' ? 'flex' : 'none';"
+                style="font-weight:bold; border-bottom:1px solid #ffd700; padding-bottom:4px; text-align:center; color:#ffd700; cursor:pointer; user-select:none;">
+                🌌 空間傳送陣 (點擊展開)</div>
+            <div id="rpg-teleport-list" style="display:none; flex-direction:column; gap:6px; margin-top:4px;">
+                <button onclick="window.rpgEngine.loadMap('my_room')" class="rpg-teleport-btn">🏠 我的房間</button>
+                <button onclick="window.rpgEngine.loadMap('street')" class="rpg-teleport-btn">🛣️ 城鎮街道</button>
+                <button onclick="window.rpgEngine.loadMap('guild_hall')" class="rpg-teleport-btn">🏛️ 公會大廳</button>
+                <button onclick="window.rpgEngine.loadMap('dorm')" class="rpg-teleport-btn">🏢 公會宿舍</button>
+                <button onclick="window.rpgEngine.loadMap('shop_interior')" class="rpg-teleport-btn">💰 道具屋</button>
+                <button onclick="window.rpgEngine.loadMap('library')" class="rpg-teleport-btn">📚 圖書館</button>
+                <button onclick="window.rpgEngine.loadMap('training')" class="rpg-teleport-btn">⚔️ 訓練營</button>
+                <button onclick="window.rpgEngine.loadMap('secret_lab')" class="rpg-teleport-btn">🧪 秘密研究所</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- [Simulator Phase] v45 遊戲結構 -->
+    <div id="game-main" style="display: none; opacity: 0;">
+        <div id="top-row">
+            <div id="left-sidebar">
+                <div id="elf-panel">
+                    <img src="Charater/fairy.png" id="elf-img">
+                    <div id="elf-bubble">
+                        <p id="e-t"></p>
+                        <span id="t-t"></span>
+                        <button id="btn-game-next" style="display:none"
+                            onclick="window.orchestrator.nextTask()">聽導師指示</button>
+                    </div>
+                </div>
+                <div id="player-box">
+                    <div class="p-bubble">
+                        <p id="p-t"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="excel-container">
+                <div id="excel-area">
+                    <div id="ribbon">
+                        <div class="ribbon-tabs">
+                            <div class="tab" id="tab-start" onclick="window.uiManager.switchTab('start')">常用</div>
+                            <div class="tab" id="tab-insert" onclick="window.uiManager.switchTab('insert')">插入</div>
+                            <div class="tab" id="tab-data" onclick="window.uiManager.switchTab('data')">資料</div>
+                            <div class="tab active" id="tab-view" onclick="window.uiManager.switchTab('view')">檢視</div>
+                        </div>
+                        <div class="ribbon-buttons" id="ribbon-btns">
+                            <!-- 由渲染器根據解鎖狀態注入 -->
+                        </div>
+                    </div>
+                    <div class="wrapper" id="wrapper">
+                        <div id="green-line"
+                            style="display:none; position:absolute; width:4px; background-color:#217346; z-index:1500; pointer-events:none;">
+                        </div>
+                        <div id="corner-header"></div>
+                        <div id="col-headers-container"></div>
+                        <div id="row-headers-container"></div>
+                        <div id="grid" class="grid"></div>
+                    </div>
+                    <div id="sheet-bar">
+                        <div class="sheet active" id="st-1">🛡️ 裝備清單</div>
+                        <div id="add-sheet" onclick="window.uiManager.triggerAction('addsheet')">+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 系統導航樞紐 (System Menu) ================= -->
+    <div id="sys-menu-btn" onclick="window.uiManager.toggleSystemMenu()" title="開啟系統選單">⚙️</div>
+
+    <div id="sys-menu-overlay" class="modal-layer sys-overlay-hide" style="display:none; background:#10141f;">
+
+        <!-- White glass inner layer -->
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.06) 60%,rgba(200,220,255,0.12) 100%);pointer-events:none;z-index:0;"></div>
+
+        <!-- 關閉按鈕 -->
+        <button onclick="window.uiManager.toggleSystemMenu()"
+            style="position:absolute;top:24px;right:28px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.4);color:#fff;font-size:1.4rem;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;transition:0.2s;"
+            onmouseover="this.style.background='rgba(0,0,0,0.4)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">✕</button>
+
+        <!-- 1_main.png — decorative character, left side, above triangles -->
+        <img src="BG/intro/1_main.png" alt="" aria-hidden="true"
+             style="position:absolute;left:-5vw;bottom:0;height:85vh;object-fit:contain;pointer-events:none;z-index:1;opacity:0.92;">
+
+        <!-- 三角形主面板 (canvas-baked bitmaps — no per-frame clip) -->
+        <div class="sys-tri-row">
+
+            <!-- 左：pointing DOWN → 讀取記憶 -->
+            <div class="sys-tri-wrap"
+                 onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('load')">
+                <canvas class="sys-tri" data-img="BG/intro/2_bg.png" data-dir="down" data-w="360"></canvas>
+                <div class="sys-tri-label">📜<br>讀取記憶</div>
+            </div>
+
+            <!-- 中：pointing UP → 禁術大全 -->
+            <div class="sys-tri-wrap sys-tri-wrap-center"
+                 onclick="window.location.href='skill_book.html'">
+                <canvas class="sys-tri" data-img="BG/intro/1_bg.png" data-dir="up" data-w="380"></canvas>
+                <div class="sys-tri-label">📖<br>禁術大全</div>
+            </div>
+
+            <!-- 右：pointing DOWN → 儲存進度 -->
+            <div class="sys-tri-wrap"
+                 onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('save')">
+                <canvas class="sys-tri" data-img="BG/intro/3_bg.png" data-dir="down" data-w="360"></canvas>
+                <div class="sys-tri-label">💾<br>儲存進度</div>
+            </div>
+        </div>
+
+        <!-- 角落圖示按鈕 -->
+        <button class="sys-corner-icon" style="top:32px;left:32px;"
+            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.toggleFullscreen()" title="全螢幕">⛶</button>
+        <button class="sys-corner-icon sys-corner-circle" style="bottom:40px;left:32px;"
+            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openTeleportModal()" title="空間傳送陣">🌌</button>
+        <button class="sys-corner-icon" style="bottom:40px;right:32px;"
+            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openDevMenu()" title="開發者工具">🛠️</button>
+    </div>
+    <!-- ================= 系統導航樞紐 End ================= -->
+
+    <!-- ================= 空間傳送陣彈窗 (Teleport Modal) ================= -->
+    <div id="teleport-modal" class="modal-layer" style="display:none; z-index:12000;">
+        <div class="sys-menu-panel"
+            style="max-width: 400px; text-align: center; background: #1a0f0a; border: 3px solid #ffd700; box-shadow: 0 0 25px rgba(255,215,0,0.5);">
+            <div class="sys-menu-header"
+                style="border-bottom: 2px solid #ffd700; padding-bottom: 10px; margin-bottom: 15px;">
+                <h2 style="color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.4); margin: 0; font-size: 20px;">🌌
+                    空間傳送陣</h2>
+                <div class="sys-menu-close" style="color: #ffd700; cursor: pointer; font-size: 24px;"
+                    onclick="document.getElementById('teleport-modal').style.display='none'">×</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button onclick="window.uiManager.teleportTo('my_room')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">🏠 我的房間 (My Room)</button>
+                <button onclick="window.uiManager.teleportTo('street')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">🛣️ 城鎮街道 (Street)</button>
+                <button onclick="window.uiManager.teleportTo('guild_hall')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">🏛️ 公會大廳 (Guild Hall)</button>
+                <button onclick="window.uiManager.teleportTo('dorm')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">🏢 公會宿舍 (Dormitory)</button>
+                <button onclick="window.uiManager.teleportTo('shop_interior')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">💰 神秘道具屋 (Shop)</button>
+                <button onclick="window.uiManager.teleportTo('library')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">📚 圖書館 (Library)</button>
+                <button onclick="window.uiManager.teleportTo('training')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">⚔️ 冒險者訓練營 (Training)</button>
+                <button onclick="window.uiManager.teleportTo('secret_lab')" class="rpg-teleport-btn"
+                    style="font-size: 14px; padding: 10px 15px;">🧪 秘密研究所 (Secret Lab)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 存取檔面板 ================= -->
+    <div id="save-load-overlay" class="sys-overlay-hide">
+        <div class="sys-menu-panel" style="max-width: 600px;">
+            <div class="sys-menu-header">
+                <h2 id="sl-title">💾 記憶法陣</h2>
+                <div class="sys-close-btn" onclick="window.uiManager.closeSaveLoadMenu()">×</div>
+            </div>
+            <div id="sl-grid" style="display: flex; flex-direction: column; gap: 15px;">
+                <!-- 動態生成槽位 -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- [新增] 開發者跳轉選單 -->
+    <div id="dev-modal" class="modal-layer" style="display:none; z-index:8000;">
+        <div id="dev-card"
+            style="width:300px; max-height:80vh; overflow-y:auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+            <h3 style="margin-top:0; color:#333; border-bottom:1px solid #eee; padding-bottom:10px;">🛠️ 開發者跳轉</h3>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
+                <label style="font-size:12px; color:#666;">選擇章節：</label>
+                <select id="dev-chapter-select"
+                    style="padding:8px; border-radius:5px; border:1px solid #ccc; font-size:14px; width:100%;">
+                    <option value="10">第一章 (Ch1)</option>
+                    <option value="15">第 1.5 章 (Ch1.5)</option>
+                    <option value="20">第二章 (Ch2)</option>
+                    <option value="25">第 2.5 章 (Ch2.5)</option>
+                    <option value="30">第三章 (Ch3)</option>
+                    <option value="35">第 3.5 章 (Ch3.5)</option>
+                    <option value="40">第四章 (Ch4)</option>
+                    <option value="45">第 4.5 章 (Ch4.5)</option>
+                    <option value="50">第五章 (Ch5)</option>
+                    <option value="55">第 5.5 章 (Ch5.5)</option>
+                    <option value="60">第六章 (Ch6)</option>
+                    <option value="65">第 6.5 章 (Ch6.5)</option>
+                    <option value="70">第七章 (Ch7)</option>
+                    <option value="75">第 7.5 章 (Ch7.5)</option>
+                    <option value="80">第 8 章 (Ch8)</option>
+                    <option value="85">第 8.5 章 (Ch8.5)</option>
+                </select>
+                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px; margin-top:5px;">
+                    <button onclick="window.uiManager.jumpFromDev('STORY_START')" class="dev-opt"
+                        style="text-align:center; padding: 5px;">開場</button>
+                    <button onclick="window.uiManager.jumpFromDev('SIMULATOR')" class="dev-opt"
+                        style="text-align:center; padding: 5px;">遊戲</button>
+                    <button onclick="window.uiManager.jumpFromDev('STORY_END')" class="dev-opt"
+                        style="text-align:center; padding: 5px;">結束</button>
+                </div>
+            </div>
+            <div style="margin-top:10px;">
+                <button onclick="localStorage.removeItem('metaChoiceNo'); alert('「無所謂了」記憶已清除！現在可以測試第一次的結局了！');"
+                    class="dev-opt"
+                    style="width:100%; text-align:center; background:#ffeeba; color:#856404; border-color:#ffeeba;">重置「無所謂了」記憶</button>
+            </div>
+            <div style="margin-top:8px;">
+                <button onclick="window.uiManager.clearTeleportUnlock()"
+                    class="dev-opt"
+                    style="width:100%; text-align:center; background:#f8d7da; color:#721c24; border-color:#f5c6cb;">🔒 清除傳送陣解鎖記憶</button>
+            </div>
+            <button onclick="window.uiManager.openDevMenu()"
+                style="margin-top:20px; width:100%; padding:10px; background:#eee; border:none; border-radius:5px; cursor:pointer;">關閉</button>
+        </div>
+    </div>
+
+    <!-- [新增] Excel 下拉選單 -->
+    <div id="dropdown-menu" class="dropdown-layer" style="display:none">
+        <div id="dropdown-content"></div>
+    </div>
+
+    <div id="trial-modal" class="modal-layer" style="display:none">
+        <div id="trial-card">
+            <h2 style="color:#8b4513; margin-bottom:20px;">🔮 禁術抉擇</h2>
+            <p id="trial-situation"></p>
+            <div id="trial-options" style="display:flex; flex-direction:column; gap:12px;"></div>
+        </div>
+    </div>
+
+    <!-- [全新實戰魔導書模組] -->
+    <div id="s-modal" class="modal-layer" style="display:none">
+        <div id="s-card" class="grimoire-layout">
+            <div class="grimoire-left">
+                <div id="s-header">
+                    <h3>📖 實戰魔導書 (Skill Grimoire)</h3>
+                    <p class="grimoire-subtitle">點擊你想解決的問題，尋找對應的試算表禁術</p>
+                </div>
+                <div id="s-tabs" class="grimoire-tabs">
+                    <button class="skill-tab active" onclick="window.uiManager.setSkillFilter('all', this)">
+                        <div class="tab-icon">✨</div>
+                        <div class="tab-text">全部禁術</div>
+                    </button>
+                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('search_move', this)">
+                        <div class="tab-icon">🔍</div>
+                        <div class="tab-text">找資料與移動<br><span>(表太長找不到時)</span></div>
+                    </button>
+                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('org_format', this)">
+                        <div class="tab-icon">🧹</div>
+                        <div class="tab-text">整理與排版<br><span>(版面太亂時)</span></div>
+                    </button>
+                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('fast_input', this)">
+                        <div class="tab-icon">⚡</div>
+                        <div class="tab-text">快速輸入<br><span>(不想手動打字時)</span></div>
+                    </button>
+                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('calc_analyze', this)">
+                        <div class="tab-icon">🧮</div>
+                        <div class="tab-text">運算與分析<br><span>(需要算錢統計時)</span></div>
+                    </button>
+                </div>
+                <div id="s-search-box">
+                    <input type="text" id="skill-search" placeholder="輸入關鍵字或禁術名稱..."
+                        oninput="window.uiManager.debounceSearch()">
+                </div>
+                <div id="s-list" class="grimoire-list">
+                    <!-- 技能卡片由 JS 動態生成 -->
+                </div>
+            </div>
+            <div class="grimoire-right" id="s-detail-panel">
+                <!-- 詳細內容由 JS 動態生成 -->
+            </div>
+            <button onclick="window.uiManager.openSkills()" class="grimoire-close-btn">✕</button>
+        </div>
+    </div>
+
+    <!-- 領悟特效 -->
+    <div id="skill-toast"
+        style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:#ffd700; padding:20px 40px; border:2px solid #ffd700; border-radius:10px; z-index:11000; text-align:center; animation: bounceIn 0.8s;">
+        <h2 style="margin:0">✨ 領悟禁術 ✨</h2>
+        <p id="skill-toast-name" style="margin:10px 0 0 0; font-size:20px; font-weight:bold;"></p>
+    </div>
+
+    <!-- [新增] 皇家信箋 UI -->
+    <div id="letter-modal" class="modal-layer"
+        style="display:none; background:rgba(0,0,0,0.7); backdrop-filter:blur(5px);">
+        <div id="letter-body" class="letter-paper">
+            <div class="letter-seal">👑</div>
+            <div class="letter-content">
+                <h2 style="text-align:center; color:#8b4513; font-family:serif;">📜 皇家徵召令</h2>
+                <hr style="border:1px dashed #d2b48c; margin:20px 0;">
+                <p>親愛的 冒險者：</p>
+                <p>鑑於您在「公會物資名冊」展現出的卓越數據禁術，王城典儀廳現誠摯邀請您前往參與<b>「皇家國庫清算行動」</b>。</p>
+                <p>這是一項關乎王國基業的神聖任務，請務必於明晨準時抵達王城北大門。</p>
+                <p style="text-align:right; margin-top:30px;">── 王城典儀廳 首席大書記官</p>
+            </div>
+            <button onclick="window.uiManager.hideLetter()" class="letter-close-btn">收起信箋</button>
+        </div>
+    </div>
+
+    <!-- [新增] 自定義右鍵選單 -->
+    <div id="context-menu" class="dropdown-layer" style="display:none; min-width: 160px; z-index: 9000;">
+        <div class="dropdown-item" onclick="window.uiManager.openFormatDialog('number')">
+            <span class="icon">⚙️</span><span class="text">設定儲存格格式(F)...</span>
+        </div>
+        <div style="border-top:1px solid #eee; margin:5px 0;"></div>
+        <div class="dropdown-item disabled" style="opacity:0.5; cursor:not-allowed;">
+            <span class="icon">📋</span><span class="text">貼上</span>
+        </div>
+    </div>
+
+    <!-- [新增] 進階篩選對話框 (Advanced Filter) -->
+    <div id="excel-adv-filter-modal" class="modal-layer" style="display:none; background:rgba(0,0,0,0.5);">
+        <div class="excel-dialog" style="width: 350px;">
+            <div class="excel-dialog-header">
+                <span>進階篩選</span>
+                <button class="excel-close" onclick="window.uiManager.closeAdvFilterDialog()">×</button>
+            </div>
+            <div class="excel-dialog-body" style="padding: 15px;">
+                <div style="font-size:11px; margin-bottom:10px;">方式</div>
+                <div style="margin-left:20px; font-size:11px; display:flex; flex-direction:column; gap:5px;">
+                    <label><input type="radio" name="filter-action" checked> 在原有區域顯示篩選結果(F)</label>
+                    <label><input type="radio" name="filter-action" disabled> 將篩選結果複製到其他位置(O)</label>
+                </div>
+
+                <div
+                    style="margin-top:15px; display:grid; grid-template-columns: 80px 1fr 25px; gap:10px; align-items:center;">
+                    <label style="font-size:11px;">資料範圍(L):</label>
+                    <input type="text" value="$A$1:$G$31" disabled
+                        style="font-size:11px; padding:2px; border:1px solid #ccc;">
+                    <button style="padding:0; height:18px;">📉</button>
+
+                    <label style="font-size:11px;">條件範圍(C):</label>
+                    <input type="text" id="adv-filter-criteria" placeholder="請選取條件區域..."
+                        style="font-size:11px; padding:2px; border:1px solid #217346;">
+                    <button style="padding:0; height:18px;">📉</button>
+                </div>
+
+                <div style="margin-top:15px; font-size:11px;">
+                    <label><input type="checkbox"> 僅選取不重複的紀錄(R)</label>
+                </div>
+            </div>
+            <div class="excel-dialog-footer">
+                <button class="excel-ok" onclick="window.uiManager.confirmAdvFilterDialog()"
+                    style="padding: 5px 25px;">確定</button>
+                <button class="excel-cancel" onclick="window.uiManager.closeAdvFilterDialog()"
+                    style="padding: 5px 25px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- [新增] 排序對話框 (Multi-level Sort) -->
+    <div id="excel-sort-modal" class="modal-layer" style="display:none; background:rgba(0,0,0,0.5);">
+        <div class="excel-dialog" style="width: 550px;">
+            <div class="excel-dialog-header">
+                <span>排序</span>
+                <button class="excel-close" onclick="window.uiManager.closeSortDialog()">×</button>
+            </div>
+            <div class="excel-dialog-body" style="padding: 15px;">
+                <!-- 工具列 -->
+                <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <button class="excel-ok" onclick="window.uiManager.addSortLevel()"
+                        style="font-size:11px; padding:3px 10px; width:auto;">➕ 新增層級(A)</button>
+                    <button class="excel-ok" onclick="window.uiManager.deleteSortLevel()"
+                        style="font-size:11px; padding:3px 10px; width:auto;">➖ 刪除層級(D)</button>
+                    <button class="excel-ok"
+                        style="font-size:11px; padding:3px 10px; opacity:0.5; cursor:not-allowed; width:auto;">复制層級</button>
+                    <div style="flex:1"></div>
+                    <label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" checked
+                            disabled style="margin-right:5px;"> 我的資料有標題(H)</label>
+                </div>
+
+                <!-- 排序層級列表 -->
+                <div style="border:1px solid #999; background:#fff; height:180px; overflow-y:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:11px;">
+                        <thead style="background:#f5f5f5; position:sticky; top:0; border-bottom:1px solid #ccc;">
+                            <tr>
+                                <th style="width:180px; padding:5px; text-align:left; border-right:1px solid #ddd;">欄位
+                                </th>
+                                <th style="width:150px; padding:5px; text-align:left; border-right:1px solid #ddd;">排序對象
+                                </th>
+                                <th style="padding:5px; text-align:left;">順序</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sort-levels-body">
+                            <!-- 動態插入層級 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="excel-dialog-footer">
+                <button class="excel-ok" onclick="window.uiManager.confirmSortDialog()"
+                    style="padding: 5px 30px;">確定</button>
+                <button class="excel-cancel" onclick="window.uiManager.closeSortDialog()"
+                    style="padding: 5px 30px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- [皇家級 Excel：儲存格格式對話框] -->
+    <div id="excel-format-modal" class="modal-layer" style="display:none; background:rgba(0,0,0,0.5);">
+        <div class="excel-dialog">
+            <div class="excel-dialog-header">
+                <span>設定儲存格格式</span>
+                <button onclick="window.uiManager.closeFormatDialog()" class="excel-close">×</button>
+            </div>
+            <!-- 分頁標籤欄 (可被隱藏) -->
+            <div class="excel-dialog-tabs" id="excel-tabs-strip">
+                <div class="excel-tab" data-tab="number" onclick="window.uiManager.switchFormatTab('number')">數字</div>
+                <div class="excel-tab" data-tab="align" onclick="window.uiManager.switchFormatTab('align')">對齊</div>
+                <div class="excel-tab" data-tab="font" onclick="window.uiManager.switchFormatTab('font')">字型</div>
+                <div class="excel-tab active" data-tab="border" onclick="window.uiManager.switchFormatTab('border')">框線
+                </div>
+                <div class="excel-tab" data-tab="fill" onclick="window.uiManager.switchFormatTab('fill')">填滿</div>
+            </div>
+
+            <div class="excel-dialog-body">
+                <!-- [新增] 自訂清單分頁 -->
+                <div id="tab-content-customlist" class="tab-content">
+                    <div style="display:flex; gap:15px; height: 220px;">
+                        <!-- 左側：清單類別 -->
+                        <div style="width:160px; border-right:1px solid #eee; display:flex; flex-direction:column;">
+                            <label style="font-size:11px; color:#333; margin-bottom:5px;">自訂清單(L):</label>
+                            <div id="excel-custom-lists-pane" class="excel-category-list"
+                                style="flex:1; overflow-y:auto; border:1px solid #999;">
+                                <div class="category-item active">新清單</div>
+                                <div class="category-item" style="color:#666; font-style:italic;">Sun, Mon, Tue...</div>
+                                <div class="category-item" style="color:#666; font-style:italic;">Jan, Feb, Mar...</div>
+                            </div>
+                        </div>
+                        <!-- 右側：清單項目輸入 -->
+                        <div style="flex:1; display:flex; flex-direction:column;">
+                            <label style="font-size:11px; color:#333; margin-bottom:5px;">清單項目(E):</label>
+                            <textarea id="excel-custom-entries"
+                                style="flex:1; width:100%; border:1px solid #999; font-size:12px; padding:5px; resize:none; font-family: sans-serif;"
+                                placeholder="輸入項目後按 Enter 分隔..."></textarea>
+                            <div style="margin-top:10px; display:flex; justify-content:flex-end;">
+                                <button onclick="window.uiManager.addCustomListFromUI()"
+                                    style="padding:5px 20px; font-size:11px; background:#eee; border:1px solid #888; border-radius:2px; cursor:pointer;">新增(A)</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="custom-list-hint" style="font-size:11px; color:#666; margin-top:10px;">
+                        提示：在右側輸入「重症」、「中症」、「輕症」（每行一個），然後點擊新增。</p>
+                </div>
+
+                <!-- 數字分頁 -->
+                <div id="tab-content-number" class="tab-content">
+                    <div style="display:flex; gap:15px;">
+                        <div style="width:120px; border-right:1px solid #eee;">
+                            <label style="font-size:11px; color:#666;">類別(C):</label>
+                            <div class="excel-category-list">
+                                <div class="category-item">一般</div>
+                                <div class="category-item">數值</div>
+                                <div class="category-item">貨幣</div>
+                                <div class="category-item active">自訂</div>
+                            </div>
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-size:11px; color:#333;">類型(T):</label>
+                            <input type="text" value='0"分"' id="custom-format-input"
+                                style="width:100%; padding:3px; margin:5px 0; border:1px solid #217346; font-family:monospace;">
+                            <div id="custom-format-list" class="excel-style-box" style="height:100px; font-size:12px;">
+                                <!-- 由 JS 動態生成內容 -->
+                            </div>
+                            <p style="font-size:11px; color:#666; margin-top:10px;">輸入自訂的格式代碼，利用現有的代碼作為起點。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 框線分頁 -->
+                <div id="tab-content-border" class="tab-content" style="display:block;">
+                    <div style="display:flex; gap:20px;">
+                        <!-- 左側：樣式與色彩 -->
+                        <div style="width:120px;">
+                            <label style="font-size:11px; color:#333;">樣式(Y):</label>
+                            <div class="excel-style-box">
+                                <div style="border-bottom:1px solid #333; height:10px; margin:5px 0;"></div>
+                                <div style="border-bottom:1px dashed #333; height:10px; margin:5px 0;"></div>
+                                <div style="border-bottom:2px solid #333; height:10px; margin:5px 0;"></div>
+                                <div style="border-bottom:1px double #333; height:10px; margin:5px 0;"></div>
+                            </div>
+                            <label style="font-size:11px; color:#333; margin-top:10px; display:block;">色彩(C):</label>
+                            <div class="excel-color-picker">自動</div>
+                        </div>
+                        <!-- 右側：預設與預覽 -->
+                        <div style="flex:1;">
+                            <label style="font-size:11px; color:#333;">預設</label>
+                            <div style="display:flex; gap:10px; margin-top:5px;">
+                                <div class="excel-preset">
+                                    <div style="border:1px dashed #ccc; width:15px; height:15px;"></div>無
+                                </div>
+                                <div class="excel-preset">
+                                    <div style="border:1px solid #333; width:15px; height:15px;"></div>外框
+                                </div>
+                                <div class="excel-preset">
+                                    <div style="border:1px solid #333; width:15px; height:15px; position:relative;">
+                                        <div
+                                            style="position:absolute; top:7px; left:0; width:100%; border-top:1px solid #333;">
+                                        </div>
+                                        <div
+                                            style="position:absolute; left:7px; top:0; height:100%; border-left:1px solid #333;">
+                                        </div>
+                                    </div>內框
+                                </div>
+                            </div>
+                            <label style="font-size:11px; color:#333; margin-top:15px; display:block;">框線</label>
+                            <div
+                                style="display:grid; grid-template-columns: 30px 150px 30px; grid-template-rows: 30px 100px 30px; gap:5px; margin-top:5px;">
+                                <div></div>
+                                <div class="excel-btn-edge">上</div>
+                                <div></div>
+                                <div class="excel-btn-edge-v">左</div>
+                                <div class="excel-preview-box">
+                                    <div style="color:#999; font-size:12px; text-align:center; padding-top:40px;">預覽
+                                    </div>
+                                </div>
+                                <div class="excel-btn-edge-v">右</div>
+                                <div></div>
+                                <div class="excel-btn-edge">下</div>
+                                <div></div>
+                            </div>
+                            <!-- 斜線專屬區域 (皇家佈局版) -->
+                            <div
+                                style="display:flex; gap:15px; margin-top:15px; justify-content: center; align-items: center;">
+                                <div style="text-align:center;">
+                                    <button class="excel-btn-diag disabled" style="opacity:0.5; cursor:not-allowed;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24">
+                                            <line x1="4" y1="20" x2="20" y2="4" stroke="#666" stroke-width="2" />
+                                        </svg>
+                                    </button>
+                                    <div style="font-size:9px; color:#666; margin-top:2px;">反斜線</div>
+                                </div>
+                                <div style="text-align:center;">
+                                    <button onclick="window.ch2Actions.diagonalborder()" class="excel-btn-diag"
+                                        title="施展斜線禁術">
+                                        <svg width="24" height="24" viewBox="0 0 24 24">
+                                            <line x1="4" y1="4" x2="20" y2="20" stroke="#333" stroke-width="2" />
+                                        </svg>
+                                    </button>
+                                    <div style="font-size:9px; color:#333; margin-top:2px; font-weight:bold;">斜線</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="excel-dialog-footer">
+                <button onclick="window.uiManager.confirmFormatDialog()" class="excel-ok">確定</button>
+                <button onclick="window.uiManager.closeFormatDialog()" class="excel-cancel">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- [新增] 賽爾留言條 UI -->
+    <div id="note-modal" class="modal-layer">
+        <div id="note-body" class="fairy-note-body">
+            <div class="ink-splatter splatter-1"></div>
+            <div class="ink-splatter splatter-2"></div>
+            <div class="ink-splatter splatter-3"></div>
+            <div class="note-tag">賽爾的留言</div>
+            <div id="note-content"></div>
+            <button onclick="window.uiManager.hideNote()" class="note-close-btn">收起紙條</button>
+        </div>
+    </div>
+
+    <!-- 背景音樂 -->
+    <audio id="bgm" loop></audio>
+
+    <style>
+        /* 全域禁止文字選取，僅保留 Excel 格子可選 */
+        * {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #grid, #grid *,
+        #grid .cell,
+        input, textarea, select {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        /* 核心全域樣式 */
+        .dev-opt {
+            padding: 10px;
+            text-align: left;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+
+        .dev-opt:hover {
+            background: #eef7ff;
+            border-color: #217346;
+            color: #217346;
+        }
+
+        /* Excel 對話框核心樣式 */
+        .excel-dialog {
+            width: 460px;
+            background: #f0f0f0;
+            border: 1px solid #888;
+            border-radius: 3px;
+            font-family: "Microsoft JhengHei", sans-serif;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .excel-dialog-header {
+            background: #fff;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .excel-close {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .excel-dialog-tabs {
+            display: flex;
+            padding: 10px 10px 0 10px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #fff;
+        }
+
+        .excel-tab {
+            padding: 5px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 2px;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .excel-tab.active {
+            background: #fff;
+            border-color: #ccc;
+            border-bottom: 1px solid #fff;
+            margin-bottom: -1px;
+        }
+
+        .excel-dialog-body {
+            background: #fff;
+            margin: 0 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        .excel-style-box {
+            border: 1px solid #ccc;
+            height: 120px;
+            padding: 5px;
+            background: #fff;
+            overflow-y: auto;
+        }
+
+        .excel-color-picker {
+            border: 1px solid #ccc;
+            padding: 3px;
+            font-size: 11px;
+            margin-top: 5px;
+            text-align: center;
+            background: #fff;
+        }
+
+        .excel-preset {
+            border: 1px solid #ddd;
+            padding: 5px;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50px;
+            background: #f9f9f9;
+        }
+
+        .excel-preview-box {
+            border: 1px solid #ccc;
+            background: #fff;
+            position: relative;
+        }
+
+        .excel-btn-edge {
+            border: 1px solid #ccc;
+            background: #eee;
+            font-size: 10px;
+            text-align: center;
+            line-height: 25px;
+            cursor: default;
+        }
+
+        .excel-btn-edge-v {
+            border: 1px solid #ccc;
+            background: #eee;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+        }
+
+        .excel-btn-diag {
+            width: 40px;
+            height: 40px;
+            background: #eee;
+            border: 1px solid #bbb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .excel-btn-diag:hover {
+            background: #eef7ff;
+            border-color: #217346;
+        }
+
+        .excel-btn-diag svg {
+            display: block;
+        }
+
+        .excel-dialog-footer {
+            padding: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .excel-ok,
+        .excel-cancel {
+            padding: 5px 25px;
+            font-size: 12px;
+            border: 1px solid #888;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .excel-ok {
+            background: #eee;
+        }
+
+        .excel-ok:hover {
+            border-color: #217346;
+            background: #eef7ff;
+        }
+
+        /* [新增] 分頁與類別清單樣式 */
+        .excel-category-list {
+            border: 1px solid #ccc;
+            background: #fff;
+            height: 150px;
+        }
+
+        .category-item {
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .category-item:hover {
+            background: #f0f0f0;
+        }
+
+        .category-item.active {
+            background: #0078d4;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* [新增] 賽爾登場特效 */
+        .fairy-appear {
+            /* P2 效能優化: magic-glow 改為播一次（forwards）後停止，避免對話全程無限重繪 filter:drop-shadow */
+            animation: fairy-entrance 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+                magic-glow 2s 1 forwards;
+        }
+
+        @keyframes fairy-entrance {
+            0% {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+                filter: brightness(3);
+            }
+
+            60% {
+                transform: scale(1.2) rotate(10deg);
+                opacity: 1;
+                filter: brightness(1.5);
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+                filter: brightness(1);
+            }
+        }
+
+        @keyframes magic-glow {
+            from {
+                filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.6));
+            }
+
+            to {
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 1));
+            }
+        }
+
+        /* [新增] 信箋樣式 */
+        .letter-paper {
+            background: #fdf5e6;
+            width: 400px;
+            padding: 40px;
+            border-radius: 2px;
+            border: 1px solid #d2b48c;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 69, 19, 0.2);
+            position: relative;
+            transform: translateY(50px) rotate(-1deg);
+            opacity: 0;
+            transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .letter-modal-active .letter-paper {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+
+        .letter-seal {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: #b22222;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            font-size: 30px;
+            border: 3px double #ffd700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .letter-content {
+            font-family: 'Times New Roman', serif;
+            color: #3e2723;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .letter-close-btn {
+            margin-top: 30px;
+            width: 100%;
+            padding: 12px;
+            background: #8b4513;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .letter-close-btn:hover {
+            background: #5d4037;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: translateX(-50%) scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translateX(-50%) scale(1.05);
+            }
+
+            70% {
+                transform: translateX(-50%) scale(0.9);
+            }
+
+            100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* [新增] 回憶濾鏡特效 */
+        .memory-filter {
+            filter: sepia(0.5) contrast(0.9) brightness(0.8) blur(0.5px);
+            transition: filter 0.8s ease;
+        }
+
+        /* 標題畫面按鈕 */
+        .title-btn {
+            width: 250px;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            font-family: sans-serif;
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            transition: 0.3s;
+        }
+
+        .title-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <!-- [核心腳本載入] -->
+    <!-- [新增] 欄位篩選下拉選單 (Column Filter) -->
+    <div id="filter-dropdown" style="display:none;"></div>
+
+    <script src="code/rpg/maps/map1_street.js?v=1781286453927"></script>
+    <script src="code/rpg/missions/mission_engine.js?v=1781286453927"></script>
+    <script src="code/rpg/missions/training_records.js?v=1781286453927"></script>
+    <script src="code/rpg/rpg_interactions.js?v=1781286453927"></script>
+    <script src="code/rpg/rpg_practice_mode.js?v=1781286453927"></script>
+    <script src="code/rpg/rpg_shop.js?v=1781286453927"></script>
+    <script src="code/rpg/rpg_dialog_ui.js?v=1781286453927"></script>
+    <script src="code/rpg/story_sleep.js?v=1781368561994"></script>
+    <script src="code/rpg/rpg_engine.js?v=1781373500002"></script>
+    <script src="code/utils.js?v=1781286453925"></script>
+    <script src="code/orchestrator.js?v=1781286453925"></script>
+    <script src="chapter/ch1.js?v=1781286453925"></script>
+    <script src="chapter/ch1_5.js?v=1781286453925"></script>
+    <script src="chapter/ch2.js?v=1781286453925"></script>
+    <script src="chapter/ch2.5.js?v=1781286453925"></script>
+    <script src="chapter/ch3.js?v=1781590000000"></script>
+    <script src="chapter/ch3.5.js?v=1781590000000"></script>
+    <script src="chapter/ch4.js?v=1781286453925"></script>
+    <script src="chapter/ch4.5.js?v=1781286453925"></script>
+    <script src="chapter/ch5.js?v=1781286453925"></script>
+    <script src="chapter/ch5.5.js?v=1781286453925"></script>
+    <script src="chapter/ch6.js?v=1781286453925"></script>
+    <script src="chapter/ch6.5.js?v=1781286453925"></script>
+    <script src="chapter/ch7.js?v=1781286453925"></script>
+    <script src="chapter/ch7.5.js?v=1781286453925"></script>
+    <script src="chapter/ch8.js?v=1781555000000"></script>
+    <script src="chapter/ch8_5.js?v=1781330285593"></script>
+    <script src="action/ch1_actions.js?v=1781286453925"></script>
+    <script src="action/ch2_actions.js?v=1781286453925"></script>
+    <script src="action/ch3_actions.js?v=1781577500000"></script>
+    <script src="action/ch4_actions.js?v=1781286453925"></script>
+    <script src="action/ch5_actions.js?v=1781286453925"></script>
+    <script src="action/ch6_actions.js?v=1781286453925"></script>
+    <script src="action/ch7_actions.js?v=1781286453925"></script>
+    <script src="action/ch8_actions.js?v=1781555000000"></script>
+    <script src="action/ch85_actions.js?v=1781286453925"></script>
+    <script src="code/bridge.js?v=1781286453925"></script>
+    <!-- <script src="code/ui.js?v=1781286453925"></script> -->
+    <script src="code/ui_v2_core.js?v=1781286453925"></script>
+    <script src="code/ui_v2_story.js?v=1781610000000"></script>
+    <script src="code/ui_v2_audio.js?v=1781286453925"></script>
+    <script src="code/ui_v2_menus.js?v=1781286453925"></script>
+    <script src="code/ui_dialogs.js?v=1781286453925"></script>
+    <script src="code/ui_ribbon.js?v=1781286453925"></script>
+    <script src="code/ui_dev.js?v=1781286453925"></script>
+    <script src="code/ext_blur.js?v=1781286453925"></script>
+    <script src="code/render.js?v=1781610000001"></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            // Re-request fullscreen on first user click (browsers require a gesture)
+            if (sessionStorage.getItem('game_want_fullscreen') === '1' && !document.fullscreenElement) {
+                const titleOverlay = document.getElementById('title-screen-overlay');
+                if (titleOverlay) {
+                    const reEnterFS = () => {
+                        if (!document.fullscreenElement) {
+                            document.documentElement.requestFullscreen?.().catch(() => {});
+                        }
+                        titleOverlay.removeEventListener('click', reEnterFS, true);
+                    };
+                    titleOverlay.addEventListener('click', reEnterFS, true);
+                }
+            }
+
+            if (window.orchestrator) {
+                window.orchestrator.init();
+            }
+
+            // 根據解鎖狀態顯示/隱藏鎖定徽章
+            const UNLOCK_KEY = 'magic_excel_teleport_unlocked';
+            function isTeleportUnlocked() {
+                return sessionStorage.getItem(UNLOCK_KEY) === '1';
+            }
+            function setTeleportUnlocked() {
+                sessionStorage.setItem(UNLOCK_KEY, '1');
+                localStorage.setItem(UNLOCK_KEY, '1');
+            }
+            function updateLockBadge() {
+                const badge = document.getElementById('miro-lock-badge');
+                if (badge) badge.style.display = isTeleportUnlocked() ? 'none' : '';
+            }
+            updateLockBadge();
+
+            // [新增] 擴充空間傳送相關方法
+            if (window.uiManager) {
+                window.uiManager.openTeleportModal = function () {
+                    if (isTeleportUnlocked()) {
+                        document.getElementById('teleport-modal').style.display = 'flex';
+                        return;
+                    }
+                    const pw = prompt('🔒 空間傳送陣已封印\n請輸入解封密碼以進入自由探索模式：');
+                    if (pw === null) return;
+                    if (pw === '7338') {
+                        setTeleportUnlocked();
+                        updateLockBadge();
+                        document.getElementById('teleport-modal').style.display = 'flex';
+                    } else {
+                        alert('❌ 密碼錯誤，空間傳送陣拒絕你的進入。');
+                    }
+                };
+                window.uiManager.teleportTo = function (mapId) {
+                    // 關閉傳送彈窗
+                    document.getElementById('teleport-modal').style.display = 'none';
+
+                    // 關閉標題畫面 (起始頁面)
+                    const titleOverlay = document.getElementById('title-screen-overlay');
+                    if (titleOverlay) {
+                        titleOverlay.style.opacity = '0';
+                        setTimeout(() => {
+                            titleOverlay.style.display = 'none';
+                        }, 800);
+                    }
+
+                    // 關閉系統選單 (如果目前開啟中)
+                    const sysOverlay = document.getElementById('sys-menu-overlay');
+                    if (sysOverlay && sysOverlay.style.display !== 'none') {
+                        window.uiManager.toggleSystemMenu();
+                    }
+
+                    // 進入 RPG 模式並載入指定地圖 (清除舊座標防止覆寫越界)
+                    if (window.orchestrator) {
+                        window.orchestrator.state.rpgMapId = mapId;
+                        window.orchestrator.state.rpgX = null;
+                        window.orchestrator.state.rpgY = null;
+                        window.orchestrator.enterRPGMode();
+                    }
+                    if (window.rpgEngine) {
+                        window.rpgEngine.loadMap(mapId);
+                    }
+                };
+            }
+        });
+    </script>
+
+    <script>
+    (function(){
+      const CG_IMAGES = [
+        "cg/ch1.5 road.png","cg/ch1.5 start.png","cg/ch1.5.png","cg/ch2 last.png","cg/ch2 main.png",
+        "cg/ch2 start.png","cg/ch2.5 coin.png","cg/ch2.5 last.png","cg/ch2.5 main.png","cg/ch2.5 read.png",
+        "cg/ch2.5 three.png","cg/ch3 bond.png","cg/ch3 sick.png","cg/ch3.5 read.png","cg/ch3.5 two.png",
+        "cg/ch3.5.png","cg/ch4 all.png","cg/ch4 three.png","cg/ch4.5 all.png","cg/ch4.5 conflict.png",
+        "cg/ch4.5.png","cg/ch4.png","cg/ch4 royi.png","cg/ch5 sing.png","cg/ch5.5 join.png",
+        "cg/ch5.5 road.png","cg/ch5.5_tent.png","cg/ch6 all.png","cg/ch6 glea.png","cg/ch6.5 bye.png",
+        "cg/ch6.5 hand.png","cg/ch6.5 last.png","cg/ch6.5 main.png","cg/ch6.5 prince.png","cg/ch6.5 royi.png",
+        "cg/ch7 last.png","cg/ch7 sit.png","cg/ch7.5 royi arrive.png","cg/ch7 prince2.png","cg/ch7 prince.png",
+        "cg/ch3 two.png","cg/ch2.png"
+      ];
+      // Shuffle
+      for (let i = CG_IMAGES.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [CG_IMAGES[i], CG_IMAGES[j]] = [CG_IMAGES[j], CG_IMAGES[i]];
+      }
+      let idx = 0, useA = true;
+      const layerA = document.getElementById('cg-bg-a');
+      const layerB = document.getElementById('cg-bg-b');
+      function loadCG(el, src, cb) {
+        const img = new Image();
+        img.onload = cb;
+        img.onerror = cb;
+        img.src = src;
+        el.style.backgroundImage = `url('${src.replace(/'/g,"\\'")}')`;
+      }
+      function nextCG() {
+        idx = (idx + 1) % CG_IMAGES.length;
+        const next = useA ? layerB : layerA;
+        const prev = useA ? layerA : layerB;
+        loadCG(next, CG_IMAGES[idx], () => {
+          next.style.opacity = '1';
+          prev.style.opacity = '0';
+          useA = !useA;
+        });
+      }
+      // CG slideshow disabled — static BG now used
+      // window.addEventListener('DOMContentLoaded', () => { ... });
+    })();
+    </script>
+
+    <script>
+    (function(){
+      function spawnSparkle(btn, color) {
+        const rect = btn.getBoundingClientRect();
+        if (!rect.width) return;
+        const dot = document.createElement('div');
+        dot.className = 'sparkle-dot';
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        const tx = (Math.random() - 0.5) * 60;
+        const ty = -(20 + Math.random() * 50);
+        const dur = (0.9 + Math.random() * 0.8).toFixed(2) + 's';
+        dot.style.cssText = `left:${x}px;top:${y}px;--tx:${tx}px;--ty:${ty}px;--dur:${dur};background:${color};`;
+        btn.appendChild(dot);
+        dot.addEventListener('animationend', () => dot.remove());
+      }
+      // Hover-only sparkles — no always-running intervals
+      window.addEventListener('load', () => {
+        const charBtns = document.querySelectorAll('.char-btn');
+        charBtns.forEach(btn => {
+          let hoverInterval = null;
+          btn.addEventListener('mouseenter', () => {
+            charBtns.forEach(b => { if (b !== btn) b.classList.add('char-dimmed'); });
+            // burst on enter
+            for (let i = 0; i < 5; i++) {
+              setTimeout(() => spawnSparkle(btn, '#ffd700'), i * 70);
+            }
+            // keep sparkling while hovering
+            hoverInterval = setInterval(() => spawnSparkle(btn, '#ffd700'), 300);
+          });
+          btn.addEventListener('mouseleave', () => {
+            charBtns.forEach(b => b.classList.remove('char-dimmed'));
+            clearInterval(hoverInterval);
+            hoverInterval = null;
+          });
+        });
+      });
+    })();
+    </script>
+
+    <!-- System-menu triangles: bake bg textures into static canvas bitmaps once -->
+    <script>
+    (function(){
+      const imgCache = {};
+      function loadImg(src){
+        return imgCache[src] || (imgCache[src] = new Promise(res => {
+          const im = new Image();
+          im.onload = () => res(im);
+          im.onerror = () => res(null);
+          im.src = src;
+        }));
+      }
+      async function bakeOne(cv){
+        const w = parseInt(cv.dataset.w, 10) || 360;
+        const h = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+        cv.style.width = w + 'px';
+        cv.style.height = h + 'px';
+        cv.width = Math.round(w * dpr);
+        cv.height = Math.round(h * dpr);
+        const ctx = cv.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const img = await loadImg(cv.dataset.img);
+        if(!img) return;
+        ctx.clearRect(0, 0, w, h);
+        ctx.save();
+        ctx.beginPath();
+        if(cv.dataset.dir === 'up'){
+          ctx.moveTo(w*0.5, 0); ctx.lineTo(w*0.06, h); ctx.lineTo(w*0.94, h);
+        } else {
+          ctx.moveTo(w*0.06, 0); ctx.lineTo(w*0.94, 0); ctx.lineTo(w*0.5, h);
+        }
+        ctx.closePath();
+        ctx.clip();
+        // cover-fit the texture inside the box
+        const ir = img.width / img.height, cr = w / h;
+        let dw, dh, dx, dy;
+        if(ir > cr){ dh = h; dw = h * ir; dx = (w - dw)/2; dy = 0; }
+        else { dw = w; dh = w / ir; dx = 0; dy = (h - dh)/2; }
+        ctx.drawImage(img, dx, dy, dw, dh);
+        ctx.restore();
+      }
+      let lastH = 0;
+      function bakeAll(force){
+        if(!force && window.innerHeight === lastH) return;
+        lastH = window.innerHeight;
+        document.querySelectorAll('canvas.sys-tri').forEach(bakeOne);
+      }
+      window.addEventListener('load', () => bakeAll(true));
+      window.addEventListener('resize', () => bakeAll(false));
+      // Re-bake when the system menu opens (height may have changed e.g. fullscreen)
+      const btn = document.getElementById('sys-menu-btn');
+      if(btn) btn.addEventListener('click', () => setTimeout(() => bakeAll(false), 50));
+      window.bakeSysTriangles = () => bakeAll(true);
+    })();
+    </script>
+
+    <!-- [新增] 最終選擇 Modal -->
+    <div id="final-choice-modal" class="modal-layer"
+        style="display:none; z-index:9000; align-items:center; justify-content:center; backdrop-filter:blur(3px); background:rgba(0,0,0,0.6);">
+        <div
+            style="background:rgba(20,20,30,0.9); border:1px solid #444; border-radius:10px; padding:30px; text-align:center; max-width:400px; box-shadow:0 0 20px rgba(0,0,0,0.8);">
+            <div style="display:flex; justify-content:center; gap:20px;">
+                <button onclick="window.handleChoiceYes()"
+                    style="padding:15px 30px; background:transparent; border:1px solid #888; color:#fff; border-radius:5px; cursor:pointer; font-size:16px; transition:0.3s;"
+                    onmouseover="this.style.background='#333'"
+                    onmouseout="this.style.background='transparent'">我想知道</button>
+                <button onclick="window.handleChoiceNo()"
+                    style="padding:15px 30px; background:transparent; border:1px solid #888; color:#fff; border-radius:5px; cursor:pointer; font-size:16px; transition:0.3s;"
+                    onmouseover="this.style.background='#522'"
+                    onmouseout="this.style.background='transparent'">無所謂了</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

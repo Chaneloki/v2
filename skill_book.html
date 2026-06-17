@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>試算表禁術大全 - 實戰魔導書</title>
+    <title>閰衣?銵函?銵之??- 撖行擳???/title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 針對獨立頁面的特殊樣式覆蓋 */
+        /* ???函???畾見撘???*/
         body {
             margin: 0; padding: 0;
             background: radial-gradient(circle at center, #1e1e2e 0%, #0b0b14 100%);
@@ -33,56 +33,56 @@
         }
         .return-btn:hover { background: #ffd700; color: #000; }
         
-        /* 修正因為沒有 #s-modal 導致無法生效的按鈕樣式 */
+        /* 靽格迤?瘝? #s-modal 撠?⊥??????見撘?*/
         .grimoire-close-btn { display: none; }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="return-btn">🔙 返回遊戲世界</a>
+    <a href="game.html" class="return-btn">?? 餈??銝?</a>
 
     <div class="grimoire-layout standalone-grimoire" id="s-card">
         <div class="grimoire-left">
             <div id="s-header">
-                <h3>📖 實戰魔導書 (Skill Grimoire)</h3>
-                <p class="grimoire-subtitle">點擊你想解決的問題，尋找對應的試算表禁術</p>
+                <h3>?? 撖行擳???(Skill Grimoire)</h3>
+                <p class="grimoire-subtitle">暺?雿閫?捱??憿?撠撠??岫蝞”蝳?</p>
                 <div id="progress-text" style="margin-top: 5px; font-weight: bold; color: #2196f3;"></div>
             </div>
             <div id="s-tabs" class="grimoire-tabs">
                 <button class="skill-tab active" onclick="setSkillFilter('all', this)">
-                    <div class="tab-icon">✨</div>
-                    <div class="tab-text">全部禁術</div>
+                    <div class="tab-icon">??/div>
+                    <div class="tab-text">?券蝳?</div>
                 </button>
                 <button class="skill-tab" onclick="setSkillFilter('search_move', this)">
-                    <div class="tab-icon">🔍</div>
-                    <div class="tab-text">找資料與移動<br><span>(表太長找不到時)</span></div>
+                    <div class="tab-icon">??</div>
+                    <div class="tab-text">?曇???蝘餃?<br><span>(銵典云?瑟銝??</span></div>
                 </button>
                 <button class="skill-tab" onclick="setSkillFilter('org_format', this)">
-                    <div class="tab-icon">🧹</div>
-                    <div class="tab-text">整理與排版<br><span>(版面太亂時)</span></div>
+                    <div class="tab-icon">?完</div>
+                    <div class="tab-text">?渡?????br><span>(?憭芯???</span></div>
                 </button>
                 <button class="skill-tab" onclick="setSkillFilter('fast_input', this)">
-                    <div class="tab-icon">⚡</div>
-                    <div class="tab-text">快速輸入<br><span>(不想手動打字時)</span></div>
+                    <div class="tab-icon">??/div>
+                    <div class="tab-text">敹恍撓??br><span>(銝??????</span></div>
                 </button>
                 <button class="skill-tab" onclick="setSkillFilter('calc_analyze', this)">
-                    <div class="tab-icon">🧮</div>
-                    <div class="tab-text">運算與分析<br><span>(需要算錢統計時)</span></div>
+                    <div class="tab-icon">?妙</div>
+                    <div class="tab-text">??????br><span>(?閬??Ｙ絞閮?)</span></div>
                 </button>
             </div>
             <div id="s-search-box">
-                <input type="text" id="skill-search" placeholder="輸入關鍵字或禁術名稱..." oninput="renderSkillList()">
+                <input type="text" id="skill-search" placeholder="頛詨?摮?蝳??迂..." oninput="renderSkillList()">
             </div>
             <div id="s-list" class="grimoire-list">
-                <!-- 技能卡片由 JS 動態生成 -->
+                <!-- ??賢? JS ???? -->
             </div>
         </div>
         <div class="grimoire-right" id="s-detail-panel">
-            <!-- 詳細內容由 JS 動態生成 -->
+            <!-- 閰喟敦?批捆??JS ???? -->
         </div>
     </div>
 
-    <!-- 載入所有章節的技能定義 -->
+    <!-- 頛???蝭???賢?蝢?-->
     <script src="chapter/ch1.js"></script>
     <script src="chapter/ch1_5.js"></script>
     <script src="chapter/ch2.js"></script>
@@ -105,8 +105,7 @@
         let allSkillDefs = {};
 
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. 收集所有技能
-            if (window.V2_CHAPTERS) {
+            // 1. ?園??????            if (window.V2_CHAPTERS) {
                 const sortedChapterIds = Object.keys(window.V2_CHAPTERS).sort((a, b) => parseInt(a) - parseInt(b));
                 sortedChapterIds.forEach(chId => {
                     const ch = window.V2_CHAPTERS[chId];
@@ -116,13 +115,12 @@
                 });
             }
 
-            // 2. 從 localStorage 讀取解鎖進度 (支援新的 V2 meta 結構)
+            // 2. 敺?localStorage 霈?圾?脣漲 (?舀?啁? V2 meta 蝯?)
             const metaRaw = localStorage.getItem('magic_excel_v2_meta');
             if (metaRaw) {
                 try {
                     const meta = JSON.parse(metaRaw);
-                    // 取得最近一次遊玩的存檔槽
-                    const lastSlot = meta.lastPlayedSlot || 'auto';
+                    // ???餈?甈⊿??拍?摮?瑽?                    const lastSlot = meta.lastPlayedSlot || 'auto';
                     const saveKey = lastSlot === 'auto' ? 'magic_excel_v2_save' : `magic_excel_v2_save_${lastSlot}`;
                     const saveRaw = localStorage.getItem(saveKey);
                     if (saveRaw) {
@@ -134,7 +132,7 @@
                 } catch(e) { console.error("Error loading save:", e); }
             }
 
-            // Fallback (如果沒有 meta)
+            // Fallback (憒?瘝? meta)
             if (unlockedSkills.length === 0) {
                 ['auto', 'manual_1', 'manual_2'].forEach(slot => {
                     const key = slot === 'auto' ? 'magic_excel_v2_save' : `magic_excel_v2_save_${slot}`;
@@ -150,7 +148,7 @@
                 });
             }
 
-            document.getElementById('progress-text').innerText = `目前已領悟：${unlockedSkills.length} / ${Object.keys(allSkillDefs).length} 項禁術`;
+            document.getElementById('progress-text').innerText = `?桀?撌脤???${unlockedSkills.length} / ${Object.keys(allSkillDefs).length} ??銵;
 
             renderSkillList();
         });
@@ -177,10 +175,10 @@
             };
 
             const catStyles = {
-                'search_move': { color: '#10ac84', icon: '🔍', name: '找資料與移動' },
-                'org_format': { color: '#2e86de', icon: '🧹', name: '整理與排版' },
-                'fast_input': { color: '#feca57', icon: '⚡', name: '快速輸入' },
-                'calc_analyze': { color: '#ee5253', icon: '🧮', name: '運算與分析' }
+                'search_move': { color: '#10ac84', icon: '??', name: '?曇???蝘餃?' },
+                'org_format': { color: '#2e86de', icon: '?完', name: '?渡????? },
+                'fast_input': { color: '#feca57', icon: '??, name: '敹恍撓?? },
+                'calc_analyze': { color: '#ee5253', icon: '?妙', name: '?????? }
             };
 
             const allSkillIds = Object.keys(allSkillDefs);
@@ -196,7 +194,7 @@
             container.innerHTML = '';
 
             if (filteredIds.length === 0) {
-                container.innerHTML = '<div class="empty-grimoire">找不到符合的禁術...</div>';
+                container.innerHTML = '<div class="empty-grimoire">?曆??啁泵??蝳?...</div>';
                 return;
             }
 
@@ -211,10 +209,10 @@
                 
                 node.innerHTML = `
                     <div class="card-icon" style="background: ${isUnlocked ? style.color : '#95a5a6'};">
-                        ${isUnlocked ? (s.icon ? `<img src="${s.icon}">` : style.icon) : '🔒'}
+                        ${isUnlocked ? (s.icon ? `<img src="${s.icon}">` : style.icon) : '??'}
                     </div>
                     <div class="card-info">
-                        <div class="card-name">${isUnlocked ? s.n : '未知禁術'}</div>
+                        <div class="card-name">${isUnlocked ? s.n : '?芰蝳?'}</div>
                         <div class="card-cat" style="color: ${isUnlocked ? style.color : '#999'}">${style.name}</div>
                     </div>
                 `;
@@ -224,9 +222,9 @@
                     node.classList.add('active');
 
                     if (isUnlocked) {
-                        const painPoint = s.pain || `當你在龐大的試算表中感到迷失，或是遇到需要大量人工處理的繁瑣工作時...`;
-                        const effect = s.d || `發動此魔法，將自動為你處理眼前的難題。`;
-                        const shortcutStr = s.s ? `<div class="spell-shortcut">詠唱咒語：<kbd>${s.s}</kbd></div>` : '';
+                        const painPoint = s.pain || `?嗡??券?憭抒?閰衣?銵其葉?餈瑕仃嚗??舫??圈?閬之?犖撌亥???蝜撌乩???..`;
+                        const effect = s.d || `?澆?甇日?瘜?撠?雿????????;
+                        const shortcutStr = s.s ? `<div class="spell-shortcut">閰??嚗?kbd>${s.s}</kbd></div>` : '';
 
                         detailPanel.innerHTML = `
                             <div class="detail-header">
@@ -241,11 +239,11 @@
                             
                             <div class="detail-body">
                                 <div class="detail-section pain-point">
-                                    <h4>💔 常見災難 (Pain Point)</h4>
+                                    <h4>?? 撣貉??賡 (Pain Point)</h4>
                                     <p>${painPoint}</p>
                                 </div>
                                 <div class="detail-section effect">
-                                    <h4>✨ 救贖效果 (Effect)</h4>
+                                    <h4>?????? (Effect)</h4>
                                     <p>${effect}</p>
                                     ${shortcutStr}
                                 </div>
@@ -254,9 +252,9 @@
                     } else {
                         detailPanel.innerHTML = `
                             <div class="locked-panel">
-                                <div class="locked-icon">🔒</div>
-                                <h3>尚未領悟的禁術</h3>
-                                <p>繼續推進主線劇情，或在公會完成特定委託來解鎖這項強大能力吧！</p>
+                                <div class="locked-icon">??</div>
+                                <h3>撠????銵?/h3>
+                                <p>蝜潛??券脖蜓蝺?????祆?摰??孵?憪?靘圾??撘瑕之?賢??改?</p>
                             </div>
                         `;
                     }
@@ -270,10 +268,9 @@
             }
         }
 
-        // 跨頁面回顧機制
-        function triggerCrossPageReplay(skillId) {
-            // 跳轉至 index.html 並帶上 query 參數
-            window.location.href = `index.html?replaySkill=${skillId}`;
+        // 頝券??Ｗ?憿扳???        function triggerCrossPageReplay(skillId) {
+            // 頝唾???game.html 銝血葆銝?query ?
+            window.location.href = `game.html?replaySkill=${skillId}`;
         }
     </script>
 </body>

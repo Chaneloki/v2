@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>冒險者留言板 - 管理後台</title>
+    <title>???閮??- 蝞∠?敺</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -78,15 +78,15 @@
 </head>
 <body>
     <div class="admin-container">
-        <h1>🔍 冒險者留言板 (管理後台)</h1>
+        <h1>?? ???閮??(蝞∠?敺)</h1>
         
         <div id="comments-list">
-            <!-- 留言將在這裡動態生成 -->
+            <!-- ??撠?ㄐ???? -->
         </div>
 
         <div class="actions">
-            <button class="btn btn-back" onclick="window.location.href='index.html'">⬅️ 返回遊戲</button>
-            <button class="btn btn-clear" onclick="clearComments()">🗑️ 清除所有留言</button>
+            <button class="btn btn-back" onclick="window.location.href='game.html'">漎? 餈??</button>
+            <button class="btn btn-clear" onclick="clearComments()">??儭?皜???閮</button>
         </div>
     </div>
 
@@ -96,15 +96,15 @@
             const feedbackList = JSON.parse(localStorage.getItem('adventure_feedback') || '[]');
             
             if (feedbackList.length === 0) {
-                listDiv.innerHTML = '<p class="no-data">目前尚無冒險者留言...</p>';
+                listDiv.innerHTML = '<p class="no-data">?桀?撠???閮...</p>';
                 return;
             }
 
             listDiv.innerHTML = feedbackList.reverse().map(item => `
                 <div class="feedback-item">
                     <div class="feedback-header">
-                        <span class="p-name">👤 ${escapeHtml(item.name)}</span>
-                        <span class="p-date">📅 ${item.date}</span>
+                        <span class="p-name">? ${escapeHtml(item.name)}</span>
+                        <span class="p-date">?? ${item.date}</span>
                     </div>
                     <div class="p-comment">${escapeHtml(item.comment)}</div>
                 </div>
@@ -112,7 +112,7 @@
         }
 
         function clearComments() {
-            if (confirm('確定要清除所有魔法留言嗎？此動作無法復原。')) {
+            if (confirm('蝣箏?閬??斗???瘜?閮??甇文?雿瘜儔??)) {
                 localStorage.removeItem('adventure_feedback');
                 loadComments();
             }
@@ -124,7 +124,7 @@
             return div.innerHTML;
         }
 
-        // 初始化加載
+        // ????頛?
         loadComments();
     </script>
 </body>

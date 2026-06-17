@@ -22,10 +22,20 @@ UIManager.prototype.jumpFromDev = function(phase) {
      * [新增] 全螢幕切換功能
      */
 UIManager.prototype.toggleFullscreen = function() {
-        // When running inside an iframe (from landing.html), fullscreen must be
-        // controlled on the TOP-LEVEL document, not the iframe's document.
-        var topWin = (window.top && window.top !== window) ? window.top : window;
-        var doc = topWin.document;
+        // When running inside the launcher iframe (index.html → game.html), the PARENT
+        // document owns the real fullscreen. On file:// the parent is an opaque origin so
+        // we cannot touch parent.document directly — delegate via postMessage instead.
+        var inIframe = false;
+        try { inIframe = (window.self !== window.top); } catch (e) { inIframe = true; }
+        if (inIframe) {
+            try { window.parent.postMessage({ __magicExcel: 'toggle-fullscreen' }, '*'); } catch (e) {}
+            return;
+        }
+        this._toggleLocalFullscreen();
+    };
+
+UIManager.prototype._toggleLocalFullscreen = function() {
+        var doc = window.document;
         var docEl = doc.documentElement;
 
         var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
