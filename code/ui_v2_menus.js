@@ -313,6 +313,7 @@ UIManager.prototype.closeMemoryDiary = function() {
 
 UIManager.prototype.clearTeleportUnlock = function() {
     localStorage.removeItem('magic_excel_teleport_unlocked');
+    sessionStorage.removeItem('magic_excel_teleport_unlocked');
     alert('✅ 傳送陣解鎖記憶已清除！下次使用空間傳送陣時將需要重新輸入密碼。');
 };
 

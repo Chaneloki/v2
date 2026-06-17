@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel 魔法冒險 — 官方入口</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;font-family:'Noto Serif TC',serif;background:#0e0500;color:#fff;overflow-x:hidden;scroll-behavior:smooth}
+
+:root{
+  --gold:#e07b00;
+  --gold-lt:#ffb347;
+  --dark:#1a0800;
+  --border-dark:rgba(255,160,60,0.28);
+  --accent:#c06000;
+}
+
+/* ══ TOPBAR ══ */
+#topbar{
+  position:fixed;top:0;left:0;right:0;height:56px;z-index:600;
+  backdrop-filter:blur(20px) saturate(1.4);
+  background:rgba(14,5,0,0.9);
+  border-bottom:1px solid var(--border-dark);
+  display:flex;align-items:center;padding:0 28px;gap:0;
+}
+.logo-icon{font-size:1.3rem;margin-right:10px}
+.logo-txt{
+  color:var(--gold-lt);font-weight:900;font-size:1rem;
+  letter-spacing:3px;white-space:nowrap;margin-right:auto;
+  text-shadow:0 0 18px rgba(255,160,60,0.5);
+}
+.nav-btn{
+  background:transparent;border:1px solid transparent;color:#c8a070;
+  padding:6px 13px;border-radius:6px;cursor:pointer;
+  font-family:inherit;font-size:0.82rem;transition:all .22s;
+  white-space:nowrap;margin-left:5px;
+}
+.nav-btn:hover,.nav-btn.on{color:var(--gold-lt);border-color:var(--border-dark);background:rgba(255,215,0,0.06)}
+.btn-game{
+  background:linear-gradient(135deg,#ffb347,#e05c00);color:#fff;font-weight:700;
+  padding:7px 18px;border:none;border-radius:8px;cursor:pointer;
+  font-family:inherit;font-size:0.86rem;
+  box-shadow:0 0 20px rgba(255,160,0,0.25);
+  transition:transform .18s,box-shadow .18s;margin-left:12px;white-space:nowrap;
+}
+.btn-game:hover{transform:scale(1.06);box-shadow:0 0 36px rgba(255,160,0,0.42)}
+
+/* ══ SCROLL MAIN ══ */
+#scroll-main{padding-top:56px}
+
+/* ══ SECTION BASE ══ */
+.intro-sec{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+.sec-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  z-index:0;
+  filter:brightness(0.9) saturate(1.1);
+}
+
+/* gradient overlay — direction set per section */
+.sec-grad{position:absolute;inset:0;z-index:1}
+
+/* ── CHARACTER ── */
+.sec-char{
+  position:absolute;bottom:0;z-index:3;
+  object-fit:contain;
+  filter:drop-shadow(0 8px 32px rgba(0,0,0,0.55));
+  /* animation target */
+  transition:none;
+}
+.sec-char-l{left:-4%;height:96%}
+.sec-char-r{right:-4%;height:96%}
+
+/* ── TEXT PANEL ── */
+.sec-text{
+  position:relative;z-index:4;
+  width:48%;max-width:520px;
+  padding:60px 50px;
+}
+.sec-text-l{margin-left:4%}
+.sec-text-r{margin-left:auto;margin-right:4%}
+
+.sec-part{
+  font-size:0.68rem;letter-spacing:7px;
+  color:var(--gold-lt);text-transform:uppercase;
+  opacity:0.65;margin-bottom:10px;
+}
+.sec-rule{width:36px;height:2px;background:var(--gold-lt);opacity:0.45;margin:14px 0 22px}
+.sec-title{
+  font-size:clamp(1.9rem,2.8vw,2.8rem);
+  font-weight:900;line-height:1.2;
+  color:#fff;
+  text-shadow:0 2px 20px rgba(0,0,0,0.6);
+  margin-bottom:18px;
+}
+.sec-body{
+  font-size:1rem;color:rgba(255,235,200,0.82);
+  line-height:1.8;margin-bottom:22px;
+}
+.sec-notice{
+  font-size:0.76rem;color:rgba(255,255,255,0.35);
+  line-height:1.6;
+  border-left:2px solid rgba(255,160,60,0.25);
+  padding-left:10px;margin-top:16px;
+}
+.sec-shot{
+  width:100%;border-radius:10px;display:block;
+  border:1px solid rgba(255,215,0,0.12);
+  box-shadow:0 8px 36px rgba(0,0,0,0.45);
+  margin-top:20px;
+}
+
+/* ── HERO EXTRAS ── */
+.hero-eyebrow{
+  font-size:0.72rem;letter-spacing:8px;
+  color:var(--gold-lt);text-transform:uppercase;
+  opacity:.75;margin-bottom:12px;
+}
+.hero-subtitle{
+  font-size:1.05rem;letter-spacing:3px;
+  color:rgba(255,210,140,0.75);margin-bottom:24px;
+}
+.sec-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px}
+.btn-primary{
+  background:linear-gradient(135deg,#ffb347,#e05c00);color:#fff;font-weight:700;
+  padding:13px 36px;border:none;border-radius:10px;cursor:pointer;
+  font-family:inherit;font-size:0.96rem;
+  box-shadow:0 0 30px rgba(255,160,0,0.35);
+  transition:transform .18s,box-shadow .18s;
+}
+.btn-primary:hover{transform:scale(1.05);box-shadow:0 0 52px rgba(255,160,0,0.5)}
+.btn-outline{
+  background:transparent;color:rgba(255,179,71,0.9);font-weight:600;
+  padding:12px 28px;border:1px solid rgba(255,179,71,0.38);border-radius:10px;
+  cursor:pointer;font-family:inherit;font-size:0.9rem;transition:all .18s;
+}
+.btn-outline:hover{border-color:var(--gold-lt);background:rgba(255,215,0,0.07)}
+
+/* ══ SCROLL FADE-UP ══ */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-up.delay1{transition-delay:.1s}
+.fade-up.delay2{transition-delay:.2s}
+
+/* ══ CTA SECTION ══ */
+#sec-cta{
+  min-height:55vh;display:flex;
+  align-items:center;justify-content:center;
+  text-align:center;
+  background:radial-gradient(ellipse at center, #2a0e00 0%, #0e0500 70%);
+  position:relative;
+}
+.cta-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 60%, rgba(224,100,0,0.1) 0%, transparent 65%);
+}
+.cta-inner{position:relative;z-index:2;padding:80px 32px;max-width:580px}
+.cta-title{
+  font-size:clamp(1.9rem,3vw,2.5rem);font-weight:900;
+  color:var(--gold-lt);line-height:1.25;margin-bottom:18px;
+  text-shadow:0 0 36px rgba(255,179,71,0.3);
+}
+.cta-sub{font-size:0.95rem;color:rgba(200,185,160,0.75);line-height:1.8;margin-bottom:32px}
+.cta-notice{font-size:0.74rem;color:rgba(255,255,255,0.28);margin-top:20px}
+
+/* ══ PANEL OVERLAY ══ */
+.panel-ov{
+  position:fixed;top:56px;left:0;right:0;bottom:0;z-index:800;
+  display:flex;flex-direction:column;
+  transform:translateY(-108%);transition:transform .46s cubic-bezier(.25,.46,.45,.94);
+  pointer-events:none;
+}
+.panel-ov.open{transform:translateY(0);pointer-events:all}
+.p-back{position:absolute;inset:0;background:rgba(6,6,15,0.97);backdrop-filter:blur(22px)}
+.p-inner{
+  position:relative;z-index:1;height:100%;max-width:960px;width:100%;
+  margin:0 auto;padding:26px 30px;display:flex;flex-direction:column;
+}
+.p-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:13px;margin-bottom:18px;border-bottom:1px solid var(--border-dark);
+}
+.p-title{font-size:1.35rem;color:var(--gold-lt)}
+.p-close{
+  background:transparent;border:1px solid rgba(255,215,0,0.2);
+  color:rgba(255,215,0,0.5);padding:5px 14px;border-radius:6px;cursor:pointer;
+  font-family:inherit;font-size:0.8rem;transition:all .2s;
+}
+.p-close:hover{border-color:var(--gold-lt);color:var(--gold-lt)}
+.p-body{flex:1;overflow-y:auto;padding-right:6px;color:#c0b8a8}
+.p-body::-webkit-scrollbar{width:3px}
+.p-body::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.18);border-radius:2px}
+.cs-grp{margin-bottom:22px}
+.cs-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cs-tag{padding:2px 9px;background:rgba(255,215,0,0.09);border:1px solid rgba(255,215,0,0.18);
+  border-radius:4px;font-size:0.7rem;color:var(--gold-lt);font-weight:700}
+.cs-name{font-size:0.87rem;color:#b0a890}
+.sk-tbl{width:100%;border-collapse:collapse}
+.sk-tbl th{text-align:left;padding:7px 11px;background:rgba(255,215,0,0.04);
+  color:rgba(255,215,0,0.5);font-size:0.7rem;border-bottom:1px solid rgba(255,255,255,0.055)}
+.sk-tbl td{padding:7px 11px;border-bottom:1px solid rgba(255,255,255,0.035);font-size:0.78rem;color:#908878}
+.sk-tbl tr:hover td{background:rgba(255,215,0,0.025)}
+kbd{background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.18);
+  border-radius:4px;padding:1px 6px;font-size:0.72rem;color:var(--gold-lt);font-family:'Courier New',monospace}
+.lock-wrap{position:relative}
+.lock-wrap table{filter:blur(5px);user-select:none;pointer-events:none}
+.lock-lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:rgba(255,215,0,0.4);font-size:0.78rem;gap:5px}
+.pt-line{position:relative;padding-left:24px}
+.pt-line::before{content:'';position:absolute;left:7px;top:6px;bottom:0;width:2px;background:rgba(255,215,0,0.08)}
+.pt-item{position:relative;margin-bottom:18px;padding-left:10px}
+.pt-item::before{content:'';position:absolute;left:-18px;top:7px;
+  width:9px;height:9px;border-radius:50%;background:var(--gold-lt);box-shadow:0 0 7px rgba(255,215,0,0.35)}
+.pt-item h3{color:var(--gold-lt);font-size:0.88rem;margin-bottom:3px;display:flex;align-items:center;gap:7px}
+.pt-ver{font-size:0.67rem;color:rgba(255,215,0,0.36);font-weight:normal}
+.pt-item p{font-size:0.8rem;color:#7a7060;line-height:1.6}
+
+/* ══ GLOW TEXT BUTTON (secondary) ══ */
+.glow-btn{
+  background:transparent;border:1px solid rgba(255,200,80,0.5);color:#ffe08a;
+  font-family:'Noto Serif TC',serif;font-size:1.05rem;font-weight:700;letter-spacing:4px;
+  padding:14px 40px;border-radius:4px;cursor:pointer;
+  text-shadow:0 0 18px rgba(255,180,0,0.8);
+  box-shadow:0 0 18px rgba(255,160,0,0.2),inset 0 0 18px rgba(255,160,0,0.04);
+  transition:all .25s ease;animation:glowPulse 2.8s ease-in-out infinite;
+}
+.glow-btn:hover{
+  border-color:rgba(255,220,100,0.9);color:#fff8d0;
+  text-shadow:0 0 28px rgba(255,200,0,1);
+  box-shadow:0 0 40px rgba(255,180,0,0.45),inset 0 0 24px rgba(255,160,0,0.1);
+  animation:none;
+}
+@keyframes glowPulse{
+  0%,100%{box-shadow:0 0 14px rgba(255,160,0,0.18),inset 0 0 14px rgba(255,160,0,0.03)}
+  50%{box-shadow:0 0 32px rgba(255,180,0,0.38),inset 0 0 22px rgba(255,160,0,0.08)}
+}
+
+/* ══ ORB BUTTON ══ */
+.orb-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;flex-direction:column;align-items:center;gap:12px;outline:none}
+.orb-bezel{
+  position:relative;width:150px;height:150px;border-radius:50%;
+  background:radial-gradient(circle at 50% 60%, #2a1200 0%, #150900 55%, #080300 100%);
+  box-shadow:
+    0 0 0 2px rgba(190,110,10,0.7),
+    0 0 0 5px rgba(40,15,0,0.9),
+    0 0 0 7px rgba(150,75,0,0.45),
+    0 10px 40px rgba(0,0,0,0.75),
+    0 0 55px rgba(255,130,0,0.22);
+  transform:perspective(600px) rotateX(8deg);
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.orb-btn:hover .orb-bezel{
+  transform:perspective(600px) rotateX(8deg) scale(1.07);
+  box-shadow:
+    0 0 0 2px rgba(240,160,20,0.9),
+    0 0 0 5px rgba(40,15,0,0.9),
+    0 0 0 7px rgba(200,110,0,0.65),
+    0 14px 50px rgba(0,0,0,0.75),
+    0 0 90px rgba(255,160,0,0.5);
+}
+.orb-core{
+  position:absolute;inset:16px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,
+    #fffbe0 0%, #ffe566 14%, #f09010 44%, #a85500 74%, #4a1e00 100%);
+  box-shadow:inset 0 0 22px rgba(255,255,200,0.28), 0 0 28px rgba(255,155,0,0.65), 0 0 60px rgba(255,90,0,0.28);
+  animation:coreGlow 2.6s ease-in-out infinite;
+}
+.orb-core::before{
+  content:'';position:absolute;top:11%;left:14%;
+  width:40%;height:28%;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,255,230,0.72) 0%,rgba(255,255,200,0) 100%);
+  filter:blur(5px);
+}
+.orb-core::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(circle at 28% 72%, rgba(255,255,200,0.65) 0%, transparent 7%),
+    radial-gradient(circle at 66% 76%, rgba(255,255,200,0.55) 0%, transparent 5%),
+    radial-gradient(circle at 74% 38%, rgba(255,255,200,0.5)  0%, transparent 4%),
+    radial-gradient(circle at 18% 48%, rgba(255,255,200,0.6)  0%, transparent 5%),
+    radial-gradient(circle at 54% 87%, rgba(255,255,200,0.45) 0%, transparent 4%),
+    radial-gradient(circle at 82% 58%, rgba(255,255,200,0.4)  0%, transparent 4%);
+  animation:particlePulse 3.2s ease-in-out infinite alternate;
+}
+.orb-dot-svg{position:absolute;inset:0;animation:dotSpin 14s linear infinite}
+.orb-label{font-size:0.82rem;color:rgba(255,215,120,0.8);letter-spacing:5px;font-family:'Noto Serif TC',serif;text-shadow:0 0 14px rgba(255,170,0,0.7)}
+@keyframes coreGlow{
+  0%,100%{box-shadow:inset 0 0 22px rgba(255,255,200,0.28),0 0 28px rgba(255,155,0,0.65),0 0 60px rgba(255,90,0,0.28)}
+  50%{box-shadow:inset 0 0 36px rgba(255,255,200,0.48),0 0 50px rgba(255,185,0,0.9),0 0 95px rgba(255,110,0,0.45)}
+}
+@keyframes particlePulse{0%{opacity:0.38}100%{opacity:1}}
+@keyframes dotSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ══ GAME MODAL ══ */
+#gmodal{
+  position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:22px;opacity:0;pointer-events:none;transition:opacity .46s;
+}
+#gmodal.show{opacity:1;pointer-events:all}
+#gmodal h2{color:var(--gold-lt);font-size:1.5rem;text-align:center}
+#gmodal p{color:#a8a090;max-width:420px;text-align:center;line-height:1.72;font-size:0.9rem}
+.m-cta{background:linear-gradient(135deg,#ffb347,#e05c00);color:#fff;font-weight:700;
+  padding:13px 42px;border:none;border-radius:11px;cursor:pointer;
+  font-family:inherit;font-size:1rem;box-shadow:0 0 38px rgba(255,160,0,0.28);transition:transform .18s}
+.m-cta:hover{transform:scale(1.05)}
+.m-skip{background:transparent;border:1px solid rgba(255,215,0,0.22);color:rgba(255,215,0,0.5);
+  padding:9px 26px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:0.88rem;transition:all .2s}
+.m-skip:hover{border-color:var(--gold-lt);color:var(--gold-lt)}
+.spinner{width:42px;height:42px;border:3px solid rgba(255,215,0,0.1);
+  border-top-color:var(--gold-lt);border-radius:50%;animation:spin .8s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<nav id="topbar">
+  <span class="logo-icon">✨</span>
+  <span class="logo-txt">Excel 魔法冒險</span>
+  <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">遊戲介紹</button>
+  <button class="nav-btn" id="nb-cheat" onclick="togglePanel('cheat')">Excel技能表</button>
+  <button class="nav-btn" id="nb-patch" onclick="togglePanel('patch')">更新日誌</button>
+  <button class="btn-game" onclick="openModal()">⚔ 進入遊戲</button>
+</nav>
+
+<main id="scroll-main">
+
+  <!-- ══ 1: HERO ══ -->
+  <section class="intro-sec" id="sec-hero">
+    <div class="sec-bg" style="background-image:url('BG/intro/1_bg.png')"></div>
+    <div class="sec-grad" style="background:linear-gradient(100deg,rgba(14,5,0,0.93) 35%,rgba(14,5,0,0.08) 75%)"></div>
+    <img src="BG/intro/1_main.png" class="sec-char sec-char-r" alt="">
+    <div class="sec-text sec-text-l">
+      <div class="hero-eyebrow fade-up">EXCEL × RPG ADVENTURE</div>
+      <h1 class="sec-title fade-up delay1">Excel 魔法冒險</h1>
+      <div class="hero-subtitle fade-up delay1">～ 魔導書的覺醒 ～</div>
+      <p class="sec-body fade-up delay2">
+        將 Excel 實戰技能深度融入 RPG 劇情的沉浸式教學遊戲。
+      </p>
+      <div class="sec-btns fade-up delay2">
+        <button class="glow-btn" onclick="openModal()">⚔ 開始冒險</button>
+        <button class="btn-outline" onclick="document.getElementById('sec-story').scrollIntoView({behavior:'smooth'})">了解更多 ▼</button>
+      </div>
+      <p class="sec-notice fade-up delay2">遊戲內容尚在持續開發中，以下展示不代表最終版本。</p>
+    </div>
+  </section>
+
+  <!-- ══ 2: STORY / MIRO ══ -->
+  <section class="intro-sec" id="sec-story">
+    <div class="sec-bg" style="background-image:url('BG/intro/2_bg.png')"></div>
+    <div class="sec-grad" style="background:linear-gradient(260deg,rgba(14,5,0,0.93) 35%,rgba(14,5,0,0.08) 75%)"></div>
+    <img src="BG/intro/2_miro.png" class="sec-char sec-char-l" alt="">
+    <div class="sec-text sec-text-r">
+      <div class="sec-part fade-up">PART 1 — STORY MODE</div>
+      <div class="sec-rule fade-up"></div>
+      <h2 class="sec-title fade-up">沉浸式劇情體驗</h2>
+      <p class="sec-body fade-up">
+         16 個章節的完整奇幻故事線
+      </p>
+      <img src="BG/intro/story.png" class="sec-shot fade-up" alt="劇情截圖">
+      <p class="sec-notice fade-up">劇情內容持續調整中，截圖僅供參考，非最終畫面。</p>
+    </div>
+  </section>
+
+  <!-- ══ 3: EXCEL / GLEA ══ -->
+  <section class="intro-sec" id="sec-excel">
+    <div class="sec-bg" style="background-image:url('BG/intro/3_bg.png')"></div>
+    <div class="sec-grad" style="background:linear-gradient(100deg,rgba(14,5,0,0.93) 35%,rgba(14,5,0,0.08) 75%)"></div>
+    <img src="BG/intro/3_glea.png" class="sec-char sec-char-r" style="height:88%;right:-2%" alt="">
+    <div class="sec-text sec-text-l">
+      <div class="sec-part fade-up">PART 2 — EXCEL SIMULATOR</div>
+      <div class="sec-rule fade-up"></div>
+      <h2 class="sec-title fade-up">真正的 Excel 模擬器</h2>
+      <p class="sec-body fade-up">
+        遊戲內建完整 Excel 模擬器，操作與真實 Excel 完全一致
+      </p>
+      <img src="BG/intro/excel.png" class="sec-shot fade-up" alt="Excel 模擬截圖">
+      <p class="sec-notice fade-up">功能細節尚在調整，以正式版為準。</p>
+    </div>
+  </section>
+
+  <!-- ══ 4: RPG / CHATE ══ -->
+  <section class="intro-sec" id="sec-rpg">
+    <div class="sec-bg" style="background-image:url('BG/intro/4_bg.png')"></div>
+    <div class="sec-grad" style="background:linear-gradient(260deg,rgba(14,5,0,0.93) 35%,rgba(14,5,0,0.08) 75%)"></div>
+    <img src="BG/intro/4_chate.png" class="sec-char sec-char-l" alt="">
+    <div class="sec-text sec-text-r">
+      <div class="sec-part fade-up">PART 3 — FREE ROAM</div>
+      <div class="sec-rule fade-up"></div>
+      <h2 class="sec-title fade-up">像素風自由探索世界</h2>
+      <p class="sec-body fade-up">
+        通關後解鎖完整 RPG 自由模式、與 NPC 互動、接取支線任務。
+      </p>
+      <img src="BG/intro/rpg.png" class="sec-shot fade-up" style="image-rendering:pixelated" alt="RPG 模式截圖">
+      <p class="sec-notice fade-up">自由模式持續開發中，以最終版本為準。</p>
+    </div>
+  </section>
+
+  <!-- ══ 5: CTA ══ -->
+  <section id="sec-cta">
+    <div class="cta-glow"></div>
+    <div class="cta-inner">
+      <div class="cta-title fade-up">準備好踏上你的魔法冒險了嗎？</div>
+      <p class="cta-sub fade-up">每一個 Excel 技能，都是你在這個世界裡的魔法</p>
+      <button class="btn-primary fade-up" onclick="openModal()">⚔ 開始冒險</button>
+      <p class="cta-notice fade-up">遊戲內容持續開發中，不代表最終版本。</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══ CHEAT SHEET PANEL ══ -->
+<div class="panel-ov" id="panel-cheat">
+  <div class="p-back"></div>
+  <div class="p-inner">
+    <div class="p-head">
+      <div class="p-title">📖 Excel技能表</div>
+      <button class="p-close" onclick="togglePanel('cheat')">✕ 關閉</button>
+    </div>
+    <div class="p-body" id="body-cheat"></div>
+  </div>
+</div>
+
+<!-- ══ PATCH NOTES PANEL ══ -->
+<div class="panel-ov" id="panel-patch">
+  <div class="p-back"></div>
+  <div class="p-inner">
+    <div class="p-head">
+      <div class="p-title">📜 更新日誌</div>
+      <button class="p-close" onclick="togglePanel('patch')">✕ 關閉</button>
+    </div>
+    <div class="p-body" id="body-patch"></div>
+  </div>
+</div>
+
+<!-- ══ GAME MODAL ══ -->
+<div id="gmodal">
+  <div class="spinner" id="mspinner"></div>
+  <h2 id="mtitle">⚔️ 準備進入冒險</h2>
+  <p id="mdesc">本遊戲包含複雜 Excel 操作模擬，建議以 <strong style="color:var(--gold-lt)">全螢幕</strong> 體驗以獲得最佳效果。</p>
+  <button class="m-cta" id="mbtn1" onclick="launchGame(true)">確認全螢幕進入</button>
+  <button class="m-skip" id="mbtn2" onclick="launchGame(false)">直接進入（不全螢幕）</button>
+</div>
+
+<script>
+// ══ SCROLL FADE-UP ══
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.12});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+// ══ PANELS ══
+let openP=null;
+function togglePanel(n){
+  const el=document.getElementById('panel-'+n), nb=document.getElementById('nb-'+n);
+  if(openP===n){ el.classList.remove('open'); nb.classList.remove('on'); openP=null; }
+  else { closeAll(); el.classList.add('open'); nb.classList.add('on'); openP=n; }
+}
+function closeAll(){
+  ['cheat','patch'].forEach(n=>{
+    document.getElementById('panel-'+n).classList.remove('open');
+    document.getElementById('nb-'+n).classList.remove('on');
+  });
+  openP=null;
+}
+document.addEventListener('keydown',e=>{
+  if(e.code==='Escape'){ closeAll(); document.getElementById('gmodal').classList.remove('show'); }
+});
+
+// ══ CHEAT SHEET ══
+const CS=[
+  {ch:'Ch1',t:'倉庫與禁術',lock:false,sk:[
+    {n:'凍結窗格',k:'Alt+W+F+R',d:'捲動時固定標題列於頂部'},
+    {n:'快速跳轉',k:'Ctrl+方向鍵',d:'快速移動至數據邊界'},
+    {n:'欄位對調',k:'Shift+拖曳',d:'交換整列或整欄位置'},
+    {n:'自動填滿',k:'右下角方塊',d:'依規律自動產生序列'},
+    {n:'插入日期',k:'Ctrl+;',d:'輸入當前系統日期'},
+  ]},
+  {ch:'Ch2',t:'學院與美學',lock:true,sk:[
+    {n:'合併儲存格',k:'Alt+H+M+C',d:'將多個儲存格合而為一'},
+    {n:'框線',k:'Alt+H+B',d:'添加各種邊框樣式'},
+    {n:'填滿色彩',k:'Alt+H+H',d:'為儲存格加上底色強調'},
+    {n:'跨欄置中',k:'Alt+H+M+C',d:'標題跨多欄水平置中'},
+  ]},
+  {ch:'Ch3',t:'小隊重組',lock:true,sk:[
+    {n:'排序',k:'Alt+D+S',d:'依欄位值升冪/降冪排列'},
+    {n:'篩選',k:'Alt+D+F+F',d:'依條件篩選顯示資料列'},
+    {n:'進階篩選',k:'Alt+D+Q',d:'自訂複雜多條件篩選'},
+  ]},
+  {ch:'Ch4',t:'義診與三人行',lock:true,sk:[
+    {n:'VLOOKUP',k:'=VLOOKUP()',d:'垂直查閱配對值'},
+    {n:'IF 函數',k:'=IF()',d:'條件判斷回傳不同結果'},
+    {n:'IFERROR',k:'=IFERROR()',d:'捕捉錯誤並回傳替代值'},
+  ]},
+  {ch:'Ch5',t:'兩個人的村歌',lock:true,sk:[
+    {n:'小計',k:'Alt+D+B',d:'分組後自動加總各組數值'},
+    {n:'大綱',k:'Alt+D+G+G',d:'資料分層折疊顯示'},
+    {n:'資料驗證',k:'Alt+D+L',d:'限制儲存格允許輸入格式'},
+  ]},
+  {ch:'Ch6',t:'船上的帳',lock:true,sk:[
+    {n:'樞紐分析表',k:'Alt+N+V',d:'多維度彙總分析大量數據'},
+    {n:'匯總方式',k:'值欄位設定',d:'切換加總/平均/計數'},
+  ]},
+  {ch:'Ch7',t:'進入皇宮',lock:true,sk:[
+    {n:'條件格式化',k:'Alt+H+L',d:'依數值大小自動標色'},
+    {n:'圖表建立',k:'Alt+N+C',d:'將數據視覺化'},
+  ]},
+  {ch:'Ch8',t:'宴會',lock:true,sk:[
+    {n:'INDEX+MATCH',k:'=INDEX(MATCH())',d:'比 VLOOKUP 更靈活的進階查閱'},
+    {n:'巢狀 IF',k:'=IF(IF())',d:'多層條件邏輯複合判斷'},
+  ]},
+];
+document.getElementById('body-cheat').innerHTML=CS.map(g=>`
+<div class="cs-grp">
+  <div class="cs-hd"><span class="cs-tag">${g.ch}</span><span class="cs-name">${g.t}</span></div>
+  ${g.lock
+    ?`<div class="lock-wrap">
+        <table class="sk-tbl"><thead><tr><th>技能</th><th>快捷鍵</th><th>說明</th></tr></thead>
+        <tbody>${g.sk.map(s=>`<tr><td>${s.n}</td><td><kbd>${s.k}</kbd></td><td>${s.d}</td></tr>`).join('')}</tbody></table>
+        <div class="lock-lbl">🔒 完成 ${g.ch} 後解鎖</div></div>`
+    :`<table class="sk-tbl"><thead><tr><th>技能</th><th>快捷鍵</th><th>說明</th></tr></thead>
+      <tbody>${g.sk.map(s=>`<tr><td style="color:#e0d8c8;font-weight:600">${s.n}</td><td><kbd>${s.k}</kbd></td><td>${s.d}</td></tr>`).join('')}</tbody></table>`
+  }
+</div>`).join('');
+
+// ══ PATCH NOTES ══
+const PT=[
+  {v:'',t:''},
+];
+document.getElementById('body-patch').innerHTML=`<div class="pt-line">${PT.map(p=>`
+<div class="pt-item"><h3><span class="pt-ver">${p.v}</span>${p.t}</h3><p>${p.d}</p></div>`).join('')}</div>`;
+
+// ══ GAME MODAL ══
+function openModal(){ document.getElementById('gmodal').classList.add('show'); }
+function launchGame(fs){
+  document.getElementById('mtitle').textContent='載入中...';
+  document.getElementById('mdesc').style.display='none';
+  document.getElementById('mbtn1').style.display='none';
+  document.getElementById('mbtn2').style.display='none';
+  document.getElementById('mspinner').style.display='block';
+  if(fs){
+    sessionStorage.setItem('game_want_fullscreen','1');
+    document.documentElement.requestFullscreen?.().catch(()=>{});
+  }
+  setTimeout(()=>{
+    // Load index.html inside an iframe to preserve fullscreen (don't remove DOM — that exits fullscreen)
+    const iframe = document.createElement('iframe');
+    iframe.src = 'index.html';
+    iframe.allow = 'fullscreen';
+    iframe.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;border:none;z-index:999999;background:#000;';
+    document.body.appendChild(iframe);
+  },1500);
+}
+</script>
+</body>
+</html>

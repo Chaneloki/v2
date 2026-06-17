@@ -648,7 +648,7 @@ class Orchestrator {
 
     _enterFreeModeWithLock() {
         const UNLOCK_KEY = 'magic_excel_teleport_unlocked';
-        if (localStorage.getItem(UNLOCK_KEY) === '1') {
+        if (sessionStorage.getItem(UNLOCK_KEY) === '1') {
             this._doEnterFreeMode();
             return;
         }
@@ -657,6 +657,7 @@ class Orchestrator {
         const pw = prompt(msg);
         if (pw === null) return;
         if (pw === '7338') {
+            sessionStorage.setItem(UNLOCK_KEY, '1');
             localStorage.setItem(UNLOCK_KEY, '1');
             this._doEnterFreeMode();
         } else {

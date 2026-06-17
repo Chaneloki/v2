@@ -22,7 +22,10 @@ UIManager.prototype.jumpFromDev = function(phase) {
      * [新增] 全螢幕切換功能
      */
 UIManager.prototype.toggleFullscreen = function() {
-        var doc = window.document;
+        // When running inside an iframe (from landing.html), fullscreen must be
+        // controlled on the TOP-LEVEL document, not the iframe's document.
+        var topWin = (window.top && window.top !== window) ? window.top : window;
+        var doc = topWin.document;
         var docEl = doc.documentElement;
 
         var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
@@ -41,8 +44,7 @@ UIManager.prototype.toggleFullscreen = function() {
                     console.error(`全螢幕切換失敗:`, e);
                 }
             }
-        }
-        else {
+        } else {
             if (cancelFullScreen) {
                 cancelFullScreen.call(doc);
             }

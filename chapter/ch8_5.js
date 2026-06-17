@@ -13,7 +13,7 @@ const generateCh8_5Data = () => {
         "cg/ch5.5 road.png", "cg/ch5.5_tent.png", "cg/ch6 all.png", "cg/ch6 glea.png", "cg/ch6.5 bye.png", 
         "cg/ch6.5 hand.png", "cg/ch6.5 last.png", "cg/ch6.5 main.png", "cg/ch6.5 prince.png", "cg/ch6.5 royi.png", 
         "cg/ch7 last.png", "cg/ch7 sit.png", "cg/ch7.5 royi arrive.png", "cg/ch7 prince2.png", "cg/ch7 prince.png", 
-        "cg/ch3 two.png", "cg/ch2.png", "cg/chate_falling.png", "cg/magic_book_glow.png", "black.png", "white.png"
+        "cg/ch3 two.png", "cg/ch2.png", "cg/magic_book_glow.png", "black.png", "white.png"
     ];
     preloadCGs.forEach(src => { const img = new Image(); img.src = src; });
 

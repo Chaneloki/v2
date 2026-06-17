@@ -7,33 +7,341 @@
     <title>Excel 魔法冒險 V2 - 巔峰視覺版</title>
     <!-- [基因還原] 使用 v45 原始樣式表 -->
     <link rel="stylesheet" href="style.css?v=1781330285593">
+    <style>
+    /* === Cinematic Title Buttons === */
+    .cinematic-btn-primary {
+      position: relative;
+      width: 300px;
+      padding: 18px 0;
+      font-family: serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 6px;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(18,12,4,0.92), rgba(45,28,6,0.92));
+      border: 1px solid rgba(255,215,0,0.55);
+      border-radius: 2px;
+      cursor: pointer;
+      overflow: hidden;
+      text-shadow: 0 0 22px rgba(255,200,0,0.9), 0 1px 3px #000;
+      box-shadow: 0 0 30px rgba(255,175,0,0.12), inset 0 0 25px rgba(255,155,0,0.04);
+      transition: all 0.3s ease;
+    }
+    .cinematic-btn-primary::before {
+      content:'';
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .cinematic-btn-primary::after {
+      content:'';
+      position:absolute; top:0; left:-120%;
+      width:55%; height:100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transform: skewX(-18deg);
+      animation: shimmerSweep 3.5s ease-in-out infinite;
+    }
+    .cinematic-btn-primary:hover {
+      border-color: rgba(255,215,0,0.9);
+      box-shadow: 0 0 60px rgba(255,185,0,0.35), inset 0 0 35px rgba(255,160,0,0.08);
+      transform: scale(1.04);
+      color: #fff8d0;
+    }
+
+    .cinematic-btn-secondary {
+      position: relative;
+      width: 240px;
+      padding: 12px 0;
+      font-family: sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: rgba(255,225,140,0.8);
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,200,80,0.3);
+      border-radius: 2px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .cinematic-btn-secondary:hover {
+      background: rgba(255,200,80,0.08);
+      border-color: rgba(255,200,80,0.65);
+      color: #fff;
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(255,185,0,0.2);
+    }
+
+    /* purple variant for teleport */
+    .cinematic-btn-secondary.purple {
+      color: rgba(210,175,255,0.85);
+      border-color: rgba(150,80,255,0.35);
+    }
+    .cinematic-btn-secondary.purple:hover {
+      background: rgba(130,60,255,0.1);
+      border-color: rgba(175,120,255,0.75);
+      color: #e8d5ff;
+      box-shadow: 0 0 20px rgba(138,43,226,0.3);
+    }
+
+    @keyframes shimmerSweep {
+      0%   { left: -120%; opacity:0; }
+      10%  { opacity:1; }
+      50%  { left: 160%; opacity:1; }
+      51%  { opacity:0; }
+      100% { left: 160%; opacity:0; }
+    }
+
+    /* === Title Screen Layout === */
+    .cg-bg-layer {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+      transition: opacity 1.8s ease-in-out;
+    }
+    .intro-char {
+      position: absolute;
+      bottom: 0;
+      object-fit: contain;
+      z-index: 2;
+      pointer-events: none;
+      animation: introCharFadeIn 2s ease-out forwards;
+    }
+    .intro-char-left {
+      left: -1%;
+      height: 105%;
+      max-height: 105vh;
+      -webkit-mask-image: linear-gradient(to right, black 55%, transparent 90%);
+      mask-image: linear-gradient(to right, black 55%, transparent 90%);
+      filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
+    }
+    .intro-char-right {
+      right: -1%;
+      height: 100%;
+      max-height: 100vh;
+      -webkit-mask-image: linear-gradient(to left, black 65%, transparent 95%);
+      mask-image: linear-gradient(to left, black 65%, transparent 95%);
+    }
+    @keyframes introCharFadeIn {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* Circle start button */
+    .title-circle-btn {
+      width: 155px; height: 155px;
+      border-radius: 50%;
+      position: relative; overflow: hidden;
+      background: radial-gradient(circle at 40% 35%, rgba(55,35,8,0.95), rgba(18,10,2,0.95));
+      border: 2px solid rgba(255,215,0,0.65);
+      color: #fff;
+      font-family: serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      line-height: 1.5;
+      cursor: pointer;
+      text-shadow: 0 0 18px rgba(255,200,0,0.9), 0 1px 3px #000;
+      box-shadow: 0 0 40px rgba(255,175,0,0.22), 0 0 80px rgba(255,140,0,0.1), inset 0 0 30px rgba(255,140,0,0.05);
+      transition: all 0.3s ease;
+    }
+    .title-circle-btn::after {
+      content:''; position:absolute; top:-40%; left:-40%;
+      width:80%; height:80%;
+      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%);
+      pointer-events:none;
+    }
+    .title-circle-btn:hover {
+      border-color: rgba(255,215,0,1);
+      box-shadow: 0 0 70px rgba(255,185,0,0.45), 0 0 120px rgba(255,140,0,0.2), inset 0 0 40px rgba(255,160,0,0.1);
+      transform: scale(1.06);
+    }
+
+    /* === System Menu Triangle Layout === */
+    .sys-tri-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: -175px;
+    }
+    .sys-tri-wrap:first-child { margin-left: 0; }
+    .sys-tri-wrap-center { z-index: 2; }
+
+    .sys-tri {
+      position: relative;
+      width: 340px;
+      height: 100vh;
+      clip-path: polygon(10% 0%, 90% 0%, 50% 100%);
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      will-change: transform;
+      transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .sys-tri-wrap-center .sys-tri {
+      width: 370px;
+      height: 100vh;
+      clip-path: polygon(50% 0%, 10% 100%, 90% 100%); /* pointing UP */
+    }
+    .sys-tri:hover {
+      transform: translateY(-16px) scale(1.05);
+    }
+    .sys-tri-wrap:hover { z-index: 5; }
+
+    /* Mirror reflection — hidden when triangles are full-height */
+    .sys-tri-mirror { display: none; }
+
+    .sys-tri-label {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 3px;
+      text-align: center;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.95), 0 0 24px rgba(0,0,0,0.7);
+      line-height: 1.7;
+      pointer-events: none;
+      opacity: 0.75;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      white-space: nowrap;
+    }
+    .sys-tri:hover .sys-tri-label {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.08);
+    }
+    /* Center triangle (pointing up) — label sits near the base (bottom area) */
+    .sys-tri-wrap-center .sys-tri .sys-tri-label {
+      top: auto;
+      bottom: 22%;
+    }
+
+    /* Corner icon buttons */
+    .sys-corner-icon {
+      position: absolute;
+      width: 72px; height: 72px;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.55);
+      color: #fff;
+      font-size: 1.8rem;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      z-index: 10;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+    .sys-corner-icon:hover {
+      background: rgba(255,255,255,0.38);
+      transform: scale(1.12);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .sys-corner-circle { border-radius: 50%; }
+
+    /* === Character Button (title screen) === */
+    .char-btn {
+      cursor: pointer;
+      pointer-events: auto;
+      position: relative;
+      display: inline-block;
+      transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94),
+                  opacity 0.38s ease;
+      will-change: transform;
+    }
+    .char-btn:hover {
+      transform: translateY(-18px) scale(1.04);
+    }
+    .char-btn.char-dimmed {
+      opacity: 0.32;
+      transform: scale(0.98);
+    }
+    .char-btn-label {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: rgba(10,6,0,0.82);
+      color: #ffd700;
+      padding: 7px 20px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+      pointer-events: none;
+      border: 1px solid rgba(255,215,0,0.45);
+    }
+    .char-btn:hover .char-btn-label {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Sparkle particle */
+    .sparkle-dot {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #ffd700;
+      pointer-events: none;
+      animation: sparkleFly var(--dur, 1.4s) ease-out forwards;
+      z-index: 9999;
+    }
+    @keyframes sparkleFly {
+      0%   { transform: translate(0,0) scale(1); opacity:1; }
+      100% { transform: translate(var(--tx,0px), var(--ty,-40px)) scale(0); opacity:0; }
+    }
+    </style>
 </head>
 
 <body>
     <!-- [Title Screen] 全新 RPG 標題畫面 -->
     <div id="title-screen-overlay"
-        style="position:fixed; inset:0; background:url('BG/bg1.png') center/cover; z-index:10000; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#fff; transition:0.8s opacity;">
-        <div style="position:absolute; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(3px);"></div>
+        style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background:url('BG/intro/all.png') center/cover no-repeat;">
 
-        <div id="title-content"
-            style="position:relative; z-index:1; text-align:center; animation: fadeInDown 1.5s ease-out;">
-            <h1
-                style="font-size: 4em; color: #ffd700; text-shadow: 0 0 20px rgba(255,215,0,0.8), 2px 2px 4px #000; font-family: serif; margin-bottom: 10px; letter-spacing: 5px;">
-                Excel 魔法冒險</h1>
-            <h2
-                style="font-size: 1.8em; color: #fdf5e6; text-shadow: 1px 1px 3px #000; font-family: serif; font-weight: normal; margin-top: 0; letter-spacing: 2px;">
-                ～ 試算表魔導書的覺醒 ～</h2>
+        <!-- 漸層遮罩 -->
+        <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.08) 100%);"></div>
 
-            <div style="margin-top: 60px; display:flex; flex-direction:column; gap:20px; align-items:center;">
-                <button onclick="window.uiManager.startNewGame()" class="title-btn">✨ 開始新冒險</button>
-                <button onclick="window.uiManager.openSaveLoadMenu('load')" class="title-btn">📜 讀取記憶</button>
-                <button onclick="window.uiManager.openTeleportModal()" class="title-btn"
-                    style="border-color: #8a2be2; box-shadow: 0 0 15px rgba(138, 43, 226, 0.4); color: #c39eff;">🌌
-                    空間傳送陣</button>
+        <!-- 中央三角色按鈕群 (glea正中, chate偏左, miro偏右) -->
+        <div id="intro-char-group" style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;width:760px;height:100%;z-index:4;pointer-events:none;">
+
+            <!-- 3_glea.png：正中央 (z:1) -->
+            <div class="char-btn" id="char-glea"
+                 style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;z-index:1;"
+                 onclick="window.uiManager.openSaveLoadMenu('load')">
+                <img src="BG/intro/3_glea.png" style="height:90vh;object-fit:contain;display:block;" alt="">
+                <div class="char-btn-label">📜 讀取記憶</div>
             </div>
 
-            <p style="margin-top: 40px; font-size: 14px; color: rgba(255,255,255,0.7); text-shadow: 1px 1px 2px #000;">
-                版本資訊：V2 終極版</p>
+            <!-- 2_miro.png：glea右側 (z:3) -->
+            <div class="char-btn" id="char-miro"
+                 style="position:absolute;left:58%;bottom:0;z-index:3;"
+                 onclick="window.uiManager.openTeleportModal()">
+                <img src="BG/intro/2_miro.png" style="height:52vh;object-fit:contain;display:block;" alt="">
+                <div id="miro-lock-badge" style="position:absolute;top:10%;left:50%;transform:translateX(-50%);background:rgba(10,5,20,0.82);border:1px solid rgba(150,80,255,0.6);color:#c39eff;padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;letter-spacing:2px;white-space:nowrap;pointer-events:none;box-shadow:0 0 12px rgba(138,43,226,0.4);">🔒 需要解封密碼</div>
+                <div class="char-btn-label">🌌 空間傳送陣</div>
+            </div>
+
+            <!-- 4_chate.png：glea左側 (z:4) -->
+            <div class="char-btn" id="char-chate"
+                 style="position:absolute;right:55%;bottom:0;z-index:4;"
+                 onclick="window.uiManager.startNewGame()">
+                <img src="BG/intro/4_chate.png" style="height:68vh;object-fit:contain;display:block;" alt="">
+                <div class="char-btn-label">✨ 開始新冒險</div>
+            </div>
+        </div>
+
+        <!-- 全版面絕對定位內容 -->
+        <div id="title-content" style="position:absolute;inset:0;z-index:5;animation:fadeInDown 1.5s ease-out;pointer-events:none;">
+
+            <!-- 版本資訊 -->
+            <p style="position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;color:rgba(255,255,255,0.5);text-shadow:1px 1px 2px #000;letter-spacing:2px;white-space:nowrap;">
+                V2 終極版</p>
         </div>
     </div>
 
@@ -194,55 +502,58 @@
     <!-- ================= 系統導航樞紐 (System Menu) ================= -->
     <div id="sys-menu-btn" onclick="window.uiManager.toggleSystemMenu()" title="開啟系統選單">⚙️</div>
 
-    <div id="sys-menu-overlay" class="modal-layer sys-overlay-hide" style="display:none;">
-        <div class="sys-menu-panel">
-            <div class="sys-menu-header">
-                <h2>🧭 冒險者公會終端</h2>
-                <button onclick="window.uiManager.toggleSystemMenu()" class="sys-menu-close">×</button>
+    <div id="sys-menu-overlay" class="modal-layer sys-overlay-hide" style="display:none; background:rgba(220,225,235,0.92);">
+
+        <!-- White glass inner layer -->
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.06) 60%,rgba(200,220,255,0.12) 100%);pointer-events:none;z-index:0;"></div>
+
+        <!-- 關閉按鈕 -->
+        <button onclick="window.uiManager.toggleSystemMenu()"
+            style="position:absolute;top:24px;right:28px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.4);color:#fff;font-size:1.4rem;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;transition:0.2s;"
+            onmouseover="this.style.background='rgba(0,0,0,0.4)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">✕</button>
+
+        <!-- 1_main.png — decorative character, left side, above triangles -->
+        <img src="BG/intro/1_main.png" alt="" aria-hidden="true"
+             style="position:absolute;left:2vw;bottom:0;height:92vh;object-fit:contain;pointer-events:none;z-index:8;opacity:0.92;">
+
+        <!-- 三角形主面板 -->
+        <div style="display:flex;align-items:flex-start;justify-content:flex-end;padding-right:2vw;position:absolute;right:0;top:0;bottom:0;z-index:2;">
+
+            <!-- 左：2_bg.png → 讀取記憶 -->
+            <div class="sys-tri-wrap">
+                <div class="sys-tri" onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('load')"
+                     style="background-image:url('BG/intro/2_bg.png');">
+                    <div class="sys-tri-label">📜<br>讀取記憶</div>
+                </div>
+                <div class="sys-tri-mirror" style="background-image:url('BG/intro/2_bg.png');pointer-events:none;"></div>
             </div>
 
-            <div class="sys-menu-body">
-                <div class="sys-menu-section">
-                    <h3>🎯 核心功能 (Core Features)</h3>
-                    <div class="sys-menu-grid">
-                        <div class="sys-card active-card" onclick="window.location.href='skill_book.html'">
-                            <div class="sys-card-icon">📜</div>
-                            <div class="sys-card-text">禁術大全<br><span>(Skill Book)</span></div>
-                        </div>
-                        <div class="sys-card active-card" onclick="window.uiManager.openTeleportModal()">
-                            <div class="sys-card-icon">🌌</div>
-                            <div class="sys-card-text">空間傳送陣<br><span>(Teleport)</span></div>
-                        </div>
-                    </div>
+            <!-- 中：1_bg.png → 禁術大全 -->
+            <div class="sys-tri-wrap sys-tri-wrap-center">
+                <div class="sys-tri" onclick="window.location.href='skill_book.html'"
+                     style="background-image:url('BG/intro/1_bg.png');">
+                    <div class="sys-tri-label">📖<br>禁術大全</div>
                 </div>
+                <div class="sys-tri-mirror" style="background-image:url('BG/intro/1_bg.png');pointer-events:none;"></div>
+            </div>
 
-                <div class="sys-menu-section">
-                    <h3>⚙️ 系統設定 (Settings)</h3>
-                    <div class="sys-menu-grid">
-                        <div class="sys-card action-card"
-                            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.toggleFullscreen()">
-                            <div class="sys-card-icon">⛶</div>
-                            <div class="sys-card-text">全螢幕切換<br><span>(Fullscreen)</span></div>
-                        </div>
-                        <div class="sys-card action-card"
-                            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openDevMenu()">
-                            <div class="sys-card-icon">🛠️</div>
-                            <div class="sys-card-text">開發者工具<br><span>(Dev Menu)</span></div>
-                        </div>
-                        <div class="sys-card action-card"
-                            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('save')">
-                            <div class="sys-card-icon">💾</div>
-                            <div class="sys-card-text">儲存進度<br><span>(Save Game)</span></div>
-                        </div>
-                        <div class="sys-card action-card"
-                            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('load')">
-                            <div class="sys-card-icon">📜</div>
-                            <div class="sys-card-text">讀取進度<br><span>(Load Game)</span></div>
-                        </div>
-                    </div>
+            <!-- 右：3_bg.png → 儲存進度 -->
+            <div class="sys-tri-wrap">
+                <div class="sys-tri" onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('save')"
+                     style="background-image:url('BG/intro/3_bg.png');">
+                    <div class="sys-tri-label">💾<br>儲存進度</div>
                 </div>
+                <div class="sys-tri-mirror" style="background-image:url('BG/intro/3_bg.png');pointer-events:none;"></div>
             </div>
         </div>
+
+        <!-- 角落圖示按鈕 -->
+        <button class="sys-corner-icon" style="top:32px;left:32px;"
+            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.toggleFullscreen()" title="全螢幕">⛶</button>
+        <button class="sys-corner-icon sys-corner-circle" style="bottom:40px;left:32px;"
+            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openTeleportModal()" title="空間傳送陣">🌌</button>
+        <button class="sys-corner-icon" style="bottom:40px;right:32px;"
+            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openDevMenu()" title="開發者工具">🛠️</button>
     </div>
     <!-- ================= 系統導航樞紐 End ================= -->
 
@@ -695,6 +1006,18 @@
     <audio id="bgm" loop></audio>
 
     <style>
+        /* 全域禁止文字選取，僅保留 Excel 格子可選 */
+        * {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #grid, #grid *,
+        #grid .cell,
+        input, textarea, select {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
         /* 核心全域樣式 */
         .dev-opt {
             padding: 10px;
@@ -1119,22 +1442,51 @@
 
     <script>
         window.addEventListener('load', () => {
+            // Re-request fullscreen on first user click (browsers require a gesture)
+            if (sessionStorage.getItem('game_want_fullscreen') === '1' && !document.fullscreenElement) {
+                const titleOverlay = document.getElementById('title-screen-overlay');
+                if (titleOverlay) {
+                    const reEnterFS = () => {
+                        if (!document.fullscreenElement) {
+                            document.documentElement.requestFullscreen?.().catch(() => {});
+                        }
+                        titleOverlay.removeEventListener('click', reEnterFS, true);
+                    };
+                    titleOverlay.addEventListener('click', reEnterFS, true);
+                }
+            }
+
             if (window.orchestrator) {
                 window.orchestrator.init();
             }
 
+            // 根據解鎖狀態顯示/隱藏鎖定徽章
+            const UNLOCK_KEY = 'magic_excel_teleport_unlocked';
+            function isTeleportUnlocked() {
+                return sessionStorage.getItem(UNLOCK_KEY) === '1';
+            }
+            function setTeleportUnlocked() {
+                sessionStorage.setItem(UNLOCK_KEY, '1');
+                localStorage.setItem(UNLOCK_KEY, '1');
+            }
+            function updateLockBadge() {
+                const badge = document.getElementById('miro-lock-badge');
+                if (badge) badge.style.display = isTeleportUnlocked() ? 'none' : '';
+            }
+            updateLockBadge();
+
             // [新增] 擴充空間傳送相關方法
             if (window.uiManager) {
                 window.uiManager.openTeleportModal = function () {
-                    const UNLOCK_KEY = 'magic_excel_teleport_unlocked';
-                    if (localStorage.getItem(UNLOCK_KEY) === '1') {
+                    if (isTeleportUnlocked()) {
                         document.getElementById('teleport-modal').style.display = 'flex';
                         return;
                     }
                     const pw = prompt('🔒 空間傳送陣已封印\n請輸入解封密碼以進入自由探索模式：');
                     if (pw === null) return;
                     if (pw === '7338') {
-                        localStorage.setItem(UNLOCK_KEY, '1');
+                        setTeleportUnlocked();
+                        updateLockBadge();
                         document.getElementById('teleport-modal').style.display = 'flex';
                     } else {
                         alert('❌ 密碼錯誤，空間傳送陣拒絕你的進入。');
@@ -1172,6 +1524,89 @@
                 };
             }
         });
+    </script>
+
+    <script>
+    (function(){
+      const CG_IMAGES = [
+        "cg/ch1.5 road.png","cg/ch1.5 start.png","cg/ch1.5.png","cg/ch2 last.png","cg/ch2 main.png",
+        "cg/ch2 start.png","cg/ch2.5 coin.png","cg/ch2.5 last.png","cg/ch2.5 main.png","cg/ch2.5 read.png",
+        "cg/ch2.5 three.png","cg/ch3 bond.png","cg/ch3 sick.png","cg/ch3.5 read.png","cg/ch3.5 two.png",
+        "cg/ch3.5.png","cg/ch4 all.png","cg/ch4 three.png","cg/ch4.5 all.png","cg/ch4.5 conflict.png",
+        "cg/ch4.5.png","cg/ch4.png","cg/ch4 royi.png","cg/ch5 sing.png","cg/ch5.5 join.png",
+        "cg/ch5.5 road.png","cg/ch5.5_tent.png","cg/ch6 all.png","cg/ch6 glea.png","cg/ch6.5 bye.png",
+        "cg/ch6.5 hand.png","cg/ch6.5 last.png","cg/ch6.5 main.png","cg/ch6.5 prince.png","cg/ch6.5 royi.png",
+        "cg/ch7 last.png","cg/ch7 sit.png","cg/ch7.5 royi arrive.png","cg/ch7 prince2.png","cg/ch7 prince.png",
+        "cg/ch3 two.png","cg/ch2.png"
+      ];
+      // Shuffle
+      for (let i = CG_IMAGES.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [CG_IMAGES[i], CG_IMAGES[j]] = [CG_IMAGES[j], CG_IMAGES[i]];
+      }
+      let idx = 0, useA = true;
+      const layerA = document.getElementById('cg-bg-a');
+      const layerB = document.getElementById('cg-bg-b');
+      function loadCG(el, src, cb) {
+        const img = new Image();
+        img.onload = cb;
+        img.onerror = cb;
+        img.src = src;
+        el.style.backgroundImage = `url('${src.replace(/'/g,"\\'")}')`;
+      }
+      function nextCG() {
+        idx = (idx + 1) % CG_IMAGES.length;
+        const next = useA ? layerB : layerA;
+        const prev = useA ? layerA : layerB;
+        loadCG(next, CG_IMAGES[idx], () => {
+          next.style.opacity = '1';
+          prev.style.opacity = '0';
+          useA = !useA;
+        });
+      }
+      // CG slideshow disabled — static BG now used
+      // window.addEventListener('DOMContentLoaded', () => { ... });
+    })();
+    </script>
+
+    <script>
+    (function(){
+      function spawnSparkle(btn, color) {
+        const rect = btn.getBoundingClientRect();
+        if (!rect.width) return;
+        const dot = document.createElement('div');
+        dot.className = 'sparkle-dot';
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        const tx = (Math.random() - 0.5) * 60;
+        const ty = -(20 + Math.random() * 50);
+        const dur = (0.9 + Math.random() * 0.8).toFixed(2) + 's';
+        dot.style.cssText = `left:${x}px;top:${y}px;--tx:${tx}px;--ty:${ty}px;--dur:${dur};background:${color};`;
+        btn.appendChild(dot);
+        dot.addEventListener('animationend', () => dot.remove());
+      }
+      // Hover-only sparkles — no always-running intervals
+      window.addEventListener('load', () => {
+        const charBtns = document.querySelectorAll('.char-btn');
+        charBtns.forEach(btn => {
+          let hoverInterval = null;
+          btn.addEventListener('mouseenter', () => {
+            charBtns.forEach(b => { if (b !== btn) b.classList.add('char-dimmed'); });
+            // burst on enter
+            for (let i = 0; i < 5; i++) {
+              setTimeout(() => spawnSparkle(btn, '#ffd700'), i * 70);
+            }
+            // keep sparkling while hovering
+            hoverInterval = setInterval(() => spawnSparkle(btn, '#ffd700'), 300);
+          });
+          btn.addEventListener('mouseleave', () => {
+            charBtns.forEach(b => b.classList.remove('char-dimmed'));
+            clearInterval(hoverInterval);
+            hoverInterval = null;
+          });
+        });
+      });
+    })();
     </script>
 
     <!-- [新增] 最終選擇 Modal -->
