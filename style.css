@@ -521,13 +521,14 @@ body {
 #add-sheet:hover { background: #d1d1d1; color: var(--excel-green); }
 
 /* --- �典�瘚桀���辣 --- */
-#coin-display { 
-    position: fixed; top: 20px; right: 100px; 
-    background: rgba(255,255,255,0.95); color: var(--excel-green); 
-    padding: 8px 20px; border-radius: 50px; font-weight: 800; 
-    border: 2px solid var(--excel-green); z-index: 5500; 
-    box-shadow: 0 4px 15px rgba(33,115,70,0.2);
+#coin-display {
+    position: fixed; top: 20px; right: 100px;
+    background: linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url('BG/intro/2_bg.png') center/cover no-repeat; color: #fff;
+    padding: 8px 20px; border-radius: 50px; font-weight: 800;
+    border: 2px solid rgba(255,215,0,0.7); z-index: 5500;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     display: flex; align-items: center; gap: 8px; font-size: 16px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
 #s-btn { 
@@ -1494,7 +1495,7 @@ body {
 @keyframes env-drift-anim { 0% { transform: scale(1.1) translate(0, 0); } 100% { transform: scale(1.2) translate(-2%, 2%); } }
 
 /* ================= 蝟餌絞撠舘⏛璅䂿� (System Menu) ================= */
-#sys-menu-btn { position: fixed; right: 25px; top: 25px; width: 50px; height: 50px; background: rgba(30, 30, 30, 0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #fff; cursor: pointer; z-index: 7000; border: 2px solid rgba(255, 215, 0, 0.8); box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.1s ease-out, background 0.1s ease-out, border-color 0.1s ease-out; will-change: transform; }
+#sys-menu-btn { position: fixed; right: 25px; top: 25px; width: 50px; height: 50px; background: linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url('BG/intro/1_bg.png') center/cover no-repeat; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #fff; cursor: pointer; z-index: 7000; border: 2px solid rgba(255, 215, 0, 0.8); box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.1s ease-out, border-color 0.1s ease-out; will-change: transform; }
 #sys-menu-btn:hover { transform: scale(1.1) rotate(15deg); background: rgba(0, 0, 0, 0.9); border-color: #ffd700; }
 #sys-menu-overlay { display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.2s ease; will-change: opacity; transform: translateZ(0); background: rgba(10, 15, 30, 0.98); }
 .sys-overlay-hide { opacity: 0; pointer-events: none; }
@@ -1519,7 +1520,7 @@ body {
 .locked-card .sys-card-icon { filter: grayscale(100%); }
 
 /* ================= 摮睃�瑼娪𢒰�� (Save/Load Modal) ================= */
-#save-load-overlay { display: flex; align-items: center; justify-content: center; z-index: 10000; transition: opacity 0.2s ease; will-change: opacity; transform: translateZ(0); background: rgba(10, 15, 30, 0.98); position: fixed; inset: 0; }
+#save-load-overlay { display: flex; align-items: center; justify-content: center; z-index: 10000; transition: opacity 0.2s ease; will-change: opacity; transform: translateZ(0); background: linear-gradient(rgba(10,15,30,0.80),rgba(10,15,30,0.80)), url('BG/intro/2_bg.png') center/cover no-repeat; position: fixed; inset: 0; }
 .sl-slot { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.1s, border-color 0.1s; color: #fff; }
 .sl-slot:hover { background: rgba(33, 115, 70, 0.4); border-color: #2ed573; }
 .sl-slot-empty { opacity: 0.5; border-style: dashed; }

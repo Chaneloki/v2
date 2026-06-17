@@ -85,6 +85,9 @@
       box-shadow: 0 0 20px rgba(138,43,226,0.3);
     }
 
+    @keyframes titleBgSpin {
+      to { transform: rotate(360deg); }
+    }
     @keyframes shimmerSweep {
       0%   { left: -120%; opacity:0; }
       10%  { opacity:1; }
@@ -306,7 +309,15 @@
 <body>
     <!-- [Title Screen] 全新 RPG 標題畫面 -->
     <div id="title-screen-overlay"
-        style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background:url('BG/intro/all.png') center/cover no-repeat;">
+        style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background-color:#0d0a05; background-image:url('BG/intro/all.png'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+
+        <!-- BG loading shimmer — fades out once all.png is loaded -->
+        <div id="title-bg-loading" style="position:absolute;inset:0;z-index:2;pointer-events:none;transition:opacity 1.2s ease;background:radial-gradient(ellipse at 50% 40%, rgba(80,50,15,0.55) 0%, rgba(10,7,2,0.9) 100%);">
+            <div style="position:absolute;bottom:48%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0.7;">
+                <div style="width:38px;height:38px;border:3px solid rgba(255,215,0,0.25);border-top-color:rgba(255,215,0,0.85);border-radius:50%;animation:titleBgSpin 1s linear infinite;"></div>
+                <span style="font-size:0.72rem;letter-spacing:3px;color:rgba(255,215,0,0.6);font-family:serif;">載入中…</span>
+            </div>
+        </div>
 
         <!-- 漸層遮罩 -->
         <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.08) 100%);"></div>
@@ -566,8 +577,10 @@
     <!-- ================= 系統導航樞紐 End ================= -->
 
     <!-- ================= 音量設定 Modal ================= -->
-    <div id="vol-modal" style="display:none; position:fixed; inset:0; z-index:20000; background:rgba(0,0,0,0.75); display:none; align-items:center; justify-content:center;">
-        <div style="background:#1a1a2e; border:2px solid #4a90d9; border-radius:12px; padding:32px 40px; min-width:340px; max-width:420px; width:90%; box-shadow:0 0 40px rgba(74,144,217,0.3); position:relative;">
+    <div id="vol-modal" style="display:none; position:fixed; inset:0; z-index:20000; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center;">
+        <div style="background:url('BG/intro/4_bg.png') center/cover no-repeat; border:none; border-radius:12px; padding:32px 40px; min-width:340px; max-width:420px; width:90%; box-shadow:0 0 30px rgba(0,0,0,0.5); position:relative; overflow:hidden;">
+        <div style="position:absolute;inset:0;background:rgba(15,20,45,0.72);border-radius:12px;z-index:0;"></div>
+        <div style="position:relative;z-index:1;">
             <!-- 關閉 -->
             <button onclick="window.volModal.close()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#aaa;font-size:1.4rem;cursor:pointer;line-height:1;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">✕</button>
             <h3 style="color:#e8d5a3;margin:0 0 28px;font-size:1.1rem;letter-spacing:2px;text-align:center;">⚙ 音量設定</h3>
@@ -594,12 +607,13 @@
 
             <!-- 返回主頁 -->
             <button onclick="window.volModal.backToHome()"
-                style="width:100%;padding:12px;background:linear-gradient(135deg,#2c1810,#4a2218);border:1px solid #c8734a;border-radius:8px;color:#e8c09a;font-size:14px;letter-spacing:2px;cursor:pointer;transition:0.2s;"
-                onmouseover="this.style.background='linear-gradient(135deg,#4a2218,#6b3020)'"
-                onmouseout="this.style.background='linear-gradient(135deg,#2c1810,#4a2218)'">
+                style="width:100%;padding:12px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,215,0,0.5);border-radius:8px;color:#e8d5a3;font-size:14px;letter-spacing:2px;cursor:pointer;transition:0.2s;"
+                onmouseover="this.style.background='rgba(255,215,0,0.18)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.12)'">
                 ⬅ 返回主頁
             </button>
-        </div>
+        </div><!-- /z-index:1 wrapper -->
+        </div><!-- /outer panel -->
     </div>
     <!-- ================= 音量設定 Modal End ================= -->
 
@@ -652,12 +666,14 @@
     <!-- [新增] 開發者跳轉選單 -->
     <div id="dev-modal" class="modal-layer" style="display:none; z-index:8000;">
         <div id="dev-card"
-            style="width:300px; max-height:80vh; overflow-y:auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-            <h3 style="margin-top:0; color:#333; border-bottom:1px solid #eee; padding-bottom:10px;">🛠️ 開發者跳轉</h3>
+            style="width:300px; max-height:80vh; overflow-y:auto; background:url('BG/intro/1_bg.png') center/cover no-repeat; border-radius:10px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5); position:relative;">
+            <div style="position:absolute;inset:0;background:rgba(10,8,5,0.65);border-radius:10px;z-index:0;pointer-events:none;"></div>
+            <div style="position:relative;z-index:1;">
+            <h3 style="margin-top:0; color:#e8d5a3; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">🛠️ 開發者跳轉</h3>
             <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-                <label style="font-size:12px; color:#666;">選擇章節：</label>
+                <label style="font-size:12px; color:#c8b97a;">選擇章節：</label>
                 <select id="dev-chapter-select"
-                    style="padding:8px; border-radius:5px; border:1px solid #ccc; font-size:14px; width:100%;">
+                    style="padding:8px; border-radius:5px; border:1px solid rgba(255,255,255,0.3); font-size:14px; width:100%; background:rgba(0,0,0,0.5); color:#e8d5a3;">
                     <option value="10">第一章 (Ch1)</option>
                     <option value="15">第 1.5 章 (Ch1.5)</option>
                     <option value="20">第二章 (Ch2)</option>
@@ -677,25 +693,26 @@
                 </select>
                 <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px; margin-top:5px;">
                     <button onclick="window.uiManager.jumpFromDev('STORY_START')" class="dev-opt"
-                        style="text-align:center; padding: 5px;">開場</button>
+                        style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">開場</button>
                     <button onclick="window.uiManager.jumpFromDev('SIMULATOR')" class="dev-opt"
-                        style="text-align:center; padding: 5px;">遊戲</button>
+                        style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">遊戲</button>
                     <button onclick="window.uiManager.jumpFromDev('STORY_END')" class="dev-opt"
-                        style="text-align:center; padding: 5px;">結束</button>
+                        style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">結束</button>
                 </div>
             </div>
             <div style="margin-top:10px;">
                 <button onclick="localStorage.removeItem('metaChoiceNo'); alert('「無所謂了」記憶已清除！現在可以測試第一次的結局了！');"
                     class="dev-opt"
-                    style="width:100%; text-align:center; background:#ffeeba; color:#856404; border-color:#ffeeba;">重置「無所謂了」記憶</button>
+                    style="width:100%; text-align:center; background:rgba(255,238,186,0.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,215,0,0.45); color:#e8c84a; border-radius:5px; cursor:pointer;">重置「無所謂了」記憶</button>
             </div>
             <div style="margin-top:8px;">
                 <button onclick="window.uiManager.clearTeleportUnlock()"
                     class="dev-opt"
-                    style="width:100%; text-align:center; background:#f8d7da; color:#721c24; border-color:#f5c6cb;">🔒 清除傳送陣解鎖記憶</button>
+                    style="width:100%; text-align:center; background:rgba(248,215,218,0.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(220,100,100,0.45); color:#f0a0a8; border-radius:5px; cursor:pointer;">🔒 清除傳送陣解鎖記憶</button>
             </div>
             <button onclick="window.uiManager.openDevMenu()"
-                style="margin-top:20px; width:100%; padding:10px; background:#eee; border:none; border-radius:5px; cursor:pointer;">關閉</button>
+                style="margin-top:20px; width:100%; padding:10px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:5px; cursor:pointer; color:#e8d5a3;">關閉</button>
+            </div><!-- /z-index:1 wrapper -->
         </div>
     </div>
 
@@ -1858,6 +1875,22 @@
                 }
             }
         };
+    })();
+    </script>
+
+    <script>
+    (function() {
+        var loader = document.getElementById('title-bg-loading');
+        if (!loader) return;
+        var img = new Image();
+        img.onload = function() {
+            loader.style.opacity = '0';
+            setTimeout(function() { loader.style.display = 'none'; }, 1300);
+        };
+        img.onerror = function() {
+            loader.style.opacity = '0';
+        };
+        img.src = 'BG/intro/all.png';
     })();
     </script>
 
