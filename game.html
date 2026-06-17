@@ -97,7 +97,7 @@
     .title-word-excel {
       font-family: 'Times New Roman', Georgia, serif;
       font-weight: 700;
-      font-size: clamp(3rem, 7vw, 6rem);
+      font-size: clamp(4.5rem, 10vw, 9rem);
       color: #217346;
       line-height: 1;
       text-shadow:
@@ -198,10 +198,11 @@
       flex-shrink: 0;
       cursor: pointer;
       transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
-      /* pre-promote to GPU layer so hover transform is composite-only (same as .char-btn) */
+      /* 陰影已烘焙進 canvas，hover 只移動 GPU 紋理不重繪 */
       will-change: transform;
     }
-    .sys-tri-wrap:hover { transform: translateY(-14px); z-index: 5; }
+    /* 僅使用 transform，避免 z-index 改變觸發堆疊重繪 */
+    .sys-tri-wrap:hover { transform: translateY(-14px); }
     /* interlock: bring close without visible overlap */
     .sys-tri-wrap + .sys-tri-wrap { margin-left: -150px; }
     .sys-tri-wrap-center { z-index: 2; }
@@ -234,7 +235,7 @@
       border-radius: 10px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      transition: background 0.25s, transform 0.2s;
       z-index: 10;
       box-shadow: 0 4px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.4);
     }
@@ -342,10 +343,12 @@
         <!-- 全版面絕對定位內容 -->
         <div id="title-content" style="position:absolute;inset:0;z-index:5;animation:fadeInDown 1.5s ease-out;pointer-events:none;">
 
-            <!-- 標題 WordArt：左 Excel(綠) + 右 魔法冒險(金) -->
-            <div style="position:absolute;top:6vh;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:24px;white-space:nowrap;">
-                <span class="title-word-excel">Excel</span>
-                <span class="title-word-magic">魔法冒險</span>
+            <!-- 標題 WordArt：左 Excel(綠) 透視向右 + 右 魔法冒險(金) 透視向左 -->
+            <div style="position:absolute;top:5vh;left:2vw;perspective:400px;">
+                <span class="title-word-excel" style="display:inline-block;transform:rotateY(-18deg);transform-origin:left center;">Excel</span>
+            </div>
+            <div style="position:absolute;top:5vh;right:2vw;perspective:400px;">
+                <span class="title-word-magic" style="display:inline-block;transform:rotateY(18deg);transform-origin:right center;">魔法冒險</span>
             </div>
 
             <!-- 版本資訊 -->
@@ -511,10 +514,10 @@
     <!-- ================= 系統導航樞紐 (System Menu) ================= -->
     <div id="sys-menu-btn" onclick="window.uiManager.toggleSystemMenu()" title="開啟系統選單">⚙️</div>
 
-    <div id="sys-menu-overlay" class="modal-layer sys-overlay-hide" style="display:none; background:#10141f;">
+    <div id="sys-menu-overlay" class="modal-layer sys-overlay-hide" style="display:none; background:transparent;">
 
-        <!-- White glass inner layer -->
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0.06) 60%,rgba(200,220,255,0.12) 100%);pointer-events:none;z-index:0;"></div>
+        <!-- Sharp background image — child div so external CSS cannot override it -->
+        <div style="position:absolute;inset:0;background:url('BG/intro/1_bg.png') center/cover no-repeat;pointer-events:none;z-index:0;"></div>
 
         <!-- 關閉按鈕 -->
         <button onclick="window.uiManager.toggleSystemMenu()"
@@ -531,7 +534,7 @@
             <!-- 左：pointing DOWN → 讀取記憶 -->
             <div class="sys-tri-wrap"
                  onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('load')">
-                <canvas class="sys-tri" data-img="BG/intro/2_bg.png" data-dir="down" data-w="360"></canvas>
+                <canvas class="sys-tri" data-img="BG/intro/1_bg.png" data-dir="down" data-w="360"></canvas>
                 <div class="sys-tri-label">📜<br>讀取記憶</div>
             </div>
 
@@ -545,7 +548,7 @@
             <!-- 右：pointing DOWN → 儲存進度 -->
             <div class="sys-tri-wrap"
                  onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('save')">
-                <canvas class="sys-tri" data-img="BG/intro/3_bg.png" data-dir="down" data-w="360"></canvas>
+                <canvas class="sys-tri" data-img="BG/intro/1_bg.png" data-dir="down" data-w="360"></canvas>
                 <div class="sys-tri-label">💾<br>儲存進度</div>
             </div>
         </div>
@@ -1060,6 +1063,16 @@
             -webkit-user-select: text;
             user-select: text;
         }
+        /* 任務關鍵字：需要玩家精確輸入的文字，允許選取複製 */
+        .kw-copy {
+            -webkit-user-select: text;
+            user-select: text;
+            cursor: text;
+            background: rgba(255, 215, 0, 0.18);
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+
         #e-t strong.emphasize {
             -webkit-user-select: text;
             user-select: text;
@@ -1682,16 +1695,33 @@
         const img = await loadImg(cv.dataset.img);
         if(!img) return;
         ctx.clearRect(0, 0, w, h);
-        ctx.save();
-        ctx.beginPath();
-        if(cv.dataset.dir === 'up'){
-          ctx.moveTo(w*0.5, 0); ctx.lineTo(w*0.06, h); ctx.lineTo(w*0.94, h);
-        } else {
-          ctx.moveTo(w*0.06, 0); ctx.lineTo(w*0.94, 0); ctx.lineTo(w*0.5, h);
+
+        // 三角形路徑（共用）
+        function triPath(){
+          ctx.beginPath();
+          if(cv.dataset.dir === 'up'){
+            ctx.moveTo(w*0.5, 0); ctx.lineTo(w*0.06, h); ctx.lineTo(w*0.94, h);
+          } else {
+            ctx.moveTo(w*0.06, 0); ctx.lineTo(w*0.94, 0); ctx.lineTo(w*0.5, h);
+          }
+          ctx.closePath();
         }
-        ctx.closePath();
+
+        // 第一步：烘焙輪廓陰影（fill 黑色 → 邊緣產生 shadow，之後被紋理蓋住）
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.9)';
+        ctx.shadowBlur = 24;
+        ctx.shadowOffsetY = 6;
+        ctx.fillStyle = '#000';
+        triPath();
+        ctx.fill();
+        ctx.restore();
+
+        // 第二步：clip 三角形，用紋理覆蓋黑色 fill（邊緣陰影保留）
+        ctx.save();
+        triPath();
         ctx.clip();
-        // cover-fit the texture inside the box
+        // cover-fit 紋理至三角形範圍
         const ir = img.width / img.height, cr = w / h;
         let dw, dh, dx, dy;
         if(ir > cr){ dh = h; dw = h * ir; dx = (w - dw)/2; dy = 0; }

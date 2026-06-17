@@ -361,8 +361,36 @@ class UIManager {
         // 2. 處理填充柄拖拽
         if (state.isDraggingFill) {
             state.isDraggingFill = false;
-            // 模擬 v41：如果向下拖拽（或單純點擊釋放），執行自動填滿
-            this.triggerAction('autofill');
+            // 僅在指定任務允許自動填滿，其他情況攔截並顯示提示
+            const _ch  = state.currentChapter?.toString();
+            const _tid = state.activeChapterModule?.simulator?.tasks?.[state.currentTaskIndex]?.id;
+            // Ch8 / Ch8.5 的公式任務均需玩家拖拉填充，雖非主技能但必須允許
+            const _ch8FormulaTasks = ['IF_BASIC_TASK', 'IFS_TASK', 'IF_PLUS_TASK', 'IF_AND_TASK'];
+            const _autofillOk =
+                ((_ch === '10' || _ch === '15') && _tid === 'AUTO_FILL') ||
+                ((_ch === '70' || _ch === '75') && _tid === 'FORMULA_AUTOFILL_TASK') ||
+                ((_ch === '80' || _ch === '85') && _ch8FormulaTasks.includes(_tid));
+
+            if (_autofillOk) {
+                // 合法任務：執行自動填滿
+                this.triggerAction('autofill');
+            } else {
+                // 非法使用：恢復原始選取範圍，顯示生氣提示
+                if (state.fillSourceRange) {
+                    state.selectedRange = JSON.parse(JSON.stringify(state.fillSourceRange));
+                }
+                state.fillSourceRange = null;
+                if (window.gridRenderer) {
+                    window.gridRenderer._updateVisuals(state.gridData, state.gridData[0]?.length || 0);
+                }
+                // 在左側精靈對話框顯示生氣反應，而非頂部橫幅
+                if (window.orchestrator) {
+                    window.orchestrator.emit('playStory', {
+                        type: 'SEGMENT',
+                        data: [{ n: "賽爾", t: "😠 哎！你在幹嘛！這些格子不是讓你隨便拉的啦！", a: "fairy" }]
+                    });
+                }
+            }
         }
 
         // 3. 處理範圍選取結束

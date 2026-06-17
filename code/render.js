@@ -405,7 +405,8 @@ class GridRenderer {
                     top: '0px',
                     zIndex: '1000',
                     gridRow: '1',
-                    gridColumn: (idx + 1 + colShift)
+                    gridColumn: (idx + 1 + colShift),
+                    userSelect: 'none'
                 },
                 onmousedown: colIdx >= 0 ? (e) => {
                     if (e.button !== 0) return;
@@ -465,6 +466,7 @@ class GridRenderer {
                     position: 'sticky',
                     left: isOutline ? '30px' : '0px',
                     zIndex: '900',
+                    userSelect: 'none',
                     ...(rIdx === 0 && state.isFrozen ? { top: `${this.rowHeight}px`, zIndex: '1001' } : {})
                 }
             });
@@ -505,17 +507,22 @@ class GridRenderer {
                     defaultAlign = 'right';
                 }
 
+                // 預先計算可編輯性與可複製性，避免重複呼叫
+                const _editable = this._isCellEditable(rIdx, cIdx, state, currentTask);
+                const _copyable = _editable || this._isCellCopyable(rIdx, cIdx, state, currentTask);
                 const cell = el('div', {
                     id: cellId,
                     className: `cell r-${rNum}${extraClass}`,
                     textContent: cellVal.toString(), // [修復]: 移除 trim() 保留「斜線任務」需要的開頭空格
-                    contentEditable: this._isCellEditable(rIdx, cIdx, state, currentTask) ? "plaintext-only" : "false", // [2026-06-17] 儲存格保護
+                    contentEditable: _editable ? "plaintext-only" : "false", // [2026-06-17] 儲存格保護
                     ...ghostAttr,
                     style: {
                         gridRow: gridRowPos,
                         gridColumn: (cIdx + 2 + colShift),
                         lineHeight: '32px', // [修復]: 固定行高確保垂直居中穩定
                         textAlign: defaultAlign,
+                        // 非玩家輸入格且不在可複製範圍：禁止文字選取
+                        userSelect: _copyable ? 'auto' : 'none',
                         ...(styles[cellId] || {}),
                         ...(rIdx === 0 && state.isFrozen ? { position: 'sticky', top: `${this.rowHeight}px`, zIndex: '1000' } : {})
                     },
@@ -1171,6 +1178,22 @@ class GridRenderer {
         }
 
         // 其他章節：全部鎖定，不允許輸入
+        return false;
+    }
+
+    // 判斷指定儲存格是否允許玩家複製（不可編輯，但可選取文字）
+    _isCellCopyable(rIdx, cIdx, state, currentTask) {
+        if (state.currentPhase !== 'SIMULATOR') return false;
+        const chapter = state.currentChapter?.toString();
+        const condType = currentTask?.expectedCondition?.type;
+
+        // Ch3 / Ch3.5 搜尋類任務：全格開放複製，玩家需要讀取關鍵字貼入尋找框
+        if (['30', '35'].includes(chapter) &&
+            ['SEARCH_VAL', 'REPLACE_CHECK', 'FUZZY_DONE_SIGNAL'].includes(condType)) {
+            return true;
+        }
+
+
         return false;
     }
 }

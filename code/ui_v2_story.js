@@ -681,15 +681,21 @@ UIManager.prototype.updateTutorUI = function(task) {
         const fullHint = task.tutorHint || "";
         
         // 1. [主氣泡]: 顯示導師對話 (現在此為主要指令來源)
-        if (et) et.innerHTML = this.highlightText(fullHint);
-        
+        if (et) {
+            et.innerHTML = this.highlightText(fullHint);
+            this._applySelectableKeywords(et, task);
+        }
+
         // 2. [目標標籤]: 根據用戶建議，隱藏冗餘的紅字標籤
         if (tt) {
             tt.style.display = "none";
         }
 
         // 3. [主角氣泡]: 更新主角心聲
-        if (pt && task.playerText) pt.innerHTML = this.highlightText(task.playerText);
+        if (pt && task.playerText) {
+            pt.innerHTML = this.highlightText(task.playerText);
+            this._applySelectableKeywords(pt, task);
+        }
 
         // [新增]: 自動切換到對應的 Ribbon 分頁 (如 insert, data)
         if (task.tab && this.activeTab !== task.tab) {
@@ -702,6 +708,82 @@ UIManager.prototype.updateTutorUI = function(task) {
             window.ch6Actions._applyA1Highlight();
         }
     }
+
+// 根據任務條件，找出需要玩家精確輸入的關鍵字，在 DOM 中包裹 .kw-copy span 使其可選取複製
+UIManager.prototype._applySelectableKeywords = function(el, task) {
+    if (!el || !task) return;
+
+    const keywords = new Set();
+
+    // 來源一：expectedCondition（ch3 / ch3.5 搜尋類任務）
+    const cond = task.expectedCondition;
+    if (cond) {
+        if (cond.type === 'SEARCH_VAL' && cond.value)         keywords.add(cond.value);
+        if (cond.type === 'REPLACE_CHECK') {
+            if (cond.oldVal) keywords.add(cond.oldVal);
+            if (cond.newVal) keywords.add(cond.newVal);
+        }
+        if (cond.type === 'FUZZY_DONE_SIGNAL' && cond.pattern) keywords.add(cond.pattern);
+    }
+
+    // 來源二：tutorHint 內所有 [[公式|顏色]] 標記中的雙引號字串常數
+    // 這裡的公式才是玩家需要參考輸入的，是最可靠的關鍵字來源
+    const rawHint = task.tutorHint || '';
+    (rawHint.match(/\[\[(.*?)\|.*?\]\]/g) || []).forEach(tag => {
+        const formulaPart = tag.replace(/^\[\[/, '').replace(/\|[^\]]+\]\]$/, '');
+        (formulaPart.match(/"([^"]+)"/g) || []).forEach(m => { const s = m.slice(1, -1); if (s) keywords.add(s); });
+    });
+
+    // 來源三：quiz 正確選項的公式字串常數（ch8.5 無 [[]] 標記，改從 quiz 提取）
+    const correctOpt = task.quiz?.options?.find(o => o.correct);
+    if (correctOpt) {
+        (correctOpt.t.match(/"([^"]+)"/g) || []).forEach(m => { const s = m.slice(1, -1); if (s) keywords.add(s); });
+    }
+
+    if (keywords.size === 0) return;
+
+    // 長字優先，避免短字先配對截斷長字（如「推薦」vs「不推薦」）
+    const kwArray = Array.from(keywords).filter(k => k.length > 0).sort((a, b) => b.length - a.length);
+
+    // 用 TreeWalker 掃描所有文字節點，找到關鍵字就插入 .kw-copy span
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    const toProcess = [];
+    let node;
+    while ((node = walker.nextNode())) {
+        if (kwArray.some(kw => node.textContent.includes(kw))) toProcess.push(node);
+    }
+
+    toProcess.forEach(textNode => {
+        let remaining = textNode.textContent;
+        const parent = textNode.parentNode;
+        // 避免在已套用 .kw-copy 的節點內重複處理
+        if (parent && parent.classList && parent.classList.contains('kw-copy')) return;
+
+        const frag = document.createDocumentFragment();
+        let changed = false;
+
+        while (remaining.length > 0) {
+            let earliest = -1, matchedKw = null;
+            for (const kw of kwArray) {
+                const idx = remaining.indexOf(kw);
+                if (idx !== -1 && (earliest === -1 || idx < earliest)) {
+                    earliest = idx;
+                    matchedKw = kw;
+                }
+            }
+            if (matchedKw === null) { frag.appendChild(document.createTextNode(remaining)); break; }
+            if (earliest > 0)       frag.appendChild(document.createTextNode(remaining.slice(0, earliest)));
+            const span = document.createElement('span');
+            span.className = 'kw-copy';
+            span.textContent = matchedKw;
+            frag.appendChild(span);
+            remaining = remaining.slice(earliest + matchedKw.length);
+            changed = true;
+        }
+
+        if (changed) parent.replaceChild(frag, textNode);
+    });
+};
 
 UIManager.prototype.showEasterEgg = function(role) {
         const eggs = {

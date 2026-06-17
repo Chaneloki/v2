@@ -332,14 +332,15 @@ body {
     /* 蝘駁膄 gap嚗峕㺿�� border 隞交𣈲�渲��祆㬢�� */
 }
 
-.l-head { 
+.l-head {
     background: #f8f9fa; color: #5c5c5c; font-size: 12px; font-weight: 600;
-    display: flex; justify-content: center; align-items: center; position: sticky; 
-    top: 0; z-index: 110; height: 32px; 
+    display: flex; justify-content: center; align-items: center; position: sticky;
+    top: 0; z-index: 110; height: 32px;
     border-right: 1px solid #e1e1e1;
     border-bottom: 1px solid #e1e1e1;
     transition: background 0.2s;
-    cursor: cell; 
+    cursor: cell;
+    user-select: none;
     box-sizing: border-box;
 }
 
