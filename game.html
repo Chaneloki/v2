@@ -553,12 +553,52 @@
         <!-- 角落圖示按鈕 -->
         <button class="sys-corner-icon" style="top:32px;left:32px;"
             onclick="window.uiManager.toggleSystemMenu(); window.uiManager.toggleFullscreen()" title="全螢幕">⛶</button>
+        <button class="sys-corner-icon" style="top:32px;left:116px;"
+            onclick="window.uiManager.toggleSystemMenu(); window.volModal.open()" title="音量設定 / 返回主頁">🔊</button>
         <button class="sys-corner-icon sys-corner-circle" style="bottom:40px;left:32px;"
             onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openTeleportModal()" title="空間傳送陣">🌌</button>
         <button class="sys-corner-icon" style="bottom:40px;right:32px;"
             onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openDevMenu()" title="開發者工具">🛠️</button>
     </div>
     <!-- ================= 系統導航樞紐 End ================= -->
+
+    <!-- ================= 音量設定 Modal ================= -->
+    <div id="vol-modal" style="display:none; position:fixed; inset:0; z-index:20000; background:rgba(0,0,0,0.75); display:none; align-items:center; justify-content:center;">
+        <div style="background:#1a1a2e; border:2px solid #4a90d9; border-radius:12px; padding:32px 40px; min-width:340px; max-width:420px; width:90%; box-shadow:0 0 40px rgba(74,144,217,0.3); position:relative;">
+            <!-- 關閉 -->
+            <button onclick="window.volModal.close()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#aaa;font-size:1.4rem;cursor:pointer;line-height:1;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">✕</button>
+            <h3 style="color:#e8d5a3;margin:0 0 28px;font-size:1.1rem;letter-spacing:2px;text-align:center;">⚙ 音量設定</h3>
+
+            <!-- BGM 音量 -->
+            <div style="margin-bottom:22px;">
+                <label style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
+                    <span>🎵 背景音樂</span><span id="vol-bgm-val" style="color:#fff;min-width:32px;text-align:right;"></span>
+                </label>
+                <input id="vol-bgm" type="range" min="0" max="1" step="0.05"
+                    style="width:100%;accent-color:#4a90d9;cursor:pointer;"
+                    oninput="window.volModal.setBGM(this.value)">
+            </div>
+
+            <!-- SE 音量 -->
+            <div style="margin-bottom:32px;">
+                <label style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
+                    <span>🔔 音效</span><span id="vol-se-val" style="color:#fff;min-width:32px;text-align:right;"></span>
+                </label>
+                <input id="vol-se" type="range" min="0" max="1" step="0.05"
+                    style="width:100%;accent-color:#4a90d9;cursor:pointer;"
+                    oninput="window.volModal.setSE(this.value)">
+            </div>
+
+            <!-- 返回主頁 -->
+            <button onclick="window.volModal.backToHome()"
+                style="width:100%;padding:12px;background:linear-gradient(135deg,#2c1810,#4a2218);border:1px solid #c8734a;border-radius:8px;color:#e8c09a;font-size:14px;letter-spacing:2px;cursor:pointer;transition:0.2s;"
+                onmouseover="this.style.background='linear-gradient(135deg,#4a2218,#6b3020)'"
+                onmouseout="this.style.background='linear-gradient(135deg,#2c1810,#4a2218)'">
+                ⬅ 返回主頁
+            </button>
+        </div>
+    </div>
+    <!-- ================= 音量設定 Modal End ================= -->
 
     <!-- ================= 空間傳送陣彈窗 (Teleport Modal) ================= -->
     <div id="teleport-modal" class="modal-layer" style="display:none; z-index:12000;">
@@ -1691,6 +1731,105 @@
             </div>
         </div>
     </div>
+
+    <script>
+    // ── 音量設定 Modal ──
+    window.volModal = (function(){
+        const LS_BGM = 'v2_bgm_vol';
+        const LS_SE  = 'v2_se_vol';
+
+        function clamp(v){ return Math.min(1, Math.max(0, parseFloat(v) || 0)); }
+        function pct(v){ return Math.round(clamp(v)*100) + '%'; }
+
+        function getBGMEl(){ return document.getElementById('bgm'); }
+
+        // Apply saved volumes immediately and after every playBGM call
+        function applyBGM(v){
+            v = clamp(v);
+            const a = getBGMEl();
+            if(a) a.volume = v;
+            localStorage.setItem(LS_BGM, v);
+            const lbl = document.getElementById('vol-bgm-val');
+            const sl  = document.getElementById('vol-bgm');
+            if(lbl) lbl.textContent = pct(v);
+            if(sl)  sl.value = v;
+        }
+
+        function applySE(v){
+            v = clamp(v);
+            window._seVol = v;
+            localStorage.setItem(LS_SE, v);
+            const lbl = document.getElementById('vol-se-val');
+            const sl  = document.getElementById('vol-se');
+            if(lbl) lbl.textContent = pct(v);
+            if(sl)  sl.value = v;
+        }
+
+        // Patch playBGM to re-apply saved volume after it hardcodes 0.3
+        (function patchPlayBGM(){
+            const orig = UIManager.prototype.playBGM;
+            UIManager.prototype.playBGM = function(f){
+                orig.call(this, f);
+                const saved = parseFloat(localStorage.getItem(LS_BGM));
+                if(!isNaN(saved)){ const a = getBGMEl(); if(a) a.volume = saved; }
+            };
+            const origFade = UIManager.prototype.fadeInBGM;
+            UIManager.prototype.fadeInBGM = function(f){
+                origFade.call(this, f);
+                // After fade completes, clamp to saved vol
+                const saved = parseFloat(localStorage.getItem(LS_BGM));
+                if(!isNaN(saved)){
+                    setTimeout(()=>{ const a = getBGMEl(); if(a && a.volume > saved) a.volume = saved; }, 2000);
+                }
+            };
+        })();
+
+        // Patch soundManager.playSFX to apply SE multiplier
+        (function patchSFX(){
+            if(!window.soundManager) return;
+            const orig = window.soundManager.playSFX.bind(window.soundManager);
+            window.soundManager.playSFX = function(url, volume = 1.0){
+                orig(url, volume * (window._seVol ?? 1.0));
+            };
+        })();
+
+        // Restore on load
+        window.addEventListener('load', function(){
+            const bgmSaved = parseFloat(localStorage.getItem(LS_BGM));
+            const seSaved  = parseFloat(localStorage.getItem(LS_SE));
+            applyBGM(isNaN(bgmSaved) ? 0.3 : bgmSaved);
+            applySE (isNaN(seSaved)  ? 1.0 : seSaved);
+        });
+
+        return {
+            open(){
+                const modal = document.getElementById('vol-modal');
+                if(!modal) return;
+                // Sync sliders to current live values
+                const a = getBGMEl();
+                applyBGM(a ? a.volume : (parseFloat(localStorage.getItem(LS_BGM)) || 0.3));
+                applySE(window._seVol ?? (parseFloat(localStorage.getItem(LS_SE)) || 1.0));
+                modal.style.display = 'flex';
+            },
+            close(){
+                const modal = document.getElementById('vol-modal');
+                if(modal) modal.style.display = 'none';
+            },
+            setBGM(v){ applyBGM(v); },
+            setSE(v){  applySE(v);  },
+            backToHome(){
+                if(confirm('確定要返回主頁嗎？\n未儲存的進度將會遺失。')){
+                    window.volModal.close();
+                    // 淡出 BGM
+                    if(window.uiManager) window.uiManager.fadeOutBGM();
+                    // 重新顯示標題畫面
+                    const t = document.getElementById('title-screen-overlay');
+                    if(t){ t.style.display='flex'; requestAnimationFrame(()=>{ t.style.opacity='1'; }); }
+                }
+            }
+        };
+    })();
+    </script>
 
 </body>
 
