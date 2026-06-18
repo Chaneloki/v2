@@ -39,22 +39,23 @@ window.phoneHelper = (function () {
             'pointer-events:auto;';
         _dom.bubble.innerHTML =
             '<div style="background:linear-gradient(145deg,#0a1628,#1b3050);' +
-            'border:2px solid rgba(255,215,0,0.55);border-radius:18px;padding:28px 30px;' +
-            'max-width:360px;width:90%;box-shadow:0 0 50px rgba(0,0,0,0.8);text-align:center;">' +
-                '<img id="ph-fairy" src="Charater/fairy.png" style="height:76px;object-fit:contain;' +
-                'margin-bottom:10px;filter:drop-shadow(0 0 10px rgba(100,200,255,0.8));">' +
-                '<div id="ph-msg" style="color:#e8d5a3;font-size:0.98rem;line-height:1.75;' +
-                'margin-bottom:14px;"></div>' +
+            'border:2px solid rgba(255,215,0,0.55);border-radius:18px;padding:20px 18px;' +
+            'max-width:min(360px,90vw);width:calc(100vw - 40px);max-height:90vh;overflow-y:auto;' +
+            'box-shadow:0 0 50px rgba(0,0,0,0.8);text-align:center;">' +
+                '<img id="ph-fairy" src="Charater/fairy.png" style="height:60px;object-fit:contain;' +
+                'margin-bottom:8px;filter:drop-shadow(0 0 10px rgba(100,200,255,0.8));">' +
+                '<div id="ph-msg" style="color:#e8d5a3;font-size:clamp(0.75rem,2.5vw,0.98rem);line-height:1.6;' +
+                'margin-bottom:12px;word-break:break-word;"></div>' +
                 '<div id="ph-key-badge" style="display:inline-block;' +
                 'background:rgba(255,215,0,0.12);border:1.5px solid rgba(255,215,0,0.55);' +
-                'border-radius:8px;padding:9px 20px;font-size:1.25rem;font-family:monospace;' +
-                'color:#ffd700;letter-spacing:3px;font-weight:700;margin-bottom:20px;"></div>' +
+                'border-radius:8px;padding:8px 16px;font-size:clamp(1rem,2.5vw,1.25rem);font-family:monospace;' +
+                'color:#ffd700;letter-spacing:2px;font-weight:700;margin-bottom:16px;word-break:break-word;overflow-wrap:break-word;"></div>' +
                 '<br>' +
-                '<button id="ph-ok-btn" style="margin-top:6px;padding:13px 36px;' +
+                '<button id="ph-ok-btn" style="margin-top:6px;padding:10px 20px;' +
                 'background:linear-gradient(135deg,rgba(33,115,70,0.65),rgba(33,115,70,0.45));' +
                 'border:2px solid rgba(33,115,70,0.85);border-radius:30px;color:#fff;' +
-                'font-size:1rem;font-weight:700;letter-spacing:2px;cursor:pointer;' +
-                'transition:background 0.2s;">好的，示範給我看！</button>' +
+                'font-size:clamp(0.85rem,2vw,1rem);font-weight:700;letter-spacing:1px;cursor:pointer;' +
+                'transition:background 0.2s;white-space:normal;'>好的，示範給我看！</button>' +
             '</div>';
         document.body.appendChild(_dom.bubble);
 
