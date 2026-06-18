@@ -2244,3 +2244,198 @@ kbd { background: #eee; padding: 2px 6px; border-radius: 4px; border: 1px solid 
 @keyframes bgPanFalling { 0% { background-position: center 0%; } 100% { background-position: center 100%; } } .bg-falling-pan { animation: bgPanFalling 10s linear infinite !important; }
 
 @keyframes mystPulse { 0% { filter: brightness(1) contrast(1) hue-rotate(0deg); } 50% { filter: brightness(1.3) contrast(1.1) hue-rotate(15deg); } 100% { filter: brightness(1) contrast(1) hue-rotate(0deg); } } .bg-myst-falling { background-size: 130% !important; animation: bgPanFalling 12s linear infinite, mystPulse 5s ease-in-out infinite !important; } .bg-myst-falling::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(100,0,255,0.1) 0%, rgba(0,0,0,0.6) 100%); pointer-events: none; z-index: 10; mix-blend-mode: overlay; }
+
+/* ==========================================
+   [Change Log 2026-06-18] Mobile Phone Mode
+   手機版支援 — 新增 480px breakpoint 及 D-Pad 樣式
+   ========================================== */
+
+/* --- 虛擬 D-Pad（手機 RPG 控制） --- */
+#mobile-dpad {
+    display: none; /* 預設隱藏，手機時才顯示 */
+    position: absolute;
+    bottom: 80px;
+    left: 16px;
+    z-index: 50;
+    width: 132px;
+    height: 132px;
+    grid-template-columns: repeat(3, 44px);
+    grid-template-rows: repeat(3, 44px);
+    gap: 0;
+    pointer-events: auto;
+}
+#mobile-dpad button {
+    width: 44px; height: 44px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #fff;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-user-select: none; user-select: none;
+    touch-action: none;
+}
+#mobile-dpad button:active { background: rgba(33,115,70,0.7); }
+#mobile-dpad .dpad-center { background: transparent; border: none; pointer-events: none; }
+
+/* 互動按鈕 */
+#mobile-interact-btn {
+    display: none;
+    position: absolute;
+    bottom: 80px;
+    right: 16px;
+    z-index: 50;
+    width: 64px; height: 64px;
+    background: rgba(33,115,70,0.75);
+    border: 2px solid rgba(255,255,255,0.6);
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.3;
+    padding: 0 4px;
+    touch-action: none;
+    -webkit-user-select: none; user-select: none;
+}
+#mobile-interact-btn:active { background: rgba(33,115,70,1); transform: scale(0.95); }
+
+/* --- body.mode-desktop：強制關閉手機控制（即使螢幕很窄）--- */
+body.mode-desktop #mobile-dpad { display: none !important; }
+body.mode-desktop #mobile-interact-btn { display: none !important; }
+
+/* --- body.mode-mobile：手動選擇手機模式（優先於 media query）--- */
+body.mode-mobile #mobile-dpad { display: grid; }
+body.mode-mobile #mobile-interact-btn { display: flex; align-items: center; justify-content: center; }
+body.mode-mobile #rpg-controls-info { display: none !important; }
+body.mode-mobile #rpg-dialog-box {
+    top: auto !important; bottom: 10px !important;
+    left: 4% !important; width: 92% !important;
+    padding: 12px 16px !important; font-size: 0.9rem !important;
+}
+body.mode-mobile #rpg-dialog-title { font-size: 1.1rem !important; }
+body.mode-mobile #rpg-dialog-text { font-size: 1rem !important; }
+body.mode-mobile #rpg-dialog-avatar { width: 60px !important; height: 60px !important; margin-right: 12px !important; }
+body.mode-mobile #rpg-teleport-menu { bottom: 6px; right: 6px; padding: 6px; font-size: 11px; max-width: 140px; }
+body.mode-mobile #dialogue-box { padding: 14px 6% 60px 6% !important; }
+body.mode-mobile #s-name { font-size: clamp(16px, 4.5vw, 22px) !important; padding-left: 12px !important; border-left-width: 6px !important; }
+body.mode-mobile #s-text { font-size: clamp(14px, 4vw, 20px) !important; line-height: 1.5 !important; }
+body.mode-mobile #left-sidebar { min-width: unset !important; max-width: unset !important; width: 100% !important; padding: 8px 12px !important; }
+body.mode-mobile #elf-img { width: 50px !important; }
+body.mode-mobile #elf-bubble { min-height: 60px !important; padding: 8px 12px !important; }
+body.mode-mobile #e-t { font-size: 15px !important; }
+body.mode-mobile #player-box { display: none !important; }
+body.mode-mobile #excel-container { min-width: unset !important; }
+body.mode-mobile .ribbon-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+body.mode-mobile .ribbon-buttons { height: auto !important; min-height: 60px !important; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; padding: 6px 8px !important; }
+body.mode-mobile .ribbon-btn { min-width: 60px !important; padding: 6px 4px !important; }
+body.mode-mobile .ribbon-btn img { width: 26px !important; height: 26px !important; }
+body.mode-mobile .ribbon-btn.big span { font-size: 11px !important; }
+body.mode-mobile #coin-display { right: 72px !important; top: 12px !important; font-size: 13px !important; padding: 5px 12px !important; }
+body.mode-mobile #s-btn { width: 44px !important; height: 44px !important; font-size: 20px !important; right: 14px !important; top: 10px !important; }
+body.mode-mobile #sys-menu-btn { right: 14px !important; top: 10px !important; width: 44px !important; height: 44px !important; font-size: 20px !important; }
+body.mode-mobile .grimoire-layout { flex-direction: column !important; width: 95vw !important; height: 92vh !important; max-height: 92vh !important; }
+body.mode-mobile .grimoire-right { width: auto !important; padding: 16px !important; }
+body.mode-mobile .grimoire-left { border-right: none !important; border-bottom: 2px solid #e1e1e1 !important; flex: none !important; max-height: 55vh !important; }
+body.mode-mobile #s-card { width: min(600px, 95vw) !important; }
+body.mode-mobile .sys-menu-panel { width: 95vw !important; max-width: 95vw !important; padding: 20px 14px !important; }
+body.mode-mobile #save-load-overlay .sys-menu-panel { max-width: 95vw !important; }
+body.mode-mobile #trial-card, body.mode-mobile #dev-card { width: min(500px, 90vw) !important; padding: 18px !important; }
+body.mode-mobile #trial-situation { font-size: 15px !important; }
+body.mode-mobile .trial-opt-btn { font-size: 14px !important; padding: 12px 14px !important; }
+body.mode-mobile .excel-dialog { width: min(460px, 95vw) !important; }
+
+/* --- 手機版 breakpoint (≤ 480px) --- */
+@media screen and (max-width: 480px) {
+    /* D-Pad 顯示 */
+    #mobile-dpad { display: grid; }
+    #mobile-interact-btn { display: flex; align-items: center; justify-content: center; }
+
+    /* RPG controls info 隱藏（改用 D-Pad） */
+    #rpg-controls-info { display: none !important; }
+
+    /* RPG dialog box 移至下方，避免被 D-Pad 遮蓋 */
+    #rpg-dialog-box {
+        top: auto !important;
+        bottom: 10px !important;
+        left: 4% !important;
+        width: 92% !important;
+        padding: 12px 16px !important;
+        font-size: 0.9rem !important;
+    }
+    #rpg-dialog-title { font-size: 1.1rem !important; }
+    #rpg-dialog-text { font-size: 1rem !important; }
+    #rpg-dialog-avatar { width: 60px !important; height: 60px !important; margin-right: 12px !important; }
+
+    /* RPG teleport menu 縮小 */
+    #rpg-teleport-menu { bottom: 6px; right: 6px; padding: 6px; font-size: 11px; max-width: 140px; }
+
+    /* Story overlay 對話框 */
+    #dialogue-box { padding: 14px 6% 60px 6% !important; }
+    #s-name { font-size: clamp(16px, 4.5vw, 22px) !important; padding-left: 12px !important; border-left-width: 6px !important; }
+    #s-text { font-size: clamp(14px, 4vw, 20px) !important; line-height: 1.5 !important; }
+
+    /* Sidebar 手機版 */
+    #left-sidebar {
+        min-width: unset !important;
+        max-width: unset !important;
+        width: 100% !important;
+        padding: 8px 12px !important;
+    }
+    #elf-img { width: 50px !important; }
+    #elf-bubble { min-height: 60px !important; padding: 8px 12px !important; }
+    #e-t { font-size: 15px !important; }
+    #player-box { display: none !important; }
+
+    /* Excel container */
+    #excel-container { min-width: unset !important; }
+
+    /* Ribbon tabs 橫向捲動 */
+    .ribbon-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+    .ribbon-buttons {
+        height: auto !important;
+        min-height: 60px !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+        padding: 6px 8px !important;
+    }
+    .ribbon-btn { min-width: 60px !important; padding: 6px 4px !important; }
+    .ribbon-btn img { width: 26px !important; height: 26px !important; }
+    .ribbon-btn.big span { font-size: 11px !important; }
+
+    /* 金幣顯示位置：避免與設定鈕重疊 */
+    #coin-display {
+        right: 72px !important;
+        top: 12px !important;
+        font-size: 13px !important;
+        padding: 5px 12px !important;
+    }
+    #s-btn { width: 44px !important; height: 44px !important; font-size: 20px !important; right: 14px !important; top: 10px !important; }
+    #sys-menu-btn { right: 14px !important; top: 10px !important; width: 44px !important; height: 44px !important; font-size: 20px !important; }
+
+    /* Skill book / sys-menu modal */
+    .grimoire-layout {
+        flex-direction: column !important;
+        width: 95vw !important;
+        height: 92vh !important;
+        max-height: 92vh !important;
+    }
+    .grimoire-right { width: auto !important; padding: 16px !important; }
+    .grimoire-left { border-right: none !important; border-bottom: 2px solid #e1e1e1 !important; flex: none !important; max-height: 55vh !important; }
+    #s-card { width: min(600px, 95vw) !important; }
+    .sys-menu-panel { width: 95vw !important; max-width: 95vw !important; padding: 20px 14px !important; }
+
+    /* Save/load panel */
+    #save-load-overlay .sys-menu-panel { max-width: 95vw !important; }
+
+    /* Trial/dev modals */
+    #trial-card, #dev-card { width: min(500px, 90vw) !important; padding: 18px !important; }
+    #trial-situation { font-size: 15px !important; }
+    .trial-opt-btn { font-size: 14px !important; padding: 12px 14px !important; }
+
+    /* Excel format modal */
+    .excel-dialog { width: min(460px, 95vw) !important; }
+}

@@ -318,6 +318,99 @@ kbd{background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.18);
 .spinner{width:42px;height:42px;border:3px solid rgba(255,215,0,0.1);
   border-top-color:var(--gold-lt);border-radius:50%;animation:spin .8s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══ MOBILE PHONE MODE [Change Log 2026-06-18] ══ */
+/* 漢堡按鈕 */
+#nav-hamburger{
+  display:none;background:transparent;border:1px solid rgba(255,200,80,0.4);
+  color:rgba(255,200,120,0.9);padding:6px 12px;border-radius:6px;
+  font-family:inherit;font-size:1rem;cursor:pointer;margin-left:auto;
+  transition:all .2s;
+}
+#nav-hamburger:hover{border-color:var(--gold-lt);color:var(--gold-lt)}
+
+/* 手機下拉選單 */
+#mobile-nav-menu{
+  display:none;position:fixed;top:56px;left:0;right:0;z-index:700;
+  background:rgba(14,5,0,0.97);border-bottom:1px solid var(--border-dark);
+  flex-direction:column;padding:12px 20px;gap:8px;
+}
+#mobile-nav-menu.open{display:flex}
+#mobile-nav-menu button{
+  background:transparent;border:1px solid var(--border-dark);color:#c8a070;
+  padding:12px 16px;border-radius:6px;cursor:pointer;font-family:inherit;
+  font-size:0.9rem;text-align:left;transition:all .2s;
+}
+#mobile-nav-menu button:hover{color:var(--gold-lt);border-color:var(--gold-lt);background:rgba(255,215,0,0.06)}
+
+/* ── 手機版共用樣式（media query 及 body.phone-detected 兩者皆觸發）── */
+/* ── phone-layout class（JS 偵測掛在 html 或 body 上皆生效）── */
+html.phone-layout .nav-btn,body.phone-layout .nav-btn,
+html.phone-layout .btn-game,body.phone-layout .btn-game{display:none}
+html.phone-layout #nav-hamburger,body.phone-layout #nav-hamburger{display:block}
+html.phone-layout .logo-txt,body.phone-layout .logo-txt{font-size:0.85rem;letter-spacing:1px}
+html.phone-layout .intro-sec,body.phone-layout .intro-sec{flex-direction:column;align-items:flex-start;min-height:auto;padding-bottom:30px}
+html.phone-layout .sec-char,body.phone-layout .sec-char{
+  position:relative;bottom:auto;height:auto;
+  max-height:40vh;width:auto;align-self:center;
+  left:auto !important;right:auto !important;
+}
+html.phone-layout .sec-char-l,html.phone-layout .sec-char-r,
+body.phone-layout .sec-char-l,body.phone-layout .sec-char-r{
+  left:auto;right:auto;-webkit-mask-image:none;mask-image:none;opacity:0.25;max-height:30vh
+}
+html.phone-layout .sec-text,body.phone-layout .sec-text{
+  width:100% !important;max-width:100% !important;
+  padding:20px 20px 10px !important;
+  margin-left:0 !important;margin-right:0 !important;
+}
+html.phone-layout .sec-text-l,html.phone-layout .sec-text-r,
+body.phone-layout .sec-text-l,body.phone-layout .sec-text-r{margin-left:0;margin-right:0}
+html.phone-layout .sec-title,body.phone-layout .sec-title{font-size:clamp(1.5rem,6vw,2.2rem)}
+html.phone-layout .sec-body,body.phone-layout .sec-body{font-size:0.9rem}
+html.phone-layout .sec-btns,body.phone-layout .sec-btns{flex-direction:column;align-items:stretch}
+html.phone-layout .btn-primary,html.phone-layout .glow-btn,html.phone-layout .btn-outline,
+body.phone-layout .btn-primary,body.phone-layout .glow-btn,body.phone-layout .btn-outline{width:100%;text-align:center}
+html.phone-layout .cta-inner,body.phone-layout .cta-inner{padding:40px 20px}
+html.phone-layout .cta-title,body.phone-layout .cta-title{font-size:clamp(1.4rem,5vw,2rem)}
+html.phone-layout #gmodal h2,body.phone-layout #gmodal h2{font-size:1.2rem}
+html.phone-layout #gmodal p,body.phone-layout #gmodal p{font-size:0.85rem;max-width:90vw}
+html.phone-layout .m-cta,body.phone-layout .m-cta{padding:12px 28px;font-size:0.92rem}
+html.phone-layout .m-skip,body.phone-layout .m-skip{padding:8px 20px;font-size:0.82rem}
+html.phone-layout .p-inner,body.phone-layout .p-inner{padding:14px 16px}
+html.phone-layout .orb-bezel,body.phone-layout .orb-bezel{width:110px;height:110px}
+
+/* Media query 也同步觸發（涵蓋 768px 以下，兼容無 JS 環境）*/
+@media(max-width:768px){
+  .nav-btn{display:none}
+  .btn-game{display:none}
+  #nav-hamburger{display:block}
+  .logo-txt{font-size:0.85rem;letter-spacing:1px}
+  .intro-sec{flex-direction:column;align-items:flex-start;min-height:auto;padding-bottom:30px}
+  .sec-char{
+    position:relative;bottom:auto;height:auto;
+    max-height:40vh;width:auto;align-self:center;
+    left:auto !important;right:auto !important;
+  }
+  .sec-char-l,.sec-char-r{left:auto;right:auto;-webkit-mask-image:none;mask-image:none;opacity:0.25;max-height:30vh}
+  .sec-text{
+    width:100% !important;max-width:100% !important;
+    padding:20px 20px 10px !important;
+    margin-left:0 !important;margin-right:0 !important;
+  }
+  .sec-text-l,.sec-text-r{margin-left:0;margin-right:0}
+  .sec-title{font-size:clamp(1.5rem,6vw,2.2rem)}
+  .sec-body{font-size:0.9rem}
+  .sec-btns{flex-direction:column;align-items:stretch}
+  .btn-primary,.glow-btn,.btn-outline{width:100%;text-align:center}
+  .cta-inner{padding:40px 20px}
+  .cta-title{font-size:clamp(1.4rem,5vw,2rem)}
+  #gmodal h2{font-size:1.2rem}
+  #gmodal p{font-size:0.85rem;max-width:90vw}
+  .m-cta{padding:12px 28px;font-size:0.92rem}
+  .m-skip{padding:8px 20px;font-size:0.82rem}
+  .p-inner{padding:14px 16px}
+}
 </style>
 </head>
 <body>
@@ -334,7 +427,18 @@ kbd{background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.18);
   <button class="nav-btn" id="nb-patch" onclick="togglePanel('patch')">更新日誌</button>
   <button class="nav-btn" id="bgm-btn" onclick="toggleBGM()" title="背景音樂">🔇</button>
   <button class="btn-game" onclick="openModal()">⚔ 進入遊戲</button>
+  <!-- 手機漢堡按鈕 [Mobile 2026-06-18] -->
+  <button id="nav-hamburger" onclick="toggleMobileNav()" title="選單">☰</button>
 </nav>
+
+<!-- 手機下拉選單 [Mobile 2026-06-18] -->
+<div id="mobile-nav-menu">
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'});toggleMobileNav()">🎮 遊戲介紹</button>
+  <button onclick="toggleMobileNav();togglePanel('cheat')">📖 Excel技能表</button>
+  <button onclick="toggleMobileNav();togglePanel('patch')">📜 更新日誌</button>
+  <button onclick="toggleBGM()">🔊 背景音樂</button>
+  <button onclick="toggleMobileNav();openModal()" style="color:#ffb347;border-color:rgba(255,160,60,0.5);">⚔ 進入遊戲</button>
+</div>
 
 <main id="scroll-main">
 
@@ -456,6 +560,64 @@ kbd{background:rgba(255,215,0,0.07);border:1px solid rgba(255,215,0,0.18);
 </div>
 
 <script>
+// ══ PHONE AUTO-DETECT [2026-06-18] ══
+(function(){
+  var LS_KEY = 'v2_device_mode';
+
+  function isPhone(){
+    var touch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 1);
+    var narrow = window.innerWidth <= 768 || screen.width <= 768;
+    var ua = /Android|iPhone|iPad|iPod|Mobile|Tablet/i.test(navigator.userAgent);
+    return touch && (narrow || ua);
+  }
+
+  function applyPhoneLayout(){
+    document.documentElement.classList.add('phone-layout');
+    document.body && document.body.classList.add('phone-layout');
+  }
+
+  // Apply immediately if phone detected
+  if(isPhone()){
+    applyPhoneLayout();
+    // Pre-set device mode for game.html (only if not already chosen)
+    if(!localStorage.getItem(LS_KEY)){
+      localStorage.setItem(LS_KEY, 'mobile');
+    }
+  } else {
+    if(!localStorage.getItem(LS_KEY)){
+      localStorage.setItem(LS_KEY, 'desktop');
+    }
+  }
+
+  // Also apply after DOM ready (body might not exist at script run time)
+  document.addEventListener('DOMContentLoaded', function(){
+    if(isPhone()) applyPhoneLayout();
+  });
+
+  // Re-check on resize (e.g. tablet rotation)
+  window.addEventListener('resize', function(){
+    if(isPhone()){
+      applyPhoneLayout();
+    } else {
+      document.documentElement.classList.remove('phone-layout');
+      document.body && document.body.classList.remove('phone-layout');
+    }
+  });
+})();
+
+// ══ MOBILE NAV [2026-06-18] ══
+function toggleMobileNav(){
+  var m=document.getElementById('mobile-nav-menu');
+  m.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  var menu=document.getElementById('mobile-nav-menu');
+  var btn=document.getElementById('nav-hamburger');
+  if(menu.classList.contains('open')&&!menu.contains(e.target)&&e.target!==btn){
+    menu.classList.remove('open');
+  }
+});
+
 // ══ SCROLL FADE-UP ══
 const obs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });

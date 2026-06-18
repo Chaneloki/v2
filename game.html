@@ -474,6 +474,23 @@
         <div id="rpg-action-hint"
             style="position:absolute; bottom:20%; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:#fff; padding:10px 20px; border-radius:20px; display:none; z-index:30; font-size:14px; font-weight:bold;">
             [Enter] 進行互動</div>
+
+        <!-- [Mobile 2026-06-18] 虛擬 D-Pad 方向鍵 -->
+        <div id="mobile-dpad">
+            <button class="dpad-center"></button>
+            <button id="dpad-up" aria-label="上">▲</button>
+            <button class="dpad-center"></button>
+            <button id="dpad-left" aria-label="左">◀</button>
+            <button class="dpad-center"></button>
+            <button id="dpad-right" aria-label="右">▶</button>
+            <button class="dpad-center"></button>
+            <button id="dpad-down" aria-label="下">▼</button>
+            <button class="dpad-center"></button>
+        </div>
+
+        <!-- [Mobile 2026-06-18] 互動按鈕 -->
+        <button id="mobile-interact-btn" aria-label="互動">互動<br>Enter</button>
+
         <div id="rpg-dialog-box"
             style="position:absolute; top:40px; left:8%; width:84%; background:#0000aadd; color:#fff; padding:20px 30px; border:4px solid #ffffff; border-radius:6px; box-shadow:inset 0 0 0 2px #000000, 0 8px 20px rgba(0,0,0,0.8); display:none; z-index:40; box-sizing:border-box;">
             <img id="rpg-dialog-avatar" src=""
@@ -609,6 +626,41 @@
     </div>
     <!-- ================= 系統導航樞紐 End ================= -->
 
+    <!-- ================= 裝置選擇 Modal [Mobile 2026-06-18] ================= -->
+    <div id="device-select-modal" style="display:none;position:fixed;inset:0;z-index:25000;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;flex-direction:column;">
+        <div style="background:url('BG/intro/1_bg.png') center/cover no-repeat;border-radius:16px;padding:36px 32px;max-width:420px;width:88%;box-shadow:0 0 40px rgba(0,0,0,0.7);position:relative;overflow:hidden;text-align:center;">
+            <div style="position:absolute;inset:0;background:rgba(10,6,2,0.78);border-radius:16px;z-index:0;"></div>
+            <div style="position:relative;z-index:1;">
+                <div style="font-size:2.2rem;margin-bottom:12px;">🎮</div>
+                <h2 style="color:#ffd700;font-size:1.3rem;margin:0 0 8px;letter-spacing:3px;font-family:serif;text-shadow:0 0 20px rgba(255,215,0,0.5);">選擇你的裝置</h2>
+                <p style="color:rgba(200,185,160,0.8);font-size:0.85rem;line-height:1.7;margin:0 0 28px;">不同裝置將提供最適合的操控介面。<br>之後可在 ⚙ 設定中隨時切換。</p>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <button onclick="window.deviceMode.set('mobile');window.deviceMode.closeModal()"
+                        style="width:100%;padding:18px 20px;background:linear-gradient(135deg,rgba(33,115,70,0.3),rgba(33,115,70,0.15));border:2px solid rgba(33,115,70,0.7);border-radius:10px;color:#fff;font-size:1rem;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:16px;"
+                        onmouseover="this.style.background='linear-gradient(135deg,rgba(33,115,70,0.6),rgba(33,115,70,0.35))';this.style.borderColor='#2ed573'"
+                        onmouseout="this.style.background='linear-gradient(135deg,rgba(33,115,70,0.3),rgba(33,115,70,0.15))';this.style.borderColor='rgba(33,115,70,0.7)'">
+                        <span style="font-size:2rem;">📱</span>
+                        <div style="text-align:left;">
+                            <div style="font-size:1rem;margin-bottom:3px;">手機模式</div>
+                            <div style="font-size:0.75rem;color:rgba(200,240,200,0.7);font-weight:400;letter-spacing:0;">顯示虛擬搖桿 · 觸控優化介面</div>
+                        </div>
+                    </button>
+                    <button onclick="window.deviceMode.set('desktop');window.deviceMode.closeModal()"
+                        style="width:100%;padding:18px 20px;background:linear-gradient(135deg,rgba(30,80,180,0.3),rgba(30,80,180,0.15));border:2px solid rgba(80,140,255,0.5);border-radius:10px;color:#fff;font-size:1rem;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:16px;"
+                        onmouseover="this.style.background='linear-gradient(135deg,rgba(30,80,180,0.6),rgba(30,80,180,0.35))';this.style.borderColor='#74b9ff'"
+                        onmouseout="this.style.background='linear-gradient(135deg,rgba(30,80,180,0.3),rgba(30,80,180,0.15))';this.style.borderColor='rgba(80,140,255,0.5)'">
+                        <span style="font-size:2rem;">💻</span>
+                        <div style="text-align:left;">
+                            <div style="font-size:1rem;margin-bottom:3px;">桌面模式</div>
+                            <div style="font-size:0.75rem;color:rgba(180,210,255,0.7);font-weight:400;letter-spacing:0;">鍵盤 WASD · 滑鼠操控</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ================= 裝置選擇 Modal End ================= -->
+
     <!-- ================= 音量設定 Modal ================= -->
     <div id="vol-modal" style="display:none; position:fixed; inset:0; z-index:20000; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center;">
         <div style="background:url('BG/intro/4_bg.png') center/cover no-repeat; border:none; border-radius:12px; padding:32px 40px; min-width:340px; max-width:420px; width:90%; box-shadow:0 0 30px rgba(0,0,0,0.5); position:relative; overflow:hidden;">
@@ -664,6 +716,25 @@
                 </div>
                 <input id="bg-file-input" type="file" accept="image/*" style="display:none"
                     onchange="window.volModal.openBGCrop(this)">
+            </div>
+
+            <!-- [Mobile 2026-06-18] 變更裝置 -->
+            <div style="margin-bottom:20px;">
+                <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:10px;">📱 裝置模式</label>
+                <div style="display:flex;gap:8px;">
+                    <button id="vol-device-mobile"
+                        onclick="window.deviceMode.set('mobile')"
+                        style="flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;"
+                        onmouseover="this.style.background='rgba(255,215,0,0.18)'" onmouseout="window.deviceMode.refreshBtns()">
+                        📱 手機模式
+                    </button>
+                    <button id="vol-device-desktop"
+                        onclick="window.deviceMode.set('desktop')"
+                        style="flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;"
+                        onmouseover="this.style.background='rgba(255,215,0,0.18)'" onmouseout="window.deviceMode.refreshBtns()">
+                        💻 桌面模式
+                    </button>
+                </div>
             </div>
 
             <!-- 返回主頁 -->
@@ -2038,6 +2109,8 @@
                 applySE(window._seVol ?? (parseFloat(localStorage.getItem(LS_SE)) || 1.0));
                 buildSwatches();
                 modal.style.display = 'flex';
+                /* [Mobile 2026-06-18] 同步裝置按鈕高亮 */
+                if(window.deviceMode) window.deviceMode.refreshBtns();
             },
             close(){
                 const modal = document.getElementById('vol-modal');
@@ -2174,6 +2247,154 @@
         };
     })();
     </script>
+
+    <!-- [Mobile 2026-06-18] 裝置模式管理 + D-Pad 觸控事件 -->
+    <script>
+    /* ── deviceMode：裝置選擇管理器 ── */
+    window.deviceMode = (function(){
+        var LS_KEY = 'v2_device_mode';
+
+        function applyClass(mode){
+            document.body.classList.remove('mode-mobile','mode-desktop');
+            if(mode) document.body.classList.add('mode-' + mode);
+        }
+
+        function refreshBtns(){
+            var cur = localStorage.getItem(LS_KEY) || '';
+            var bM = document.getElementById('vol-device-mobile');
+            var bD = document.getElementById('vol-device-desktop');
+            if(!bM || !bD) return;
+            var baseStyle = 'flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;';
+            bM.style.cssText = baseStyle + (cur==='mobile'
+                ? 'border:2px solid #2ed573;background:rgba(33,115,70,0.4);color:#fff;font-weight:700;'
+                : 'border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;font-weight:normal;');
+            bD.style.cssText = baseStyle + (cur==='desktop'
+                ? 'border:2px solid #74b9ff;background:rgba(30,80,180,0.4);color:#fff;font-weight:700;'
+                : 'border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;font-weight:normal;');
+        }
+
+        function set(mode){
+            localStorage.setItem(LS_KEY, mode);
+            applyClass(mode);
+            refreshBtns();
+        }
+
+        function openModal(){
+            var m = document.getElementById('device-select-modal');
+            if(m){ m.style.display = 'flex'; }
+        }
+
+        function closeModal(){
+            var m = document.getElementById('device-select-modal');
+            if(m){ m.style.display = 'none'; }
+        }
+
+        function init(){
+            var saved = localStorage.getItem(LS_KEY);
+            if(!saved){
+                /* 首次：自動偵測建議，但仍讓玩家確認 */
+                openModal();
+            } else {
+                applyClass(saved);
+            }
+            refreshBtns();
+        }
+
+        return { set:set, openModal:openModal, closeModal:closeModal, refreshBtns:refreshBtns, init:init };
+    })();
+
+    /* ── D-Pad 觸控 → KeyboardEvent 模擬（一次性綁定，由 mode-mobile class 決定是否可見）── */
+    (function(){
+        var keyMap = { 'dpad-up':'w', 'dpad-down':'s', 'dpad-left':'a', 'dpad-right':'d' };
+        Object.keys(keyMap).forEach(function(id){
+            var btn = document.getElementById(id);
+            if(!btn) return;
+            var code = keyMap[id];
+            var held = false;
+            btn.addEventListener('touchstart', function(e){
+                e.preventDefault();
+                if(held) return;
+                held = true;
+                document.dispatchEvent(new KeyboardEvent('keydown', {key:code, code:'Key'+code.toUpperCase(), bubbles:true, cancelable:true}));
+            }, {passive:false});
+            var release = function(e){
+                e.preventDefault();
+                held = false;
+                document.dispatchEvent(new KeyboardEvent('keyup', {key:code, code:'Key'+code.toUpperCase(), bubbles:true, cancelable:true}));
+            };
+            btn.addEventListener('touchend', release, {passive:false});
+            btn.addEventListener('touchcancel', release, {passive:false});
+        });
+
+        var interactBtn = document.getElementById('mobile-interact-btn');
+        if(interactBtn){
+            interactBtn.addEventListener('touchstart', function(e){
+                e.preventDefault();
+                document.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter',code:'Enter',bubbles:true,cancelable:true}));
+            }, {passive:false});
+            interactBtn.addEventListener('touchend', function(e){
+                e.preventDefault();
+                document.dispatchEvent(new KeyboardEvent('keyup', {key:'Enter',code:'Enter',bubbles:true,cancelable:true}));
+            }, {passive:false});
+        }
+    })();
+
+    /* ── 初始化（等 DOM 就緒）── */
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', function(){ window.deviceMode.init(); });
+    } else {
+        window.deviceMode.init();
+    }
+    </script>
+
+    <style>
+    /* [Mobile 2026-06-18] Title Screen 手機版調整 */
+    @media screen and (max-width: 480px) {
+        /* 標題文字縮小 */
+        .title-word-excel { font-size: clamp(2.8rem, 10vw, 4.5rem) !important; }
+        .title-word-magic { font-size: clamp(2rem, 7vw, 3rem) !important; }
+
+        /* 三角形系統選單 (sys-tri-row) 隱藏，手機不夠寬 */
+        .sys-tri-row { display: none !important; }
+
+        /* 角落按鈕縮小 */
+        .sys-corner-icon { width: 52px !important; height: 52px !important; font-size: 1.4rem !important; }
+
+        /* 角色群組：縮小並讓三人垂直排 */
+        #intro-char-group {
+            width: 100% !important;
+            left: 0 !important;
+            transform: none !important;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        #char-glea, #char-miro, #char-chate {
+            position: relative !important;
+            left: auto !important; right: auto !important;
+            bottom: auto !important;
+            transform: none !important;
+        }
+        #char-glea img { height: 60vw !important; }
+        #char-miro img { height: 35vw !important; }
+        #char-chate img { height: 45vw !important; }
+
+        /* Story overlay 對話框 */
+        #story-overlay #dialogue-box {
+            padding: 12px 6% 50px !important;
+        }
+
+        /* RPG container 適應手機寬度 */
+        #rpg-container {
+            border-width: 2px !important;
+        }
+
+        /* 系統按鈕調整（game.html 內的 #s-btn / #sys-menu-btn） */
+        #s-btn { right: 12px !important; top: 10px !important; }
+        #coin-display { right: 68px !important; top: 12px !important; font-size: 13px !important; }
+    }
+    </style>
 
     <script>
     (function() {
