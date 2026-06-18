@@ -307,6 +307,12 @@
 </head>
 
 <body>
+    <!-- Init loading overlay: blocks all clicks until orchestrator.init() resolves -->
+    <div id="game-init-loading" style="position:fixed;inset:0;z-index:20000;background:#0a0704;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity 0.6s ease;">
+        <div style="width:48px;height:48px;border:3px solid rgba(255,215,0,0.2);border-top-color:rgba(255,215,0,0.9);border-radius:50%;animation:titleBgSpin 1s linear infinite;"></div>
+        <span style="font-size:0.8rem;letter-spacing:4px;color:rgba(255,215,0,0.7);font-family:serif;">遊戲啟動中…</span>
+    </div>
+
     <!-- [Title Screen] 全新 RPG 標題畫面 -->
     <div id="title-screen-overlay"
         style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background-color:#0d0a05; background-image:url('BG/intro/all.png'); background-size:cover; background-position:center; background-repeat:no-repeat;">
@@ -1534,8 +1540,17 @@
                 }
             }
 
+            const _hideInitLoader = () => {
+                const ol = document.getElementById('game-init-loading');
+                if (!ol) return;
+                ol.style.opacity = '0';
+                setTimeout(() => ol.remove(), 650);
+            };
+            setTimeout(_hideInitLoader, 8000); // safety fallback
             if (window.orchestrator) {
-                window.orchestrator.init();
+                window.orchestrator.init().then(_hideInitLoader).catch(_hideInitLoader);
+            } else {
+                _hideInitLoader();
             }
 
             // 根據解鎖狀態顯示/隱藏鎖定徽章
