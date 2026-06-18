@@ -1,4 +1,4 @@
-﻿/* ==========================================
+/* ==========================================
    閰衣�銵券�瘜訫��� v2 - 撌𥪜陸閬𤥁死憓𧼮撥��
    憸冽聢嚗𡁶𣶹隞��瘜訫飛�� x Microsoft Excel 365
    [Change Log 2026-06-10]: �啣� syntax-overlay 璅��嚗䔶蒂靽格㺿 grid �� cell.active �箇�撠滚�雿滢誑�舀螱�閙�撖砍漲��
@@ -129,7 +129,7 @@ body {
 
 /* �湧�甈��擳𥪜��詨�撣� --- */
 #left-sidebar {
-    width: 30%; border-right: 2px solid var(--excel-green);
+    width: 26%; border-right: 2px solid var(--excel-green);
     background: linear-gradient(rgba(10,8,20,0.60), rgba(10,8,20,0.60)),
                 url('BG/intro/3_bg.png') center top / cover no-repeat;
     display: flex; flex-direction: column; z-index: 100; padding: 25px; color: #fff;
@@ -2459,3 +2459,21 @@ body.mode-mobile #story-stage.rpg-ensemble + #dialogue-box { width: 92% !importa
     /* Excel format modal */
     .excel-dialog { width: min(460px, 95vw) !important; }
 }
+
+/* ==========================================
+   [Settings Modal] 防止超出螢幕高度
+   ========================================== */
+#vol-modal > div {
+    max-height: 90vh !important;
+    overflow: hidden !important;
+}
+/* 內容捲動層 */
+#vol-modal > div > div:last-child {
+    overflow-y: auto !important;
+    max-height: 88vh !important;
+    /* 自訂捲軸樣式 */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,215,0,0.3) transparent;
+}
+#vol-modal > div > div:last-child::-webkit-scrollbar { width: 5px; }
+#vol-modal > div > div:last-child::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }

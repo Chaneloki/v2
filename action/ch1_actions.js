@@ -216,7 +216,18 @@ window.ch1Actions = {
             window.gridRenderer.render();
 
             // 📡 關鍵：呼叫大腦播放錯誤修正劇情，且「不」呼叫 validateAction
-            window.orchestrator.playStorySegment('fail_FILL_single');
+            window.orchestrator.playStorySegment('fail_FILL_single', () => {
+                // [修正]: 對話結束後，還原 A 欄資料回初始狀態
+                // 第 3 列 = MP-001, 第 4 列 = MP-002, 之後全空
+                const resetData = window.orchestrator.state.gridData;
+                const resetCol = source.minCol;
+                if (resetData[2]) resetData[2][resetCol] = 'MP-001';
+                if (resetData[3]) resetData[3][resetCol] = 'MP-002';
+                for (let r = 4; r < resetData.length; r++) {
+                    if (resetData[r]) resetData[r][resetCol] = '';
+                }
+                window.gridRenderer.render();
+            });
             
         } else if (sourceHeight === 2) {
             // --- 模式 B：序列術 (正確做法) ---
