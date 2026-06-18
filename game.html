@@ -2404,14 +2404,14 @@
 
     /* 手機模式：非主角 char-container 縮小，避免蓋過主角 */
     body.mode-mobile .char-container:not(#main-char-container) {
-        width: 50vw !important;
+        width: 100% !important;
         left: 0 !important;
         transform: none !important;
     }
     body.mode-mobile .char-container:not(#main-char-container) .char-img {
         object-fit: contain !important;
-        object-position: bottom !important;
-        max-height: 60vh !important;
+        object-position: bottom center !important;
+        max-height: 100% !important;
     }
 
     /* 信件 UI 在手機可捲動 */
