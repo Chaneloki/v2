@@ -306,7 +306,7 @@ UIManager.prototype.updateVisuals = function(line) {
             }
             this._charImgEls.forEach(img => {
                 img.classList.remove('char-active');
-                img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake');
+                img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake', 'char-rpg-idle', 'char-float', 'char-falling');
             });
 
             // [關鍵點]: 記錄並更新目前是否為 CG 模式

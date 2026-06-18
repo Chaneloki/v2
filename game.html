@@ -423,13 +423,13 @@
             <!-- [新增] 物品/元素/道具層 -->
             <div id="stuff-container"
                 style="position:absolute; inset:0; pointer-events:none; z-index:10; display:flex; justify-content:center; align-items:center;">
-                <img src="" id="story-stuff"
+                <img src="" id="story-stuff" onerror="this.style.opacity='0'"
                     style="max-width:80%; max-height:80%; opacity:0; transition:0.3s; transform:scale(0.8);">
             </div>
             <!-- [新增] 環境大氣特效層 (如：煙霧、霧氣、魔法粒子) -->
             <div id="env-container"
                 style="position:absolute; inset:0; pointer-events:none; z-index:12; overflow:hidden; opacity:0; transition:opacity 1.5s;">
-                <img src="" id="story-env"
+                <img src="" id="story-env" onerror="this.style.opacity='0'"
                     style="width:120%; height:120%; position:absolute; top:-10%; left:-10%; object-fit:cover;">
             </div>
             <div class="char-container"><img src="" id="a-g" class="char-img"></div>
@@ -2398,6 +2398,31 @@
     @media (orientation: landscape) and (max-height: 500px) {
         #vol-modal > div {
             max-height: 88vh !important;
+            overflow-y: auto !important;
+        }
+    }
+
+    /* 手機模式：非主角 char-container 填滿螢幕兩側 */
+    body.mode-mobile .char-container:not(#main-char-container) {
+        width: 100vw !important;
+        left: 0 !important;
+        transform: none !important;
+    }
+    body.mode-mobile .char-container:not(#main-char-container) .char-img {
+        object-fit: cover !important;
+        object-position: center top !important;
+    }
+
+    /* 信件 UI 在手機可捲動 */
+    body.mode-mobile .letter-paper {
+        width: min(400px, 90vw) !important;
+        max-height: 80vh !important;
+        overflow-y: auto !important;
+        padding: 24px 20px !important;
+    }
+    @media (orientation: landscape) and (max-height: 500px) {
+        .letter-paper {
+            max-height: 85vh !important;
             overflow-y: auto !important;
         }
     }

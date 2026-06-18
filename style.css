@@ -2348,7 +2348,8 @@ body.mode-mobile #trial-situation { font-size: 15px !important; }
 body.mode-mobile .trial-opt-btn { font-size: 14px !important; padding: 12px 14px !important; }
 body.mode-mobile .excel-dialog { width: min(460px, 95vw) !important; }
 /* [Mobile Batch2 2026-06-18] Excel 舞台橫向比例修正 */
-body.mode-mobile #excel-container { min-width: 0 !important; flex: 1 !important; }
+body.mode-mobile #top-row { flex-direction: row !important; }
+body.mode-mobile #excel-container { min-width: 0 !important; flex: 1 !important; width: auto !important; height: 100% !important; }
 body.mode-mobile .ribbon-buttons { height: 58px !important; min-height: 58px !important; padding: 4px 8px !important; gap: 6px !important; }
 body.mode-mobile #task-title { font-size: 0.82rem !important; }
 body.mode-mobile #task-body { font-size: 0.75rem !important; line-height: 1.4 !important; }
