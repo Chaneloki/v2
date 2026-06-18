@@ -39,22 +39,21 @@ window.phoneHelper = (function () {
             'pointer-events:auto;';
         _dom.bubble.innerHTML =
             '<div style="background:linear-gradient(145deg,#0a1628,#1b3050);' +
-            'border:2px solid rgba(255,215,0,0.55);border-radius:18px;padding:20px 18px;' +
-            'max-width:min(360px,90vw);width:calc(100vw - 40px);max-height:90vh;overflow-y:auto;' +
+            'border:2px solid rgba(255,215,0,0.55);border-radius:18px;padding:16px 14px;' +
+            'max-width:min(360px,90vw);width:calc(100vw - 40px);max-height:52vh;overflow-y:auto;' +
             'box-shadow:0 0 50px rgba(0,0,0,0.8);text-align:center;">' +
-                '<img id="ph-fairy" src="Charater/fairy.png" style="height:60px;object-fit:contain;' +
-                'margin-bottom:8px;filter:drop-shadow(0 0 10px rgba(100,200,255,0.8));">' +
-                '<div id="ph-msg" style="color:#e8d5a3;font-size:clamp(0.75rem,2.5vw,0.98rem);line-height:1.6;' +
-                'margin-bottom:12px;word-break:break-word;"></div>' +
+                '<img id="ph-fairy" src="Charater/fairy.png" style="height:50px;object-fit:contain;' +
+                'margin-bottom:6px;filter:drop-shadow(0 0 10px rgba(100,200,255,0.8));">' +
+                '<div id="ph-msg" style="color:#e8d5a3;font-size:clamp(0.7rem,2.2vw,0.9rem);line-height:1.5;' +
+                'margin-bottom:10px;word-break:break-word;"></div>' +
                 '<div id="ph-key-badge" style="display:inline-block;' +
                 'background:rgba(255,215,0,0.12);border:1.5px solid rgba(255,215,0,0.55);' +
-                'border-radius:8px;padding:8px 16px;font-size:clamp(1rem,2.5vw,1.25rem);font-family:monospace;' +
-                'color:#ffd700;letter-spacing:2px;font-weight:700;margin-bottom:16px;word-break:break-word;overflow-wrap:break-word;"></div>' +
-                '<br>' +
-                '<button id="ph-ok-btn" style="margin-top:6px;padding:10px 20px;' +
+                'border-radius:8px;padding:6px 12px;font-size:clamp(0.9rem,2.2vw,1.1rem);font-family:monospace;' +
+                'color:#ffd700;letter-spacing:2px;font-weight:700;margin-bottom:12px;word-break:break-word;overflow-wrap:break-word;"></div>' +
+                '<button id="ph-ok-btn" style="margin-top:6px;padding:8px 16px;' +
                 'background:linear-gradient(135deg,rgba(33,115,70,0.65),rgba(33,115,70,0.45));' +
                 'border:2px solid rgba(33,115,70,0.85);border-radius:30px;color:#fff;' +
-                'font-size:clamp(0.85rem,2vw,1rem);font-weight:700;letter-spacing:1px;cursor:pointer;' +
+                'font-size:clamp(0.8rem,1.8vw,0.9rem);font-weight:700;letter-spacing:1px;cursor:pointer;' +
                 'transition:background 0.2s;white-space:normal;">好的，示範給我看！</button>' +
             '</div>';
         document.body.appendChild(_dom.bubble);
@@ -111,6 +110,23 @@ window.phoneHelper = (function () {
         });
     }
 
+    /* ── 自動捲動至顯示區域（行動模式） ────────────────────────────── */
+    function _scrollToCell(cellId) {
+        var wrapper = document.getElementById('wrapper');
+        var cell = document.getElementById(cellId);
+        if (!wrapper || !cell) return;
+
+        var rect = cell.getBoundingClientRect();
+        var wrapperRect = wrapper.getBoundingClientRect();
+        var scrollTop = wrapper.scrollTop;
+
+        /* 計算目標捲動位置：使該格子出現在頂部 */
+        var targetScroll = scrollTop + (rect.top - wrapperRect.top) - 80;
+        targetScroll = Math.max(0, targetScroll);
+
+        wrapper.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    }
+
     /* ── 游標 / 鍵盤提示工具 ──────────────────────────────────── */
     function _showCursor(x, y) {
         _dom.cursor.style.left = (x - 4) + 'px';
@@ -158,77 +174,89 @@ window.phoneHelper = (function () {
 
     /* 1. 快速跳轉（Ctrl+↓） */
     function _animQuickJump(done) {
+        _scrollToCell('A1');
+
         var s = window.orchestrator.state;
         s.selectedCell = s.selectedCell || { r: 0, c: 0 };
 
-        var startR = _cellRect('A1');
-        if (startR) _showCursor(startR.left + startR.width / 2, startR.top + startR.height / 2);
-        _showKeyHint('Ctrl  +  ↓');
+        setTimeout(function () {
+            var startR = _cellRect('A1');
+            if (startR) _showCursor(startR.left + startR.width / 2, startR.top + startR.height / 2);
+            _showKeyHint('Ctrl  +  ↓');
+        }, 400);
 
         setTimeout(function () {
             var wrapper = document.getElementById('wrapper');
             if (wrapper) wrapper.scrollTo({ top: 99999, behavior: 'smooth' });
-            var endR = _cellRect('A25') || _cellRect('A20') || startR;
+            var endR = _cellRect('A25') || _cellRect('A20');
             if (endR) _moveCursor(endR.left + endR.width / 2, endR.top + endR.height / 2);
-        }, 700);
+        }, 1100);
 
         setTimeout(function () {
             _hideKeyHint();
             window.ch1Actions && window.ch1Actions.quickjump();
             done();
-        }, 2000);
+        }, 2400);
     }
 
     /* 2. 回跳頂端（Ctrl+↑） */
     function _animJumpUp(done) {
+        _scrollToCell('A1');
+
         var s = window.orchestrator.state;
         s.selectedCell = s.selectedCell || { r: 90, c: 0 };
 
-        _showKeyHint('Ctrl  +  ↑');
+        setTimeout(function () {
+            _showKeyHint('Ctrl  +  ↑');
+        }, 400);
 
         setTimeout(function () {
-            var wrapper = document.getElementById('wrapper');
-            if (wrapper) wrapper.scrollTo({ top: 0, behavior: 'smooth' });
             var topR = _cellRect('A1');
             if (topR) _showCursor(topR.left + topR.width / 2, topR.top + topR.height / 2);
-        }, 700);
+        }, 1100);
 
         setTimeout(function () {
             _hideKeyHint();
             window.ch1Actions && window.ch1Actions.jumpup();
             done();
-        }, 2000);
+        }, 2400);
     }
 
     /* 3. 欄位對調（Shift + 拖曳） */
     function _animColumnSwap(done) {
-        var bRect = _colHeaderRect(1); // 欄 B（等級）
-        var cRect = _colHeaderRect(2); // 欄 C（類別）
-
-        _showKeyHint('Shift  +  拖曳');
-
-        if (bRect) {
-            var bx = bRect.left + bRect.width / 2;
-            var by = bRect.top  + bRect.height / 2;
-            _showCursor(bx, by);
-
-            setTimeout(function () {
-                if (cRect) {
-                    /* 游標滑向 C 欄右側 */
-                    _moveCursor(cRect.right - 8, cRect.top + cRect.height / 2);
-                }
-            }, 750);
-        }
+        _scrollToCell('B1');
 
         setTimeout(function () {
-            _hideKeyHint();
-            window.ch1Actions && window.ch1Actions.columnswap();
-            done();
-        }, 2000);
+            var bRect = _colHeaderRect(1); // 欄 B（等級）
+            var cRect = _colHeaderRect(2); // 欄 C（類別）
+
+            _showKeyHint('Shift  +  拖曳');
+
+            if (bRect) {
+                var bx = bRect.left + bRect.width / 2;
+                var by = bRect.top  + bRect.height / 2;
+                _showCursor(bx, by);
+
+                setTimeout(function () {
+                    if (cRect) {
+                        /* 游標滑向 C 欄右側 */
+                        _moveCursor(cRect.right - 8, cRect.top + cRect.height / 2);
+                    }
+                }, 750);
+            }
+
+            setTimeout(function () {
+                _hideKeyHint();
+                window.ch1Actions && window.ch1Actions.columnswap();
+                done();
+            }, 1600);
+        }, 400);
     }
 
     /* 4. 自動填滿（拖曳填滿柄） */
     function _animAutoFill(done) {
+        _scrollToCell('A3');
+
         var s = window.orchestrator.state;
 
         /* 步驟一：先選取 A3:A4（來源兩格，有 MP-001 / MP-002），設定 fillSourceRange */
@@ -237,16 +265,18 @@ window.phoneHelper = (function () {
         s.selectedCell    = { r: 2, c: 0 };
         if (window.gridRenderer) window.gridRenderer.render();
 
-        /* 游標出現在 A3，下移至 A4 填滿柄位置 */
-        var a3Rect = _cellRect('A3');
-        if (a3Rect) _showCursor(a3Rect.left + a3Rect.width / 2, a3Rect.top + a3Rect.height / 2);
-        _showKeyHint('拖曳填滿柄  ↓');
+        setTimeout(function () {
+            /* 游標出現在 A3，下移至 A4 填滿柄位置 */
+            var a3Rect = _cellRect('A3');
+            if (a3Rect) _showCursor(a3Rect.left + a3Rect.width / 2, a3Rect.top + a3Rect.height / 2);
+            _showKeyHint('拖曳填滿柄  ↓');
+        }, 400);
 
         setTimeout(function () {
             /* 游標移到 A4 右下角（填滿柄小方塊） */
             var a4Rect = _cellRect('A4');
             if (a4Rect) _moveCursor(a4Rect.right - 7, a4Rect.bottom - 7);
-        }, 600);
+        }, 1000);
 
         setTimeout(function () {
             /* 步驟二：拖曳至 A12，同時擴展 selectedRange 至全範圍 */
@@ -262,14 +292,14 @@ window.phoneHelper = (function () {
                 _showDragLine(hx - 1, hy, lineH > 0 ? lineH : 80);
                 _moveCursor(hx, a12Rect.bottom - 7);
             }
-        }, 1100);
+        }, 1500);
 
         setTimeout(function () {
             _hideKeyHint();
             _hideDragLine();
             window.ch1Actions && window.ch1Actions.autofill();
             done();
-        }, 2400);
+        }, 2800);
     }
 
     /* 5. 插入日期（Ctrl+;） */
@@ -284,15 +314,19 @@ window.phoneHelper = (function () {
         s.selectedCell  = { r: 1, c: 4 };
         if (window.gridRenderer) window.gridRenderer.render();
 
-        var e2Rect = _cellRect('E2');
-        if (e2Rect) _showCursor(e2Rect.left + e2Rect.width / 2, e2Rect.top + e2Rect.height / 2);
-        _showKeyHint('Ctrl  +  ;');
+        _scrollToCell('E2');
+
+        setTimeout(function () {
+            var e2Rect = _cellRect('E2');
+            if (e2Rect) _showCursor(e2Rect.left + e2Rect.width / 2, e2Rect.top + e2Rect.height / 2);
+            _showKeyHint('Ctrl  +  ;');
+        }, 400);
 
         setTimeout(function () {
             _hideKeyHint();
             window.ch1Actions && window.ch1Actions.insertdate();
             done();
-        }, 2000);
+        }, 2400);
     }
 
     /* ── 動畫路由 ─────────────────────────────────────────────── */
