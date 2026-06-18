@@ -118,13 +118,15 @@ window.phoneHelper = (function () {
 
         var rect = cell.getBoundingClientRect();
         var wrapperRect = wrapper.getBoundingClientRect();
-        var scrollTop = wrapper.scrollTop;
 
-        /* 計算目標捲動位置：使該格子出現在頂部 */
-        var targetScroll = scrollTop + (rect.top - wrapperRect.top) - 80;
-        targetScroll = Math.max(0, targetScroll);
+        /* 同時計算縱向與橫向捲動，使格子出現在左上角 */
+        var targetScrollTop  = wrapper.scrollTop  + (rect.top  - wrapperRect.top)  - 80;
+        var targetScrollLeft = wrapper.scrollLeft + (rect.left - wrapperRect.left) - 60;
 
-        wrapper.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        targetScrollTop  = Math.max(0, targetScrollTop);
+        targetScrollLeft = Math.max(0, targetScrollLeft);
+
+        wrapper.scrollTo({ top: targetScrollTop, left: targetScrollLeft, behavior: 'smooth' });
     }
 
     /* ── 游標 / 鍵盤提示工具 ──────────────────────────────────── */
