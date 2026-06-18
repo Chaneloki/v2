@@ -1,3 +1,19 @@
+[2026-06-19] 手機助理系統 (Phone Helper System)
+- code/phone_helper.js [NEW]
+  window.phoneHelper 模組。偵測手機模式下 5 個不可觸控的動作：
+  QUICK_JUMP / JUMP_UP / COLUMN_SWAP / AUTO_FILL / INSERT_DATE。
+  API: shouldHandle(actionId) / launch(actionId)。
+  流程：彈出助理氣泡（含按鍵說明 + 賽爾圖示）→ 玩家確認 →
+  播放幽靈游標示範動畫（Ctrl+↓滾動 / Shift拖曳欄首 / 填滿柄下拖 / Ctrl+;鍵示）→
+  動畫結束後自動呼叫對應 ch1Actions.* 完成任務驗證。
+- code/ui_ribbon.js [MODIFY]
+  renderRibbon 標準模式末尾新增判斷：
+  手機模式 + 當前任務無 unlockBtnId + expectedCondition.actionId 屬不相容清單 →
+  在 start 分頁注入「📱 助理示範」Ribbon 按鈕（class: ph-ribbon-btn），點擊呼叫 phoneHelper.launch()。
+- game.html [MODIFY]
+  載入 code/phone_helper.js（在 render.js 之後）。
+  新增 CSS：.ph-ribbon-btn 綠框 + 脈動動畫（@keyframes ph-pulse）。
+
 [2026-06-18] 手機模式修復第三批 (Mobile Batch 3)
 - code/ui_v2_story.js [MODIFY]
   全局 char-img 清理列表（line 309）補入 char-rpg-idle、char-float、char-falling，防止切換劇情段落時這些無限循環動畫殘留在主角身上造成持續浮動/震動（桌面 & 手機均受影響）。

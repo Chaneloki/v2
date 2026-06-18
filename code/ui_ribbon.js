@@ -82,7 +82,7 @@ UIManager.prototype.renderRibbon = function(config) {
                         const skill = window.orchestrator.skillDefs[task.unlockSkillId];
                         let taskTab = task.tab || 'start';
                         // [新增]: 優先使用技能定義中的 cat
-                        if (skill && skill.cat === 'data') taskTab = 'data'; 
+                        if (skill && skill.cat === 'data') taskTab = 'data';
                         if (skill && skill.cat === 'insert') taskTab = 'insert';
                         if (skill && (skill.cat === 'move' || skill.cat === 'view')) taskTab = 'view';
 
@@ -93,6 +93,7 @@ UIManager.prototype.renderRibbon = function(config) {
                     }
                 }
             });
+
         }
     }
 
