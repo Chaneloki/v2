@@ -753,6 +753,9 @@ function launchGame(fs){
     }
   })();
   setTimeout(()=>{
+    // 確保 index.html BGM 在 iframe 啟動前完全停止（防止手機 bfcache 或淡出未完成）
+    const _bgmFinal = document.getElementById('bgm-audio');
+    if(_bgmFinal){ _bgmFinal.pause(); _bgmFinal.currentTime = 0; _bgmFinal.volume = 0; }
     // Load game.html inside an iframe to preserve fullscreen (don't remove DOM — that exits fullscreen)
     const iframe = document.createElement('iframe');
     iframe.src = 'game.html';

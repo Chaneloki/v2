@@ -2322,7 +2322,8 @@ body.mode-mobile #rpg-teleport-menu { bottom: 6px; right: 6px; padding: 6px; fon
 body.mode-mobile #dialogue-box { padding: 14px 6% 60px 6% !important; }
 body.mode-mobile #s-name { font-size: clamp(16px, 4.5vw, 22px) !important; padding-left: 12px !important; border-left-width: 6px !important; }
 body.mode-mobile #s-text { font-size: clamp(14px, 4vw, 20px) !important; line-height: 1.5 !important; }
-body.mode-mobile #left-sidebar { min-width: unset !important; max-width: unset !important; width: 100% !important; padding: 8px 12px !important; }
+/* 手機橫向：sidebar 保持左側窄欄（不要 width:100% 否則把格子推走）*/
+body.mode-mobile #left-sidebar { min-width: 160px !important; max-width: 210px !important; width: 200px !important; padding: 8px 10px !important; flex-direction: column !important; border-right: 2px solid var(--excel-green) !important; border-bottom: none !important; overflow-y: auto !important; max-height: 100% !important; }
 body.mode-mobile #elf-img { width: 50px !important; }
 body.mode-mobile #elf-bubble { min-height: 60px !important; padding: 8px 12px !important; }
 body.mode-mobile #e-t { font-size: 15px !important; }
@@ -2346,6 +2347,17 @@ body.mode-mobile #trial-card, body.mode-mobile #dev-card { width: min(500px, 90v
 body.mode-mobile #trial-situation { font-size: 15px !important; }
 body.mode-mobile .trial-opt-btn { font-size: 14px !important; padding: 12px 14px !important; }
 body.mode-mobile .excel-dialog { width: min(460px, 95vw) !important; }
+/* [Mobile Batch2 2026-06-18] Excel 舞台橫向比例修正 */
+body.mode-mobile #excel-container { min-width: 0 !important; flex: 1 !important; }
+body.mode-mobile .ribbon-buttons { height: 58px !important; min-height: 58px !important; padding: 4px 8px !important; gap: 6px !important; }
+body.mode-mobile #task-title { font-size: 0.82rem !important; }
+body.mode-mobile #task-body { font-size: 0.75rem !important; line-height: 1.4 !important; }
+/* [Mobile Batch2 2026-06-18] 劇情舞台橫向比例修正 */
+body.mode-mobile #dialogue-box { min-height: 0 !important; max-height: 42vh !important; padding: 10px 5% 14px 5% !important; overflow-y: auto !important; }
+body.mode-mobile #s-name { font-size: clamp(14px, 4vw, 20px) !important; margin-bottom: 6px !important; padding-left: 10px !important; border-left-width: 5px !important; }
+body.mode-mobile #s-text { font-size: clamp(13px, 3.5vw, 18px) !important; line-height: 1.45 !important; }
+body.mode-mobile .char-container { width: 55% !important; }
+body.mode-mobile #main-char-container { transform: translateX(-50%) scale(0.75) !important; }
 
 /* --- 手機版 breakpoint (≤ 480px) --- */
 @media screen and (max-width: 480px) {

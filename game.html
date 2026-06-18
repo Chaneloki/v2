@@ -307,6 +307,12 @@
 </head>
 
 <body>
+    <!-- [Mobile 2026-06-18] 旋轉提示：手機直向時顯示，橫向時隱藏 -->
+    <div id="rotate-hint" aria-hidden="true">
+        <div style="font-size:3.5rem;line-height:1;">📱↻</div>
+        <div>請旋轉手機為橫向模式<br><span style="font-size:0.85em;opacity:0.7;">Please rotate to landscape</span></div>
+    </div>
+
     <!-- Init loading overlay: blocks all clicks until orchestrator.init() resolves -->
     <div id="game-init-loading" style="position:fixed;inset:0;z-index:20000;background:#0a0704;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.6s ease;">
         <span style="font-size:0.85rem;letter-spacing:4px;color:rgba(255,215,0,0.8);font-family:serif;">遊戲啟動中…</span>
@@ -586,7 +592,7 @@
             onmouseover="this.style.background='rgba(0,0,0,0.4)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">✕</button>
 
         <!-- 1_main.png — decorative character, left side, above triangles -->
-        <img src="BG/intro/1_main.png" alt="" aria-hidden="true"
+        <img id="sys-menu-char" src="BG/intro/1_main.png" alt="" aria-hidden="true"
              style="position:absolute;left:-5vw;bottom:0;height:85vh;object-fit:contain;pointer-events:none;z-index:1;opacity:0.92;">
 
         <!-- 三角形主面板 (canvas-baked bitmaps — no per-frame clip) -->
@@ -635,7 +641,7 @@
                 <h2 style="color:#ffd700;font-size:1.3rem;margin:0 0 8px;letter-spacing:3px;font-family:serif;text-shadow:0 0 20px rgba(255,215,0,0.5);">選擇你的裝置</h2>
                 <p style="color:rgba(200,185,160,0.8);font-size:0.85rem;line-height:1.7;margin:0 0 28px;">不同裝置將提供最適合的操控介面。<br>之後可在 ⚙ 設定中隨時切換。</p>
                 <div style="display:flex;flex-direction:column;gap:14px;">
-                    <button onclick="window.deviceMode.set('mobile');window.deviceMode.closeModal()"
+                    <button onclick="window.deviceMode.set('mobile');window.deviceMode.closeModal();tryLockLandscape()"
                         style="width:100%;padding:18px 20px;background:linear-gradient(135deg,rgba(33,115,70,0.3),rgba(33,115,70,0.15));border:2px solid rgba(33,115,70,0.7);border-radius:10px;color:#fff;font-size:1rem;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:16px;"
                         onmouseover="this.style.background='linear-gradient(135deg,rgba(33,115,70,0.6),rgba(33,115,70,0.35))';this.style.borderColor='#2ed573'"
                         onmouseout="this.style.background='linear-gradient(135deg,rgba(33,115,70,0.3),rgba(33,115,70,0.15))';this.style.borderColor='rgba(33,115,70,0.7)'">
@@ -723,7 +729,7 @@
                 <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:10px;">📱 裝置模式</label>
                 <div style="display:flex;gap:8px;">
                     <button id="vol-device-mobile"
-                        onclick="window.deviceMode.set('mobile')"
+                        onclick="window.deviceMode.set('mobile');tryLockLandscape()"
                         style="flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;"
                         onmouseover="this.style.background='rgba(255,215,0,0.18)'" onmouseout="window.deviceMode.refreshBtns()">
                         📱 手機模式
@@ -2339,15 +2345,63 @@
         }
     })();
 
+    /* ── 橫向鎖定（手機模式下嘗試鎖定 landscape，不支援時靠 CSS rotate-hint 提示）── */
+    function tryLockLandscape(){
+        if(screen.orientation && typeof screen.orientation.lock === 'function'){
+            screen.orientation.lock('landscape-primary').catch(function(){});
+        }
+    }
+
     /* ── 初始化（等 DOM 就緒）── */
     if(document.readyState === 'loading'){
-        document.addEventListener('DOMContentLoaded', function(){ window.deviceMode.init(); });
+        document.addEventListener('DOMContentLoaded', function(){
+            window.deviceMode.init();
+            if(localStorage.getItem('v2_device_mode') === 'mobile') tryLockLandscape();
+        });
     } else {
         window.deviceMode.init();
+        if(localStorage.getItem('v2_device_mode') === 'mobile') tryLockLandscape();
     }
     </script>
 
     <style>
+    /* [Mobile 2026-06-18 Batch2] ─────────────────────────────────── */
+
+    /* 旋轉提示層：手機直向時顯示 */
+    #rotate-hint {
+        display: none;
+        position: fixed; inset: 0; z-index: 99999;
+        background: #0a0704;
+        color: #e8d5a3;
+        flex-direction: column; align-items: center; justify-content: center;
+        gap: 18px; font-size: 1.3rem; text-align: center;
+        font-family: 'Noto Serif TC', serif;
+        line-height: 1.6;
+    }
+    @media (orientation: portrait) {
+        body.mode-mobile #rotate-hint { display: flex !important; }
+    }
+    @media (orientation: landscape) {
+        body.mode-mobile #rotate-hint { display: none !important; }
+    }
+
+    /* 手機模式下隱藏選單角色立繪 */
+    body.mode-mobile #sys-menu-char { display: none !important; }
+
+    /* vol-modal 設定面板：手機橫向時可捲動 */
+    body.mode-mobile #vol-modal > div {
+        max-height: 88vh !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 20px 24px !important;
+    }
+    @media (orientation: landscape) and (max-height: 500px) {
+        #vol-modal > div {
+            max-height: 88vh !important;
+            overflow-y: auto !important;
+        }
+    }
+
     /* [Mobile 2026-06-18] Title Screen 手機版調整 */
     @media screen and (max-width: 480px) {
         /* 標題文字縮小 */
