@@ -2402,15 +2402,16 @@
         }
     }
 
-    /* 手機模式：非主角 char-container 填滿螢幕兩側 */
+    /* 手機模式：非主角 char-container 縮小，避免蓋過主角 */
     body.mode-mobile .char-container:not(#main-char-container) {
-        width: 100vw !important;
+        width: 50vw !important;
         left: 0 !important;
         transform: none !important;
     }
     body.mode-mobile .char-container:not(#main-char-container) .char-img {
-        object-fit: cover !important;
-        object-position: center top !important;
+        object-fit: contain !important;
+        object-position: bottom !important;
+        max-height: 60vh !important;
     }
 
     /* 信件 UI 在手機可捲動 */

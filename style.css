@@ -2325,8 +2325,9 @@ body.mode-mobile #s-text { font-size: clamp(14px, 4vw, 20px) !important; line-he
 /* 手機橫向：sidebar 保持左側窄欄（不要 width:100% 否則把格子推走）*/
 body.mode-mobile #left-sidebar { min-width: 160px !important; max-width: 210px !important; width: 200px !important; padding: 8px 10px !important; flex-direction: column !important; border-right: 2px solid var(--excel-green) !important; border-bottom: none !important; overflow-y: auto !important; max-height: 100% !important; }
 body.mode-mobile #elf-img { width: 50px !important; }
-body.mode-mobile #elf-bubble { min-height: 60px !important; padding: 8px 12px !important; }
-body.mode-mobile #e-t { font-size: 15px !important; }
+body.mode-mobile #elf-bubble { min-height: 0 !important; max-height: 38vh !important; overflow-y: auto !important; padding: 6px 10px !important; }
+body.mode-mobile #e-t { font-size: 13px !important; line-height: 1.4 !important; }
+body.mode-mobile #t-t { font-size: 13px !important; padding-top: 8px !important; margin-top: 8px !important; }
 body.mode-mobile #player-box { display: none !important; }
 body.mode-mobile #excel-container { min-width: unset !important; }
 body.mode-mobile .ribbon-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
@@ -2398,8 +2399,9 @@ body.mode-mobile #main-char-container { transform: translateX(-50%) scale(0.75) 
         padding: 8px 12px !important;
     }
     #elf-img { width: 50px !important; }
-    #elf-bubble { min-height: 60px !important; padding: 8px 12px !important; }
-    #e-t { font-size: 15px !important; }
+    #elf-bubble { min-height: 0 !important; max-height: 38vh !important; overflow-y: auto !important; padding: 6px 10px !important; }
+    #e-t { font-size: 13px !important; line-height: 1.4 !important; }
+    #t-t { font-size: 13px !important; padding-top: 8px !important; margin-top: 8px !important; }
     #player-box { display: none !important; }
 
     /* Excel container */
