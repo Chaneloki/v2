@@ -4,7 +4,13 @@
 $status = git status --porcelain | Where-Object { $_ -match '^\s*M' -or $_ -match '^M' }
 
 if (-not $status) {
-    Write-Host "No modified tracked files to push." -ForegroundColor Yellow
+    $ahead = git rev-list origin/main..HEAD --count 2>$null
+    if ($ahead -gt 0) {
+        Write-Host "No new changes to commit, but $ahead unpushed commit(s) found. Pushing..." -ForegroundColor Yellow
+        git push origin main
+    } else {
+        Write-Host "No modified tracked files to push." -ForegroundColor Yellow
+    }
     exit 0
 }
 
