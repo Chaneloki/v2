@@ -308,10 +308,21 @@
 
 <body>
     <!-- Init loading overlay: blocks all clicks until orchestrator.init() resolves -->
-    <div id="game-init-loading" style="position:fixed;inset:0;z-index:20000;background:#0a0704;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity 0.6s ease;">
-        <div style="width:48px;height:48px;border:3px solid rgba(255,215,0,0.2);border-top-color:rgba(255,215,0,0.9);border-radius:50%;animation:titleBgSpin 1s linear infinite;"></div>
-        <span style="font-size:0.8rem;letter-spacing:4px;color:rgba(255,215,0,0.7);font-family:serif;">遊戲啟動中…</span>
+    <div id="game-init-loading" style="position:fixed;inset:0;z-index:20000;background:#0a0704;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.6s ease;">
+        <span style="font-size:0.85rem;letter-spacing:4px;color:rgba(255,215,0,0.8);font-family:serif;">遊戲啟動中…</span>
+        <div style="width:260px;height:6px;background:rgba(255,215,0,0.12);border-radius:3px;overflow:hidden;">
+            <div id="game-init-bar" style="height:100%;width:0%;background:linear-gradient(90deg,rgba(255,180,0,0.7),rgba(255,230,100,1));border-radius:3px;transition:width 0.5s ease;"></div>
+        </div>
+        <span id="game-init-pct" style="font-size:0.7rem;letter-spacing:2px;color:rgba(255,215,0,0.45);font-family:serif;">0%</span>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var bar = document.getElementById('game-init-bar');
+        var lbl = document.getElementById('game-init-pct');
+        if (bar) bar.style.width = '35%';
+        if (lbl) lbl.textContent = '35%';
+    });
+    </script>
 
     <!-- [Title Screen] 全新 RPG 標題畫面 -->
     <div id="title-screen-overlay"
@@ -1540,13 +1551,23 @@
                 }
             }
 
+            const _setProgress = (pct) => {
+                const bar = document.getElementById('game-init-bar');
+                const lbl = document.getElementById('game-init-pct');
+                if (bar) bar.style.width = pct + '%';
+                if (lbl) lbl.textContent = pct + '%';
+            };
             const _hideInitLoader = () => {
-                const ol = document.getElementById('game-init-loading');
-                if (!ol) return;
-                ol.style.opacity = '0';
-                setTimeout(() => ol.remove(), 650);
+                _setProgress(100);
+                setTimeout(() => {
+                    const ol = document.getElementById('game-init-loading');
+                    if (!ol) return;
+                    ol.style.opacity = '0';
+                    setTimeout(() => ol.remove(), 650);
+                }, 300);
             };
             setTimeout(_hideInitLoader, 8000); // safety fallback
+            _setProgress(75); // window.load just fired
             if (window.orchestrator) {
                 window.orchestrator.init().then(_hideInitLoader).catch(_hideInitLoader);
             } else {
