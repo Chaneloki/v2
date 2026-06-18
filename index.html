@@ -603,15 +603,22 @@ function launchGame(fs){
 // The game (inside the iframe) delegates fullscreen toggling to this parent document,
 // which owns the real fullscreen state.
 window.addEventListener('message', function(e){
-  if(!e.data || e.data.__magicExcel !== 'toggle-fullscreen') return;
+  if(!e.data || !e.data.__magicExcel) return;
   var doc = document, docEl = doc.documentElement;
   var fsEl = doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement;
-  if(!fsEl){
-    var req = docEl.requestFullscreen || docEl.webkitRequestFullScreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
-    if(req){ try{ var p=req.call(docEl); if(p&&p.catch) p.catch(()=>{});}catch(err){} }
-  } else {
-    var exit = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
-    if(exit) exit.call(doc);
+  if(e.data.__magicExcel === 'enter-fullscreen'){
+    if(!fsEl){
+      var req = docEl.requestFullscreen || docEl.webkitRequestFullScreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+      if(req){ try{ var p=req.call(docEl); if(p&&p.catch) p.catch(()=>{});}catch(err){} }
+    }
+  } else if(e.data.__magicExcel === 'toggle-fullscreen'){
+    if(!fsEl){
+      var req = docEl.requestFullscreen || docEl.webkitRequestFullScreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+      if(req){ try{ var p=req.call(docEl); if(p&&p.catch) p.catch(()=>{});}catch(err){} }
+    } else {
+      var exit = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
+      if(exit) exit.call(doc);
+    }
   }
 });
 </script>

@@ -601,7 +601,7 @@
         <button class="sys-corner-icon" style="top:32px;left:32px;"
             onclick="window.uiManager.toggleSystemMenu(); window.uiManager.toggleFullscreen()" title="全螢幕">⛶</button>
         <button class="sys-corner-icon" style="top:32px;left:116px;"
-            onclick="window.uiManager.toggleSystemMenu(); window.volModal.open()" title="音量設定 / 返回主頁">🔊</button>
+            onclick="window.uiManager.toggleSystemMenu(); window.volModal.open()" title="環境設定 / 返回主頁">🔊</button>
         <button class="sys-corner-icon sys-corner-circle" style="bottom:40px;left:32px;"
             onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openTeleportModal()" title="空間傳送陣">🌌</button>
         <button class="sys-corner-icon" style="bottom:40px;right:32px;"
@@ -616,7 +616,7 @@
         <div style="position:relative;z-index:1;">
             <!-- 關閉 -->
             <button onclick="window.volModal.close()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#aaa;font-size:1.4rem;cursor:pointer;line-height:1;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">✕</button>
-            <h3 style="color:#e8d5a3;margin:0 0 28px;font-size:1.1rem;letter-spacing:2px;text-align:center;">⚙ 音量設定</h3>
+            <h3 style="color:#e8d5a3;margin:0 0 28px;font-size:1.1rem;letter-spacing:2px;text-align:center;">⚙ 環境設定</h3>
 
             <!-- BGM 音量 -->
             <div style="margin-bottom:22px;">
@@ -638,6 +638,34 @@
                     oninput="window.volModal.setSE(this.value)">
             </div>
 
+            <!-- 主題色彩 -->
+            <div style="margin-bottom:20px;">
+                <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:12px;">🎨 介面主題色</label>
+                <div id="theme-swatches" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+                <div style="text-align:right;margin-top:8px;">
+                    <button onclick="window.volModal.resetTheme()"
+                        style="background:none;border:none;color:rgba(255,215,0,0.5);font-size:11px;cursor:pointer;letter-spacing:1px;"
+                        onmouseover="this.style.color='rgba(255,215,0,0.9)'" onmouseout="this.style.color='rgba(255,215,0,0.5)'">↺ 重設顏色</button>
+                </div>
+            </div>
+
+            <!-- 自訂左側背景 -->
+            <div style="margin-bottom:28px;">
+                <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:10px;">🖼 左側背景圖</label>
+                <div style="display:flex;gap:8px;">
+                    <button onclick="document.getElementById('bg-file-input').click()"
+                        style="flex:1;padding:9px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,215,0,0.35);border-radius:6px;color:#e8d5a3;font-size:12px;cursor:pointer;letter-spacing:1px;"
+                        onmouseover="this.style.background='rgba(255,215,0,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.10)'">
+                        📁 選擇圖片
+                    </button>
+                    <button onclick="window.volModal.resetSidebarBG()"
+                        style="padding:9px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:#aaa;font-size:12px;cursor:pointer;"
+                        onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">↺ 重設</button>
+                </div>
+                <input id="bg-file-input" type="file" accept="image/*" style="display:none"
+                    onchange="window.volModal.openBGCrop(this)">
+            </div>
+
             <!-- 返回主頁 -->
             <button onclick="window.volModal.backToHome()"
                 style="width:100%;padding:12px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,215,0,0.5);border-radius:8px;color:#e8d5a3;font-size:14px;letter-spacing:2px;cursor:pointer;transition:0.2s;"
@@ -649,6 +677,43 @@
         </div><!-- /outer panel -->
     </div>
     <!-- ================= 音量設定 Modal End ================= -->
+
+    <!-- ================= 自訂背景 Crop Modal ================= -->
+    <div id="bg-crop-modal" style="display:none;position:fixed;inset:0;z-index:21000;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;">
+        <div style="background:#1a1a2e;border:1px solid rgba(255,215,0,0.4);border-radius:12px;padding:24px;width:340px;box-shadow:0 0 30px rgba(0,0,0,0.6);">
+            <h3 style="color:#e8d5a3;margin:0 0 16px;font-size:1rem;letter-spacing:2px;text-align:center;">✂ 裁剪背景圖</h3>
+
+            <!-- Preview box — 1:2 aspect ratio matching sidebar -->
+            <div id="bg-crop-preview" style="width:280px;height:300px;margin:0 auto 16px;overflow:hidden;position:relative;border-radius:6px;border:1px solid rgba(255,215,0,0.25);cursor:grab;background:#000;user-select:none;">
+                <img id="bg-crop-img" style="position:absolute;transform-origin:top left;pointer-events:none;" draggable="false">
+            </div>
+
+            <!-- Zoom slider -->
+            <div style="margin-bottom:16px;">
+                <label style="color:#c8b97a;font-size:12px;display:flex;justify-content:space-between;margin-bottom:6px;">
+                    <span>🔍 縮放</span><span id="bg-crop-zoom-val">100%</span>
+                </label>
+                <input id="bg-crop-zoom" type="range" min="0.3" max="3" step="0.01" value="1"
+                    style="width:100%;accent-color:#c8b97a;cursor:pointer;"
+                    oninput="window.sidebarCrop.onZoom(this.value)">
+            </div>
+
+            <!-- Buttons -->
+            <div style="display:flex;gap:8px;">
+                <button onclick="window.sidebarCrop.apply()"
+                    style="flex:1;padding:10px;background:rgba(255,215,0,0.2);border:1px solid rgba(255,215,0,0.5);border-radius:6px;color:#e8d5a3;font-size:13px;cursor:pointer;letter-spacing:1px;"
+                    onmouseover="this.style.background='rgba(255,215,0,0.35)'" onmouseout="this.style.background='rgba(255,215,0,0.2)'">
+                    ✓ 套用
+                </button>
+                <button onclick="window.sidebarCrop.close()"
+                    style="padding:10px 18px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:#aaa;font-size:13px;cursor:pointer;"
+                    onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ================= 自訂背景 Crop Modal End ================= -->
 
     <!-- ================= 空間傳送陣彈窗 (Teleport Modal) ================= -->
     <div id="teleport-modal" class="modal-layer" style="display:none; z-index:12000;">
@@ -1835,8 +1900,66 @@
     <script>
     // ── 音量設定 Modal ──
     window.volModal = (function(){
-        const LS_BGM = 'v2_bgm_vol';
-        const LS_SE  = 'v2_se_vol';
+        const LS_BGM   = 'v2_bgm_vol';
+        const LS_SE    = 'v2_se_vol';
+        const LS_THEME = 'v2_excel_theme';
+
+        const THEME_COLORS = [
+            {color:'#FFB74D',light:'#FFC870'},{color:'#E87448',light:'#F08860'},
+            {color:'#D15548',light:'#DC6A5D'},{color:'#C02535',light:'#CC3A4A'},
+            {color:'#E0F8F8',light:'#EDFCFC'},{color:'#A8CC70',light:'#BAD888'},
+            {color:'#5CA870',light:'#6EBA82'},{color:'#2A7878',light:'#3A8A8A'},
+            {color:'#8ED4E0',light:'#A0E0EC'},{color:'#8898CC',light:'#9AAADE'},
+            {color:'#4848A0',light:'#5A5AB2'},{color:'#2A1E46',light:'#3C3058'},
+            {color:'#E890B2',light:'#F0A0C0'},{color:'#C076C4',light:'#CC88D0'},
+            {color:'#8858A8',light:'#9A6ABA'},{color:'#4E4888',light:'#605A9A'}
+        ];
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1,3), 16);
+            const g = parseInt(hex.slice(3,5), 16);
+            const b = parseInt(hex.slice(5,7), 16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
+        function applyTheme(color, light) {
+            const tint = hexToRgba(color, 0.10);
+            const tintStrong = hexToRgba(color, 0.25);
+            document.documentElement.style.setProperty('--excel-green', color);
+            document.documentElement.style.setProperty('--excel-green-light', light);
+            document.documentElement.style.setProperty('--excel-tint', tint);
+            document.documentElement.style.setProperty('--excel-tint-strong', tintStrong);
+            localStorage.setItem(LS_THEME, JSON.stringify({color, light, tint, tintStrong}));
+            document.querySelectorAll('.theme-swatch').forEach(btn => {
+                btn.style.outline = btn.dataset.color === color
+                    ? '2.5px solid #fff' : 'none';
+                btn.style.outlineOffset = '2px';
+            });
+        }
+
+        let swatchesBuilt = false;
+        function buildSwatches() {
+            if (swatchesBuilt) return;
+            swatchesBuilt = true;
+            const grid = document.getElementById('theme-swatches');
+            if (!grid) return;
+            const saved = (function(){ try { return JSON.parse(localStorage.getItem(LS_THEME)); } catch(e){ return null; } })();
+            THEME_COLORS.forEach(({color, light}) => {
+                const btn = document.createElement('button');
+                btn.className = 'theme-swatch';
+                btn.dataset.color = color;
+                btn.title = color;
+                btn.style.cssText = `width:32px;height:32px;background:${color};border:none;border-radius:50%;cursor:pointer;transition:transform 0.15s;outline:none;`;
+                if (saved && saved.color === color) {
+                    btn.style.outline = '2.5px solid #fff';
+                    btn.style.outlineOffset = '2px';
+                }
+                btn.onmouseover = () => { btn.style.transform = 'scale(1.15)'; };
+                btn.onmouseout  = () => { btn.style.transform = 'scale(1)'; };
+                btn.onclick = () => applyTheme(color, light);
+                grid.appendChild(btn);
+            });
+        }
 
         function clamp(v){ return Math.min(1, Math.max(0, parseFloat(v) || 0)); }
         function pct(v){ return Math.round(clamp(v)*100) + '%'; }
@@ -1899,6 +2022,10 @@
             const seSaved  = parseFloat(localStorage.getItem(LS_SE));
             applyBGM(isNaN(bgmSaved) ? 0.3 : bgmSaved);
             applySE (isNaN(seSaved)  ? 1.0 : seSaved);
+            try {
+                const t = JSON.parse(localStorage.getItem(LS_THEME));
+                if (t && t.color) applyTheme(t.color, t.light); // also sets --excel-tint-strong
+            } catch(e) {}
         });
 
         return {
@@ -1909,6 +2036,7 @@
                 const a = getBGMEl();
                 applyBGM(a ? a.volume : (parseFloat(localStorage.getItem(LS_BGM)) || 0.3));
                 applySE(window._seVol ?? (parseFloat(localStorage.getItem(LS_SE)) || 1.0));
+                buildSwatches();
                 modal.style.display = 'flex';
             },
             close(){
@@ -1917,6 +2045,20 @@
             },
             setBGM(v){ applyBGM(v); },
             setSE(v){  applySE(v);  },
+            resetTheme(){
+                applyTheme('#217346', '#2da164');
+                localStorage.removeItem(LS_THEME);
+            },
+            resetSidebarBG(){ window.sidebarCrop && window.sidebarCrop.reset(); },
+            openBGCrop(input){
+                const file = input.files[0];
+                input.value = '';
+                if(!file) return;
+                if(sessionStorage.getItem('game_want_fullscreen') === '1') {
+                    window.parent.postMessage({ __magicExcel: 'enter-fullscreen' }, '*');
+                }
+                window.sidebarCrop && window.sidebarCrop.open(file);
+            },
             backToHome(){
                 if(confirm('確定要返回主頁嗎？\n未儲存的進度將會遺失。')){
                     window.volModal.close();
@@ -1926,6 +2068,108 @@
                     const t = document.getElementById('title-screen-overlay');
                     if(t){ t.style.display='flex'; requestAnimationFrame(()=>{ t.style.opacity='1'; }); }
                 }
+            }
+        };
+    })();
+    </script>
+
+    <script>
+    window.sidebarCrop = (function(){
+        const LS_KEY = 'v2_sidebar_bg';
+        const PW = 280, PH = 300;
+        let state = { scale:1, x:0, y:0, dragging:false, sx:0, sy:0, ox:0, oy:0 };
+
+        function getEls(){
+            return {
+                modal : document.getElementById('bg-crop-modal'),
+                img   : document.getElementById('bg-crop-img'),
+                zoom  : document.getElementById('bg-crop-zoom'),
+                zoomV : document.getElementById('bg-crop-zoom-val'),
+                prev  : document.getElementById('bg-crop-preview')
+            };
+        }
+
+        function applyTransform(){
+            const { img } = getEls();
+            if(img) img.style.transform = `translate(${state.x}px,${state.y}px) scale(${state.scale})`;
+        }
+
+        function applyToSidebar(dataUrl){
+            const el = document.getElementById('left-sidebar');
+            if(el) el.style.backgroundImage =
+                `linear-gradient(rgba(10,8,20,0.60),rgba(10,8,20,0.60)),url(${dataUrl})`;
+            localStorage.setItem(LS_KEY, dataUrl);
+        }
+
+        // Restore on load
+        window.addEventListener('load', function(){
+            const saved = localStorage.getItem(LS_KEY);
+            if(saved) applyToSidebar(saved);
+        });
+
+        return {
+            open(file){
+                const { modal, img, zoom, zoomV, prev } = getEls();
+                if(!modal || !img) return;
+                const url = URL.createObjectURL(file);
+                img.onload = function(){
+                    // Fit image to fill preview initially
+                    const fitScale = Math.max(PW / img.naturalWidth, PH / img.naturalHeight);
+                    state.scale = fitScale;
+                    state.x = (PW - img.naturalWidth * fitScale) / 2;
+                    state.y = (PH - img.naturalHeight * fitScale) / 2;
+                    zoom.min = fitScale * 0.5;
+                    zoom.max = fitScale * 4;
+                    zoom.value = fitScale;
+                    if(zoomV) zoomV.textContent = Math.round(fitScale * 100) + '%';
+                    applyTransform();
+                };
+                img.src = url;
+
+                // Drag events
+                prev.onmousedown = (e) => {
+                    state.dragging = true; state.sx = e.clientX; state.sy = e.clientY;
+                    state.ox = state.x; state.oy = state.y;
+                    prev.style.cursor = 'grabbing';
+                };
+                prev.onmousemove = (e) => {
+                    if(!state.dragging) return;
+                    state.x = state.ox + (e.clientX - state.sx);
+                    state.y = state.oy + (e.clientY - state.sy);
+                    applyTransform();
+                };
+                prev.onmouseup = prev.onmouseleave = () => {
+                    state.dragging = false; prev.style.cursor = 'grab';
+                };
+
+                modal.style.display = 'flex';
+            },
+            onZoom(v){
+                const { zoomV } = getEls();
+                state.scale = parseFloat(v);
+                if(zoomV) zoomV.textContent = Math.round(state.scale * 100) + '%';
+                applyTransform();
+            },
+            apply(){
+                const { img, modal } = getEls();
+                if(!img || !img.src) return;
+                const canvas = document.createElement('canvas');
+                canvas.width = PW; canvas.height = PH;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, state.x, state.y,
+                    img.naturalWidth * state.scale, img.naturalHeight * state.scale);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                applyToSidebar(dataUrl);
+                if(modal) modal.style.display = 'none';
+            },
+            close(){
+                const { modal } = getEls();
+                if(modal) modal.style.display = 'none';
+            },
+            reset(){
+                localStorage.removeItem(LS_KEY);
+                const el = document.getElementById('left-sidebar');
+                if(el) el.style.backgroundImage = '';
             }
         };
     })();

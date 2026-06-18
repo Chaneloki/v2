@@ -8,6 +8,8 @@
     --excel-green: #217346;
     --excel-green-light: #2da164;
     --excel-bg: #f3f2f1;
+    --excel-tint: transparent;
+    --excel-tint-strong: transparent;
     --ribbon-bg: #ffffff;
     --border-color: #e1e1e1;
     --text-main: #323130;
@@ -103,9 +105,9 @@ body {
     z-index: 5500; box-sizing: border-box; cursor: pointer; 
     background: none; /* 蝘駁膄暺𤏸𠧧�啣蔣�峕艶 */
 }
-#s-name { 
-    color: var(--gold); font-size: 30px; font-weight: 900; margin: 0 0 15px 0; 
-    border-left: 10px solid var(--gold); padding-left: 25px; 
+#s-name {
+    color: var(--excel-green); font-size: 30px; font-weight: 900; margin: 0 0 15px 0;
+    border-left: 10px solid var(--excel-green); padding-left: 25px;
     text-shadow: 0 0 15px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,1); /* 撘瑕之����啣蔣蝣箔�皜�苊 */
     letter-spacing: 3px;
 }
@@ -125,12 +127,15 @@ body {
 
 /* �湧�甈��擳𥪜��詨�撣� --- */
 #left-sidebar {
-    width: 30%; background: var(--sidebar-bg); border-right: 2px solid var(--excel-green);
+    width: 30%; border-right: 2px solid var(--excel-green);
+    background: linear-gradient(rgba(10,8,20,0.60), rgba(10,8,20,0.60)),
+                url('BG/intro/3_bg.png') center top / cover no-repeat;
     display: flex; flex-direction: column; z-index: 100; padding: 25px; color: #fff;
     box-shadow: 15px 0 40px rgba(0,0,0,0.4);
     flex-shrink: 0;
     min-width: 320px;
     max-width: 420px;
+    overflow: hidden;
 }
 
 #elf-panel { 
@@ -160,9 +165,11 @@ body {
     100% { transform: scale(1); }
 }
 
-#elf-bubble { 
-    background: var(--parchment); border: none; border-radius: 18px; padding: 20px; 
-    margin-top: 25px; width: 100%; box-sizing: border-box; color: #3e2723; 
+#elf-bubble {
+    background: linear-gradient(rgba(255,255,255,0.72), rgba(255,255,255,0.72)),
+                url('BG/intro/3_bg.png') center / cover no-repeat;
+    border-radius: 18px; padding: 20px;
+    margin-top: 25px; width: 100%; box-sizing: border-box; color: #3e2723;
     box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 60px rgba(139,69,19,0.05);
     position: relative; border: 2px solid #d2b48c;
     min-height: 140px;
@@ -184,9 +191,9 @@ body {
     overflow-wrap: break-word; word-break: break-word;
 }
 
-#player-box { 
-    background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; 
-    margin-top: auto; border: 1px solid rgba(255,255,255,0.1);
+#player-box {
+    background: rgba(255,255,255,0.15); padding: 25px; border-radius: 20px;
+    margin-top: auto; border: 1px solid rgba(255,255,255,0.25);
     backdrop-filter: blur(10px);
 }
 .p-bubble { color: #e0e0e0; font-size: 19px; font-weight: 500; line-height: 1.5; font-style: italic; overflow-wrap: break-word; word-break: break-word; }
@@ -198,8 +205,8 @@ body {
 }
 #excel-area { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-#ribbon { background: var(--ribbon-bg); border-bottom: 1px solid var(--border-color); padding: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 50; }
-.ribbon-tabs { display: flex; padding-left: 15px; background: #fff; border-bottom: 1px solid #efefef; }
+#ribbon { background: linear-gradient(var(--excel-tint), var(--excel-tint)), #fff; border-bottom: 1px solid var(--border-color); padding: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 50; }
+.ribbon-tabs { display: flex; padding-left: 15px; background: transparent; border-bottom: 1px solid #efefef; }
 .ribbon-tabs .tab { 
     padding: 10px 25px; font-size: 14px; cursor: pointer; color: #666; 
     border-bottom: 3px solid transparent; transition: 0.3s; font-weight: 500;
@@ -209,7 +216,7 @@ body {
 
 .ribbon-buttons { 
     display: flex; align-items: center; padding: 8px 15px; gap: 10px; height: 95px; 
-    background: linear-gradient(to bottom, #fff, #fcfcfc);
+    background: linear-gradient(var(--excel-tint), var(--excel-tint)), linear-gradient(to bottom, #fff, #fcfcfc);
 }
 .ribbon-btn { 
     display: flex; flex-direction: column; align-items: center; justify-content: center; 
@@ -317,14 +324,14 @@ body {
 @keyframes focusLineSpin {
     100% { transform: rotate(360deg) scale(1.5); }
 } 
-.wrapper { 
-    width: 100%; height: 100%; overflow: auto; position: relative; background: #fff; 
+.wrapper {
+    width: 100%; height: 100%; overflow: auto; position: relative; background: #fff;
     scroll-behavior: smooth;
     /* 蝘駁膄�芸�蝢拇虜璅辷��Ｗ儔撠�平�𧢲� */
 }
-.grid { 
-    display: grid; 
-    background: #fff; 
+.grid {
+    display: grid;
+    background: #fff;
     width: fit-content; 
     min-width: 100%; 
     padding-bottom: 100px;
@@ -799,7 +806,7 @@ body {
 
 .trial-opt-btn {
     padding: 15px 20px;
-    background: #fdfaf0;
+    background: linear-gradient(var(--excel-tint), var(--excel-tint)), #fdfaf0;
     border: 2px solid #e0d5c1;
     border-radius: 12px;
     text-align: left;
