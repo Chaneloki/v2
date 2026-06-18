@@ -31,6 +31,8 @@ body {
     background: #0b0b14;
     overflow: hidden;
     color: var(--text-main);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 /* --- ��� UI嚗𡁏�瘚詨���聦 --- */
@@ -2323,7 +2325,7 @@ body.mode-mobile #dialogue-box { padding: 14px 6% 60px 6% !important; }
 body.mode-mobile #s-name { font-size: clamp(16px, 4.5vw, 22px) !important; padding-left: 12px !important; border-left-width: 6px !important; }
 body.mode-mobile #s-text { font-size: clamp(14px, 4vw, 20px) !important; line-height: 1.5 !important; }
 /* 手機橫向：sidebar 保持左側窄欄（不要 width:100% 否則把格子推走）*/
-body.mode-mobile #left-sidebar { min-width: 220px !important; max-width: 40vw !important; width: 35vw !important; padding: 8px 10px !important; flex-direction: column !important; border-right: 2px solid var(--excel-green) !important; border-bottom: none !important; overflow-y: auto !important; max-height: 100% !important; }
+body.mode-mobile #left-sidebar { min-width: 300px !important; max-width: 420px !important; width: 38vw !important; padding: 8px 10px !important; flex-direction: column !important; border-right: 2px solid var(--excel-green) !important; border-bottom: none !important; overflow-y: auto !important; max-height: 100% !important; }
 body.mode-mobile #elf-img { width: 50px !important; }
 body.mode-mobile #elf-bubble { min-height: 0 !important; max-height: 38vh !important; overflow-y: auto !important; padding: 6px 10px !important; }
 body.mode-mobile #e-t { font-size: 13px !important; line-height: 1.4 !important; }
