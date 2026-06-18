@@ -2358,7 +2358,7 @@ body.mode-mobile #task-body { font-size: 0.75rem !important; line-height: 1.4 !i
 body.mode-mobile #dialogue-box { min-height: 0 !important; max-height: 42vh !important; padding: 10px 5% 14px 5% !important; overflow-y: auto !important; }
 body.mode-mobile #s-name { font-size: clamp(14px, 4vw, 20px) !important; margin-bottom: 6px !important; padding-left: 10px !important; border-left-width: 5px !important; }
 body.mode-mobile #s-text { font-size: clamp(13px, 3.5vw, 18px) !important; line-height: 1.45 !important; }
-body.mode-mobile #story-stage .char-container:not(#main-char-container) { width: 1000% !important; left: 50% !important; transform: translateX(-50%) scale(1.4) !important; transform-origin: bottom center !important; }
+body.mode-mobile .char-container { width: 1000% !important; height: 100vh !important; }
 body.mode-mobile #main-char-container { left: 7% !important; transform: translateX(-50%) scale(0.5) !important; }
 /* [Mobile Batch3 2026-06-18] RPG ensemble 上方對話框手機版加寬 */
 body.mode-mobile #story-stage.rpg-ensemble + #dialogue-box { width: 92% !important; left: 4% !important; padding: 14px 20px !important; top: 40px !important; }
