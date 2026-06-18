@@ -55,7 +55,7 @@ window.phoneHelper = (function () {
                 'background:linear-gradient(135deg,rgba(33,115,70,0.65),rgba(33,115,70,0.45));' +
                 'border:2px solid rgba(33,115,70,0.85);border-radius:30px;color:#fff;' +
                 'font-size:clamp(0.85rem,2vw,1rem);font-weight:700;letter-spacing:1px;cursor:pointer;' +
-                'transition:background 0.2s;white-space:normal;'>好的，示範給我看！</button>' +
+                'transition:background 0.2s;white-space:normal;">好的，示範給我看！</button>' +
             '</div>';
         document.body.appendChild(_dom.bubble);
 
