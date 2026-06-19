@@ -969,11 +969,37 @@ window.phoneHelper = (function () {
                 : null;
             if (window.gridRenderer) window.gridRenderer.render();
 
-            /* 捲動到第一個空格所在位置，先讓游標停在這裡。
-               alignColLeft + pinTop：把任務欄（E/F）帶到「左上角 A1 區」——
-               欄靠最左、垂直釘在最頂端（標題列「報到日期/戶號」+ 第一個空格都在最上方），
-               玩家才看得到示範。 */
-            if (cellId) _scrollToCell(cellId, true, true);
+            /* [修復 2026-06-19] 直接同步捲動：把任務欄（E/F）帶到「左上角 A1 位置」。
+               scrollTop=0（釘頂端）+ scrollLeft=targetCol*colWidth（欄貼最左）。
+               不依賴 _scrollToCell 的 rAF 微調，確保立即生效，
+               不被後續步驟 9b 的捲動干擾（原 _scrollToCell 有 rAF 非同步，
+               步驟 9b 若搶先執行會破壞 scrollLeft，令 E/F 欄無法貼到左邊界）。 */
+            (function () {
+                var wr = document.getElementById('wrapper');
+                if (!wr) return;
+                var colW = (window.gridRenderer && window.gridRenderer.colWidth) || 150;
+                var prevBeh = wr.style.scrollBehavior;
+                wr.style.scrollBehavior = 'auto';
+                wr.scrollTop  = 0;
+                wr.scrollLeft = targetCol * colW;
+                if (window.gridRenderer) {
+                    window.gridRenderer.lastScrollTop = 0;
+                    window.gridRenderer.render();
+                }
+                /* 渲染後用真實 rect 微調，確保 E/F 欄左邊界完全貼到 wrapper 左邊界 */
+                requestAnimationFrame(function () {
+                    var cell = document.getElementById(cellId);
+                    if (cell) {
+                        var cr  = cell.getBoundingClientRect();
+                        var wrR = wr.getBoundingClientRect();
+                        if (cr.left > wrR.left + 2) {
+                            wr.scrollLeft = Math.max(0, wr.scrollLeft + (cr.left - wrR.left));
+                        }
+                    }
+                    wr.scrollTop = 0;  /* 保底：再次釘頂端 */
+                    wr.style.scrollBehavior = prevBeh;
+                });
+            })();
         }, 5600);
 
         /* === 步驟 9b (6200ms)：畫面跟隨捲動 → 帶玩家看過整段選取範圍（捲到最後一個空格） ===
@@ -989,13 +1015,41 @@ window.phoneHelper = (function () {
             }
         }, 6200);
 
-        /* === 步驟 9c (7200ms)：捲回第一個空格，準備示範 =↑ === */
+        /* === 步驟 9c (7200ms)：捲回第一個空格（E/F 欄貼左 + 頂端），準備示範 =↑ === */
         setTimeout(function () {
             _hideKeyHint();
             if (cellId) {
-                _scrollToCell(cellId, true, true); // 回到左上角 A1 區（欄最左 + 釘頂端）
-                var rect0 = _cellRect(cellId);
-                if (rect0) _showCursor(rect0.left + rect0.width / 2, rect0.top + rect0.height / 2);
+                /* [修復 2026-06-19] 同步捲回左上角，游標定位移進 rAF 確保渲染完成後 rect 才準確。
+                   原寫法：_scrollToCell 後立即 _cellRect，但 _scrollToCell 的微調在 rAF 裡，
+                   此時 cell 位置尚未更新，游標會定位到錯誤座標（舊位置）。 */
+                var wr = document.getElementById('wrapper');
+                if (wr) {
+                    var colW = (window.gridRenderer && window.gridRenderer.colWidth) || 150;
+                    var prevBeh = wr.style.scrollBehavior;
+                    wr.style.scrollBehavior = 'auto';
+                    wr.scrollTop  = 0;
+                    wr.scrollLeft = targetCol * colW;
+                    if (window.gridRenderer) {
+                        window.gridRenderer.lastScrollTop = 0;
+                        window.gridRenderer.render();
+                    }
+                    /* 渲染後微調 + 游標定位（在同一 rAF 確保座標已更新） */
+                    requestAnimationFrame(function () {
+                        var cell = document.getElementById(cellId);
+                        if (cell) {
+                            var cr  = cell.getBoundingClientRect();
+                            var wrR = wr.getBoundingClientRect();
+                            if (cr.left > wrR.left + 2) {
+                                wr.scrollLeft = Math.max(0, wr.scrollLeft + (cr.left - wrR.left));
+                            }
+                            wr.scrollTop = 0;
+                            /* 游標定位到第一個空格（使用更新後的真實 rect） */
+                            var cr2 = cell.getBoundingClientRect();
+                            _showCursor(cr2.left + cr2.width / 2, cr2.top + cr2.height / 2);
+                        }
+                        wr.style.scrollBehavior = prevBeh;
+                    });
+                }
             }
         }, 7200);
 

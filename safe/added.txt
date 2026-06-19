@@ -1,3 +1,33 @@
+[2026-06-19 補3] CTRL_ENTER_FILL 捲動可靠性修復 (Scroll Reliability Fix)
+- 檔案：v2/code/phone_helper.js [MODIFY]
+  根因：步驟 9 和 9c 原本用 _scrollToCell(cellId, true, true) 把 E/F 欄帶到左上角，
+  但 _scrollToCell 內部的 rAF 微調是非同步的（setTimeout + requestAnimationFrame），
+  步驟 9b (6200ms) 的捲動若在 rAF 之後才完成，會覆蓋 scrollLeft，
+  導致步驟 9c 再呼叫 _scrollToCell 時 rAF 微調又被另一個 rAF 干擾，
+  游標也因為在 rAF 外立即呼叫 _cellRect 導致取到舊位置（scroll 未完成時的舊 rect）。
+  修復1 (步驟 9 / 5600ms)：改為直接同步 wrapper.scrollBehavior='auto' →
+    scrollTop=0 + scrollLeft=targetCol*colWidth → gridRenderer.render()，
+    rAF 內做 E/F 欄左緣微調 + 再次 scrollTop=0 保底，不再依賴 _scrollToCell。
+  修復2 (步驟 9c / 7200ms)：同上同步捲動方式，並把游標定位（_showCursor）
+    移進同一個 rAF callback（使用渲染完成後的真實 rect），解決游標座標錯誤問題。
+  注意：步驟 9b 的「帶玩家看全部空格 ↓」維持原本 _scrollToCell(lastCellId, true)，
+    只有「回到左上角」的步驟 9/9c 改為同步版本。
+
+[2026-06-19] RPG 模式主角 Spritesheet 整合 (Main Spritesheet Integration)
+- 檔案：v2/rpg/charater/main_sprite.png [NEW - 複製自]
+  來源：NPC插件青春rmversion/AI资源库/一图全动作/main/sprite.png
+  格式：yituquan_v1，12欄 x 6行，每幀 21x42px
+  包含動畫：idle_down/walk_down/idle_left/walk_left/walk_up/run_down 等
+- 檔案：v2/rpg/rpg_sample.html [MODIFY]
+  舊系統：每動作獨立 PNG（main down left.png 等 8 張），stepCounter 手動切幀
+  新系統：CSS Spritesheet，background-position 偏移切幀
+  新增 SPRITE_CONFIG 常數（含 animations 定義表）
+  新增 animState 物件（currentAnim / frameIndex / frameTimer）
+  新增 updateSprite(animName) 函數：自動計算 bx/by，右方向用 scaleX(-1) 翻轉
+  主角尺寸：63x126px（原始 21x42 放大 3 倍），image-rendering:pixelated 保留像素感
+  碰撞判定更新為對應新尺寸（31/63）
+  gameState 移除舊 step/stepCounter，加入 isMoving 布林旗標
+
 [2026-06-19] Ch3/3.5 手機助理 _scrollToCell 虛擬渲染捲動失效修復 (Phone Helper Virtual-Scroll Fix)
 - code/phone_helper.js [MODIFY]
   真正根因：ch3/ch3.5 格線採用「縱向虛擬渲染」(render.js render() 用 scrollTop 算
