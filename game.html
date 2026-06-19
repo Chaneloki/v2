@@ -2149,6 +2149,36 @@
             };
         })();
 
+        // [Fix 2026-06-19] iOS Safari: native range input touch is unreliable inside scroll containers.
+        // Manually calculate value from touch position and dispatch synthetic input/change events.
+        function patchRangeTouch(input) {
+            if (!input || input._touchPatched) return;
+            input._touchPatched = true;
+            function valFromTouch(e) {
+                const touch = e.touches[0] || e.changedTouches[0];
+                const rect  = input.getBoundingClientRect();
+                const min   = parseFloat(input.min)  || 0;
+                const max   = parseFloat(input.max)  || 1;
+                const step  = parseFloat(input.step) || 0.01;
+                const ratio = Math.min(1, Math.max(0, (touch.clientX - rect.left) / rect.width));
+                let v = min + ratio * (max - min);
+                v = Math.round(v / step) * step;
+                return Math.min(max, Math.max(min, parseFloat(v.toFixed(10))));
+            }
+            input.addEventListener('touchstart', function(e){ e.preventDefault(); }, { passive: false });
+            input.addEventListener('touchmove',  function(e){
+                e.preventDefault();
+                input.value = valFromTouch(e);
+                input.dispatchEvent(new Event('input',  { bubbles: true }));
+            }, { passive: false });
+            input.addEventListener('touchend', function(e){
+                e.preventDefault();
+                input.value = valFromTouch(e);
+                input.dispatchEvent(new Event('input',  { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }, { passive: false });
+        }
+
         // Restore on load
         window.addEventListener('load', function(){
             const bgmSaved     = parseFloat(localStorage.getItem(LS_BGM));
@@ -2161,6 +2191,10 @@
                 const t = JSON.parse(localStorage.getItem(LS_THEME));
                 if (t && t.color) applyTheme(t.color, t.light);
             } catch(e) {}
+            // Patch range sliders for mobile touch
+            ['vol-bgm','vol-se','vol-sidebar'].forEach(function(id){
+                patchRangeTouch(document.getElementById(id));
+            });
         });
 
         return {
