@@ -683,7 +683,8 @@
                 </label>
                 <input id="vol-bgm" type="range" min="0" max="1" step="0.05"
                     style="width:100%;accent-color:#4a90d9;cursor:pointer;"
-                    oninput="window.volModal.setBGM(this.value)">
+                    oninput="window.volModal.setBGM(this.value)"
+                    onchange="window.volModal.setBGM(this.value)">
             </div>
 
             <!-- SE 音量 -->
@@ -693,7 +694,8 @@
                 </label>
                 <input id="vol-se" type="range" min="0" max="1" step="0.05"
                     style="width:100%;accent-color:#4a90d9;cursor:pointer;"
-                    oninput="window.volModal.setSE(this.value)">
+                    oninput="window.volModal.setSE(this.value)"
+                    onchange="window.volModal.setSE(this.value)">
             </div>
 
             <!-- 📐 側欄寬度 -->
@@ -1701,14 +1703,14 @@
     <script src="code/ui_v2_core.js?v=1781286453925"></script>
     <script src="code/ui_v2_story.js?v=1781610000000"></script>
     <script src="code/ui_v2_audio.js?v=1781286453925"></script>
-    <script src="code/ui_v2_menus.js?v=1781286453925"></script>
+    <script src="code/ui_v2_menus.js?v=1781800000001"></script>
     <script src="code/ui_dialogs.js?v=1781286453925"></script>
     <script src="code/ui_ribbon.js?v=1781286453925"></script>
     <script src="code/ui_dev.js?v=1781286453925"></script>
     <script src="code/ext_blur.js?v=1781286453925"></script>
     <script src="code/render.js?v=1781610000001"></script>
     <!-- [手機助理 2026-06-19] -->
-    <script src="code/phone_helper.js?v=1781700000000"></script>
+    <script src="code/phone_helper.js?v=1781800000002"></script>
 
     <script>
         window.addEventListener('load', () => {
@@ -2101,6 +2103,15 @@
             if(sl)  sl.value = v;
         }
 
+        // [Fix 2026-06-19] 強制將音量設置立即應用到正在播放的音頻（手機模式滑桿修復）
+        function forceApplyVolumes(){
+            const a = getBGMEl();
+            const bgmSaved = parseFloat(localStorage.getItem(LS_BGM));
+            const seSaved = parseFloat(localStorage.getItem(LS_SE));
+            if(a && !isNaN(bgmSaved)) a.volume = bgmSaved;
+            if(!isNaN(seSaved)) window._seVol = seSaved;
+        }
+
         // Patch playBGM to re-apply saved volume after it hardcodes 0.3
         (function patchPlayBGM(){
             const orig = UIManager.prototype.playBGM;
@@ -2161,8 +2172,8 @@
                 const modal = document.getElementById('vol-modal');
                 if(modal) modal.style.display = 'none';
             },
-            setBGM(v){ applyBGM(v); },
-            setSE(v){  applySE(v);  },
+            setBGM(v){ applyBGM(v); forceApplyVolumes(); },
+            setSE(v){  applySE(v); forceApplyVolumes(); },
             setSidebarW(v){ applySidebarW(v); },
             resetTheme(){
                 applyTheme('#217346', '#2da164');

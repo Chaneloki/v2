@@ -628,6 +628,10 @@ UIManager.prototype.finishStoryGroup = function() {
         if (type === 'SEGMENT') {
             this.hideOverlay();
 
+            /* 移除 in-story 標記，讓 phone_helper MutationObserver 可正確偵測故事結束 */
+            const gameMainEl = document.getElementById('game-main');
+            if (gameMainEl) gameMainEl.classList.remove('in-story');
+
             const elfImg = document.getElementById('elf-img');
             if (elfImg) {
                 elfImg.style.transition = 'opacity 0.2s';

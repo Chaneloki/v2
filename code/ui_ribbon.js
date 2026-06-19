@@ -112,6 +112,7 @@ UIManager.prototype._createRibbonBtn = function(btnId, skillId, container) {
         children.push(el('span', { innerText: btnLabel }));
 
         const btn = el('button', {
+            id: btnId,
             className: `ribbon-btn ${isAdvFilter ? 'medium-horizontal' : 'big'}`,
             onclick: (e) => this.triggerAction(btnId, e.currentTarget)
         }, children);

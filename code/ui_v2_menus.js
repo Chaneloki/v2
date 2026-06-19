@@ -97,17 +97,68 @@ UIManager.prototype.closeSaveLoadMenu = function() {
     }, 200);
 };
 
+/**
+ * [Fix 2026-06-19] 自訂頁內確認對話框（取代原生 confirm）。
+ * 原生 window.confirm() 在 Chrome 會強制退出全螢幕，無法在之後可靠地復原
+ * （瀏覽器不把對話框關閉視為使用者手勢）。改用此頁內彈窗即可完全避免退出全螢幕。
+ * @returns {Promise<boolean>}
+ */
+UIManager.prototype.uiConfirm = function(message) {
+    return new Promise((resolve) => {
+        let modal = document.getElementById('ui-confirm-modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'ui-confirm-modal';
+            modal.style.cssText =
+                'display:none;position:fixed;inset:0;z-index:30000;' +
+                'background:rgba(0,0,0,0.7);align-items:center;justify-content:center;';
+            modal.innerHTML =
+                '<div style="background:linear-gradient(145deg,#1a0f0a,#2a1a10);' +
+                'border:2px solid rgba(255,215,0,0.6);border-radius:14px;padding:28px 26px;' +
+                'max-width:min(420px,90vw);box-shadow:0 0 40px rgba(0,0,0,0.7);text-align:center;">' +
+                '<div id="ui-confirm-msg" style="color:#e8d5a3;font-size:1rem;line-height:1.7;' +
+                'margin-bottom:24px;white-space:pre-line;"></div>' +
+                '<div style="display:flex;gap:14px;justify-content:center;">' +
+                '<button id="ui-confirm-ok" style="padding:10px 28px;border-radius:8px;cursor:pointer;' +
+                'border:1px solid rgba(255,215,0,0.6);background:rgba(255,215,0,0.18);color:#ffd700;' +
+                'font-size:0.95rem;font-weight:700;letter-spacing:1px;">確定</button>' +
+                '<button id="ui-confirm-cancel" style="padding:10px 28px;border-radius:8px;cursor:pointer;' +
+                'border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:#ccc;' +
+                'font-size:0.95rem;letter-spacing:1px;">取消</button>' +
+                '</div></div>';
+            document.body.appendChild(modal);
+        }
+        document.getElementById('ui-confirm-msg').textContent = message;
+        modal.style.display = 'flex';
+
+        const okBtn = document.getElementById('ui-confirm-ok');
+        const cancelBtn = document.getElementById('ui-confirm-cancel');
+        const cleanup = (result) => {
+            modal.style.display = 'none';
+            okBtn.onclick = null;
+            cancelBtn.onclick = null;
+            resolve(result);
+        };
+        okBtn.onclick = () => cleanup(true);
+        cancelBtn.onclick = () => cleanup(false);
+    });
+};
+
 UIManager.prototype.handleSaveLoadClick = function(slot) {
     if(this.slMode === 'save') {
         const meta = window.orchestrator.getSaveMeta();
         const hasData = meta[slot] !== null;
-        if(!hasData || confirm(`確定要儲存進度到 [${slot}] 嗎？這將會覆蓋原本的進度。`)) {
+        const proceed = (ok) => {
+            if (!ok) return;
             window.orchestrator.saveGame(slot);
             window.uiManager.showMagicToast('手動存檔成功！', 'success');
             this.closeSaveLoadMenu();
-        }
+        };
+        if (!hasData) { proceed(true); return; }
+        this.uiConfirm(`確定要儲存進度到 [${slot}] 嗎？\n這將會覆蓋原本的進度。`).then(proceed);
     } else {
-        if(confirm(`確定要讀取 [${slot}] 的進度嗎？未儲存的當前進度將會遺失。`)) {
+        this.uiConfirm(`確定要讀取 [${slot}] 的進度嗎？\n未儲存的當前進度將會遺失。`).then((ok) => {
+            if (!ok) return;
             window.orchestrator.loadGame(slot).then(success => {
                 if(success) {
                     const titleScreen = document.getElementById('title-screen-overlay');
@@ -118,7 +169,7 @@ UIManager.prototype.handleSaveLoadClick = function(slot) {
                 }
             });
             this.closeSaveLoadMenu();
-        }
+        });
     }
 };
 

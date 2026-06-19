@@ -1,3 +1,18 @@
+[2026-06-19] 手機助理 Ch2 動畫修正 (Phone Helper Ch2 fix)
+- code/phone_helper.js [MODIFY]
+  問題1：Ch2 範圍選取動畫 (_animAllBorders / _animFillColor / _animFormatPainter /
+    _animCustomFormat) 原本在游標一出現就立刻設好整個 selectedRange，導致整片格子
+    瞬間反白、之後游標才「假裝」拖曳。改為比照 _animMergeCenter：先選單一起始格，
+    游標拖到終點格後才展開 selectedRange，視覺上才是真的由助理拖曳完成。
+  問題2：_animCustomFormat 原本「跳過右鍵選單，直接開啟對話框」，現改為真正呼叫
+    window.uiManager.showContextMenu(x, y) 叫出 #context-menu 右鍵選單，游標移到
+    「設定儲存格格式」項並點擊 → hideContextMenu() + openFormatDialog('number')。
+    後續確定鈕步驟時間軸由 2700/3300ms 順延至 3900/4500ms。
+  補強：游標有 0.55s CSS 過渡，原本「展開範圍」與「移動游標」在同一 setTimeout 內，
+    導致反白仍比游標快出現。改為把 selectedRange 展開放進巢狀 setTimeout(560ms)，
+    等游標真的滑到終點格後才反白；受影響的後續步驟時間軸一併順延避免重疊
+    (AllBorders / FillColor / FormatPainter / CustomFormat)。
+
 [2026-06-19] 手機助理系統 (Phone Helper System)
 - code/phone_helper.js [NEW]
   window.phoneHelper 模組。偵測手機模式下 5 個不可觸控的動作：
