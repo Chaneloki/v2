@@ -1,88 +1,592 @@
-﻿<!DOCTYPE html>
-<html lang="zh-TW">
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>閰衣?銵函?銵之??- 撖行擳???/title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>試算表魔法冒險 - 實戰魔導書</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ???函???畾見撘???*/
+        /* 技能書獨立頁面美化樣式 */
         body {
             margin: 0; padding: 0;
-            background: radial-gradient(circle at center, #1e1e2e 0%, #0b0b14 100%);
+            background: radial-gradient(circle at center, #fbf8f2 0%, #dfd4be 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 100vh; overflow: hidden;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Serif TC', serif;
+            color: #3c3020;
         }
-        
-        .standalone-grimoire {
+
+        /* 頂部返回按鈕 */
+        .return-btn {
+            position: absolute; top: 16px; right: 28px;
+            padding: 8px 20px; background: rgba(140, 98, 57, 0.1);
+            color: #8c6239; border: 1px solid rgba(140, 98, 57, 0.4); border-radius: 20px;
+            font-weight: bold; cursor: pointer; text-decoration: none;
+            transition: all 0.22s; z-index: 100;
+            font-size: 0.88rem;
+            backdrop-filter: blur(10px);
+        }
+        .return-btn:hover { background: #8c6239; color: #fff; box-shadow: 0 0 15px rgba(140, 98, 57, 0.3); }
+
+        .grimoire-layout.standalone-grimoire {
             width: 95vw !important;
             height: 90vh !important;
             max-width: 1400px !important;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6) !important;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(253, 251, 245, 0.98) !important;
+            border: 2px solid rgba(192, 142, 64, 0.45) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 20px 60px rgba(110, 80, 40, 0.15) !important;
+            overflow: hidden !important;
+            display: flex;
+            position: relative;
         }
 
-        .return-btn {
-            position: absolute; top: 20px; right: 30px;
-            padding: 10px 20px; background: rgba(255, 255, 255, 0.1);
-            color: #ffd700; border: 1px solid #ffd700; border-radius: 20px;
-            font-weight: bold; cursor: pointer; text-decoration: none;
-            transition: all 0.2s; z-index: 100;
+        /* 背景水彩層 */
+        .grimoire-bg-overlay {
+            position: absolute; inset: 0;
+            background: url('BG/intro/2_bg.png') center/cover no-repeat;
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+            filter: grayscale(20%) blur(3px);
         }
-        .return-btn:hover { background: #ffd700; color: #000; }
+
+        .grimoire-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: transparent !important;
+            border-right: none !important;
+            z-index: 1;
+            position: relative;
+        }
+
+        #s-header {
+            padding: 12px 30px !important;
+            background: rgba(245, 238, 222, 0.6) !important;
+            border-bottom: 1px solid rgba(192, 142, 64, 0.2) !important;
+        }
+        .header-main-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #s-header h3 {
+            margin: 0;
+            font-size: 1.35rem;
+            color: #8c6239;
+            font-family: 'Noto Serif TC', serif;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .grimoire-subtitle {
+            margin: 2px 0 0 0;
+            font-size: 0.8rem;
+            color: #6e5e49;
+        }
+        #progress-text {
+            font-size: 0.85rem;
+            color: #b37400;
+            font-weight: bold;
+        }
+
+        /* 控制列：合併分頁與搜尋 */
+        .grimoire-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(245, 238, 222, 0.45) !important;
+            border-bottom: 1px solid rgba(192, 142, 64, 0.2) !important;
+            padding: 6px 30px !important;
+            gap: 20px;
+            z-index: 10;
+        }
+        .grimoire-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        .skill-tab {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(192, 142, 64, 0.25);
+            border-radius: 8px;
+            cursor: pointer;
+            color: #6e5e49;
+            transition: all 0.2s;
+        }
+        .skill-tab:hover {
+            background: rgba(192, 142, 64, 0.08);
+            border-color: rgba(192, 142, 64, 0.5);
+            color: #554433;
+        }
+        .skill-tab.active {
+            background: rgba(192, 142, 64, 0.18);
+            border-color: #8c6239;
+            color: #8c6239;
+            box-shadow: 0 0 8px rgba(192, 142, 64, 0.1);
+        }
+        .tab-icon { font-size: 1rem; }
+        .tab-text { font-size: 0.8rem; font-weight: bold; }
+
+        /* 搜尋欄 */
+        #s-search-box {
+            flex: 1;
+            max-width: 320px;
+        }
+        #skill-search {
+            width: 100%;
+            padding: 6px 14px;
+            border: 1px solid rgba(192, 142, 64, 0.3);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+            color: #3c3020;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        #skill-search::placeholder {
+            color: rgba(60, 48, 32, 0.5);
+        }
+        #skill-search:focus {
+            border-color: #8c6239;
+            box-shadow: 0 0 10px rgba(192, 142, 64, 0.15);
+        }
+
+        /* 樹形畫布區域 */
+        .tree-viewport-container {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* 樹狀分層背景 */
+        .tree-grid-background {
+            position: absolute; inset: 0;
+            display: flex;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .tree-grid-col {
+            flex: 1;
+            border-right: 1px dashed rgba(192, 142, 64, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 8px;
+            box-sizing: border-box;
+        }
+        .tree-grid-col-title {
+            font-size: 11px;
+            color: rgba(140, 98, 57, 0.75);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tree-canvas {
+            position: relative;
+            width: 1300px;
+            height: 480px;
+            z-index: 1;
+        }
+
+        /* SVG 連線層 */
+        .tree-connections-svg {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .tree-link {
+            fill: none;
+            stroke: rgba(192, 142, 64, 0.25);
+            stroke-width: 3;
+            transition: stroke 0.22s, stroke-width 0.22s, filter 0.22s;
+        }
+        .tree-link.unlocked {
+            stroke: rgba(192, 142, 64, 0.55);
+            stroke-width: 3.5;
+        }
+        .tree-link.highlight-upstream {
+            stroke: #b37400;
+            stroke-width: 3.5;
+            filter: drop-shadow(0 0 3px rgba(179, 116, 0, 0.4));
+        }
+        .tree-link.highlight-downstream {
+            stroke: #1e7e34;
+            stroke-width: 3.5;
+            filter: drop-shadow(0 0 3px rgba(30, 126, 52, 0.4));
+        }
+
+        .tree-node-card {
+            position: absolute;
+            width: 120px;
+            height: 52px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f7f3eb 100%);
+            border: 1.5px solid rgba(192, 142, 64, 0.4);
+            box-shadow: 0 4px 12px rgba(110, 80, 40, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-sizing: border-box;
+            z-index: 5;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            user-select: none;
+        }
+        .tree-node-card:hover {
+            transform: scale(1.06) translateY(-2px);
+            border-color: rgba(192, 142, 64, 0.8);
+            box-shadow: 0 8px 24px rgba(192, 142, 64, 0.15);
+        }
+        .tree-node-card.unlocked {
+            background: linear-gradient(135deg, #eaf6ed 0%, #d5eedc 100%) !important;
+            border: 1.8px solid #28a745 !important;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.12) !important;
+        }
+        .tree-node-card.unlocked .node-name-label {
+            color: #155724 !important;
+            text-shadow: none !important;
+        }
+        .tree-node-card.active {
+            border-color: #ff9900 !important;
+            background: linear-gradient(135deg, #fef8eb 0%, #fbe8c5 100%) !important;
+            box-shadow: 0 0 18px rgba(255, 153, 0, 0.3) !important;
+        }
+        .tree-node-card.locked {
+            border-color: rgba(192, 142, 64, 0.3);
+            background: rgba(255, 255, 255, 0.45);
+            opacity: 0.75;
+            border-style: dashed;
+        }
+        .tree-node-card.locked:hover {
+            opacity: 0.90;
+            border-color: rgba(192, 142, 64, 0.6);
+            background: rgba(255, 255, 255, 0.65);
+        }
         
-        /* 靽格迤?瘝? #s-modal 撠?⊥??????見撘?*/
-        .grimoire-close-btn { display: none; }
+        .node-name-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #4e3f2e;
+            text-align: center;
+            line-height: 1.3;
+            margin-bottom: 2px;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .tree-node-card.locked .node-name-label {
+            color: #8a7a66;
+        }
+        .node-badge {
+            font-size: 9px;
+            padding: 1px 6px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #155724;
+            background: rgba(40, 167, 69, 0.12);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+        .tree-node-card.locked .node-badge {
+            display: none;
+        }
+        .node-lock-icon {
+            font-size: 11px;
+            color: #8a7a66;
+            margin-top: 2px;
+            display: none;
+        }
+        .tree-node-card.locked .node-lock-icon {
+            display: block;
+        }
+
+        /* 右側詳情面板 */
+        /* 技能詳情彈窗樣式 */
+        .grimoire-detail-modal {
+            position: absolute !important;
+            inset: 0 !important;
+            background: rgba(60, 50, 40, 0.45) !important;
+            backdrop-filter: blur(8px) !important;
+            display: flex;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 1000 !important;
+            animation: fadeIn 0.25s ease !important;
+        }
+
+        .grimoire-detail-modal-content {
+            width: 480px !important;
+            max-width: 90% !important;
+            max-height: 85% !important;
+            background: rgba(255, 254, 250, 0.98) !important;
+            border: 2px solid rgba(192, 142, 64, 0.5) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 15px 40px rgba(110, 80, 40, 0.25) !important;
+            padding: 30px 25px !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+            animation: zoomIn 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28) !important;
+        }
+
+        .grimoire-detail-modal-close {
+            position: absolute !important;
+            top: 15px !important;
+            right: 15px !important;
+            background: none !important;
+            border: none !important;
+            color: rgba(60, 50, 40, 0.6) !important;
+            font-size: 20px !important;
+            cursor: pointer !important;
+            transition: color 0.18s !important;
+            z-index: 10 !important;
+        }
+
+        .grimoire-detail-modal-close:hover {
+            color: #c08e40 !important;
+        }
+
+        #s-detail-panel {
+            display: flex !important;
+            flex-direction: column !important;
+            overflow-y: auto !important;
+            flex: 1 !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+        .detail-icon {
+            width: 52px; height: 52px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            background: #ffeeb3 !important;
+            color: #7c5210 !important;
+            box-shadow: 0 0 10px rgba(192, 142, 64, 0.2);
+            font-weight: bold;
+        }
+        .detail-title h2 {
+            margin: 0 0 4px 0;
+            font-size: 1.3rem;
+            color: #8c6239;
+            font-family: 'Noto Serif TC', serif;
+            font-weight: 700;
+        }
+        .detail-badge {
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .detail-body { flex: 1; display: flex; flex-direction: column; gap: 18px; }
+        .detail-section {
+            padding: 14px 16px;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+        .detail-section h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.85rem;
+            border-bottom: 1px dashed rgba(60, 50, 40, 0.15);
+            padding-bottom: 6px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .detail-section p {
+            margin: 0;
+            font-size: 0.84rem;
+            line-height: 1.6;
+        }
+
+        /* 痛點色卡 */
+        .pain-point {
+            background: rgba(239, 68, 68, 0.04) !important;
+            border: 1px solid rgba(239, 68, 68, 0.18) !important;
+        }
+        .pain-point h4 { color: #c53030 !important; border-color: rgba(239, 68, 68, 0.1) !important; }
+        .pain-point p { color: #9b1c1c !important; }
+
+        /* 效果與路徑色卡 */
+        .effect {
+            background: rgba(33, 115, 70, 0.04) !important;
+            border: 1px solid rgba(33, 115, 70, 0.18) !important;
+        }
+        .effect h4 { color: #1e7e34 !important; border-color: rgba(33, 115, 70, 0.1) !important; }
+        .effect p { color: #155724 !important; }
+        .spell-shortcut {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.6) !important;
+            border: 1px solid rgba(192, 142, 64, 0.18) !important;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            color: #5c4e3c;
+        }
+        kbd {
+            background: rgba(192, 142, 64, 0.08) !important;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(192, 142, 64, 0.25) !important;
+            border-bottom: 2px solid rgba(192, 142, 64, 0.4) !important;
+            font-weight: bold;
+            color: #7c5210 !important;
+            font-family: inherit;
+        }
+
+        /* 賽爾叮嚀 */
+        .ciel-tips {
+            background: rgba(245, 158, 11, 0.04) !important;
+            border: 1px solid rgba(245, 158, 11, 0.18) !important;
+        }
+        .ciel-tips h4 { color: #b45309 !important; border-color: rgba(245, 158, 11, 0.1) !important; }
+        .ciel-tips p { color: #78350f !important; font-style: italic; }
+
+        /* 技能脈絡關係 */
+        .skill-context-box {
+            background: rgba(245, 240, 230, 0.4) !important;
+            border: 1px solid rgba(192, 142, 64, 0.15) !important;
+        }
+        .skill-context-box h4 { color: #7c6c58 !important; border-color: rgba(192, 142, 64, 0.08) !important; }
+        .context-link {
+            color: #b37400 !important;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+            transition: color 0.18s;
+        }
+        .context-link:hover {
+            color: #e05c00;
+        }
+
+        /* 教學重播按鈕 */
+        .detail-footer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+        .review-btn {
+            width: 100%; padding: 12px;
+            background: linear-gradient(135deg, #e08b2b, #b85c00) !important;
+            color: white !important; border: none; border-radius: 8px;
+            font-size: 0.92rem; font-weight: bold; cursor: pointer;
+            transition: all 0.18s;
+            box-shadow: 0 4px 0 #8c4200 !important;
+        }
+        .review-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #8c4200 !important;
+            filter: brightness(1.08);
+        }
+        .review-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #8c4200 !important;
+        }
+
+        .locked-panel {
+            text-align: center; color: #7c6c58;
+            margin-top: 120px;
+        }
+        .locked-icon { font-size: 3.5rem; margin-bottom: 15px; opacity: 0.7; color: #c08e40; }
+        .locked-panel h3 { font-size: 1.1rem; color: #5c4e3c; margin-bottom: 8px; }
+        .locked-panel p { font-size: 0.8rem; line-height: 1.6; max-width: 80%; margin: 0 auto; }
     </style>
 </head>
 <body>
 
-    <a href="game.html" class="return-btn">?? 餈??銝?</a>
+    <a href="game.html?action=load" class="return-btn">⬅ 返回並讀取記憶 (Load Save)</a>
 
     <div class="grimoire-layout standalone-grimoire" id="s-card">
+        <div class="grimoire-bg-overlay"></div>
+        
         <div class="grimoire-left">
             <div id="s-header">
-                <h3>?? 撖行擳???(Skill Grimoire)</h3>
-                <p class="grimoire-subtitle">暺?雿閫?捱??憿?撠撠??岫蝞”蝳?</p>
-                <div id="progress-text" style="margin-top: 5px; font-weight: bold; color: #2196f3;"></div>
+                <div class="header-main-row">
+                    <h3>📖 實戰魔導書 (Skill Grimoire)</h3>
+                    <div id="progress-text">已領悟技能：0 / 0 (0%)</div>
+                </div>
+                <p class="grimoire-subtitle">以關卡所面臨的實戰難題為導向，尋找對應的試算表解決技能。</p>
             </div>
-            <div id="s-tabs" class="grimoire-tabs">
-                <button class="skill-tab active" onclick="setSkillFilter('all', this)">
-                    <div class="tab-icon">??/div>
-                    <div class="tab-text">?券蝳?</div>
-                </button>
-                <button class="skill-tab" onclick="setSkillFilter('search_move', this)">
-                    <div class="tab-icon">??</div>
-                    <div class="tab-text">?曇???蝘餃?<br><span>(銵典云?瑟銝??</span></div>
-                </button>
-                <button class="skill-tab" onclick="setSkillFilter('org_format', this)">
-                    <div class="tab-icon">?完</div>
-                    <div class="tab-text">?渡?????br><span>(?憭芯???</span></div>
-                </button>
-                <button class="skill-tab" onclick="setSkillFilter('fast_input', this)">
-                    <div class="tab-icon">??/div>
-                    <div class="tab-text">敹恍撓??br><span>(銝??????</span></div>
-                </button>
-                <button class="skill-tab" onclick="setSkillFilter('calc_analyze', this)">
-                    <div class="tab-icon">?妙</div>
-                    <div class="tab-text">??????br><span>(?閬??Ｙ絞閮?)</span></div>
-                </button>
+            
+            <div class="grimoire-controls">
+                <div id="s-tabs" class="grimoire-tabs">
+                    <button class="skill-tab active" onclick="setCategoryFilter('layout', this)">
+                        <div class="tab-icon">📦</div>
+                        <div class="tab-text">版面與可讀性</div>
+                    </button>
+                    <button class="skill-tab" onclick="setCategoryFilter('query', this)">
+                        <div class="tab-icon">🔍</div>
+                        <div class="tab-text">搜尋與檢索</div>
+                    </button>
+                    <button class="skill-tab" onclick="setCategoryFilter('entry', this)">
+                        <div class="tab-icon">⚡</div>
+                        <div class="tab-text">輸入與資料防錯</div>
+                    </button>
+                    <button class="skill-tab" onclick="setCategoryFilter('calc', this)">
+                        <div class="tab-icon">🧮</div>
+                        <div class="tab-text">計算與統計分析</div>
+                    </button>
+                </div>
+                
+                <div id="s-search-box">
+                    <input type="text" id="skill-search" placeholder="輸入關鍵字、操作步驟或技能名稱搜尋..." oninput="renderTree()">
+                </div>
             </div>
-            <div id="s-search-box">
-                <input type="text" id="skill-search" placeholder="頛詨?摮?蝳??迂..." oninput="renderSkillList()">
-            </div>
-            <div id="s-list" class="grimoire-list">
-                <!-- ??賢? JS ???? -->
+            
+            <!-- 滾動樹狀視窗 -->
+            <div class="tree-viewport-container" id="tree-viewport">
+                <div class="tree-grid-background" id="tree-grid-bg">
+                    <!-- 由 JS 動態注入 Tier 分欄背景 -->
+                </div>
+                <div class="tree-canvas" id="tree-canvas-area">
+                    <!-- SVG 連線 -->
+                    <svg class="tree-connections-svg" id="tree-svg"></svg>
+                    <!-- 節點卡片由 JS 動態生成 -->
+                </div>
             </div>
         </div>
-        <div class="grimoire-right" id="s-detail-panel">
-            <!-- 閰喟敦?批捆??JS ???? -->
+        
+        <!-- 技能詳情彈窗 -->
+        <div id="s-detail-modal" class="grimoire-detail-modal" style="display:none">
+            <div class="grimoire-detail-modal-content">
+                <button onclick="closeDetailModal()" class="grimoire-detail-modal-close">✕</button>
+                <div id="s-detail-panel">
+                    <!-- 詳情內容由 JS 動態生成 -->
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 頛???蝭???賢?蝢?-->
+    <!-- 載入所有章節數據以獲取 skillDefs -->
     <script src="chapter/ch1.js"></script>
     <script src="chapter/ch1_5.js"></script>
     <script src="chapter/ch2.js"></script>
@@ -98,15 +602,169 @@
     <script src="chapter/ch7.js"></script>
     <script src="chapter/ch7.5.js"></script>
     <script src="chapter/ch8.js"></script>
+    <script src="chapter/ch8_5.js"></script>
 
     <script>
-        let currentSkillFilter = 'all';
+        // 技能樹結構定義 (對齊實用層級與學習進度)
+        const TreeStructures = {
+            layout: {
+                title: "📦 版面與可讀性難題",
+                subtitle: "解決表格長度過大導致標題消失、欄位錯亂與排版雜亂等閱讀問題。",
+                tiers: ["Tier 1: 核心固定", "Tier 2: 分類結構", "Tier 3: 標題對齊", "Tier 4: 視覺美化", "Tier 5: 快速拓印"],
+                nodes: [
+                    { id: "F", x: 60, y: 140, tier: 1 },
+                    { id: "SWAP", x: 260, y: 60, tier: 2 },
+                    { id: "S", x: 260, y: 220, tier: 2 },
+                    { id: "MERGE_CENTER", x: 460, y: 140, tier: 3 },
+                    { id: "BORDER", x: 660, y: 60, tier: 4 },
+                    { id: "FILL_COLOR", x: 660, y: 220, tier: 4 },
+                    { id: "FORMAT", x: 860, y: 140, tier: 5 }
+                ],
+                connections: [
+                    { from: "F", to: "SWAP" },
+                    { from: "F", to: "S" },
+                    { from: "SWAP", to: "MERGE_CENTER" },
+                    { from: "S", to: "MERGE_CENTER" },
+                    { from: "MERGE_CENTER", to: "BORDER" },
+                    { from: "MERGE_CENTER", to: "FILL_COLOR" },
+                    { from: "BORDER", to: "FORMAT" },
+                    { from: "FILL_COLOR", to: "FORMAT" }
+                ]
+            },
+            query: {
+                title: "🔍 搜尋與檢索難題",
+                subtitle: "在大海撈針的巨量旅客名冊中，精確定位、改寫或篩選符合條件的資料列。",
+                tiers: ["Tier 1: 導航躍遷", "Tier 2: 定位排序", "Tier 3: 批次篩選", "Tier 4: 模糊與多重", "Tier 5: 複雜過濾"],
+                nodes: [
+                    { id: "NAV", x: 60, y: 140, tier: 1 },
+                    { id: "SEARCH", x: 260, y: 60, tier: 2 },
+                    { id: "SORT_SIMPLE", x: 260, y: 220, tier: 2 },
+                    { id: "REPLACE", x: 460, y: 60, tier: 3 },
+                    { id: "FILTER", x: 460, y: 220, tier: 3 },
+                    { id: "FUZZY", x: 660, y: 60, tier: 4 },
+                    { id: "SORT_MULTI", x: 660, y: 155, tier: 4 },
+                    { id: "SORT_CUSTOM", x: 660, y: 250, tier: 4 },
+                    { id: "FILTER_ADV", x: 860, y: 200, tier: 5 }
+                ],
+                connections: [
+                    { from: "NAV", to: "SEARCH" },
+                    { from: "NAV", to: "SORT_SIMPLE" },
+                    { from: "SEARCH", to: "REPLACE" },
+                    { from: "SORT_SIMPLE", to: "FILTER" },
+                    { from: "REPLACE", to: "FUZZY" },
+                    { from: "FILTER", to: "SORT_MULTI" },
+                    { from: "FILTER", to: "SORT_CUSTOM" },
+                    { from: "SORT_MULTI", to: "FILTER_ADV" },
+                    { from: "SORT_CUSTOM", to: "FILTER_ADV" }
+                ]
+            },
+            entry: {
+                title: "⚡ 輸入與資料防錯",
+                subtitle: "解決數據重複輸入手酸、忘記填報日期，以及限制隊友輸入錯誤內容的防錯手段。",
+                tiers: ["Tier 1: 規律生成", "Tier 2: 批量填充", "Tier 3: 規範限制"],
+                nodes: [
+                    { id: "AUTOFILL", x: 60, y: 140, tier: 1 },
+                    { id: "DATE", x: 260, y: 60, tier: 2 },
+                    { id: "EMPTY", x: 260, y: 220, tier: 2 },
+                    { id: "VALIDATION", x: 460, y: 140, tier: 3 }
+                ],
+                connections: [
+                    { from: "AUTOFILL", to: "DATE" },
+                    { from: "AUTOFILL", to: "EMPTY" },
+                    { from: "DATE", to: "VALIDATION" },
+                    { from: "EMPTY", to: "VALIDATION" }
+                ]
+            },
+            calc: {
+                title: "🧮 計算與統計分析",
+                subtitle: "公式賦能，實現多維度求和、排名，以及大容量資料分組與多層條件邏輯判斷。",
+                tiers: ["Tier 1: 啟動", "Tier 2: 相對計算", "Tier 3: 鎖定排名", "Tier 4: 基礎分流", "Tier 5: 複合邏輯", "Tier 6: 分組大綱", "Tier 7: 多維統計"],
+                nodes: [
+                    { id: "FORMULA_BASIC", x: 60, y: 150, tier: 1 },
+                    { id: "REF_RELATIVE", x: 230, y: 40, tier: 2 },
+                    { id: "SUM", x: 230, y: 120, tier: 2 },
+                    { id: "TEXT_TO_NUM", x: 230, y: 200, tier: 2 },
+                    { id: "COMPARE_OP", x: 230, y: 280, tier: 2 },
+                    { id: "REF_ABSOLUTE", x: 400, y: 60, tier: 3 },
+                    { id: "FUNC_SUM_MULTI", x: 400, y: 160, tier: 3 },
+                    { id: "FUNC_RANK", x: 570, y: 60, tier: 4 },
+                    { id: "IF_BASIC", x: 570, y: 180, tier: 4 },
+                    { id: "IFS", x: 740, y: 30, tier: 5 },
+                    { id: "IF_PLUS", x: 740, y: 110, tier: 5 },
+                    { id: "IF_CONCAT", x: 740, y: 190, tier: 5 },
+                    { id: "IF_AND", x: 740, y: 270, tier: 5 },
+                    { id: "SUBTOTAL", x: 910, y: 60, tier: 6 },
+                    { id: "PIVOT_CREATE", x: 910, y: 180, tier: 6 },
+                    { id: "SUBTOTAL_NESTED", x: 1080, y: 60, tier: 7 },
+                    { id: "PIVOT_METHOD", x: 1080, y: 150, tier: 7 },
+                    { id: "PIVOT_GROUP", x: 1080, y: 240, tier: 7 }
+                ],
+                connections: [
+                    { from: "FORMULA_BASIC", to: "REF_RELATIVE" },
+                    { from: "FORMULA_BASIC", to: "SUM" },
+                    { from: "FORMULA_BASIC", to: "TEXT_TO_NUM" },
+                    { from: "FORMULA_BASIC", to: "COMPARE_OP" },
+                    { from: "REF_RELATIVE", to: "REF_ABSOLUTE" },
+                    { from: "SUM", to: "FUNC_SUM_MULTI" },
+                    { from: "REF_ABSOLUTE", to: "IF_BASIC" },
+                    { from: "FUNC_SUM_MULTI", to: "IF_BASIC" },
+                    { from: "IF_BASIC", to: "IFS" },
+                    { from: "IF_BASIC", to: "IF_PLUS" },
+                    { from: "IF_BASIC", to: "IF_CONCAT" },
+                    { from: "IF_BASIC", to: "IF_AND" },
+                    { from: "IFS", to: "SUBTOTAL" },
+                    { from: "IF_PLUS", to: "PIVOT_CREATE" },
+                    { from: "IF_CONCAT", to: "PIVOT_CREATE" },
+                    { from: "IF_AND", to: "PIVOT_CREATE" },
+                    { from: "SUBTOTAL", to: "SUBTOTAL_NESTED" },
+                    { from: "PIVOT_CREATE", to: "PIVOT_METHOD" },
+                    { from: "PIVOT_CREATE", to: "PIVOT_GROUP" }
+                ]
+            }
+        };
+
+        // 賽爾貼心生存指南吐槽庫
+        const CielTipsRegistry = {
+            F: "游標記得點在首列或表格內，不然魔導書抓不到要凍結誰喔！",
+            SWAP: "按住 Shift 的時候一定要看到綠色插入虛線出現再放開，不然會直接覆蓋！",
+            S: "新建立的分頁記得雙擊修改一個好認的名字，免得之後稽查官找不到在哪。",
+            MERGE_CENTER: "合併儲存格後只會保留最左上角那一格的資料，如果裡面都有寫字可別瞎合併！",
+            BORDER: "外框要粗，內線要細。別把整張表塗成黑炭格子，典儀官會嫌棄的！",
+            FILL_COLOR: "底色不要選飽和度太高的亮色，保護一下別人的視網膜，淡雅的淺綠或淺灰才是高級感。",
+            FORMAT: "先選取你的『完美範例』，點擊格式刷，就可以批次將排版拓印到下方所有空白資料列！",
+            NAV: "數據斷層（比如中間有空行）會攔截跳轉，記得多跳幾次直到真正的底端！",
+            SEARCH: "字元拼音或大小寫不同會漏找，點開選項可以設定完全匹配來精確定位。",
+            SORT_SIMPLE: "千萬只選一欄就按排序！系統會提示你要擴充選取範圍，否則會導致男女配對或資料錯移！",
+            REPLACE: "如果不小心在沒有設定尋找範圍時點了全部取代，整張表格的名冊都有可能被你毀掉，記得先按 Ctrl+Z！",
+            FILTER: "篩選隱藏的行並不是刪除，它們只是躲起來了。隨時點擊【清除篩選】即可恢復名冊全貌。",
+            FUZZY: "星號 * 代表任意長度字元，問號 ? 剛好代表一個字元，例如『旅客 3?』能精準抓出 30 到 39 號旅客！",
+            SORT_MULTI: "排序層級的優先順序是從上往下執行的，第一排序條件完全相同時才會執行第二條件！",
+            SORT_CUSTOM: "如果在自訂清單裡打錯了順序字眼（如打成輕症、重症、中症），排序就會完全偏離你的計畫。",
+            FILTER_ADV: "條件區域的表頭必須與主表格完全一致，連空格都不能多，否則進階篩選會無法識別！",
+            AUTOFILL: "選中兩個有規律的格子（如1和2），滑鼠懸停到右下角變成黑色十字點時，點擊並向下拖曳！",
+            DATE: "按 Ctrl + ; 可以快速生成當天日期！記得別在中文輸入法下輸入分號喔，不然魔導書會生氣的！",
+            EMPTY: "定位空格後，不要亂動選取區！在編輯欄直接輸入公式（如 =↑ 複製上列），然後按 Ctrl + Enter 填滿！",
+            VALIDATION: "設定範圍限制時，若輸入了錯誤字元，表格會彈出警告阻止寫入，這可是防隊友手殘的神器！",
+            FORMULA_BASIC: "等號是一切公式的發動咒語。在儲存格寫任何加減乘除前，必須先敲下 = 號！",
+            REF_RELATIVE: "相對引用會跟著你公式的拖曳方向跟著跑。你往下一行，它參照的位置就往下一行，非常聰明！",
+            SUM: "按下 Alt + = 即可一鍵求和。它會聰明地往上或往左自動尋找數字邊界，為你省去打字的麻煩！",
+            REF_ABSOLUTE: "鎖定儲存格的魔法！按一下 F4 鍵，儲存格字母和數字前面就會出現 $ 符號，這樣公式怎麼拖它都不會動！",
+            FUNC_SUM_MULTI: "SUM 函數裡面用英文逗號隔開不同的單格或範圍，它會自動將它們全部加總，實現跳躍求和！",
+            FUNC_RANK: "RANK 函數的第二個範圍參數必須絕對引用（鎖定），否則往下拖曳公式時，對比的範圍會跑位！",
+            IF_BASIC: "IF 的三個參數缺一不可：IF(我的測試條件, 成立時回傳A, 不成立時回傳B)。",
+            IFS: "IFS 是多重條件的最佳選擇。它會由左往右逐一檢查條件，只要有一項成立就停止並傳回結果，注意條件要由嚴格排到寬鬆！",
+            IF_PLUS: "TRUE 乘上任何數字等於該數字本身，FALSE 乘上任何數字等於 0，用這個小算術可以完美省去 IF 嵌套！",
+            PIVOT_CREATE: "選好名冊資料範圍，直接點擊【插入】➜【樞紐分析表】。建立後，把需要歸類的欄位拖進『列』即可！"
+        };
+
+        let currentCategory = 'layout';
         let unlockedSkills = [];
         let allSkillDefs = {};
 
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. ?園??????            if (window.V2_CHAPTERS) {
-                const sortedChapterIds = Object.keys(window.V2_CHAPTERS).sort((a, b) => parseInt(a) - parseInt(b));
+            // 1. 彙整所有章節的 skillDefs 定義
+            if (window.V2_CHAPTERS) {
+                const sortedChapterIds = Object.keys(window.V2_CHAPTERS).sort((a, b) => parseFloat(a) - parseFloat(b));
                 sortedChapterIds.forEach(chId => {
                     const ch = window.V2_CHAPTERS[chId];
                     if (ch && ch.skillDefs) {
@@ -115,12 +773,12 @@
                 });
             }
 
-            // 2. 敺?localStorage 霈?圾?脣漲 (?舀?啁? V2 meta 蝯?)
+            // 2. 從 localStorage 載入解鎖紀錄
             const metaRaw = localStorage.getItem('magic_excel_v2_meta');
             if (metaRaw) {
                 try {
                     const meta = JSON.parse(metaRaw);
-                    // ???餈?甈⊿??拍?摮?瑽?                    const lastSlot = meta.lastPlayedSlot || 'auto';
+                    const lastSlot = meta.lastPlayedSlot || 'auto';
                     const saveKey = lastSlot === 'auto' ? 'magic_excel_v2_save' : `magic_excel_v2_save_${lastSlot}`;
                     const saveRaw = localStorage.getItem(saveKey);
                     if (saveRaw) {
@@ -132,7 +790,7 @@
                 } catch(e) { console.error("Error loading save:", e); }
             }
 
-            // Fallback (憒?瘝? meta)
+            // Fallback
             if (unlockedSkills.length === 0) {
                 ['auto', 'manual_1', 'manual_2'].forEach(slot => {
                     const key = slot === 'auto' ? 'magic_excel_v2_save' : `magic_excel_v2_save_${slot}`;
@@ -148,128 +806,362 @@
                 });
             }
 
-            document.getElementById('progress-text').innerText = `?桀?撌脤???${unlockedSkills.length} / ${Object.keys(allSkillDefs).length} ??銵;
+            // 更新進度條文字
+            const totalCount = Object.keys(allSkillDefs).length || 24;
+            const progressPercent = Math.round((unlockedSkills.length / totalCount) * 100);
+            document.getElementById('progress-text').innerText = `已領悟技能：${unlockedSkills.length} / ${totalCount} (${progressPercent}%)`;
 
-            renderSkillList();
+            // 點擊彈窗背景關閉彈窗
+            const modal = document.getElementById('s-detail-modal');
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeDetailModal();
+                    }
+                });
+            }
+
+            // 預設渲染版面與可讀性技能樹
+            setCategoryFilter('layout', document.querySelector('.skill-tab'));
         });
 
-        function setSkillFilter(cat, btn) {
-            currentSkillFilter = cat;
+        function setCategoryFilter(cat, btn) {
+            currentCategory = cat;
             document.querySelectorAll('.skill-tab').forEach(t => t.classList.remove('active'));
             if (btn) btn.classList.add('active');
-            renderSkillList();
+            renderTree();
         }
 
-        function renderSkillList() {
-            const container = document.getElementById('s-list');
-            const detailPanel = document.getElementById('s-detail-panel');
+        // 渲染技能樹與 SVG 連線
+        function renderTree() {
+            const canvasArea = document.getElementById('tree-canvas-area');
+            const svg = document.getElementById('tree-svg');
+            const bg = document.getElementById('tree-grid-bg');
             const searchVal = document.getElementById('skill-search').value.toLowerCase();
             
-            const getMappedCategory = (skillId, originalCat) => {
-                const fastInputSkills = ['AUTOFILL', 'VALIDATION', 'insert_row', 'insert_col'];
-                if (fastInputSkills.includes(skillId)) return 'fast_input';
-                if (['move', 'view'].includes(originalCat)) return 'search_move';
-                if (['org', 'insert'].includes(originalCat)) return 'org_format';
-                if (['data', 'formula', 'logic'].includes(originalCat)) return 'calc_analyze';
-                return 'search_move';
-            };
+            const treeCfg = TreeStructures[currentCategory];
+            if (!treeCfg) return;
 
-            const catStyles = {
-                'search_move': { color: '#10ac84', icon: '??', name: '?曇???蝘餃?' },
-                'org_format': { color: '#2e86de', icon: '?完', name: '?渡????? },
-                'fast_input': { color: '#feca57', icon: '??, name: '敹恍撓?? },
-                'calc_analyze': { color: '#ee5253', icon: '?妙', name: '?????? }
-            };
+            // 1. 調整畫布尺寸適應層級數量
+            const totalTiers = treeCfg.tiers.length;
+            const tierWidth = (currentCategory === 'calc') ? 170 : 200;
+            const canvasWidth = totalTiers * tierWidth + 80;
+            canvasArea.style.width = `${canvasWidth}px`;
+            bg.style.width = `${canvasWidth}px`;
+            
+            // 動態計算高度防止底部節點卡片被裁切
+            const maxY = Math.max(...treeCfg.nodes.map(n => n.y));
+            const canvasHeight = Math.max(340, maxY + 75);
+            canvasArea.style.height = `${canvasHeight}px`;
 
-            const allSkillIds = Object.keys(allSkillDefs);
-            const filteredIds = allSkillIds.filter(id => {
-                const s = allSkillDefs[id];
-                if (!s) return false;
-                const mappedCat = getMappedCategory(id, s.cat);
-                const matchCat = (currentSkillFilter === 'all' || mappedCat === currentSkillFilter);
-                const matchSearch = (s.n.toLowerCase().includes(searchVal) || (s.d && s.d.toLowerCase().includes(searchVal)));
-                return matchCat && matchSearch;
+            // 2. 渲染背景 Tier 分欄
+            bg.innerHTML = '';
+            for(let i=0; i<totalTiers; i++) {
+                const col = document.createElement('div');
+                col.className = 'tree-grid-col';
+                col.style.width = `${tierWidth}px`;
+                col.style.flex = 'none';
+                col.innerHTML = `<span class="tree-grid-col-title">${treeCfg.tiers[i]}</span>`;
+                bg.appendChild(col);
+            }
+
+            // 3. 清理舊卡片 (保留 SVG)
+            canvasArea.querySelectorAll('.tree-node-card').forEach(n => n.remove());
+            svg.innerHTML = '';
+
+            const nodeWidth = 120;
+            const nodeHeight = 52;
+
+            // 4. 繪製卡片節點
+            treeCfg.nodes.forEach(node => {
+                const s = allSkillDefs[node.id];
+                const isUnlocked = unlockedSkills.includes(node.id);
+                
+                // 搜尋過濾條件
+                let matchesSearch = true;
+                if (searchVal) {
+                    matchesSearch = s && (s.n.toLowerCase().includes(searchVal) || (s.d && s.d.toLowerCase().includes(searchVal)) || (s.s && s.s.toLowerCase().includes(searchVal)));
+                }
+
+                const card = document.createElement('div');
+                card.className = `tree-node-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+                card.id = `node-${node.id}`;
+                card.style.left = `${node.x}px`;
+                card.style.top = `${node.y}px`;
+
+                card.innerHTML = `
+                    <div class="node-name-label">${isUnlocked ? (s ? s.n : node.id) : '未解鎖禁術'}</div>
+                    <div class="node-badge">${isUnlocked ? '已掌握' : ''}</div>
+                    <div class="node-lock-icon">🔒</div>
+                `;
+
+                if (matchesSearch === false) {
+                    card.style.opacity = '0.15';
+                }
+
+                // 點擊事件：載入詳情
+                card.onclick = () => selectNode(node.id, treeCfg, true);
+                
+                // 懸停高亮上下游依賴關係
+                card.onmouseenter = () => highlightPaths(node.id, treeCfg);
+                card.onmouseleave = () => resetPaths();
+
+                canvasArea.appendChild(card);
             });
 
-            container.innerHTML = '';
+            // 5. 繪製 SVG 貝茲連線
+            treeCfg.connections.forEach(conn => {
+                const fromNode = treeCfg.nodes.find(n => n.id === conn.from);
+                const toNode = treeCfg.nodes.find(n => n.id === conn.to);
+                if (!fromNode || !toNode) return;
 
-            if (filteredIds.length === 0) {
-                container.innerHTML = '<div class="empty-grimoire">?曆??啁泵??蝳?...</div>';
+                const isFromUnlocked = unlockedSkills.includes(conn.from);
+                const isToUnlocked = unlockedSkills.includes(conn.to);
+                const isLinkUnlocked = isFromUnlocked && isToUnlocked;
+
+                const startX = fromNode.x + nodeWidth;
+                const startY = fromNode.y + nodeHeight / 2;
+                const endX = toNode.x;
+                const endY = toNode.y + nodeHeight / 2;
+                const dx = Math.abs(endX - startX) * 0.45;
+
+                // 繪製二次貝茲曲線
+                const pathStr = `M ${startX} ${startY} C ${startX + dx} ${startY}, ${endX - dx} ${endY}, ${endX} ${endY}`;
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathStr);
+                path.setAttribute('class', `tree-link ${isLinkUnlocked ? 'unlocked' : 'locked'}`);
+                path.setAttribute('id', `link-${conn.from}-${conn.to}`);
+                path.dataset.from = conn.from;
+                path.dataset.to = conn.to;
+
+                svg.appendChild(path);
+            });
+
+            // 預設點選第一個節點 (非手動點擊，不彈出視窗)
+            if (treeCfg.nodes.length > 0) {
+                selectNode(treeCfg.nodes[0].id, treeCfg, false);
+            }
+        }
+
+        // 高亮上游與下游依賴鏈 (Make hierarchy useful!)
+        function highlightPaths(nodeId, config) {
+            const upstreams = new Set();
+            const downstreams = new Set();
+
+            // 遞迴尋找上游依賴
+            function findUpstreams(curr) {
+                config.connections.forEach(conn => {
+                    if (conn.to === curr && !upstreams.has(conn.from)) {
+                        upstreams.add(conn.from);
+                        const link = document.getElementById(`link-${conn.from}-${curr}`);
+                        if (link) link.classList.add('highlight-upstream');
+                        findUpstreams(conn.from);
+                    }
+                });
+            }
+
+            // 遞迴尋找下游解鎖
+            function findDownstreams(curr) {
+                config.connections.forEach(conn => {
+                    if (conn.from === curr && !downstreams.has(conn.to)) {
+                        downstreams.add(conn.to);
+                        const link = document.getElementById(`link-${curr}-${conn.to}`);
+                        if (link) link.classList.add('highlight-downstream');
+                        findDownstreams(conn.to);
+                    }
+                });
+            }
+
+            findUpstreams(nodeId);
+            findDownstreams(nodeId);
+
+            // 卡片邊框高亮
+            upstreams.forEach(id => {
+                const el = document.getElementById(`node-${id}`);
+                if (el) el.style.borderColor = '#ffe566';
+            });
+            downstreams.forEach(id => {
+                const el = document.getElementById(`node-${id}`);
+                if (el) el.style.borderColor = '#2ed573';
+            });
+        }
+
+        function resetPaths() {
+            document.querySelectorAll('.tree-link').forEach(l => {
+                l.classList.remove('highlight-upstream', 'highlight-downstream');
+            });
+            document.querySelectorAll('.tree-node-card').forEach(c => {
+                c.style.borderColor = ''; // 還原樣式
+            });
+        }
+
+        // 選擇節點載入彈窗面板，包含技能脈絡說明
+        function selectNode(id, config, isManualClick = false) {
+            document.querySelectorAll('.tree-node-card').forEach(n => n.classList.remove('active'));
+            const activeCard = document.getElementById(`node-${id}`);
+            if (activeCard) activeCard.classList.add('active');
+
+            const s = allSkillDefs[id];
+            const isUnlocked = unlockedSkills.includes(id);
+            const detailPanel = document.getElementById('s-detail-panel');
+
+            const catStyles = {
+                'layout': { color: '#1c72cd', name: '版面與可讀性' },
+                'query': { color: '#0d8a66', name: '搜尋與檢索' },
+                'entry': { color: '#c07a00', name: '輸入與防錯' },
+                'calc': { color: '#d32f2f', name: '計算與統計分析' }
+            };
+
+            const style = catStyles[currentCategory] || { color: '#888', name: '未知' };
+
+            if (!s) {
+                detailPanel.innerHTML = `<div class="locked-panel"><div class="locked-icon">📖</div><h3>未定義技能</h3></div>`;
                 return;
             }
 
-            filteredIds.forEach(id => {
-                const s = allSkillDefs[id];
-                const isUnlocked = unlockedSkills.includes(id);
-                const mappedCat = getMappedCategory(id, s.cat);
-                const style = catStyles[mappedCat];
-
-                const node = document.createElement('div');
-                node.className = `grimoire-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+            if (isUnlocked) {
+                // 痛點與說明
+                const painText = s.pain || "表格向下延伸或數據過多時，難以肉眼直觀分析資料。";
+                const effectText = s.d || "發動魔法後將解決數據痛點。";
                 
-                node.innerHTML = `
-                    <div class="card-icon" style="background: ${isUnlocked ? style.color : '#95a5a6'};">
-                        ${isUnlocked ? (s.icon ? `<img src="${s.icon}">` : style.icon) : '??'}
+                // 處理操作路徑的鍵盤樣式括號標記
+                const formatPath = (pathStr) => {
+                    if (!pathStr) return "";
+                    return pathStr.replace(/Ctrl\s*\+\s*H/g, '<kbd>Ctrl</kbd> + <kbd>H</kbd>')
+                                  .replace(/Ctrl\s*\+\s*F/g, '<kbd>Ctrl</kbd> + <kbd>F</kbd>')
+                                  .replace(/Ctrl\s*\+\s*;/g, '<kbd>Ctrl</kbd> + <kbd>;</kbd>')
+                                  .replace(/Alt\s*\+\s*=/g, '<kbd>Alt</kbd> + <kbd>=</kbd>')
+                                  .replace(/Ctrl/g, '<kbd>Ctrl</kbd>')
+                                  .replace(/Shift/g, '<kbd>Shift</kbd>')
+                                  .replace(/Alt/g, '<kbd>Alt</kbd>')
+                                  .replace(/F4/g, '<kbd>F4</kbd>')
+                                  .replace(/F5/g, '<kbd>F5</kbd>');
+                };
+                const formattedPath = formatPath(s.s);
+                const cielTip = CielTipsRegistry[id] || "選取正確的表格儲存格再點擊發動，這是一切操作的鐵律！";
+
+                // 3. 【技能脈絡 (Skill Context)】- 查找前置與後續
+                const parentIds = s.parents || [];
+                const childIds = [];
+                config.connections.forEach(conn => {
+                    if (conn.from === id) childIds.push(conn.to);
+                });
+
+                let contextHtml = '';
+                if (parentIds.length > 0 || childIds.length > 0) {
+                    contextHtml = `<div class="detail-section skill-context-box">
+                        <h4>🔗 技能脈絡關係</h4>`;
+                    
+                    if (parentIds.length > 0) {
+                        const parentNames = parentIds.map(pid => {
+                            const ps = allSkillDefs[pid];
+                            return `<span class="context-link" onclick="jumpToNode('${pid}')">${ps ? ps.n : pid}</span>`;
+                        }).join(', ');
+                        contextHtml += `<p style="margin-bottom:8px">前置依賴：基於你已掌握的 ${parentNames}，才能順利施展本項操作。</p>`;
+                    }
+                    
+                    if (childIds.length > 0) {
+                        const childNames = childIds.map(cid => {
+                            const cs = allSkillDefs[cid];
+                            return `<span class="context-link" onclick="jumpToNode('${cid}')">${cs ? cs.n : cid}</span>`;
+                        }).join(', ');
+                        contextHtml += `<p>解鎖衍生：掌握本項後，你將能解鎖學習更強大的 ${childNames}！</p>`;
+                    }
+                    
+                    contextHtml += `</div>`;
+                }
+
+                detailPanel.innerHTML = `
+                    <div class="detail-header">
+                        <div class="detail-icon" style="background: ${style.color}">
+                            ${currentCategory === 'layout' ? '📦' : (currentCategory === 'query' ? '🔍' : (currentCategory === 'entry' ? '⚡' : '🧮'))}
+                        </div>
+                        <div class="detail-title">
+                            <h2>${s.n}</h2>
+                            <span class="detail-badge" style="background: ${style.color}">${style.name}</span>
+                        </div>
                     </div>
-                    <div class="card-info">
-                        <div class="card-name">${isUnlocked ? s.n : '?芰蝳?'}</div>
-                        <div class="card-cat" style="color: ${isUnlocked ? style.color : '#999'}">${style.name}</div>
+                    
+                    <div class="detail-body">
+                        <div class="detail-section pain-point">
+                            <h4>💔 遇見的麻煩 (Pain Point)</h4>
+                            <p>${painText}</p>
+                        </div>
+                        
+                        <div class="detail-section effect">
+                            <h4>✨ 施展路徑 (Action Path)</h4>
+                            <p>${effectText}</p>
+                            <div class="spell-shortcut">路徑：${formattedPath}</div>
+                        </div>
+
+                        <div class="detail-section ciel-tips">
+                            <h4>🧚 賽爾的生存提示 (Ciel's Tips)</h4>
+                            <p>「${cielTip}」</p>
+                        </div>
+
+                        ${contextHtml}
+                    </div>
+
+                    <div class="detail-footer">
+                        <button class="review-btn" disabled style="background: #cccccc !important; color: #888888 !important; box-shadow: none !important; cursor: not-allowed !important;">
+                            🎬 重溫精靈教學 (未完成)
+                        </button>
                     </div>
                 `;
+            } else {
+                detailPanel.innerHTML = `
+                    <div class="locked-panel">
+                        <div class="locked-icon">🔒</div>
+                        <h3>未領悟的禁術</h3>
+                        <p>這項能力需要你在驛站冒險中，進一步處理更多混亂 of 數據委託，或完成前置技能的修煉後解鎖！</p>
+                    </div>
+                `;
+            }
 
-                node.onclick = () => {
-                    container.querySelectorAll('.grimoire-card').forEach(n => n.classList.remove('active'));
-                    node.classList.add('active');
-
-                    if (isUnlocked) {
-                        const painPoint = s.pain || `?嗡??券?憭抒?閰衣?銵其葉?餈瑕仃嚗??舫??圈?閬之?犖撌亥???蝜撌乩???..`;
-                        const effect = s.d || `?澆?甇日?瘜?撠?雿????????;
-                        const shortcutStr = s.s ? `<div class="spell-shortcut">閰??嚗?kbd>${s.s}</kbd></div>` : '';
-
-                        detailPanel.innerHTML = `
-                            <div class="detail-header">
-                                <div class="detail-icon" style="background: ${style.color}">
-                                    ${s.icon ? `<img src="${s.icon}">` : style.icon}
-                                </div>
-                                <div class="detail-title">
-                                    <h2>${s.n}</h2>
-                                    <span class="detail-badge" style="background: ${style.color}">${style.name}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="detail-body">
-                                <div class="detail-section pain-point">
-                                    <h4>?? 撣貉??賡 (Pain Point)</h4>
-                                    <p>${painPoint}</p>
-                                </div>
-                                <div class="detail-section effect">
-                                    <h4>?????? (Effect)</h4>
-                                    <p>${effect}</p>
-                                    ${shortcutStr}
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        detailPanel.innerHTML = `
-                            <div class="locked-panel">
-                                <div class="locked-icon">??</div>
-                                <h3>撠????銵?/h3>
-                                <p>蝜潛??券脖蜓蝺?????祆?摰??孵?憪?靘圾??撘瑕之?賢??改?</p>
-                            </div>
-                        `;
-                    }
-                };
-
-                container.appendChild(node);
-            });
-            
-            if (container.firstElementChild) {
-                container.firstElementChild.click();
+            // 手動點擊時，彈出詳情視窗
+            if (isManualClick) {
+                const modal = document.getElementById('s-detail-modal');
+                if (modal) modal.style.display = 'flex';
             }
         }
 
-        // 頝券??Ｗ?憿扳???        function triggerCrossPageReplay(skillId) {
-            // 頝唾???game.html 銝血葆銝?query ?
+        function closeDetailModal() {
+            const modal = document.getElementById('s-detail-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        // 跨頁跳轉技能樹中的節點並點選 (Make hierarchy useful!)
+        function jumpToNode(nodeId) {
+            // 尋找 nodeId 所在的類別
+            let targetCat = null;
+            Object.keys(TreeStructures).forEach(cat => {
+                const hasNode = TreeStructures[cat].nodes.some(n => n.id === nodeId);
+                if (hasNode) targetCat = cat;
+            });
+
+            if (targetCat) {
+                if (targetCat !== currentCategory) {
+                    const tabBtn = document.querySelector(`.skill-tab[onclick*="'${targetCat}'"]`);
+                    setCategoryFilter(targetCat, tabBtn);
+                }
+                
+                // 點擊並滾動至該節點
+                setTimeout(() => {
+                    const card = document.getElementById(`node-${nodeId}`);
+                    if (card) {
+                        card.click();
+                        // 滾動 viewport 到中央
+                        const viewport = document.getElementById('tree-viewport');
+                        const xPos = parseInt(card.style.left) - viewport.clientWidth / 2 + card.clientWidth / 2;
+                        viewport.scrollTo({ left: Math.max(0, xPos), behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+        }
+
+        // 回看模擬器關卡重播
+        function triggerCrossPageReplay(skillId) {
             window.location.href = `game.html?replaySkill=${skillId}`;
         }
     </script>

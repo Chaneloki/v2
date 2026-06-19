@@ -68,10 +68,10 @@ window.V2_CHAPTERS["85"] = {
     initialGridData: generateCh8_5Data(),
 
     skillDefs: {
-        IF_BASIC: { n: "IF 條件", s: "=IF(條件, 真值, 假值)", d: "最基礎的條件判斷，讓表格自動說話", cat: "formula", icon: "icon/公式.png" },
-        IFS:      { n: "IFS 多條件", s: "=IFS(條件1, 值1, 條件2, 值2...)", d: "取代巢狀 IF 的利器，由嚴格排到寬鬆", cat: "formula", icon: "icon/公式.png" },
-        IF_PLUS:  { n: "條件運算 (+/*)", s: "=(條件)*數值", d: "TRUE=1, FALSE=0，直接用條件當作乘數來計算", cat: "formula", icon: "icon/公式.png" },
-        IF_AND:   { n: "AND 多條件", s: "=AND(條件1, 條件2)", d: "所有條件都成立才算 TRUE，通常與 IF 搭配", cat: "formula", icon: "icon/公式.png" }
+        IF_BASIC: { n: "IF 條件邏輯", s: "在儲存格中輸入 =IF(條件, 真值, 假值)", pain: "物資發放需要根據身份判定：是戰士就給20份、其餘給10份，手動填寫容易手滑填錯。", d: "最基礎的邏輯決策。如果滿足條件，就執行「真值」結果，否則執行「假值」結果。", cat: "calc", parents: ["REF_ABSOLUTE","FUNC_RANK"] },
+        IFS: { n: "IFS 多條件", s: "在儲存格中輸入 =IFS(條件1, 值1, 條件2, 值2...)", pain: "需要判定學生成績評級：90分以上是優、80分以上是良...使用巢狀 IF 會產生長串複雜括號，極易寫錯。", d: "IF 函數的升級版，依序檢查多個條件，只要有一個成立就傳回對應的值，避免套疊多層 IF。", cat: "calc", parents: ["IF_BASIC"] },
+        IF_PLUS: { n: "條件邏輯運算", s: "在公式中利用邏輯值的乘加（* 代表且, + 代表或）進行計算", pain: "需要滿足兩個條件（如性別為女且學分大於20）才能獲得補貼，寫巢狀 IF 太過繁重。", d: "直接利用 TRUE=1、FALSE=0 的特性進行算術乘加，省去多層巢狀 IF 的複雜結構。", cat: "calc", parents: ["IF_BASIC"] },
+        IF_AND: { n: "AND/OR 邏輯判定", s: "在公式中使用 AND() 或 OR() 函數包裹條件", pain: "需要判斷「同時滿足A和B」或「滿足A或B其中之一」時，無法直接在 IF 條件中寫入雙重判斷。", d: "AND 要求括號內所有條件全成立才為 TRUE；OR 只要有一個成立即為 TRUE，通常與 IF 搭配。", cat: "calc", parents: ["IF_BASIC"] }
     },
 
     simulator: {

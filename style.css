@@ -574,16 +574,7 @@ body {
     display: flex; justify-content: space-between; align-items: center;
     flex-shrink: 0;
 }
-#s-tabs { 
-    display: flex; background: #f8f9fa; border-bottom: 1px solid #eee; 
-    flex-shrink: 0;
-}
-#s-search-box {
-    padding: 12px 20px;
-    background: #fff;
-    border-bottom: 1px solid #eee;
-    flex-shrink: 0;
-}
+
 #skill-search {
     width: 100%;
     padding: 8px 15px;
@@ -1802,9 +1793,9 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 15px 25px;
-    background: #f5f5f5;
-    border-bottom: 1px solid #e1e1e1;
+    padding: 0;
+    background: transparent;
+    border-bottom: none;
 }
 .skill-tab {
     display: flex;
@@ -1825,7 +1816,7 @@ body {
 .tab-text span { font-size: 11px; color: #777; font-weight: normal; }
 
 #s-search-box {
-    padding: 15px 25px;
+    padding: 0;
 }
 #skill-search {
     width: 100%;

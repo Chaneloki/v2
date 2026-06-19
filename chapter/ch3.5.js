@@ -74,10 +74,10 @@ window.V2_CHAPTERS["35"] = {
     initialGridData: generateCh3_5Data(),
 
     skillDefs: {
-        SEARCH:  { n: "尋找",     s: "Ctrl + F",  d: "於千行之中，瞬間鎖定唯一的真相",  cat: "start", icon: "icon/find.png" , flash: true, flashSFX: "flash.mp3" },
-        REPLACE: { n: "取代", s: "Ctrl + H",  d: "言出法隨，於瞬息間改寫眾生的既定狀態",    cat: "start", icon: "icon/find.png" },
-        FUZZY:   { n: "萬用字元", s: "* / ?",     d: "通曉萬物之虛影，令隱藏的規律無所遁形",    cat: "start", icon: "icon/find.png" },
-        EMPTY:   { n: "特殊定位", s: "F5 → 空格", d: "於名冊之空隙中降下秩序，讓斷裂的時空圓滿",      cat: "start", icon: "icon/find.png" , se: "paper down.mp3", vol: 0.8 }
+        SEARCH: { n: "尋找內容", s: "按住 Ctrl + F ➜ 輸入關鍵字 ➜ 點擊【找下一個】", pain: "在成千上萬的旅客名冊中，無法用肉眼迅速找出特定姓名或資料所在的行數。", d: "快速搜尋整個工作表，瞬間將游標定位到匹配的關鍵字儲存格上。", cat: "query", parents: ["NAV"] },
+        REPLACE: { n: "批次取代", s: "按住 Ctrl + H ➜ 輸入尋找目標與取代內容 ➜ 點擊【全部取代】", pain: "名冊中有成百上千個重複的舊詞（如「進京待發」）需要修改，手動修改會耗盡心力。", d: "一鍵將工作表中所有指定的舊資料改寫成新資料，實現大批量資料修正。", cat: "query", parents: ["SEARCH"] },
+        FUZZY: { n: "萬用字元搜尋", s: "在尋找/取代框中使用星號 * (代表多字) 或問號 ? (代表單字) 進行檢索", pain: "登記名稱不統一（如「南境·石橋」、「南境·楓林」），無法用精確關鍵字一次查出所有人。", d: "使用模糊比對規則，將符合特定字元模式（如「南境*」）的所有資料一次全部定位。", cat: "query", parents: ["REPLACE"] },
+        EMPTY: { n: "特殊定位空格", s: "選取範圍 ➜ 按下 F5 鍵 ➜ 點擊【特殊】 ➜ 選取【空格】 ➜ 【確定】", pain: "表格中斷斷續續散落著大量空白格，若要將上方的日期複製填滿，手動操作耗時且容易看錯漏填。", d: "在指定區域中瞬間精確選取所有的空白格，便於進行批量公式填充。", cat: "entry", parents: ["AUTOFILL"] }
     },
 
     story: {

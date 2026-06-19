@@ -232,17 +232,19 @@ UIManager.prototype.openAvatarShop = function() {
         
         if (!isUnlocked && canBuy) {
             card.onclick = () => {
-                if (confirm(`確定要花費 ${av.price} G 購買「${av.name}」嗎？`)) {
-                    state.coins -= av.price;
-                    state.unlockedAvatars.push(av.id);
-                    window.orchestrator.saveGame();
-                    this.updateTopBarCoins(); // 更新左上角金幣
-                    this.openAvatarShop(); // 重新渲染商店
-                    alert('購買成功！可以在地圖中按 [Tab] 切換角色。');
-                }
+                this.uiConfirm(`確定要花費 ${av.price} G 購買「${av.name}」嗎？`).then((ok) => {
+                    if (ok) {
+                        state.coins -= av.price;
+                        state.unlockedAvatars.push(av.id);
+                        window.orchestrator.saveGame();
+                        this.updateTopBarCoins(); // 更新左上角金幣
+                        this.openAvatarShop(); // 重新渲染商店
+                        this.showMagicToast('購買成功！可以在地圖中按 [Tab] 切換角色。', 'success');
+                    }
+                });
             };
         } else if (!isUnlocked) {
-            card.onclick = () => alert('金幣不足！');
+            card.onclick = () => this.showMagicToast('金幣不足！', 'error');
         }
         itemsContainer.appendChild(card);
     });
@@ -365,14 +367,24 @@ UIManager.prototype.closeMemoryDiary = function() {
 
 
 UIManager.prototype.reviewChapter = function(chapVal) {
-    if(confirm('確定要回顧這個章節嗎？\\n請注意：這會將你的進度暫時跳轉到該章節，若不希望影響目前的進度，建議您先使用【手動存檔】！')) {
-        this.closeMemoryDiary();
-        window.orchestrator.state.currentChapter = chapVal;
-        window.orchestrator.loadChapter(chapVal).then(() => {
-            window.orchestrator.triggerPhase('STORY_START');
-            if (window.rpgEngine) {
-                window.rpgEngine.stop();
-            }
-        });
-    }
+    this.uiConfirm('確定要回顧這個章節嗎？\n請注意：這會將你的進度暫時跳轉到該章節，若不希望影響目前的進度，建議您先使用【手動存檔】！').then((ok) => {
+        if (ok) {
+            this.closeMemoryDiary();
+            window.orchestrator.state.currentChapter = chapVal;
+            window.orchestrator.loadChapter(chapVal).then(() => {
+                window.orchestrator.triggerPhase('STORY_START');
+                if (window.rpgEngine) {
+                    window.rpgEngine.stop();
+                }
+            });
+        }
+    });
+};
+
+UIManager.prototype.confirmOpenSkillBook = function() {
+    this.uiConfirm("確定要前往禁術大全嗎？\n未儲存的當前進度將會遺失。\n建議在前往前先「儲存進度」！").then((ok) => {
+        if (ok) {
+            window.location.href = 'skill_book.html';
+        }
+    });
 };

@@ -60,11 +60,12 @@ window.V2_CHAPTERS["80"] = {
     initialGridData: generateCh8Data(),
 
     skillDefs: {
-        IF_BASIC:    { n: "IF 函數",      s: "=IF(條件, 真值, 假值)",               d: "試算表裡最基本的條件判斷：如果條件成立，就給A；否則給B。三個參數缺一不可。",                                           cat: "logic", icon: "icon/IF.png" },
-        IFS:   { n: "IFS 多條件",      s: "=IFS(條件1, 值1, 條件2, 值2, TRUE, 預設值)", d: "依序檢查多個條件，只要有一個成立就傳回對應的值。通常最後一個條件會用 TRUE 當作預設結果。",                  cat: "logic", icon: "icon/IF.png" },
-        IF_PLUS:     { n: "回避嵌套（+）", s: "=IF(…)*值1 + IF(…)*值2",             d: "數值型的多條件加總，不用嵌套：把每個條件乘以對應的數字，加起來就是答案。TRUE=1、FALSE=0幫你做了選擇。",           cat: "logic", icon: "icon/IF.png" },
-        IF_CONCAT:   { n: "回避嵌套（&）", s: "=IF(…)&IF(…)",                        d: "文本型的多條件拼接：每個 IF 輸出一段文字，用 & 串起來。不合適的段落讓它輸出空字串 \"\" 就好。",                    cat: "logic", icon: "icon/IF.png" },
-        IF_AND:      { n: "AND 多條件",    s: "=IF(AND(條件1,條件2),…)",             d: "AND 把多個條件綁在一起——所有條件都成立，整個 AND 才是 TRUE。配合 IF 用，可以做「同時滿足多項才算數」的判斷。",      cat: "logic", icon: "icon/IF.png" } },
+        IF_BASIC: { n: "IF 條件邏輯", s: "在儲存格中輸入 =IF(條件, 真值, 假值)", pain: "物資發放需要根據身份判定：是戰士就給20份、其餘給10份，手動填寫容易手滑填錯。", d: "最基礎的邏輯決策。如果滿足條件，就執行「真值」結果，否則執行「假值」結果。", cat: "calc", parents: ["REF_ABSOLUTE","FUNC_RANK"] },
+        IFS: { n: "IFS 多條件", s: "在儲存格中輸入 =IFS(條件1, 值1, 條件2, 值2...)", pain: "需要判定學生成績評級：90分以上是優、80分以上是良...使用巢狀 IF 會產生長串複雜括號，極易寫錯。", d: "IF 函數的升級版，依序檢查多個條件，只要有一個成立就傳回對應的值，避免套疊多層 IF。", cat: "calc", parents: ["IF_BASIC"] },
+        IF_PLUS: { n: "條件邏輯運算", s: "在公式中利用邏輯值的乘加（* 代表且, + 代表或）進行計算", pain: "需要滿足兩個條件（如性別為女且學分大於20）才能獲得補貼，寫巢狀 IF 太過繁重。", d: "直接利用 TRUE=1、FALSE=0 的特性進行算術乘加，省去多層巢狀 IF 的複雜結構。", cat: "calc", parents: ["IF_BASIC"] },
+        IF_CONCAT: { n: "文字邏輯拼接", s: "利用 & 連接符將多個 IF 公式拼接起來（如 =IF(...) & IF(...)）", pain: "要根據多個標籤拼接段落描述，如果用巢狀 IF 會導致分支數呈幾何級數增加，難以維護。", d: "將多個獨立條件判斷所輸出的文字串聯起來，各自獨立判斷互不干擾。", cat: "calc", parents: ["IF_BASIC"] },
+        IF_AND: { n: "AND/OR 邏輯判定", s: "在公式中使用 AND() 或 OR() 函數包裹條件", pain: "需要判斷「同時滿足A和B」或「滿足A或B其中之一」時，無法直接在 IF 條件中寫入雙重判斷。", d: "AND 要求括號內所有條件全成立才為 TRUE；OR 只要有一個成立即為 TRUE，通常與 IF 搭配。", cat: "calc", parents: ["IF_BASIC"] }
+    },
 
     story: {
         start: [

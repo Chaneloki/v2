@@ -63,14 +63,15 @@ window.V2_CHAPTERS["75"] = {
     initialGridData: generateCh7_5Data(),
 
     skillDefs: {
-        FORMULA_BASIC:  { n: "公式基礎",   s: "以 = 號開頭",                         d: "輸入公式的第一步：等號告訴試算表「這不是文字，是計算」",                          cat: "formula", icon: "icon/公式.png" },
+        FORMULA_BASIC: { n: "公式引導符 =", s: "在儲存格中輸入等號 = 作為公式開頭", pain: "在儲存格輸入計算公式（如 10+20）卻只顯示文字，表格無法啟動自動計算。", d: "等號是公式的啟動咒語。它告訴試算表「接下來是計算指令，而不是普通文字」。", cat: "calc", parents: [] },
         OPERATOR_ARITH: { n: "算術運算符", s: "+ − × ÷   & ^ %",                    d: "+ 加  − 減  * 乘  / 除；& 連接文字；^ 次方；% 百分號",                            cat: "formula", icon: "icon/公式.png" },
-        TEXT_TO_NUM:    { n: "文本轉數值", s: "× 1  或  + 0",                        d: "看起來像數字，其實是文字——加個 +0 或 ×1，強制轉成可以計算的數值",                   cat: "formula", icon: "icon/公式.png" },
-        COMPARE_OP:     { n: "比較運算符", s: "= > < >= <= <>",                      d: "比較兩個值，結果只有 TRUE 或 FALSE。TRUE=1、FALSE=0，可以直接參與計算",            cat: "formula", icon: "icon/公式.png" },
-        REF_RELATIVE:   { n: "相對引用",   s: "A1（拖拉時自動跟著移）",               d: "公式裡最常見的引用方式。往下拖就往下跑，往右拖就往右跑",                           cat: "formula", icon: "icon/引用.png" },
-        REF_ABSOLUTE:   { n: "絕對引用",   s: "$A$1（F4 鍵切換）",                   d: "加了 $ 的格子，不管怎麼拖拉都不會動——適合用在全表通用的係數、基準值、稅率",        cat: "formula", icon: "icon/引用.png" },
-        FUNC_RANK:      { n: "RANK 函數",  s: "=RANK(值, 範圍, 順序)",                d: "算出某個數字在一組數字裡的名次。0 = 降序（大的排前），1 = 升序（小的排前）",       cat: "formula", icon: "icon/函數.png" },
-        FUNC_SUM_MULTI: { n: "跳躍式求和", s: "=SUM(A1,C1,E1)  或  SUM(範圍1,範圍2)", d: "SUM 不只能算連續格——用逗號隔開，可以讓它跳過中間的欄位，合計任意位置的數字",     cat: "formula", icon: "icon/函數.png" } },
+        TEXT_TO_NUM: { n: "文本轉數值", s: "在看起來像數字的文字格後方乘以 1 或加上 0 （如 =A1*1）", pain: "從舊系統匯出的數據看起來是數字，但左上角有綠色三角標記，導致 SUM 公式將它們全部忽略算為 0。", d: "通過無損的算術運算，將被儲存為文字格式的數字強制轉化為可供公式計算的真正數值。", cat: "calc", parents: ["FORMULA_BASIC"] },
+        COMPARE_OP: { n: "比較運算符", s: "在公式中使用比較符號（=, >, <, >=, <=, <>）", pain: "需要判斷兩個儲存格的數值是否一致，肉眼核對容易漏看。", d: "比對兩個值，結果僅會回傳 TRUE (成立) 或 FALSE (不成立)。", cat: "calc", parents: ["FORMULA_BASIC"] },
+        REF_RELATIVE: { n: "相對引用", s: "在公式中直接點選其他儲存格（例如 A1）", pain: "當需要計算每位旅客的剩餘糧食時，不想為上千個人重複撰寫一千條計算公式。", d: "公式的變動參照。向下拖曳填充公式時，參照格會自動跟著向下偏移一行。", cat: "calc", parents: ["FORMULA_BASIC"] },
+        REF_ABSOLUTE: { n: "絕對引用", s: "在公式輸入過程中按下 F4 鍵，為參照格加上 $ 鎖定符（如 $AskillDefs: {）", pain: "計算所有新生的學分比例時，公式往下拖曳會導致分母的「總學分格」跑位變為空白，產生錯誤。", d: "鎖定公式參照格。無論公式如何拖曳填充，加上 $ 的儲存格位置都將雷打不動。", cat: "calc", parents: ["REF_RELATIVE"] },
+        FUNC_RANK: { n: "RANK 函數", s: "在儲存格中輸入 =RANK(數值, 範圍, 排序順序)", pain: "需要排出上千位新生的綜合成績名次，手動比對數值會耗費大量心力。", d: "在指定的數值範圍中，自動算出某個數值在全體當中的名次順位。", cat: "calc", parents: ["REF_ABSOLUTE","FUNC_SUM_MULTI"] },
+        FUNC_SUM_MULTI: { n: "自動加總 & 跳躍求和", s: "在公式中使用逗號隔開多個儲存格或範圍（如 =SUM(A1, C1, E1:E5)）", pain: "計算總金額時，需要跳過中間的非數值欄位，傳統 SUM 只能累加連續區域。", d: "讓 SUM 函數能夠跳躍式累加不連續的多個單格或多個區域。", cat: "calc", parents: ["SUM"] }
+    },
 
     story: {
 

@@ -65,10 +65,10 @@ window.V2_CHAPTERS["45"] = {
     initialGridData: generateCh4_5Data(),
 
     skillDefs: {
-        SORT_SIMPLE: { n: "簡單排序",   s: "開始→排序和篩選", d: "按單一欄位快速排列所有資料",       cat: "data", icon: "icon/sort&filter.png" },
-        SORT_CUSTOM: { n: "自訂排序",   s: "自訂序列",         d: "用自訂的規則（不依大小）排列資料", cat: "data", icon: "icon/sort&filter.png" },
-        SORT_MULTI:  { n: "多條件排序", s: "自訂排序",         d: "按多個欄位依序決定排列優先順序",   cat: "data", icon: "icon/sort&filter.png" },
-        FILTER:      { n: "篩選",       s: "開始→篩選",        d: "只顯示符合條件的資料列",           cat: "data", icon: "icon/sort&filter.png" }
+        SORT_SIMPLE: { n: "簡單排序", s: "選取目標欄儲存格 ➜ 【資料】頁籤 ➜ 點選【A-Z 遞增排序】或【Z-A 遞減排序】", pain: "數據雜亂無章地排列，無法直觀看出誰是第一名，或是無法按字母/日期對齊。", d: "以單一欄位為基準，快速對整張表格的所有行進行升冪或降冪排列。", cat: "query", parents: ["NAV"] },
+        SORT_CUSTOM: { n: "自訂排序", s: "【資料】頁籤 ➜ 點選【排序】 ➜ 順序下拉選單 ➜ 選擇【自訂清單】輸入順序 ➜ 【確定】", pain: "想按照「重症 ➜ 中症 ➜ 輕症」排序，但系統默認只能按拼音字母排序，順序錯亂。", d: "建立專屬的順序規則清單，強制表格按照指定的非英文字母/數字大小規則進行排列。", cat: "query", parents: ["FILTER"] },
+        SORT_MULTI: { n: "多條件排序", s: "【資料】頁籤 ➜ 點選【排序】 ➜ 點擊【新增層級】設定排序規則 ➜ 【確定】", pain: "當第一欄數值相同時（例如學分相同），無法決定誰先誰後，需要依據多個維度進行排序。", d: "依序設定多個欄位的優先排序權，第一條件相同時自動調用第二條件進行細分排列。", cat: "query", parents: ["FILTER"] },
+        FILTER: { n: "資料篩選", s: "點選表格內任一格 ➜ 【資料】頁籤 ➜ 點選【篩選】(漏斗按鈕)", pain: "表格資料過多，但當下只想查看或統計特定地區、特定類別的幾行數據。", d: "為表頭開啟下拉式篩選漏斗，隱藏不符合條件的行，僅顯示符合條件的記錄。", cat: "query", parents: ["SORT_SIMPLE"] }
     },
 
     story: {

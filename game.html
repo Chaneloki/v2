@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
     <title>Excel 魔法冒險 V2 - 巔峰視覺版</title>
     <!-- [基因還原] 使用 v45 原始樣式表 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1781330285593">
     <style>
         /* === Cinematic Title Buttons === */
@@ -393,6 +394,517 @@
                 opacity: 0;
             }
         }
+
+        /* --- [全新實戰魔導書模組 - 技能樹樣式] --- */
+        #s-modal {
+            font-family: 'Inter', 'Noto Serif TC', serif;
+        }
+
+        #s-modal .grimoire-layout {
+            width: 95vw !important;
+            height: 90vh !important;
+            max-width: 1350px !important;
+            background: rgba(253, 251, 245, 0.98) !important;
+            border: 2px solid rgba(192, 142, 64, 0.45) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 20px 60px rgba(110, 80, 40, 0.15) !important;
+            overflow: hidden !important;
+            display: flex !important;
+            position: relative !important;
+        }
+
+        #s-modal .grimoire-bg-overlay {
+            position: absolute; inset: 0;
+            background: url('BG/intro/2_bg.png') center/cover no-repeat;
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+            filter: grayscale(20%) blur(3px);
+        }
+
+        #s-modal .grimoire-left {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            background: transparent !important;
+            border-right: none !important;
+            z-index: 1 !important;
+            position: relative !important;
+        }
+
+        #s-modal #s-header {
+            padding: 12px 25px !important;
+            background: rgba(245, 238, 222, 0.6) !important;
+            border-bottom: 1px solid rgba(192, 142, 64, 0.2) !important;
+        }
+        #s-modal .header-main-row {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        #s-modal #s-header h3 {
+            margin: 0 !important;
+            font-size: 1.3rem !important;
+            color: #8c6239 !important;
+            font-family: 'Noto Serif TC', serif !important;
+            font-weight: 900 !important;
+            letter-spacing: 2px !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+        }
+        #s-modal .grimoire-subtitle {
+            margin: 2px 0 0 0 !important;
+            font-size: 0.78rem !important;
+            color: #6e5e49 !important;
+        }
+        #s-modal #progress-text {
+            font-size: 0.82rem !important;
+            color: #b37400 !important;
+            margin-top: 0 !important;
+            font-weight: bold !important;
+        }
+
+        /* 控制列高優先度樣式 */
+        #s-modal .grimoire-controls {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            background: rgba(245, 238, 222, 0.45) !important;
+            border-bottom: 1px solid rgba(192, 142, 64, 0.2) !important;
+            padding: 6px 25px !important;
+            gap: 20px !important;
+            z-index: 10 !important;
+        }
+        #s-tabs {
+            display: flex !important;
+            gap: 8px !important;
+            flex-wrap: nowrap !important;
+            background: transparent !important;
+            border-bottom: none !important;
+            padding: 0 !important;
+        }
+        #s-tabs .skill-tab {
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 6px 12px !important;
+            background: rgba(255,255,255,0.6) !important;
+            border: 1px solid rgba(192, 142, 64, 0.25) !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            color: #6e5e49 !important;
+            transition: all 0.2s !important;
+        }
+        #s-tabs .skill-tab:hover {
+            background: rgba(192, 142, 64, 0.08) !important;
+            border-color: rgba(192, 142, 64, 0.5) !important;
+            color: #554433 !important;
+        }
+        #s-tabs .skill-tab.active {
+            background: rgba(192, 142, 64, 0.18) !important;
+            border-color: #8c6239 !important;
+            color: #8c6239 !important;
+            box-shadow: 0 0 8px rgba(192, 142, 64, 0.1) !important;
+        }
+        #s-modal .tab-icon { font-size: 1rem !important; }
+        #s-modal .tab-text { font-size: 0.8rem !important; font-weight: bold; }
+
+        #s-modal #s-search-box {
+            padding: 0 !important;
+            background: transparent !important;
+            border-bottom: none !important;
+            flex: 1 !important;
+            max-width: 300px !important;
+        }
+        #s-modal #skill-search {
+            width: 100% !important;
+            padding: 6px 14px !important;
+            border: 1.5px solid rgba(192, 142, 64, 0.3) !important;
+            border-radius: 20px !important;
+            font-size: 0.8rem !important;
+            outline: none !important;
+            background: rgba(255, 255, 255, 0.8) !important;
+            color: #3c3020 !important;
+            box-sizing: border-box !important;
+            transition: all 0.2s !important;
+        }
+        #s-modal #skill-search::placeholder {
+            color: rgba(60, 48, 32, 0.5) !important;
+        }
+        #s-modal #skill-search:focus {
+            border-color: #8c6239 !important;
+            box-shadow: 0 0 10px rgba(192, 142, 64, 0.15) !important;
+        }
+
+        /* 樹形畫布區域 */
+        #s-modal .tree-viewport-container {
+            flex: 1 !important;
+            overflow: auto !important;
+            position: relative !important;
+            background: rgba(255, 255, 255, 0.25) !important;
+        }
+
+        /* 樹狀分層背景 */
+        #s-modal .tree-grid-background {
+            position: absolute !important; inset: 0 !important;
+            display: flex !important;
+            pointer-events: none !important;
+            z-index: 0 !important;
+        }
+        #s-modal .tree-grid-col {
+            flex: 1 !important;
+            border-right: 1px dashed rgba(192, 142, 64, 0.2) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding-top: 8px !important;
+            box-sizing: border-box !important;
+        }
+        #s-modal .tree-grid-col-title {
+            font-size: 11px !important;
+            color: rgba(140, 98, 57, 0.75) !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+        }
+
+        #s-modal .tree-canvas {
+            position: relative !important;
+            width: 1300px;
+            height: 480px;
+            z-index: 1 !important;
+        }
+
+        /* SVG 連線層 */
+        #s-modal .tree-connections-svg {
+            position: absolute !important; inset: 0 !important;
+            width: 100% !important; height: 100% !important;
+            pointer-events: none !important;
+            z-index: 2 !important;
+        }
+        #s-modal .tree-link {
+            fill: none !important;
+            stroke: rgba(192, 142, 64, 0.25) !important;
+            stroke-width: 3px !important;
+            transition: stroke 0.22s, stroke-width 0.22s, filter 0.22s !important;
+        }
+        #s-modal .tree-link.unlocked {
+            stroke: rgba(192, 142, 64, 0.55) !important;
+            stroke-width: 3.5px !important;
+        }
+        #s-modal .tree-link.highlight-upstream {
+            stroke: #b37400 !important;
+            stroke-width: 3.5 !important;
+            filter: drop-shadow(0 0 3px rgba(179, 116, 0, 0.4)) !important;
+        }
+        #s-modal .tree-link.highlight-downstream {
+            stroke: #1e7e34 !important;
+            stroke-width: 3.5 !important;
+            filter: drop-shadow(0 0 3px rgba(30, 126, 52, 0.4)) !important;
+        }
+
+        /* 技能樹節點卡片 */
+        #s-modal .tree-node-card {
+            position: absolute !important;
+            width: 120px !important;
+            height: 52px !important;
+            border-radius: 12px !important;
+            background: linear-gradient(135deg, #ffffff 0%, #f7f3eb 100%) !important;
+            border: 1.5px solid rgba(192, 142, 64, 0.4) !important;
+            box-shadow: 0 4px 12px rgba(110, 80, 40, 0.08) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            box-sizing: border-box !important;
+            z-index: 5 !important;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+            user-select: none !important;
+        }
+        #s-modal .tree-node-card:hover {
+            transform: scale(1.06) translateY(-2px) !important;
+            border-color: rgba(192, 142, 64, 0.8) !important;
+            box-shadow: 0 8px 24px rgba(192, 142, 64, 0.15) !important;
+        }
+        #s-modal .tree-node-card.unlocked {
+            background: linear-gradient(135deg, #eaf6ed 0%, #d5eedc 100%) !important;
+            border: 1.8px solid #28a745 !important;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.12) !important;
+        }
+        #s-modal .tree-node-card.unlocked .node-name-label {
+            color: #155724 !important;
+            text-shadow: none !important;
+        }
+        #s-modal .tree-node-card.active {
+            border-color: #ff9900 !important;
+            background: linear-gradient(135deg, #fef8eb 0%, #fbe8c5 100%) !important;
+            box-shadow: 0 0 18px rgba(255, 153, 0, 0.3) !important;
+        }
+        #s-modal .tree-node-card.locked {
+            border-color: rgba(192, 142, 64, 0.3) !important;
+            background: rgba(255, 255, 255, 0.45) !important;
+            opacity: 0.75 !important;
+            border-style: dashed !important;
+        }
+        #s-modal .tree-node-card.locked:hover {
+            opacity: 0.90 !important;
+            border-color: rgba(192, 142, 64, 0.6) !important;
+            background: rgba(255, 255, 255, 0.65) !important;
+        }
+        
+        #s-modal .node-name-label {
+            font-size: 0.8rem !important;
+            font-weight: 700 !important;
+            color: #4e3f2e !important;
+            text-align: center !important;
+            line-height: 1.3 !important;
+            margin-bottom: 2px !important;
+            max-width: 90% !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+        }
+        #s-modal .tree-node-card.locked .node-name-label {
+            color: #8a7a66 !important;
+        }
+        #s-modal .node-badge {
+            font-size: 9px !important;
+            padding: 1px 6px !important;
+            border-radius: 8px !important;
+            font-weight: bold !important;
+            color: #155724 !important;
+            background: rgba(40, 167, 69, 0.12) !important;
+            border: 1px solid rgba(40, 167, 69, 0.2) !important;
+        }
+        #s-modal .tree-node-card.locked .node-badge {
+            display: none !important;
+        }
+        #s-modal .node-lock-icon {
+            font-size: 11px !important;
+            color: #8a7a66 !important;
+            margin-top: 2px !important;
+            display: none !important;
+        }
+        #s-modal .tree-node-card.locked .node-lock-icon {
+            display: block !important;
+        }
+
+        /* 技能詳情彈窗樣式 */
+        #s-modal .grimoire-detail-modal {
+            position: absolute !important;
+            inset: 0 !important;
+            background: rgba(60, 50, 40, 0.45) !important;
+            backdrop-filter: blur(8px) !important;
+            display: flex;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 1000 !important;
+            animation: fadeIn 0.25s ease !important;
+        }
+
+        #s-modal .grimoire-detail-modal-content {
+            width: 480px !important;
+            max-width: 90% !important;
+            max-height: 85% !important;
+            background: rgba(255, 254, 250, 0.98) !important;
+            border: 2px solid rgba(192, 142, 64, 0.5) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 15px 40px rgba(110, 80, 40, 0.25) !important;
+            padding: 30px 25px !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+            animation: zoomIn 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28) !important;
+        }
+
+        #s-modal .grimoire-detail-modal-close {
+            position: absolute !important;
+            top: 15px !important;
+            right: 15px !important;
+            background: none !important;
+            border: none !important;
+            color: rgba(60, 50, 40, 0.6) !important;
+            font-size: 20px !important;
+            cursor: pointer !important;
+            transition: color 0.18s !important;
+            z-index: 10 !important;
+        }
+
+        #s-modal .grimoire-detail-modal-close:hover {
+            color: #c08e40 !important;
+        }
+
+        #s-modal #s-detail-panel {
+            display: flex !important;
+            flex-direction: column !important;
+            overflow-y: auto !important;
+            flex: 1 !important;
+        }
+
+        #s-modal .detail-header {
+            display: flex !important;
+            align-items: center !important;
+            gap: 15px !important;
+            margin-bottom: 24px !important;
+        }
+        #s-modal .detail-icon {
+            width: 52px !important; height: 52px !important;
+            border-radius: 12px !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
+            font-size: 1.5rem !important;
+            background: #ffeeb3 !important;
+            color: #7c5210 !important;
+            box-shadow: 0 0 10px rgba(192, 142, 64, 0.2) !important;
+            font-weight: bold !important;
+        }
+        #s-modal .detail-title h2 {
+            margin: 0 0 4px 0 !important;
+            font-size: 1.3rem !important;
+            color: #8c6239 !important;
+            font-family: 'Noto Serif TC', serif !important;
+            font-weight: 700 !important;
+        }
+        #s-modal .detail-badge {
+            padding: 2px 8px !important;
+            border-radius: 6px !important;
+            font-size: 10px !important;
+            font-weight: bold !important;
+            color: #fff !important;
+        }
+
+        #s-modal .detail-body { flex: 1 !important; display: flex !important; flex-direction: column !important; gap: 18px !important; }
+        #s-modal .detail-section {
+            padding: 14px 16px !important;
+            border-radius: 10px !important;
+            box-sizing: border-box !important;
+        }
+        #s-modal .detail-section h4 {
+            margin: 0 0 8px 0 !important;
+            font-size: 0.85rem !important;
+            border-bottom: 1px dashed rgba(60, 50, 40, 0.15) !important;
+            padding-bottom: 6px !important;
+            font-weight: bold !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+        #s-modal .detail-section p {
+            margin: 0 !important;
+            font-size: 0.84rem !important;
+            line-height: 1.6 !important;
+        }
+
+        /* 痛點色卡 */
+        #s-modal .pain-point {
+            background: rgba(239, 68, 68, 0.04) !important;
+            border: 1px solid rgba(239, 68, 68, 0.18) !important;
+        }
+        #s-modal .pain-point h4 { color: #c53030 !important; border-color: rgba(239, 68, 68, 0.1) !important; }
+        #s-modal .pain-point p { color: #9b1c1c !important; }
+
+        /* 效果與路徑色卡 */
+        #s-modal .effect {
+            background: rgba(33, 115, 70, 0.04) !important;
+            border: 1px solid rgba(33, 115, 70, 0.18) !important;
+        }
+        #s-modal .effect h4 { color: #1e7e34 !important; border-color: rgba(33, 115, 70, 0.1) !important; }
+        #s-modal .effect p { color: #155724 !important; }
+        #s-modal .spell-shortcut {
+            margin-top: 10px !important;
+            padding: 8px 12px !important;
+            background: rgba(255, 255, 255, 0.6) !important;
+            border: 1px solid rgba(192, 142, 64, 0.18) !important;
+            border-radius: 6px !important;
+            font-size: 0.82rem !important;
+            color: #5c4e3c !important;
+        }
+        #s-modal kbd {
+            background: rgba(192, 142, 64, 0.08) !important;
+            padding: 2px 6px !important;
+            border-radius: 4px !important;
+            border: 1px solid rgba(192, 142, 64, 0.25) !important;
+            border-bottom: 2px solid rgba(192, 142, 64, 0.4) !important;
+            font-weight: bold !important;
+            color: #7c5210 !important;
+            font-family: inherit !important;
+        }
+
+        /* 賽爾叮嚀 */
+        #s-modal .ciel-tips {
+            background: rgba(245, 158, 11, 0.04) !important;
+            border: 1px solid rgba(245, 158, 11, 0.18) !important;
+        }
+        #s-modal .ciel-tips h4 { color: #b45309 !important; border-color: rgba(245, 158, 11, 0.1) !important; }
+        #s-modal .ciel-tips p { color: #78350f !important; font-style: italic !important; }
+
+        /* 技能脈絡關係 */
+        #s-modal .skill-context-box {
+            background: rgba(245, 240, 230, 0.4) !important;
+            border: 1px solid rgba(192, 142, 64, 0.15) !important;
+        }
+        #s-modal .skill-context-box h4 { color: #7c6c58 !important; border-color: rgba(192, 142, 64, 0.08) !important; }
+        #s-modal .context-link {
+            color: #b37400 !important;
+            text-decoration: underline !important;
+            cursor: pointer !important;
+            font-weight: bold !important;
+            transition: color 0.18s !important;
+        }
+        #s-modal .context-link:hover {
+            color: #e05c00 !important;
+        }
+
+        /* 教學重播按鈕 */
+        #s-modal .detail-footer {
+            margin-top: 15px !important;
+            padding-top: 15px !important;
+            border-top: 1px solid rgba(0,0,0,0.06) !important;
+        }
+        #s-modal .review-btn {
+            width: 100% !important; padding: 12px !important;
+            background: linear-gradient(135deg, #e08b2b, #b85c00) !important;
+            color: white !important; border: none !important; border-radius: 8px !important;
+            font-size: 0.92rem !important; font-weight: bold !important; cursor: pointer !important;
+            transition: all 0.18s !important;
+            box-shadow: 0 4px 0 #8c4200 !important;
+        }
+        #s-modal .review-btn:hover {
+            transform: translateY(2px) !important;
+            box-shadow: 0 2px 0 #8c4200 !important;
+            filter: brightness(1.08) !important;
+        }
+        #s-modal .review-btn:active {
+            transform: translateY(4px) !important;
+            box-shadow: 0 0 0 #8c4200 !important;
+        }
+
+        #s-modal .locked-panel {
+            text-align: center !important; color: #7c6c58 !important;
+            margin-top: 120px !important;
+        }
+        #s-modal .locked-icon { font-size: 3.5rem !important; margin-bottom: 15px !important; opacity: 0.7 !important; color: #c08e40 !important; }
+        #s-modal .locked-panel h3 { font-size: 1.1rem !important; color: #5c4e3c !important; margin-bottom: 8px !important; }
+        #s-modal .locked-panel p { font-size: 0.8rem !important; line-height: 1.6 !important; max-width: 80% !important; margin: 0 auto !important; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
 
@@ -695,7 +1207,7 @@
             </div>
 
             <!-- 中：pointing UP → 禁術大全 -->
-            <div class="sys-tri-wrap sys-tri-wrap-center" onclick="window.location.href='skill_book.html'">
+            <div class="sys-tri-wrap sys-tri-wrap-center" onclick="window.uiManager.confirmOpenSkillBook()">
                 <canvas class="sys-tri" data-img="BG/intro/1_bg.png" data-dir="up" data-w="380"></canvas>
                 <div class="sys-tri-label">📖<br>禁術大全</div>
             </div>
@@ -1008,43 +1520,57 @@
     <!-- [全新實戰魔導書模組] -->
     <div id="s-modal" class="modal-layer" style="display:none">
         <div id="s-card" class="grimoire-layout">
+            <div class="grimoire-bg-overlay"></div>
             <div class="grimoire-left">
                 <div id="s-header">
                     <h3>📖 實戰魔導書 (Skill Grimoire)</h3>
-                    <p class="grimoire-subtitle">點擊你想解決的問題，尋找對應的試算表禁術</p>
+                    <p class="grimoire-subtitle">以關卡所面臨的實戰難題為導向，尋找對應的試算表解決技能。</p>
+                    <div id="progress-text">已領悟技能：0 / 0 (0%)</div>
                 </div>
-                <div id="s-tabs" class="grimoire-tabs">
-                    <button class="skill-tab active" onclick="window.uiManager.setSkillFilter('all', this)">
-                        <div class="tab-icon">✨</div>
-                        <div class="tab-text">全部禁術</div>
-                    </button>
-                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('search_move', this)">
-                        <div class="tab-icon">🔍</div>
-                        <div class="tab-text">找資料與移動<br><span>(表太長找不到時)</span></div>
-                    </button>
-                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('org_format', this)">
-                        <div class="tab-icon">🧹</div>
-                        <div class="tab-text">整理與排版<br><span>(版面太亂時)</span></div>
-                    </button>
-                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('fast_input', this)">
-                        <div class="tab-icon">⚡</div>
-                        <div class="tab-text">快速輸入<br><span>(不想手動打字時)</span></div>
-                    </button>
-                    <button class="skill-tab" onclick="window.uiManager.setSkillFilter('calc_analyze', this)">
-                        <div class="tab-icon">🧮</div>
-                        <div class="tab-text">運算與分析<br><span>(需要算錢統計時)</span></div>
-                    </button>
+                <div class="grimoire-controls">
+                    <div id="s-tabs" class="grimoire-tabs">
+                        <button class="skill-tab active" onclick="window.uiManager.setSkillFilter('layout', this)">
+                            <div class="tab-icon">📦</div>
+                            <div class="tab-text">版面與可讀性</div>
+                        </button>
+                        <button class="skill-tab" onclick="window.uiManager.setSkillFilter('query', this)">
+                            <div class="tab-icon">🔍</div>
+                            <div class="tab-text">搜尋與檢索</div>
+                        </button>
+                        <button class="skill-tab" onclick="window.uiManager.setSkillFilter('entry', this)">
+                            <div class="tab-icon">⚡</div>
+                            <div class="tab-text">輸入與資料防錯</div>
+                        </button>
+                        <button class="skill-tab" onclick="window.uiManager.setSkillFilter('calc', this)">
+                            <div class="tab-icon">🧮</div>
+                            <div class="tab-text">計算與統計分析</div>
+                        </button>
+                    </div>
+                    <div id="s-search-box">
+                        <input type="text" id="skill-search" placeholder="輸入關鍵字、操作步驟或技能名稱搜尋..."
+                            oninput="window.uiManager.debounceSearch()">
+                    </div>
                 </div>
-                <div id="s-search-box">
-                    <input type="text" id="skill-search" placeholder="輸入關鍵字或禁術名稱..."
-                        oninput="window.uiManager.debounceSearch()">
-                </div>
-                <div id="s-list" class="grimoire-list">
-                    <!-- 技能卡片由 JS 動態生成 -->
+                <!-- 滾動樹狀視窗 -->
+                <div class="tree-viewport-container" id="tree-viewport">
+                    <div class="tree-grid-background" id="tree-grid-bg">
+                        <!-- 由 JS 動態注入 Tier 分欄背景 -->
+                    </div>
+                    <div class="tree-canvas" id="tree-canvas-area">
+                        <!-- SVG 連線 -->
+                        <svg class="tree-connections-svg" id="tree-svg"></svg>
+                        <!-- 節點卡片由 JS 動態生成 -->
+                    </div>
                 </div>
             </div>
-            <div class="grimoire-right" id="s-detail-panel">
-                <!-- 詳細內容由 JS 動態生成 -->
+            <!-- [修改] 原本的右側面板改為隱藏式彈窗 -->
+            <div id="s-detail-modal" class="grimoire-detail-modal" style="display:none">
+                <div class="grimoire-detail-modal-content">
+                    <button onclick="window.uiManager.closeDetailModal()" class="grimoire-detail-modal-close">✕</button>
+                    <div id="s-detail-panel">
+                        <!-- 詳細內容由 JS 動態生成 -->
+                    </div>
+                </div>
             </div>
             <button onclick="window.uiManager.openSkills()" class="grimoire-close-btn">✕</button>
         </div>
@@ -1845,6 +2371,16 @@
                 window.orchestrator.init().then(() => {
                     _hideInitLoader();
                     if (window.phoneHelper) window.phoneHelper.init();
+
+                    // Parse query parameters to auto-load save if ?action=load
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('action') === 'load') {
+                        setTimeout(() => {
+                            if (window.uiManager) {
+                                window.uiManager.openSaveLoadMenu('load');
+                            }
+                        }, 100);
+                    }
                 }).catch(_hideInitLoader);
             } else {
                 _hideInitLoader();

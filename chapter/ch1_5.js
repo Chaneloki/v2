@@ -29,12 +29,12 @@ window.V2_CHAPTERS["15"] = {
     },
 
     skillDefs: {
-        F: { n: "凍結窗格", s: "Alt+W+F+R", d: "捲動時將標題列固定在最上方", cat: "org", icon: "icon/凍結窗格.png" },
-        NAV: { n: "快速跳轉", s: "Ctrl+方向鍵", d: "在大量數據中快速移動到邊界", cat: "move" },
-        SWAP: { n: "欄位對調", s: "Shift+拖曳", d: "快速交換整列或整欄的位置", cat: "org" },
-        S: { n: "新增工作表", s: "底部 [+] ", d: "在同一個檔案中建立新的數據分頁", cat: "org" },
-        FILL: { n: "自動填滿", s: "右下角方塊", d: "依照選取儲存格的規律自動產生序列", cat: "data" },
-        DATE: { n: "插入日期", s: "Ctrl+;", d: "在儲存格中輸入當前系統日期", cat: "data" }
+        F: { n: "凍結頂端列", s: "【檢視】頁籤 ➜ 【凍結窗格】 ➜ 【凍結頂端列】", pain: "向下捲動大表格時，表頭欄位名稱消失，看不清每欄數據代表什麼。", d: "將表格的第一列鎖定。任憑你往下捲動，標題列都將固定在最頂端。", cat: "layout", parents: [] },
+        NAV: { n: "快速跳轉邊界", s: "按住 Ctrl 鍵 ➜ 按方向鍵 (↑/↓/←/→)", pain: "數據長達數千行，用滑鼠滾輪或逐格按方向鍵移動效率極低，手指疲勞。", d: "游標瞬間躍遷移動至當前數據區域的上下左右最邊緣儲存格。", cat: "query", parents: [] },
+        SWAP: { n: "欄位拖曳對調", s: "選取整欄 ➜ 按住 Shift 鍵並拖曳選取欄的邊框進行對調", pain: "表格欄位順序錯亂時，手動進行剪貼複製容易手滑覆蓋已有數據。", d: "無痛交換整列或整欄的位置，自動避開並推擠相鄰欄位，不破壞結構。", cat: "layout", parents: ["F"] },
+        S: { n: "新增工作表", s: "點擊工作表底部標籤旁的 [+] 按鈕", pain: "所有資料塞在同一個頁面太過擁擠，需要對不同用途的數據獨立造冊。", d: "在同一個試算表檔案中，開闢一個全新的空白數據分頁來存放新資料。", cat: "layout", parents: ["F"] },
+        AUTOFILL: { n: "自動填滿序列", s: "選取兩個遞增數值儲存格 ➜ 滑鼠拖曳選取框右下角的綠色控制點 (Fill Handle)", pain: "需要手動輸入數百行連貫的序號（如 MP-001, MP-002），逐個打字極易疲勞出錯。", d: "讓魔導書抓取前兩格的數據規律，自動向下填充產生完整的連續序列。", cat: "entry", parents: [] },
+        DATE: { n: "插入當前日期", s: "選取儲存格 ➜ 按住 Ctrl + ;", pain: "每次在表格簽署或蓋章時，都需要手動查詢並輸入當天日期，繁瑣且容易敲錯。", d: "瞬間獲取系統當前日期並寫入選取的儲存格中。", cat: "entry", parents: ["AUTOFILL"] }
     },
 
     story: {
@@ -224,7 +224,7 @@ window.V2_CHAPTERS["15"] = {
                 tutorHint: "【任務：自動填滿】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：完成編號的自動填滿</span>", 
                 playerText: "【 實戰演練 】<br>📌 內心OS：這麼長的連續編號，總不能讓我一行行手打吧，太累了。<br>💡 技巧：這是一場無引導的試煉，請運用之前學過的禁術。",
                 expectedCondition: { type: 'ACTION', actionId: 'AUTO_FILL' }, 
-                unlockSkillId: "FILL",
+                unlockSkillId: "AUTOFILL",
                 storySegmentAfter: "success_FILL",
                 quiz: {
                     situation: "「這幾百行的編號，要是讓我手打，我今天就別想回家吃飯了。賽爾救命！」",

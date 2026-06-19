@@ -47,12 +47,12 @@ window.V2_CHAPTERS["20"] = {
     initialGridData: generateCh2Data(),
 
     skillDefs: {
-        MERGE_CENTER: { n: "跨欄置中", s: "Alt+H+M+C", d: "將選取的儲存格合併並文字居中", cat: "org", icon: "icon/跨欄置中.png" },
-        BORDER: { n: "框線", s: "Alt+H+B", d: "為選取的儲存格加上框線", cat: "style", icon: "icon/框線.png" },
-        FILL: { n: "填滿色彩", s: "Alt+H+H", d: "變更儲存格背景顏色", cat: "style", icon: "icon/fill colour.png" },
-        FORMAT: { n: "格式刷", s: "Alt+H+FP", d: "複製選取格的樣式並套用到其他區域", cat: "style", icon: "icon/format brush.png" },
+        MERGE_CENTER: { n: "跨欄置中", s: "選取多個儲存格 ➜ 【常用】頁籤 ➜ 點選【跨欄置中】", pain: "表格頂部的大標題擠在左上角一小格，版面極度不美觀且沒有重點。", d: "將多個儲存格合併為一個大格子，並自動將其中的文字水平居中對齊。", cat: "layout", parents: ["SWAP","S"] },
+        BORDER: { n: "框線設定", s: "選取儲存格 ➜ 【常用】頁籤 ➜ 點選【框線】下拉選單設定樣式", pain: "表格數據密密麻麻，沒有線條區隔時，肉眼核對容易看錯行或看錯列。", d: "為選取的儲存格添加粗細線條或外框，讓網格的數據邊界清晰可見。", cat: "layout", parents: ["MERGE_CENTER"] },
+        FILL_COLOR: { n: "填滿色彩", s: "選取儲存格 ➜ 【常用】頁籤 ➜ 點選【填滿色彩】(油漆桶)", pain: "表格缺乏重點色彩標示，重要的標題列與下方數百行數據混成一片，難以分辨層級。", d: "變更選取儲存格的背景顏色，用克制的色彩強調標題列或特定關鍵行。", cat: "layout", parents: ["MERGE_CENTER"] },
+        FORMAT: { n: "格式刷", s: "選取已設定格式的儲存格 ➜ 【常用】頁籤 ➜ 點選【格式刷】 ➜ 塗抹目標區域", pain: "已經為首行設定好字體、框線和顏色，下方還有數十行需要重做，手動設定耗時費力。", d: "複製選取格的整套格式樣式，快速塗刷套用到其他區域，一秒同步視覺。", cat: "layout", parents: ["BORDER","FILL_COLOR"] },
         NUMBER: { n: "自訂格式", s: "Ctrl+1", d: "設定數據的顯示單位與格式", cat: "data", icon: "icon/所有框線.png" },
-        SUM: { n: "自動加總", s: "Alt+=", d: "快速計算選取區域的總和", cat: "start", icon: "icon/auto sum.png" }
+        SUM: { n: "自動加總", s: "選取儲存格 ➜ 按住 Alt + =", pain: "核對長長一列物資的總額時，用算盤逐個累加耗時且容易算錯。", d: "一鍵自動偵測相鄰的連續數值儲存格，並在末端產生 SUM 加總公式。", cat: "calc", parents: ["FORMULA_BASIC"] }
     },
 
     story: {
@@ -312,7 +312,7 @@ window.V2_CHAPTERS["20"] = {
                 tutorHint: "【任務：填滿色彩】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：選取 A2:E2，點擊工具列的【填滿色彩】，幫它塗上一個克制的底色。<br>再對第一位新生 A3:E3 重複同樣的操作。</span>",
                 playerText: "【 視覺區隔 】<br>📌 觀察：標題列得跟下面的數據區分開來，不然整片白茫茫的根本分不清楚。<br>💡 技巧：色彩能賦予表格生命，但記得保持克制！",
                 unlockBtnId: "fillcolor",
-                unlockSkillId: "FILL",
+                unlockSkillId: "FILL_COLOR",
                 expectedCondition: { type: "ACTION", actionId: "FILL_COLOR" },
                 storySegmentAfter: "success_COLOR"
             },
