@@ -417,7 +417,7 @@ window.V2_CHAPTERS["35"] = {
             },
             {
                 id: "REPLACE_TASK",
-                tutorHint: "【任務：全部取代】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：將名冊中所有的『待確認』批次改為『已確認撤離』</span>",
+                tutorHint: "【任務：全部取代】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：按 Ctrl + H（或點擊工具欄的【取代】按鈕），將名冊中所有的『待確認』批次改為『已確認撤離』</span>",
                 playerText: "【 實戰演練 】<br>📌 內心OS：你看，名冊上村民的狀態都還停留在『待確認』，那是封路前填寫的舊資料。現在既然路通了，這批人都是鐵定要撤離的。如果一個個改會改到天黑，我記得有一個能一口氣全部換掉的高效率方法。<br>💡 技巧：這是一場無引導的試煉，請回憶過去的知識。",
                 unlockBtnId: "find_group",
                 unlockSkillId: "REPLACE",
@@ -490,6 +490,7 @@ window.V2_CHAPTERS["35"] = {
                     ],
                     success_msg: "太棒了！先選中所有空白格子，接著輸入『=↑』讓每格自動抓取上方數值，最後按下 Ctrl+Enter 即可完美填滿所有空格。"
                 },
+                phoneActionId: 'CTRL_ENTER_FILL', // [手機助理]: 由 taskChanged 自動觸發完整動畫
                 expectedCondition: { type: "EMPTY_FILL_CHECK" },
                 storySegmentAfter: "success_EMPTY"
             }

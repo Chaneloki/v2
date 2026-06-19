@@ -2477,6 +2477,8 @@ body.mode-mobile #story-stage.rpg-ensemble + #dialogue-box { width: 92% !importa
 }
 #vol-modal > div > div:last-child::-webkit-scrollbar { width: 5px; }
 #vol-modal > div > div:last-child::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
+/* 手機模式隱藏桌面專用設定項 */
+body.mode-mobile .desktop-only-setting { display: none !important; }
 
 /* ==========================================
    [Fix 2026-06-19] Mobile Heat Reduction

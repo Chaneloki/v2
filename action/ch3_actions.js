@@ -445,6 +445,30 @@ window.ch3Actions = {
                     </div>
                 </div>`;
             document.body.appendChild(m);
+
+            /* [手機修復 2026-06-19]: 移除 onclick，改綁 touchend+preventDefault
+               防止 ghost click（tap 後 ~300ms 合成 click）穿透到底層 grid */
+            var _gotoSpecialBtns = m.querySelectorAll('button');
+            for (var _bi = 0; _bi < _gotoSpecialBtns.length; _bi++) {
+                if (_gotoSpecialBtns[_bi].textContent.trim() === '確定') {
+                    (function(btn) {
+                        btn.removeAttribute('onclick');
+                        var _gh = false;
+                        function _runGoTo() {
+                            if (_gh) return; _gh = true;
+                            setTimeout(function() { _gh = false; }, 600);
+                            window.ch3Actions.executeGoTo();
+                        }
+                        btn.addEventListener('touchend', function(e) {
+                            e.preventDefault(); e.stopPropagation(); _runGoTo();
+                        }, { passive: false });
+                        btn.addEventListener('click', function(e) {
+                            e.stopPropagation(); _runGoTo();
+                        });
+                    })(_gotoSpecialBtns[_bi]);
+                    break;
+                }
+            }
         }
         m.style.display = 'block';
     },
@@ -475,6 +499,15 @@ window.ch3Actions = {
                 
                 // 隱藏選單 (立刻執行避免遮擋)
                 document.getElementById('excel-goto-modal').style.display = 'none';
+
+                /* [手機修復 2026-06-19]: 兜底攔截層 — 即使 ghost click 仍被合成，
+                   也會被此全屏 div 吸收（400ms 後自動移除），確保 grid 不被重選 */
+                (function() {
+                    var _bl = document.createElement('div');
+                    _bl.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:auto;';
+                    document.body.appendChild(_bl);
+                    setTimeout(function() { if (_bl.parentNode) _bl.parentNode.removeChild(_bl); }, 400);
+                })();
 
                 if (window.gridRenderer) {
                     const wrapper = document.getElementById('wrapper');
@@ -522,6 +555,9 @@ window.ch3Actions = {
                 }, 80);
 
                 window.orchestrator.validateStateChange({ type: 'ACTION', id: 'GOTO_DONE' });
+
+                /* [手機助理 2026-06-19 重構]: CTRL_ENTER_FILL 改由 taskChanged → _handleTask 自動觸發，
+                   不再從 executeGoTo 直接 launch，避免雙重觸發問題。舊碼已移除。 */
             }
         } else {
             document.getElementById('excel-goto-modal').style.display = 'none';

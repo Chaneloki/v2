@@ -1,3 +1,65 @@
+[2026-06-19] Ch3/3.5 手機助理 _scrollToCell 虛擬渲染捲動失效修復 (Phone Helper Virtual-Scroll Fix)
+- code/phone_helper.js [MODIFY]
+  真正根因：ch3/ch3.5 格線採用「縱向虛擬渲染」(render.js render() 用 scrollTop 算
+  startIdx~endIdx，視窗外的列根本不存在於 DOM，見 render.js:331-332)。
+  原本 _scrollToCell(cellId) 先 document.getElementById(cellId) 取得既有元素的
+  getBoundingClientRect() 來算捲動量，若目標格（遠處的列、或畫面右側被截掉看不到的
+  E/F 欄）根本還沒被渲染出來，cell 會是 null，function 直接 return，
+  畫面完全不會捲動 —— 這就是手機玩家看不到助理在 E/F 欄做事的真正原因
+  （並非缺少跟隨游標的捲動效果，而是捲動函式本身在虛擬清單情境下失效）。
+  修復：改用「列高(rowHeight) × rowIdx」「欄寬(colWidth) × colIdx」直接算出目標
+  scrollTop/scrollLeft（不依賴既有 DOM），同步寫入 wrapper.scrollTop/scrollLeft
+  並同步更新 gridRenderer.lastScrollTop 後強制 render()，確保目標列必定被渲染出來；
+  渲染完成後在 requestAnimationFrame 內用目標格的真實 rect 再做一次微調修正誤差。
+
+  [追加修復]：style.css:329 的 .wrapper { scroll-behavior: smooth } 會讓上述
+  「直接賦值 scrollTop」被瀏覽器排成漸進動畫而非立即生效，導致緊接著同步讀取
+  wrapper.scrollTop 餵給 render() 算虛擬捲動範圍時讀到舊值 → 垂直方向視覺上
+  「沒有捲回頂端」（水平 scrollLeft 沒有對應的虛擬渲染依賴，因此不受影響，
+  這正是手機玩家回報「只有橫向會捲，縱向不會捲到頂」的原因）。
+  修復：呼叫前把 wrapper.style.scrollBehavior 暫時設為 'auto'，賦值與
+  render() 完成、requestAnimationFrame 微調結束後再還原原本的 scroll-behavior，
+  不影響玩家手動捲動時的平滑效果。
+
+[2026-06-19] Ch3/3.5 手機助理 CTRL_ENTER_FILL 補上畫面跟隨捲動 (Phone Helper Scroll-Follow)
+- code/phone_helper.js [MODIFY]
+  問題：_animCtrlEnterFill 選好「到...特殊...空格」之後，只在第一個空格捲動一次
+  (_scrollToCell)，之後直接停在那裡示範 =↑ + Ctrl+Enter，畫面從未帶玩家看過
+  整段空格選取範圍，跟 Ch1 (_animQuickJump/_animJumpUp 捲到底/捲回頂)、
+  Ch2 (_animAllBorders/_animFillColor 游標拖曳同時畫面跟隨捲動) 的示範手法不一致。
+  修復：選空格完成 (5600ms) 後新增步驟 9b (6200ms) 先捲到最後一個空格
+  (lastBlank/lastCellId) 並顯示提示「已選取全部空格 ↓」，讓玩家看到選取範圍
+  分散在下方多處；步驟 9c (7200ms) 再捲回第一個空格準備示範 =↑。
+  後續步驟 10/11/12/13 時間軸由 6300/7000/8000/9200ms 順延至
+  8000/8700/9700/10900ms。新增變數 lastBlank / lastCellId。
+  （注意：此步驟為附加的「全範圍展示」效果，真正讓畫面能捲動到 E/F 欄、遠處列的
+  根因修復是上方的 _scrollToCell 虛擬渲染修復。）
+
+[2026-06-19] Ch3 手機版 ghost click 穿透修復 (Phone Ghost Click Fix)
+- action/ch3_actions.js [MODIFY]
+  問題：手機玩家在「定位條件」彈窗按下「確定」→ executeGoTo() 執行後 modal 被隱藏，
+  但瀏覽器在 ~300ms 後合成一個 ghost click 落到底層 grid，觸發 touchstart → grid 重新
+  選取單一格，導致 multiSelectedCells 被清空。600ms 後 phoneHelper.launch() 啟動
+  時空格清單已消失，手機玩家無法完成任務。
+  修復1 (openGoToSpecialModal)：modal 首次建立後，移除「確定」按鈕的 onclick attribute，
+    改綁 touchend+preventDefault+stopPropagation，從根源阻止 ghost click 產生。
+    加入 _gh flag 防止 touchend+click 在桌面版雙重觸發。
+  修復2 (executeGoTo)：隱藏 modal 後立即注入全屏透明 div（z:9999）持續 400ms，
+    作為兜底攔截層，即使 ghost click 仍被合成也會被吸收，不會落到 grid。
+
+[2026-06-19] Ch3 手機版「動畫無法啟動」真正根因修復 (Phone Helper editingCell Race Fix)
+- code/phone_helper.js [MODIFY]
+  真正根因：executeGoTo() 結尾呼叫 triggerFocus() 讓第一個空格獲得焦點，
+  同時 render.js onfocus 設定了 state.editingCell = { r, c, el }。
+  600ms 後 bubble 出現，用戶 tap OK → _doRun() → _runAnim() 執行：
+    1. 設 selectedCell = null → 瀏覽器觸發 cell 的 blur 事件
+    2. onblur 保護邏輯：if (state.editingCell && el===target) → 把 selectedCell 設回單一格！
+    3. 200ms 後 onblur 的 setTimeout 再次 render() → 重建整個 grid DOM
+    以上讓 _animCtrlEnterFill 的 multiSelectedCells 設定和動畫全部失效。
+  修復：在 _runAnim 清空 selectedCell 之前，先把 editingCell = null，
+    讓 onblur 的 「if (state.editingCell && ...)」保護判斷直接跳過，
+    不再把 selectedCell 回寫，200ms render 也不再觸發。
+
 [2026-06-19] 手機模式 UI 修正 (Mobile UI Fixes) - game.html
 - 問題1：.excel-dialog 固定寬度 460px 超出手機螢幕右側
   修正：加入 body.mode-mobile .excel-dialog { width: min(460px,96vw); max-height:88vh; overflow-y:auto }

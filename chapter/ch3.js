@@ -330,7 +330,7 @@ window.V2_CHAPTERS["30"] = {
             },
             {
                 id: "REPLACE_TASK",
-                tutorHint: "【任務：全部取代】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：按 Ctrl + H，把所有『進京待發』換成『滯留待安置』。</span>",
+                tutorHint: "【任務：全部取代】<br><br><span style='color:var(--text-grey); font-size:13px'>▍ 目標：按 Ctrl + H（或點擊工具欄的【取代】按鈕），把所有『進京待發』換成『滯留待安置』。</span>",
                 playerText: "【 狀態改寫 】<br>📌 抱怨：奇怪……名冊上每個人的狀態，全寫著『進京待發』。城門封了十六天，這欄整片都是廢話，擋著我沒法分類。<br>💡 技巧：利用取代魔法，一秒鐘修正所有人的狀態！",
                 unlockBtnId: "find_group",
                 unlockSkillId: "REPLACE",
@@ -366,6 +366,7 @@ window.V2_CHAPTERS["30"] = {
                 unlockBtnId: "find_group",
                 unlockSkillId: "EMPTY",
                 tab: "start",
+                phoneActionId: 'CTRL_ENTER_FILL', // [手機助理]: 由 taskChanged 自動觸發完整動畫
                 expectedCondition: { type: "EMPTY_FILL_CHECK" },
                 storySegmentAfter: "success_EMPTY"
             }

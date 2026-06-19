@@ -21,6 +21,7 @@ window.phoneHelper = (function () {
         'FILL_COLOR':   { key: '填滿色彩', desc: '填滿色彩 (標題列 & 資料列)' },
         'FORMAT_PAINTER': { key: '格式刷', desc: '格式刷 (吸取並應用)' },
         'CUSTOM_FORMAT': { key: '自訂格式', desc: '自訂格式 (右鍵選單)' },
+        'CTRL_ENTER_FILL': { key: '=↑  +  Ctrl + Enter', desc: '批量填充空格 (=↑ 向上引用)' },
     };
 
     /* ── 工具 ─────────────────────────────────────────────────── */
@@ -114,22 +115,66 @@ window.phoneHelper = (function () {
     }
 
     /* ── 自動捲動至顯示區域（行動模式） ────────────────────────────── */
+    /* [修復 2026-06-19]: ch3/ch3.5 的格線採用「縱向虛擬渲染」(render.js startIdx/endIdx)，
+       目前捲動視窗外的列根本不存在於 DOM。原本的寫法依賴 getElementById(cellId) 取得
+       既有元素的 rect 來算捲動量，若目標格（例如遠處的列、或畫面右側被截掉的 E/F 欄）
+       還沒被渲染出來，cell 會是 null，function 直接 return，畫面完全不會捲動 —
+       這正是手機玩家看不到助理操作 E 欄的原因。
+       修復：改用「列高 × rowIdx／欄寬 × colIdx」直接算出目標捲動量（不依賴既有 DOM），
+       同步設定 scrollTop/scrollLeft 並強制 gridRenderer.render() 渲染出目標列，
+       渲染完成後再用真實 rect 做一次微調（修正欄寬不一致等誤差）。
+
+       [追加修復 2026-06-19]: style.css 的 .wrapper { scroll-behavior: smooth }
+       會讓「直接賦值 scrollTop」也被瀏覽器排成動畫漸進捲動，而不是立即生效。
+       此函式緊接著在賦值後同步讀取 wrapper.scrollTop 餵給 render() 去算虛擬捲動
+       startIdx/endIdx —— 若瀏覽器尚未完成漸進捲動，讀到的還是舊值，導致 render()
+       渲染出錯誤的列、垂直捲動視覺上看起來「沒有捲回頂端」（水平 scrollLeft 沒有
+       對應的虛擬渲染依賴，所以視覺上是正常的）。
+       修復：呼叫前先暫時把 scroll-behavior 設為 auto，賦值完成後立即還原，
+       確保 scrollTop/scrollLeft 賦值與後續讀取都是同步、立即生效。 */
     function _scrollToCell(cellId) {
         var wrapper = document.getElementById('wrapper');
-        var cell = document.getElementById(cellId);
-        if (!wrapper || !cell) return;
+        if (!wrapper) return;
 
-        var rect = cell.getBoundingClientRect();
-        var wrapperRect = wrapper.getBoundingClientRect();
+        var match = cellId.match(/^([A-Z]+)(\d+)$/);
+        if (!match) return;
 
-        /* 同時計算縱向與橫向捲動，使格子出現在左上角 */
-        var targetScrollTop  = wrapper.scrollTop  + (rect.top  - wrapperRect.top)  - 80;
-        var targetScrollLeft = wrapper.scrollLeft + (rect.left - wrapperRect.left) - 60;
+        var colIdx = match[1].charCodeAt(0) - 65;
+        var rowIdx = parseInt(match[2], 10) - 1;
 
-        targetScrollTop  = Math.max(0, targetScrollTop);
-        targetScrollLeft = Math.max(0, targetScrollLeft);
+        var rowHeight = (window.gridRenderer && window.gridRenderer.rowHeight) || 32;
+        var colWidth  = (window.gridRenderer && window.gridRenderer.colWidth)  || 150;
 
-        wrapper.scrollTo({ top: targetScrollTop, left: targetScrollLeft, behavior: 'smooth' });
+        var targetScrollTop  = Math.max(0, rowIdx * rowHeight - 80);
+        var targetScrollLeft = Math.max(0, colIdx * colWidth  - 60);
+
+        /* 暫時關閉 smooth，確保賦值立即生效（同步），避免 render() 讀到過渡中的舊值 */
+        var prevBehavior = wrapper.style.scrollBehavior;
+        wrapper.style.scrollBehavior = 'auto';
+
+        wrapper.scrollTop  = targetScrollTop;
+        wrapper.scrollLeft = targetScrollLeft;
+
+        if (window.gridRenderer) {
+            /* 同步更新 lastScrollTop，避免 onscroll → rAF 觸發二次 render() 重建 DOM */
+            window.gridRenderer.lastScrollTop = targetScrollTop;
+            window.gridRenderer.render();
+        }
+
+        /* 渲染後目標格已存在於 DOM，用真實 rect 做一次精細修正 */
+        requestAnimationFrame(function () {
+            var cell = document.getElementById(cellId);
+            if (cell) {
+                var rect = cell.getBoundingClientRect();
+                var wrapperRect = wrapper.getBoundingClientRect();
+                var fineTop  = wrapper.scrollTop  + (rect.top  - wrapperRect.top)  - 80;
+                var fineLeft = wrapper.scrollLeft + (rect.left - wrapperRect.left) - 60;
+                wrapper.scrollTop  = Math.max(0, fineTop);
+                wrapper.scrollLeft = Math.max(0, fineLeft);
+            }
+            /* 還原原本的 scroll-behavior，不影響玩家手動捲動時的平滑效果 */
+            wrapper.style.scrollBehavior = prevBehavior;
+        });
     }
 
     /* ── 游標 / 鍵盤提示工具 ──────────────────────────────────── */
@@ -751,6 +796,230 @@ window.phoneHelper = (function () {
         }, 4500);
     }
 
+    /* [Ch3] 11. 批量填充空格：
+       動畫流程：點工具欄 → 下拉列表出現 → 點「到...」→ 到...彈窗出現 →
+                點「特殊(S)...」→ 定位條件彈窗出現 → 點空格→確定 →
+                捲到 E 欄 → 游標指向第一個空格 → =↑ → Ctrl+Enter 填滿 */
+    function _animCtrlEnterFill(done) {
+        var s    = window.orchestrator && window.orchestrator.state;
+        var data = s && s.gridData;
+
+        /* 掃描所有空格，不依賴可能被污染的 state */
+        var targetCol = (s && s.currentChapter && s.currentChapter.toString() === '35') ? 5 : 4;
+        var toFill = [];
+        if (data) {
+            for (var i = 1; i < data.length; i++) {
+                if (data[i][targetCol] === '') toFill.push({ r: i, c: targetCol });
+            }
+        }
+        var firstBlank = toFill[0] || null;
+        var lastBlank  = toFill[toFill.length - 1] || null;
+        var cellId = firstBlank
+            ? (String.fromCharCode(65 + firstBlank.c) + (firstBlank.r + 1))
+            : null;
+        var lastCellId = lastBlank
+            ? (String.fromCharCode(65 + lastBlank.c) + (lastBlank.r + 1))
+            : null;
+
+        /* 輔助：安全閃光任意 DOM 元素 */
+        function _flashEl(el) {
+            if (!el) return;
+            el.style.transition = 'background 0.08s';
+            el.style.background = 'rgba(255,215,0,0.5)';
+            setTimeout(function () { el.style.background = ''; el.style.transition = ''; }, 200);
+        }
+
+        /* === 步驟 1 (0ms)：游標移到 find_group 按鈕 === */
+        var findBtn = document.getElementById('find_group');
+        if (findBtn) {
+            var r1 = findBtn.getBoundingClientRect();
+            _showCursor(r1.left + r1.width / 2, r1.top + r1.height / 2);
+        }
+        _hideKeyHint();
+
+        /* === 步驟 2 (800ms)：閃光按鈕，打開下拉列表 === */
+        setTimeout(function () {
+            _flashEl(findBtn);
+            if (window.uiManager && findBtn) {
+                window.uiManager.showDropdown([
+                    { icon: '🔍', text: '尋找...', action: 'find' },
+                    { icon: '🔄', text: '取代...', action: 'replace' },
+                    { icon: '📍', text: '到...',   action: 'empty' }
+                ], findBtn);
+            }
+        }, 800);
+
+        /* === 步驟 3 (1500ms)：游標移到「到...」選項 === */
+        setTimeout(function () {
+            var menu = document.getElementById('dropdown-menu');
+            if (menu) {
+                /* 找到「到...」選項（第三個） */
+                var items = menu.querySelectorAll('.dropdown-item');
+                var gotoItem = items[2]; /* 到... */
+                if (gotoItem) {
+                    var r3 = gotoItem.getBoundingClientRect();
+                    _moveCursor(r3.left + r3.width / 2, r3.top + r3.height / 2);
+                }
+            }
+        }, 1500);
+
+        /* === 步驟 4 (2200ms)：點擊「到...」→ 關閉下拉，打開 到... 彈窗 === */
+        setTimeout(function () {
+            var menu = document.getElementById('dropdown-menu');
+            var items = menu ? menu.querySelectorAll('.dropdown-item') : [];
+            if (items[2]) _flashEl(items[2]);
+            /* 隱藏下拉，打開 到... 彈窗 */
+            if (window.uiManager) window.uiManager.hideDropdown();
+            if (window.ch3Actions) window.ch3Actions.openGoToModal();
+        }, 2200);
+
+        /* === 步驟 5 (2900ms)：游標移到「特殊(S)...」按鈕 === */
+        setTimeout(function () {
+            var gotoModal = document.getElementById('excel-goto-base-modal');
+            if (gotoModal) {
+                /* 找「特殊(S)...」按鈕（最後一個 button） */
+                var btns = gotoModal.querySelectorAll('button');
+                var specialBtn = null;
+                for (var bi = 0; bi < btns.length; bi++) {
+                    if (btns[bi].textContent.indexOf('特殊') !== -1) { specialBtn = btns[bi]; break; }
+                }
+                if (specialBtn) {
+                    var r5 = specialBtn.getBoundingClientRect();
+                    _moveCursor(r5.left + r5.width / 2, r5.top + r5.height / 2);
+                }
+            }
+        }, 2900);
+
+        /* === 步驟 6 (3600ms)：點「特殊(S)...」→ 打開定位條件彈窗 === */
+        setTimeout(function () {
+            var gotoModal = document.getElementById('excel-goto-base-modal');
+            if (gotoModal) {
+                var btns = gotoModal.querySelectorAll('button');
+                for (var bi = 0; bi < btns.length; bi++) {
+                    if (btns[bi].textContent.indexOf('特殊') !== -1) { _flashEl(btns[bi]); break; }
+                }
+            }
+            /* 打開定位條件彈窗（關閉到...彈窗） */
+            if (window.ch3Actions) window.ch3Actions.openGoToSpecialModal();
+        }, 3600);
+
+        /* === 步驟 7 (4300ms)：游標移到「空格」radio 按鈕 === */
+        setTimeout(function () {
+            var specialModal = document.getElementById('excel-goto-modal');
+            if (specialModal) {
+                var radioLabel = specialModal.querySelector('label');
+                if (radioLabel) {
+                    var r7 = radioLabel.getBoundingClientRect();
+                    _moveCursor(r7.left + r7.width / 2, r7.top + r7.height / 2);
+                }
+            }
+        }, 4300);
+
+        /* === 步驟 8 (4900ms)：游標移到「確定」→ 閃光 === */
+        setTimeout(function () {
+            var specialModal = document.getElementById('excel-goto-modal');
+            if (specialModal) {
+                var btns = specialModal.querySelectorAll('button');
+                var okBtn = null;
+                for (var bi = 0; bi < btns.length; bi++) {
+                    if (btns[bi].textContent.trim() === '確定') { okBtn = btns[bi]; break; }
+                }
+                if (okBtn) {
+                    var r8 = okBtn.getBoundingClientRect();
+                    _moveCursor(r8.left + r8.width / 2, r8.top + r8.height / 2);
+                }
+            }
+        }, 4900);
+
+        /* === 步驟 9 (5600ms)：點確定 → 內部執行定位空格，關閉彈窗，捲到 E 欄 === */
+        setTimeout(function () {
+            var specialModal = document.getElementById('excel-goto-modal');
+            if (specialModal) {
+                var btns = specialModal.querySelectorAll('button');
+                for (var bi = 0; bi < btns.length; bi++) {
+                    if (btns[bi].textContent.trim() === '確定') { _flashEl(btns[bi]); break; }
+                }
+            }
+            /* 關閉定位條件彈窗 */
+            if (specialModal) specialModal.style.display = 'none';
+
+            /* 內部執行選空格，不呼叫 executeGoTo（避免 validateStateChange） */
+            if (s) s.multiSelectedCells = toFill;
+            if (s) s.selectedCell = firstBlank || null;
+            if (s) s.editingCell = null;
+            if (s) s.selectedRange = firstBlank
+                ? { minRow: firstBlank.r, maxRow: firstBlank.r, minCol: firstBlank.c, maxCol: firstBlank.c }
+                : null;
+            if (window.gridRenderer) window.gridRenderer.render();
+
+            /* 捲動到第一個空格所在位置，先讓游標停在這裡 */
+            if (cellId) _scrollToCell(cellId);
+        }, 5600);
+
+        /* === 步驟 9b (6200ms)：畫面跟隨捲動 → 帶玩家看過整段選取範圍（捲到最後一個空格） ===
+           呼應 ch1/ch2 助理「畫面跟著游標捲動」的示範手法，讓玩家知道
+           「到...特殊...空格」選到的不只第一格，而是分散在下方的所有空格。 */
+        setTimeout(function () {
+            if (lastCellId && lastCellId !== cellId) {
+                _hideCursor();
+                _showKeyHint('已選取全部空格 ↓');
+                _scrollToCell(lastCellId);
+                var lastRect = _cellRect(lastCellId);
+                if (lastRect) _showCursor(lastRect.left + lastRect.width / 2, lastRect.top + lastRect.height / 2);
+            }
+        }, 6200);
+
+        /* === 步驟 9c (7200ms)：捲回第一個空格，準備示範 =↑ === */
+        setTimeout(function () {
+            _hideKeyHint();
+            if (cellId) {
+                _scrollToCell(cellId);
+                var rect0 = _cellRect(cellId);
+                if (rect0) _showCursor(rect0.left + rect0.width / 2, rect0.top + rect0.height / 2);
+            }
+        }, 7200);
+
+        /* === 步驟 10 (8000ms)：游標移到第一個空格，提示輸入 =↑ === */
+        setTimeout(function () {
+            if (cellId) {
+                var rect = _cellRect(cellId);
+                if (rect) _moveCursor(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            }
+            _showKeyHint('輸入  =↑');
+        }, 8000);
+
+        /* === 步驟 11 (8700ms)：高亮上方參照格（模擬 =↑ 視覺回饋） === */
+        setTimeout(function () {
+            if (cellId && window.ch3Actions) {
+                var elCell = document.getElementById(cellId);
+                if (elCell) window.ch3Actions._highlightAboveCell(elCell);
+            }
+        }, 8700);
+
+        /* === 步驟 12 (9700ms)：提示 Ctrl+Enter === */
+        setTimeout(function () {
+            _showKeyHint('Ctrl  +  Enter');
+        }, 9700);
+
+        /* === 步驟 13 (10900ms)：填充所有空格，完成任務 === */
+        setTimeout(function () {
+            _hideKeyHint();
+            if (window.ch3Actions) window.ch3Actions._clearReferencing();
+
+            var fs2  = window.orchestrator && window.orchestrator.state;
+            var dat2 = fs2 && fs2.gridData;
+            if (dat2 && toFill.length > 0) {
+                toFill.forEach(function (cell) {
+                    if (cell.r > 0) dat2[cell.r][cell.c] = dat2[cell.r - 1][cell.c];
+                });
+                if (window.gridRenderer) window.gridRenderer.render();
+                window.orchestrator.validateStateChange({ type: 'ACTION', id: 'FILL_DONE' });
+            }
+
+            done();
+        }, 10900);
+    }
+
     /* ── 動畫路由 ─────────────────────────────────────────────── */
     var _ANIM_MAP = {
         'QUICK_JUMP':  _animQuickJump,
@@ -763,14 +1032,24 @@ window.phoneHelper = (function () {
         'FILL_COLOR':   _animFillColor,
         'FORMAT_PAINTER': _animFormatPainter,
         'CUSTOM_FORMAT': _animCustomFormat,
+        'CTRL_ENTER_FILL': _animCtrlEnterFill,
     };
 
     function _runAnim(actionId) {
         _dom.overlay.style.display = 'block';
+        /* 動畫期間攔截所有穿透 tap，防止手機點擊 OK 後 tap 落到 grid 改變選取 */
+        _dom.overlay.style.pointerEvents = 'auto';
 
         /* 全域：動畫開始前先清空選取狀態，確保所有任務都是「cursor 出現才選格子」 */
         var _s = window.orchestrator && window.orchestrator.state;
         if (_s) {
+            /* [修復 2026-06-19]: 必須先清 editingCell，才能清 selectedCell。
+               因為 executeGoTo 會 focus 第一個空格（讓 state.editingCell 被設定），
+               當我們把 selectedCell=null 後，瀏覽器觸發 cell 的 blur 事件，
+               onblur 裡有保護邏輯：「if (state.editingCell && el===target) 把 selectedCell 設回來」
+               → 這會反向覆蓋我們的清空，令手機助理動畫無法正確選取多格。
+               先把 editingCell=null 就能讓 onblur 保護判斷直接跳過，不再回寫。*/
+            _s.editingCell   = null;
             _s.selectedCell  = null;
             _s.selectedRange = null;
             if (window.gridRenderer) window.gridRenderer.render();
@@ -779,12 +1058,14 @@ window.phoneHelper = (function () {
         var fn = _ANIM_MAP[actionId];
         if (fn) {
             fn(function () {
+                _dom.overlay.style.pointerEvents = 'none';
                 _dom.overlay.style.display = 'none';
                 _hideCursor();
                 _hideKeyHint();
                 _hideDragLine();
             });
         } else {
+            _dom.overlay.style.pointerEvents = 'none';
             _dom.overlay.style.display = 'none';
         }
     }
@@ -814,10 +1095,36 @@ window.phoneHelper = (function () {
             newBtn.style.background =
                 'linear-gradient(135deg,rgba(33,115,70,0.65),rgba(33,115,70,0.45))';
         });
-        newBtn.addEventListener('click', function () {
+        /* 用 touchend + preventDefault 阻止 ghost click 穿透到底層 grid
+           handled flag 防止 touchend 和 click 在桌面版雙重觸發 */
+        var _handled = false;
+        function _doRun() {
+            if (_handled) return;
+            _handled = true;
             _dom.bubble.style.display = 'none';
             _runAnim(actionId);
+        }
+        newBtn.addEventListener('touchend', function (e) {
+            e.preventDefault();        /* 阻止 ghost click 生成 */
+            e.stopPropagation();
+            _doRun();
+        }, { passive: false });
+        newBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            _doRun();                  /* 桌面版 fallback */
         });
+
+        /* [修復 2026-06-19]: Bubble 一出現，overlay 同時封住 grid（pointer-events:auto）。
+           Bubble (z:16000) 在 overlay (z:15000) 上面，用戶照常按 OK 按鈕；
+           但 grid 從這一刻起完全被封死。
+           當 _doRun() 把 bubble 隱藏後，overlay 仍然存在繼續攔截，
+           不存在任何「空窗期」讓任何點擊/tap 穿透到 grid。
+           動畫游標/鍵盤提示先隱藏，等 _runAnim 正式開始才顯示。 */
+        _dom.overlay.style.display = 'block';
+        _dom.overlay.style.pointerEvents = 'auto';
+        _dom.cursor.style.opacity = '0';
+        _dom.keyHint.style.opacity = '0';
+        _dom.dragLine.style.opacity = '0';
 
         _dom.bubble.style.display = 'flex';
     }
@@ -845,6 +1152,7 @@ window.phoneHelper = (function () {
         'FILL_COLOR':     'A2',
         'FORMAT_PAINTER': 'A3',
         'CUSTOM_FORMAT':  'D3',
+        'CTRL_ENTER_FILL': 'E2', // 捲到工具欄可見位置，確保 find_group 按鈕在視窗內
     };
 
     /**
@@ -889,11 +1197,16 @@ window.phoneHelper = (function () {
             _trialObserver.observe(trialModal, { attributes: true, attributeFilter: ['style'] });
         }
 
-        /* 共用：處理單一任務（決定是否、何時彈出助理） */
+        /* 共用：處理單一任務（决定是否、何時彈出助理） */
         function _handleTask(task, delay) {
             if (!isMobile()) return;
             if (!task) return;
-            var actionId = task.expectedCondition && task.expectedCondition.actionId;
+            /* [2026-06-19] 優先讀取 phoneActionId（任務自定義的手機務服動作 ID），
+               其次才讀 expectedCondition.actionId（僅適用於 type=ACTION 的任務）。
+               CTRL_ENTER_FILL 属於前者：EMPTY_TASK 的 expectedCondition type='EMPTY_FILL_CHECK'，
+               読不到 actionId，所以必須用 phoneActionId 才能識別。*/
+            var actionId = task.phoneActionId
+                        || (task.expectedCondition && task.expectedCondition.actionId);
             if (!INCOMPATIBLE[actionId]) return;
 
             if (task.quiz) {
