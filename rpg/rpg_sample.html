@@ -79,14 +79,19 @@
         /* 主角 (固定在畫面中央，世界反向移動) */
         #player {
             position: absolute;
-            width: 150px; height: 150px; /* 大幅加大人物尺寸以符合場景 NPC 比例 */
-            left: 325px; /* 800/2 - 75 */
-            top: 225px;  /* 600/2 - 75 */
+            /* 每幀 21x42，放大 3 倍 → 63x126px 顯示尺寸 */
+            width: 63px;
+            height: 126px;
+            left: 368px; /* 800/2 - 63/2 ≈ 368 */
+            top: 237px;  /* 600/2 - 126/2 ≈ 237 */
             z-index: 10;
-            background-size: contain;
+            image-rendering: pixelated;          /* 保留像素感 */
+            image-rendering: crisp-edges;
+            /* Spritesheet: 12欄 x 6行，放大3倍 → 總圖 252x756px */
+            background-image: url('charater/main_sprite.png');
             background-repeat: no-repeat;
-            background-position: center bottom;
-            background-image: url('charater/main down left.png'); /* 預設圖片 */
+            background-size: 756px 756px; /* 12*21*3, 6*42*3 */
+            background-position: 0px 0px;
         }
 
         /* 操作提示與 UI */
@@ -223,6 +228,79 @@
  * 簡易 RPG 引擎原型
  */
 
+// ============================================================
+// Spritesheet 設定 (main_sprite.png, yituquan_v1 格式)
+// 原始每幀: 21x42px，顯示放大: 3倍 → 63x126px
+// Sheet 尺寸: 12欄 x 6行
+// ============================================================
+const SPRITE_CONFIG = {
+    frameW: 21,
+    frameH: 42,
+    scale: 3,
+    cols: 12,
+    fps: 8,              // 動畫切換速度
+    // 動畫定義 (row=行索引, from/to=欄範圍)
+    animations: {
+        idle_down:  { row: 2, from: 0, to: 5 },
+        walk_down:  { row: 3, from: 0, to: 5 },
+        idle_left:  { row: 2, from: 6, to: 11 },
+        walk_left:  { row: 3, from: 6, to: 11 },
+        idle_right: { row: 2, from: 6, to: 11 },  // spritesheet 用翻轉方向，暫時共用 left
+        walk_right: { row: 3, from: 6, to: 11 },
+        idle_up:    { row: 1, from: 0, to: 5 },
+        walk_up:    { row: 1, from: 6, to: 11 }
+    }
+};
+
+// 動畫播放狀態
+const animState = {
+    currentAnim: 'idle_down',
+    frameIndex: 0,
+    frameTimer: 0,
+    frameDuration: Math.round(60 / SPRITE_CONFIG.fps) // 約每幾個 rAF 幀切換一次
+};
+
+/**
+ * 更新 spritesheet 顯示的幀
+ * @param {string} animName - 動畫名稱，如 'walk_down'
+ */
+function updateSprite(animName) {
+    const anim = SPRITE_CONFIG.animations[animName];
+    if (!anim) return;
+
+    // 推進幀計時器
+    animState.frameTimer++;
+    if (animState.currentAnim !== animName) {
+        // 切換動畫時重設
+        animState.currentAnim = animName;
+        animState.frameIndex = anim.from;
+        animState.frameTimer = 0;
+    } else if (animState.frameTimer >= animState.frameDuration) {
+        animState.frameTimer = 0;
+        animState.frameIndex++;
+        if (animState.frameIndex > anim.to) {
+            animState.frameIndex = anim.from; // 循環
+        }
+    }
+
+    const scale = SPRITE_CONFIG.scale;
+    const fw = SPRITE_CONFIG.frameW * scale;
+    const fh = SPRITE_CONFIG.frameH * scale;
+
+    // 計算 background-position（負值偏移到對應欄和行）
+    const bx = -(animState.frameIndex * fw);
+    const by = -(anim.row * fh);
+
+    playerEl.style.backgroundPosition = `${bx}px ${by}px`;
+
+    // 右方向需要水平翻轉（因 spritesheet 共用 left 的圖）
+    if (animName === 'walk_right' || animName === 'idle_right') {
+        playerEl.style.transform = 'scaleX(-1)';
+    } else {
+        playerEl.style.transform = 'scaleX(1)';
+    }
+}
+
 // 遊戲狀態
 const gameState = {
     x: 512,          // 玩家初始世界座標 X (場景正中)
@@ -235,11 +313,10 @@ const gameState = {
     keys: {},        // 按鍵狀態
     activePoi: null, // 目前碰到的熱區
     inDialog: false, // 是否在對話中
-    
+
     // 角色動畫狀態
     facing: 'down',  // 面向: up, down, left, right
-    step: 'left',    // 腳步: left, right
-    stepCounter: 0   // 步伐計數器
+    isMoving: false  // 是否正在移動（決定 idle 或 walk）
 };
 
 // 取得 DOM
@@ -280,31 +357,17 @@ function gameLoop() {
         let dy = 0;
 
         // 判斷移動意圖與面向
-        let isMoving = false;
-        
-        if (gameState.keys['w'] || gameState.keys['arrowup']) { dy -= gameState.speed; gameState.facing = 'up'; isMoving = true; }
-        else if (gameState.keys['s'] || gameState.keys['arrowdown']) { dy += gameState.speed; gameState.facing = 'down'; isMoving = true; }
-        
-        if (gameState.keys['a'] || gameState.keys['arrowleft']) { dx -= gameState.speed; gameState.facing = 'left'; isMoving = true; }
-        else if (gameState.keys['d'] || gameState.keys['arrowright']) { dx += gameState.speed; gameState.facing = 'right'; isMoving = true; }
+        gameState.isMoving = false;
 
-        // 處理腳步動畫切換
-        if (isMoving) {
-            gameState.stepCounter++;
-            if (gameState.stepCounter > 10) { // 每 10 幀切換一次腳步 (控制動畫速度)
-                gameState.step = (gameState.step === 'left') ? 'right' : 'left';
-                gameState.stepCounter = 0;
-            }
-        } else {
-            // 沒移動時預設站立姿態 (通常為 step 'left' 或特定 idle 幀)
-            gameState.step = 'left';
-            gameState.stepCounter = 0;
-        }
+        if (gameState.keys['w'] || gameState.keys['arrowup']) { dy -= gameState.speed; gameState.facing = 'up'; gameState.isMoving = true; }
+        else if (gameState.keys['s'] || gameState.keys['arrowdown']) { dy += gameState.speed; gameState.facing = 'down'; gameState.isMoving = true; }
 
-        // 更新精靈圖 (Sprite)
-        // 由於我們去除了所有的 transform 翻轉，改用圖片實體名稱
-        // 名稱格式: "main {facing} {step}.png"
-        playerEl.style.backgroundImage = `url('charater/main ${gameState.facing} ${gameState.step}.png')`;
+        if (gameState.keys['a'] || gameState.keys['arrowleft']) { dx -= gameState.speed; gameState.facing = 'left'; gameState.isMoving = true; }
+        else if (gameState.keys['d'] || gameState.keys['arrowright']) { dx += gameState.speed; gameState.facing = 'right'; gameState.isMoving = true; }
+
+        // 更新 Spritesheet 動畫 (main_sprite.png)
+        const animName = (gameState.isMoving ? 'walk' : 'idle') + '_' + gameState.facing;
+        updateSprite(animName);
 
         // 預測下一步的位置
         let nextX = gameState.x + dx;
@@ -397,8 +460,8 @@ function updateCamera() {
 
     // 由於世界被卡在邊緣了，但玩家座標還在變，需要調整主角在畫面上的真實絕對位置
     // 通常主角是在 vw/2, 但如果攝影機卡住，主角要偏移
-    let px = gameState.x + cx - 75; // -75 是主角元素寬度一半 (150/2)
-    let py = gameState.y + cy - 75;
+    let px = gameState.x + cx - 31; // -31 是主角元素寬度一半 (63/2)
+    let py = gameState.y + cy - 63; // -63 是主角元素高度一半 (126/2)
     playerEl.style.left = `${px}px`;
     playerEl.style.top = `${py}px`;
 }
@@ -407,8 +470,8 @@ function updateCamera() {
 function checkCollisions() {
     let touched = null;
     
-    // 主角的真實範圍 (假設寬高 150)
-    const pRect = { left: gameState.x - 75, right: gameState.x + 75, top: gameState.y - 75, bottom: gameState.y + 75 };
+    // 主角的真實範圍 (寬 63, 高 126)
+    const pRect = { left: gameState.x - 31, right: gameState.x + 31, top: gameState.y - 63, bottom: gameState.y + 63 };
 
     pois.forEach(poi => {
         const id = poi.getAttribute('data-id');

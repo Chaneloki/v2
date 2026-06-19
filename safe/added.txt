@@ -259,3 +259,10 @@
   _animCtrlEnterFill 步驟 9 / 9c 改傳 (cellId, true, true)＝靠最左＋釘頂端；
   步驟 9b（已選取全部空格 ↓ 短暫下掃）維持 alignColLeft、不釘頂端，掃完由 9c 回到左上角。
   實測：E 欄 scrollLeft=600（貼齊 A 欄位置）、scrollTop=0（最頂端）。
+
+[2026-06-19 補2] game.html：phone_helper.js 快取破壞版本號 bump
+- 檔案：v2/game.html (line 1713)
+  code/phone_helper.js?v=1781800000002 → ?v=1781900000000
+  原因：phone_helper.js 內容已更新但 ?v= 未變，手機快取同一 URL 舊內容、>10 分鐘仍不刷新。
+  bump 版本號使 script URL 改變，強制所有裝置重新抓取最新 phone_helper.js。
+  ⚠️ 提醒：日後修改任何 code/*.js 後，務必同步 bump game.html 對應 <script> 的 ?v= 值。
