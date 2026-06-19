@@ -243,3 +243,19 @@
   於 buildMap 中將 poi.icon 用 span.rpg-poi-icon 包裹
   於 buildMap 中設定 !showDebug 時將 rpg-poi-icon 設為 display = 'none'
   於 toggleDebug 中加入切換 rpg-poi-icon 顯示狀態的邏輯
+
+[2026-06-19] CTRL_ENTER_FILL 手機助理：任務欄捲到左上角 A1 區
+- 檔案：v2/code/phone_helper.js
+  _scrollToCell 新增可選參數 alignColLeft：true 時水平捲動量改為 colIdx*colWidth
+  （含 rAF 微調 offset 設 0），讓目標欄左緣貼齊原本 A 欄位置（A1 區），垂直 offset 亦設 0。
+  預設 false 維持 ch1/ch2 既有手感。
+  _animCtrlEnterFill 步驟 9 / 9b / 9c 的 _scrollToCell 改傳 alignColLeft=true，
+  使 ch3(E欄)/ch3.5(F欄) 的「報到日期/戶號」任務欄全程停在左上角，手機玩家看得到示範。
+
+[2026-06-19 補] CTRL_ENTER_FILL：停留位置釘到「左上角 A1 區」
+- 檔案：v2/code/phone_helper.js
+  _scrollToCell 再加可選參數 pinTop：true 時 targetScrollTop=0 並在 rAF 微調中
+  保持 scrollTop=0（不做垂直置中），讓任務欄回到最頂端（標題列+第一個空格在最上方）。
+  _animCtrlEnterFill 步驟 9 / 9c 改傳 (cellId, true, true)＝靠最左＋釘頂端；
+  步驟 9b（已選取全部空格 ↓ 短暫下掃）維持 alignColLeft、不釘頂端，掃完由 9c 回到左上角。
+  實測：E 欄 scrollLeft=600（貼齊 A 欄位置）、scrollTop=0（最頂端）。

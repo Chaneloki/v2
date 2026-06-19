@@ -132,7 +132,14 @@ window.phoneHelper = (function () {
        對應的虛擬渲染依賴，所以視覺上是正常的）。
        修復：呼叫前先暫時把 scroll-behavior 設為 auto，賦值完成後立即還原，
        確保 scrollTop/scrollLeft 賦值與後續讀取都是同步、立即生效。 */
-    function _scrollToCell(cellId) {
+    /* [2026-06-19] alignColLeft：true 時把目標欄「完全靠左對齊」到原本 A 欄的位置（A1 區），
+       並把目標列貼到頂端。供 ch3/ch3.5 的 CTRL_ENTER_FILL 把「報到日期/戶號」這個任務欄
+       帶到左上角，讓手機玩家全程看得到助理在任務欄上的操作。
+       預設 false（offset 80/60）以維持 ch1/ch2 既有助理的捲動手感，不破壞鎖定章節行為。
+       [2026-06-19 追加] pinTop：true 時垂直方向直接釘在最頂端（scrollTop = 0，顯示標題列），
+       不依目標列做置中／微調。配合 alignColLeft 用於 CTRL_ENTER_FILL 的「停留示範」位置，
+       讓畫面真正回到「左上角 A1 區」（標題列「報到日期/戶號」+ 第一個空格都在最上方）。 */
+    function _scrollToCell(cellId, alignColLeft, pinTop) {
         var wrapper = document.getElementById('wrapper');
         if (!wrapper) return;
 
@@ -145,8 +152,11 @@ window.phoneHelper = (function () {
         var rowHeight = (window.gridRenderer && window.gridRenderer.rowHeight) || 32;
         var colWidth  = (window.gridRenderer && window.gridRenderer.colWidth)  || 150;
 
-        var targetScrollTop  = Math.max(0, rowIdx * rowHeight - 80);
-        var targetScrollLeft = Math.max(0, colIdx * colWidth  - 60);
+        var topOffset  = alignColLeft ? 0 : 80;
+        var leftOffset = alignColLeft ? 0 : 60;
+
+        var targetScrollTop  = pinTop ? 0 : Math.max(0, rowIdx * rowHeight - topOffset);
+        var targetScrollLeft = Math.max(0, colIdx * colWidth  - leftOffset);
 
         /* 暫時關閉 smooth，確保賦值立即生效（同步），避免 render() 讀到過渡中的舊值 */
         var prevBehavior = wrapper.style.scrollBehavior;
@@ -167,10 +177,17 @@ window.phoneHelper = (function () {
             if (cell) {
                 var rect = cell.getBoundingClientRect();
                 var wrapperRect = wrapper.getBoundingClientRect();
-                var fineTop  = wrapper.scrollTop  + (rect.top  - wrapperRect.top)  - 80;
-                var fineLeft = wrapper.scrollLeft + (rect.left - wrapperRect.left) - 60;
-                wrapper.scrollTop  = Math.max(0, fineTop);
+                var fineLeft = wrapper.scrollLeft + (rect.left - wrapperRect.left) - leftOffset;
                 wrapper.scrollLeft = Math.max(0, fineLeft);
+                /* pinTop 時垂直保持釘在最頂端，不做置中微調 */
+                if (pinTop) {
+                    wrapper.scrollTop = 0;
+                } else {
+                    var fineTop = wrapper.scrollTop + (rect.top - wrapperRect.top) - topOffset;
+                    wrapper.scrollTop = Math.max(0, fineTop);
+                }
+            } else if (pinTop) {
+                wrapper.scrollTop = 0;
             }
             /* 還原原本的 scroll-behavior，不影響玩家手動捲動時的平滑效果 */
             wrapper.style.scrollBehavior = prevBehavior;
@@ -952,8 +969,11 @@ window.phoneHelper = (function () {
                 : null;
             if (window.gridRenderer) window.gridRenderer.render();
 
-            /* 捲動到第一個空格所在位置，先讓游標停在這裡 */
-            if (cellId) _scrollToCell(cellId);
+            /* 捲動到第一個空格所在位置，先讓游標停在這裡。
+               alignColLeft + pinTop：把任務欄（E/F）帶到「左上角 A1 區」——
+               欄靠最左、垂直釘在最頂端（標題列「報到日期/戶號」+ 第一個空格都在最上方），
+               玩家才看得到示範。 */
+            if (cellId) _scrollToCell(cellId, true, true);
         }, 5600);
 
         /* === 步驟 9b (6200ms)：畫面跟隨捲動 → 帶玩家看過整段選取範圍（捲到最後一個空格） ===
@@ -963,7 +983,7 @@ window.phoneHelper = (function () {
             if (lastCellId && lastCellId !== cellId) {
                 _hideCursor();
                 _showKeyHint('已選取全部空格 ↓');
-                _scrollToCell(lastCellId);
+                _scrollToCell(lastCellId, true);
                 var lastRect = _cellRect(lastCellId);
                 if (lastRect) _showCursor(lastRect.left + lastRect.width / 2, lastRect.top + lastRect.height / 2);
             }
@@ -973,7 +993,7 @@ window.phoneHelper = (function () {
         setTimeout(function () {
             _hideKeyHint();
             if (cellId) {
-                _scrollToCell(cellId);
+                _scrollToCell(cellId, true, true); // 回到左上角 A1 區（欄最左 + 釘頂端）
                 var rect0 = _cellRect(cellId);
                 if (rect0) _showCursor(rect0.left + rect0.width / 2, rect0.top + rect0.height / 2);
             }
