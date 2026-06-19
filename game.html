@@ -2095,6 +2095,8 @@
             v = clamp(v);
             const a = getBGMEl();
             if(a) a.volume = v;
+            // [Fix 2026-06-19] iOS: also set GainNode if available
+            if(window._bgmGainNode) window._bgmGainNode.gain.value = v;
             localStorage.setItem(LS_BGM, v);
             const lbl = document.getElementById('vol-bgm-val');
             const sl  = document.getElementById('vol-bgm');
@@ -2149,34 +2151,63 @@
             };
         })();
 
-        // [Fix 2026-06-19] iOS Safari: native range input touch is unreliable inside scroll containers.
-        // Manually calculate value from touch position and dispatch synthetic input/change events.
-        function patchRangeTouch(input) {
-            if (!input || input._touchPatched) return;
+        // [Fix 2026-06-19] BGM GainNode for iOS Safari (audio.volume unreliable on iOS)
+        function initBGMGain(){
+            if(window._bgmGainNode) return;
+            const bgmEl = getBGMEl();
+            if(!bgmEl) return;
+            try {
+                const ctx  = new (window.AudioContext || window.webkitAudioContext)();
+                const src  = ctx.createMediaElementSource(bgmEl);
+                const gain = ctx.createGain();
+                gain.gain.value = parseFloat(localStorage.getItem(LS_BGM)) || 0.3;
+                src.connect(gain);
+                gain.connect(ctx.destination);
+                window._bgmAudioCtx  = ctx;
+                window._bgmGainNode  = gain;
+                // iOS AudioContext starts suspended — resume on first user interaction
+                function resumeCtx(){ if(ctx.state === 'suspended') ctx.resume(); }
+                document.addEventListener('touchstart', resumeCtx, { once: true, passive: true });
+                document.addEventListener('click',      resumeCtx, { once: true });
+            } catch(e){ console.warn('[GainNode] init failed:', e); }
+        }
+
+        // [Fix 2026-06-19] Pointer Events-based slider patch (iOS 13+, Android, desktop)
+        // Uses setPointerCapture so drag works even outside the element.
+        // Directly calls volModal handlers — no synthetic event dispatch needed.
+        function patchRangeTouch(input, directHandler){
+            if(!input || input._touchPatched) return;
             input._touchPatched = true;
-            function valFromTouch(e) {
-                const touch = e.touches[0] || e.changedTouches[0];
-                const rect  = input.getBoundingClientRect();
-                const min   = parseFloat(input.min)  || 0;
-                const max   = parseFloat(input.max)  || 1;
-                const step  = parseFloat(input.step) || 0.01;
-                const ratio = Math.min(1, Math.max(0, (touch.clientX - rect.left) / rect.width));
-                let v = min + ratio * (max - min);
-                v = Math.round(v / step) * step;
-                return Math.min(max, Math.max(min, parseFloat(v.toFixed(10))));
+            input.style.touchAction = 'none';
+            let active = false;
+            function calcVal(clientX){
+                const rect = input.getBoundingClientRect();
+                const min  = parseFloat(input.min)  || 0;
+                const max  = parseFloat(input.max)  || 1;
+                const step = parseFloat(input.step) || 0.01;
+                const r    = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+                const raw  = min + r * (max - min);
+                return parseFloat(Math.min(max, Math.max(min, Math.round(raw / step) * step)).toFixed(10));
             }
-            input.addEventListener('touchstart', function(e){ e.preventDefault(); }, { passive: false });
-            input.addEventListener('touchmove',  function(e){
-                e.preventDefault();
-                input.value = valFromTouch(e);
-                input.dispatchEvent(new Event('input',  { bubbles: true }));
-            }, { passive: false });
-            input.addEventListener('touchend', function(e){
-                e.preventDefault();
-                input.value = valFromTouch(e);
-                input.dispatchEvent(new Event('input',  { bubbles: true }));
-                input.dispatchEvent(new Event('change', { bubbles: true }));
-            }, { passive: false });
+            function apply(clientX){
+                const v = calcVal(clientX);
+                input.value = v;
+                directHandler(v);
+            }
+            input.addEventListener('pointerdown', function(e){
+                if(e.pointerType !== 'mouse'){
+                    active = true;
+                    input.setPointerCapture(e.pointerId);
+                    apply(e.clientX);
+                }
+            });
+            input.addEventListener('pointermove', function(e){
+                if(active) apply(e.clientX);
+            });
+            input.addEventListener('pointerup', function(e){
+                if(active){ active = false; apply(e.clientX); }
+            });
+            input.addEventListener('pointercancel', function(){ active = false; });
         }
 
         // Restore on load
@@ -2191,9 +2222,16 @@
                 const t = JSON.parse(localStorage.getItem(LS_THEME));
                 if (t && t.color) applyTheme(t.color, t.light);
             } catch(e) {}
-            // Patch range sliders for mobile touch
-            ['vol-bgm','vol-se','vol-sidebar'].forEach(function(id){
-                patchRangeTouch(document.getElementById(id));
+            // Init GainNode for iOS BGM volume control
+            initBGMGain();
+            // Patch sliders with Pointer Events for mobile
+            var sliderHandlers = {
+                'vol-bgm':     function(v){ window.volModal && window.volModal.setBGM(v); },
+                'vol-se':      function(v){ window.volModal && window.volModal.setSE(v); },
+                'vol-sidebar': function(v){ window.volModal && window.volModal.setSidebarW(v); }
+            };
+            Object.keys(sliderHandlers).forEach(function(id){
+                patchRangeTouch(document.getElementById(id), sliderHandlers[id]);
             });
         });
 
