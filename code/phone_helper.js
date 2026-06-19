@@ -47,8 +47,6 @@ window.phoneHelper = (function () {
             'border:2px solid rgba(255,215,0,0.55);border-radius:18px;padding:16px 14px;' +
             'max-width:min(360px,90vw);width:calc(100vw - 40px);max-height:52vh;overflow-y:auto;' +
             'box-shadow:0 0 50px rgba(0,0,0,0.8);text-align:center;">' +
-                '<img id="ph-fairy" src="Charater/fairy.png" style="height:50px;object-fit:contain;' +
-                'margin-bottom:6px;filter:drop-shadow(0 0 10px rgba(100,200,255,0.8));">' +
                 '<div id="ph-msg" style="color:#e8d5a3;font-size:clamp(0.7rem,2.2vw,0.9rem);line-height:1.5;' +
                 'margin-bottom:10px;word-break:break-word;"></div>' +
                 '<div id="ph-key-badge" style="display:inline-block;' +

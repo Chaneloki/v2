@@ -1,3 +1,9 @@
+[2026-06-19] 手機模式 UI 修正 (Mobile UI Fixes) - game.html
+- 問題1：.excel-dialog 固定寬度 460px 超出手機螢幕右側
+  修正：加入 body.mode-mobile .excel-dialog { width: min(460px,96vw); max-height:88vh; overflow-y:auto }
+- 問題2：#vol-modal 內 range slider 在手機可拖動但不觸發 oninput（scroll container 截走 touch 事件）
+  修正：三個 <input type="range"> 加上 touch-action:none，強制 touch 事件給 slider 而非父層捲軸
+
 [2026-06-19] 手機助理 Ch2 動畫修正 (Phone Helper Ch2 fix)
 - code/phone_helper.js [MODIFY]
   問題1：Ch2 範圍選取動畫 (_animAllBorders / _animFillColor / _animFormatPainter /
