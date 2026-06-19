@@ -231,8 +231,15 @@ class Orchestrator {
         const nTitle = document.getElementById('notice-title');
         if (nTitle && chapterModule.meta) nTitle.innerText = chapterModule.meta.title;
 
+        // [Fix 2026-06-19] 章節切換時清除上一章遺留的輪播 interval，防止背景持續耗電
+        if (window.uiManager?.bgSlideshowInterval) {
+            clearInterval(window.uiManager.bgSlideshowInterval);
+            window.uiManager.bgSlideshowInterval = null;
+            window.uiManager.currentSlideshow = null;
+        }
+
         this.emit('chapterLoaded', { chapterId });
-        
+
         // 載入當前章節後，啟動下一章預載
         this.preloadNextChapterAssets();
     }

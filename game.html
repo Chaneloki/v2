@@ -1746,6 +1746,15 @@
                 }, 300);
             };
             _setProgress(75); // window.load just fired
+
+            // [Fix 2026-06-19] Tab 切換到背景時暫停所有 CSS 動畫，切回來時恢復，防止背景耗電發熱
+            document.addEventListener('visibilitychange', function () {
+                document.documentElement.style.setProperty(
+                    '--anim-play-state',
+                    document.hidden ? 'paused' : 'running'
+                );
+            });
+
             if (window.orchestrator) {
                 window.orchestrator.init().then(() => {
                     _hideInitLoader();
@@ -2451,10 +2460,11 @@
     }
 
     /* vol-modal 設定面板：手機橫向時可捲動 */
+    /* [Fix 2026-06-19] 移除 -webkit-overflow-scrolling:touch，
+       該屬性會繞過子元素 touch-action:none，導致 range 滑桿 value 不更新 */
     body.mode-mobile #vol-modal > div {
         max-height: 88vh !important;
         overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
         padding: 20px 24px !important;
     }
     @media (orientation: landscape) and (max-height: 500px) {

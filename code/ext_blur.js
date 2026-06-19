@@ -22,10 +22,12 @@
             const blurLayer = document.getElementById('story-bg-blur');
             if (blurLayer) {
                 if (line.bgBlur !== undefined && line.bgBlur !== null) {
-                    const blurValue = typeof line.bgBlur === 'number' ? `${line.bgBlur}px` : line.bgBlur;
-                    console.log(`[Blur] Applying: ${blurValue}`); // 調試用日誌
-                    blurLayer.style.backdropFilter = `blur(${blurValue})`;
-                    blurLayer.style.webkitBackdropFilter = `blur(${blurValue})`;
+                    // [Fix 2026-06-19] backdrop-filter 是手機 GPU 最貴的操作之一，手機模式下略過
+                    if (localStorage.getItem('v2_device_mode') !== 'mobile') {
+                        const blurValue = typeof line.bgBlur === 'number' ? `${line.bgBlur}px` : line.bgBlur;
+                        blurLayer.style.backdropFilter = `blur(${blurValue})`;
+                        blurLayer.style.webkitBackdropFilter = `blur(${blurValue})`;
+                    }
                 } else if (!line.isMemory) {
                     // 非回憶模式下自動恢復清晰
                     blurLayer.style.backdropFilter = 'blur(0px)';

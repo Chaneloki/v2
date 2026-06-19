@@ -89,6 +89,11 @@ class GridRenderer {
 
         const stopScroll = () => { if (scrollTick) { cancelAnimationFrame(scrollTick); scrollTick = null; } };
 
+        // [Fix 2026-06-19] touchend/touchcancel: 手機觸控結束時必須取消 rAF 迴圈，
+        // 否則 mouseup 不觸發導致迴圈永不停止，CPU 持續滿載。
+        document.addEventListener('touchend',    stopScroll, { passive: true });
+        document.addEventListener('touchcancel', stopScroll, { passive: true });
+
         wrapper.addEventListener('mousemove', (e) => {
             const state = window.orchestrator.state;
             if (!state.isSelecting && !state.isDraggingFill && !state.isDraggingCol) {

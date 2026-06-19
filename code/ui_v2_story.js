@@ -854,6 +854,9 @@ UIManager.prototype.startEnvAnimation = function(folder, totalFrames, speed, loo
 
         if (totalFrames <= 1) return;
 
+        // [Fix 2026-06-19] 手機模式下將幀率減半，降低 CPU 圖片解碼頻率
+        const isMobile = localStorage.getItem('v2_device_mode') === 'mobile';
+        const interval = isMobile ? ((speed || 100) * 2) : (speed || 100);
         this.envAnimInterval = setInterval(() => {
             if (frame >= totalFrames) {
                 // 支援 boolean 的 false 與字串的 "false"
@@ -866,7 +869,7 @@ UIManager.prototype.startEnvAnimation = function(folder, totalFrames, speed, loo
             }
             envImg.src = `stuff/${folder}/${frame}.png`;
             frame++;
-        }, speed || 100);
+        }, interval);
     }
 
 UIManager.prototype.stopEnvAnimation = function() {

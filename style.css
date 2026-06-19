@@ -2477,3 +2477,48 @@ body.mode-mobile #story-stage.rpg-ensemble + #dialogue-box { width: 92% !importa
 }
 #vol-modal > div > div:last-child::-webkit-scrollbar { width: 5px; }
 #vol-modal > div > div:last-child::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
+
+/* ==========================================
+   [Fix 2026-06-19] Mobile Heat Reduction
+   手機過熱修正：停用高耗能動畫
+   ========================================== */
+
+/* Fix 1a: 暫停所有動畫當 tab 被切到背景（由 JS 配合設置 --anim-play-state） */
+*, *::before, *::after {
+    animation-play-state: var(--anim-play-state, running);
+}
+
+/* Fix 1b: 尊重系統「減少動態效果」設定，一鍵停用所有非必要動畫 */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Fix 2: 手機上停用標題畫面的裝飾性 infinite 動畫（最大熱源） */
+@media (max-width: 1024px) {
+    .cinematic-btn-primary::after,
+    .cinematic-btn-secondary::after {
+        animation: none !important;
+    }
+    /* 標題背景旋轉載入指示器：已在背景圖載入後隱藏，但保險起見也停用 */
+    #title-bg-loading * {
+        animation: none !important;
+    }
+    /* 停用 reality-glitch（12s/15s infinite）在手機上的效果 */
+    .screen-reality-tear-slow::before,
+    .screen-reality-tear-slow::after {
+        animation: none !important;
+    }
+    /* 降低 elf floating 動畫頻率：改用更長的週期 */
+    #elf-img {
+        animation-duration: 10s !important;
+    }
+    /* 停用 focus-line 旋轉（GPU 耗損大） */
+    .focus-line-overlay {
+        animation: none !important;
+        display: none !important;
+    }
+}
