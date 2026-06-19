@@ -8,301 +8,391 @@
     <!-- [基因還原] 使用 v45 原始樣式表 -->
     <link rel="stylesheet" href="style.css?v=1781330285593">
     <style>
-    /* === Cinematic Title Buttons === */
-    .cinematic-btn-primary {
-      position: relative;
-      width: 300px;
-      padding: 18px 0;
-      font-family: serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: 6px;
-      color: #fff;
-      background: linear-gradient(135deg, rgba(18,12,4,0.92), rgba(45,28,6,0.92));
-      border: 1px solid rgba(255,215,0,0.55);
-      border-radius: 2px;
-      cursor: pointer;
-      overflow: hidden;
-      text-shadow: 0 0 22px rgba(255,200,0,0.9), 0 1px 3px #000;
-      box-shadow: 0 0 30px rgba(255,175,0,0.12), inset 0 0 25px rgba(255,155,0,0.04);
-      transition: all 0.3s ease;
-    }
-    .cinematic-btn-primary::before {
-      content:'';
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 60%);
-      pointer-events:none;
-    }
-    .cinematic-btn-primary::after {
-      content:'';
-      position:absolute; top:0; left:-120%;
-      width:55%; height:100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-      transform: skewX(-18deg);
-      animation: shimmerSweep 3.5s ease-in-out infinite;
-    }
-    .cinematic-btn-primary:hover {
-      border-color: rgba(255,215,0,0.9);
-      box-shadow: 0 0 60px rgba(255,185,0,0.35), inset 0 0 35px rgba(255,160,0,0.08);
-      transform: scale(1.04);
-      color: #fff8d0;
-    }
+        /* === Cinematic Title Buttons === */
+        .cinematic-btn-primary {
+            position: relative;
+            width: 300px;
+            padding: 18px 0;
+            font-family: serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(18, 12, 4, 0.92), rgba(45, 28, 6, 0.92));
+            border: 1px solid rgba(255, 215, 0, 0.55);
+            border-radius: 2px;
+            cursor: pointer;
+            overflow: hidden;
+            text-shadow: 0 0 22px rgba(255, 200, 0, 0.9), 0 1px 3px #000;
+            box-shadow: 0 0 30px rgba(255, 175, 0, 0.12), inset 0 0 25px rgba(255, 155, 0, 0.04);
+            transition: all 0.3s ease;
+        }
 
-    .cinematic-btn-secondary {
-      position: relative;
-      width: 240px;
-      padding: 12px 0;
-      font-family: sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 3px;
-      color: rgba(255,225,140,0.8);
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,200,80,0.3);
-      border-radius: 2px;
-      cursor: pointer;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-    }
-    .cinematic-btn-secondary:hover {
-      background: rgba(255,200,80,0.08);
-      border-color: rgba(255,200,80,0.65);
-      color: #fff;
-      transform: scale(1.03);
-      box-shadow: 0 0 20px rgba(255,185,0,0.2);
-    }
+        .cinematic-btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
 
-    /* purple variant for teleport */
-    .cinematic-btn-secondary.purple {
-      color: rgba(210,175,255,0.85);
-      border-color: rgba(150,80,255,0.35);
-    }
-    .cinematic-btn-secondary.purple:hover {
-      background: rgba(130,60,255,0.1);
-      border-color: rgba(175,120,255,0.75);
-      color: #e8d5ff;
-      box-shadow: 0 0 20px rgba(138,43,226,0.3);
-    }
+        .cinematic-btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+            transform: skewX(-18deg);
+            animation: shimmerSweep 3.5s ease-in-out infinite;
+        }
 
-    @keyframes titleBgSpin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes shimmerSweep {
-      0%   { left: -120%; opacity:0; }
-      10%  { opacity:1; }
-      50%  { left: 160%; opacity:1; }
-      51%  { opacity:0; }
-      100% { left: 160%; opacity:0; }
-    }
+        .cinematic-btn-primary:hover {
+            border-color: rgba(255, 215, 0, 0.9);
+            box-shadow: 0 0 60px rgba(255, 185, 0, 0.35), inset 0 0 35px rgba(255, 160, 0, 0.08);
+            transform: scale(1.04);
+            color: #fff8d0;
+        }
 
-    /* === Title WordArt === */
-    .title-word-excel {
-      font-family: 'Times New Roman', Georgia, serif;
-      font-weight: 700;
-      font-size: clamp(4.5rem, 10vw, 9rem);
-      color: #217346;
-      line-height: 1;
-      text-shadow:
-        1px 1px 0 #1a5c38,
-        2px 2px 0 #154a2d,
-        3px 4px 6px rgba(0,0,0,0.45);
-    }
-    .title-word-magic {
-      font-family: 'Noto Serif TC', 'KaiTi', serif;
-      font-weight: 900;
-      font-size: clamp(3rem, 7vw, 6rem);
-      color: #c7a96b;
-      line-height: 1;
-      letter-spacing: 4px;
-      text-shadow:
-        1px 1px 0 #a98b4f,
-        2px 2px 0 #8f7340,
-        4px 6px 10px rgba(0,0,0,0.5);
-    }
+        .cinematic-btn-secondary {
+            position: relative;
+            width: 240px;
+            padding: 12px 0;
+            font-family: sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: rgba(255, 225, 140, 0.8);
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 200, 80, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }
 
-    /* === Title Screen Layout === */
-    .cg-bg-layer {
-      position: absolute; inset: 0;
-      background-size: cover;
-      background-position: center;
-      z-index: 0;
-      transition: opacity 1.8s ease-in-out;
-    }
-    .intro-char {
-      position: absolute;
-      bottom: 0;
-      object-fit: contain;
-      z-index: 2;
-      pointer-events: none;
-      animation: introCharFadeIn 2s ease-out forwards;
-    }
-    .intro-char-left {
-      left: -1%;
-      height: 105%;
-      max-height: 105vh;
-      -webkit-mask-image: linear-gradient(to right, black 55%, transparent 90%);
-      mask-image: linear-gradient(to right, black 55%, transparent 90%);
-      filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
-    }
-    .intro-char-right {
-      right: -1%;
-      height: 100%;
-      max-height: 100vh;
-      -webkit-mask-image: linear-gradient(to left, black 65%, transparent 95%);
-      mask-image: linear-gradient(to left, black 65%, transparent 95%);
-    }
-    @keyframes introCharFadeIn {
-      from { opacity:0; transform:translateY(18px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
+        .cinematic-btn-secondary:hover {
+            background: rgba(255, 200, 80, 0.08);
+            border-color: rgba(255, 200, 80, 0.65);
+            color: #fff;
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(255, 185, 0, 0.2);
+        }
 
-    /* Circle start button */
-    .title-circle-btn {
-      width: 155px; height: 155px;
-      border-radius: 50%;
-      position: relative; overflow: hidden;
-      background: radial-gradient(circle at 40% 35%, rgba(55,35,8,0.95), rgba(18,10,2,0.95));
-      border: 2px solid rgba(255,215,0,0.65);
-      color: #fff;
-      font-family: serif;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      line-height: 1.5;
-      cursor: pointer;
-      text-shadow: 0 0 18px rgba(255,200,0,0.9), 0 1px 3px #000;
-      box-shadow: 0 0 40px rgba(255,175,0,0.22), 0 0 80px rgba(255,140,0,0.1), inset 0 0 30px rgba(255,140,0,0.05);
-      transition: all 0.3s ease;
-    }
-    .title-circle-btn::after {
-      content:''; position:absolute; top:-40%; left:-40%;
-      width:80%; height:80%;
-      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%);
-      pointer-events:none;
-    }
-    .title-circle-btn:hover {
-      border-color: rgba(255,215,0,1);
-      box-shadow: 0 0 70px rgba(255,185,0,0.45), 0 0 120px rgba(255,140,0,0.2), inset 0 0 40px rgba(255,160,0,0.1);
-      transform: scale(1.06);
-    }
+        /* purple variant for teleport */
+        .cinematic-btn-secondary.purple {
+            color: rgba(210, 175, 255, 0.85);
+            border-color: rgba(150, 80, 255, 0.35);
+        }
 
-    /* === System Menu Triangles (GPU-layered, clip rasterized once) === */
-    .sys-tri-row {
-      position: absolute;
-      right: 2vw; top: 0; bottom: 0;
-      display: flex;
-      align-items: stretch;
-      z-index: 2;
-    }
-    /* Each triangle is a pre-baked canvas bitmap (like the smooth char-button imgs) */
-    .sys-tri-wrap {
-      position: relative;
-      flex-shrink: 0;
-      cursor: pointer;
-      transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
-      /* 陰影已烘焙進 canvas，hover 只移動 GPU 紋理不重繪 */
-      will-change: transform;
-    }
-    /* 僅使用 transform，避免 z-index 改變觸發堆疊重繪 */
-    .sys-tri-wrap:hover { transform: translateY(-14px); }
-    /* interlock: bring close without visible overlap */
-    .sys-tri-wrap + .sys-tri-wrap { margin-left: -150px; }
-    .sys-tri-wrap-center { z-index: 2; }
-    canvas.sys-tri { display: block; }
-    .sys-tri-label {
-      position: absolute;
-      top: 28%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 3px;
-      text-align: center;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.95), 0 0 24px rgba(0,0,0,0.7);
-      line-height: 1.7;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-    .sys-tri-wrap-center .sys-tri-label { top: auto; bottom: 24%; }
+        .cinematic-btn-secondary.purple:hover {
+            background: rgba(130, 60, 255, 0.1);
+            border-color: rgba(175, 120, 255, 0.75);
+            color: #e8d5ff;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
 
-    /* Corner icon buttons */
-    .sys-corner-icon {
-      position: absolute;
-      width: 72px; height: 72px;
-      background: rgba(255,255,255,0.22);
-      border: 1px solid rgba(255,255,255,0.55);
-      color: #fff;
-      font-size: 1.8rem;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.25s, transform 0.2s;
-      z-index: 10;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.4);
-    }
-    .sys-corner-icon:hover {
-      background: rgba(255,255,255,0.38);
-      transform: scale(1.12);
-      box-shadow: 0 6px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
-    }
-    .sys-corner-circle { border-radius: 50%; }
+        @keyframes titleBgSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    /* === Character Button (title screen) === */
-    .char-btn {
-      cursor: pointer;
-      pointer-events: auto;
-      position: relative;
-      display: inline-block;
-      transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94),
-                  opacity 0.38s ease;
-      will-change: transform;
-    }
-    .char-btn:hover {
-      transform: translateY(-18px) scale(1.04);
-    }
-    .char-btn.char-dimmed {
-      opacity: 0.32;
-      transform: scale(0.98);
-    }
-    .char-btn-label {
-      position: absolute;
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%) translateY(6px);
-      background: rgba(10,6,0,0.82);
-      color: #ffd700;
-      padding: 7px 20px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.28s ease, transform 0.28s ease;
-      pointer-events: none;
-      border: 1px solid rgba(255,215,0,0.45);
-    }
-    .char-btn:hover .char-btn-label {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+        @keyframes shimmerSweep {
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
 
-    /* Sparkle particle */
-    .sparkle-dot {
-      position: absolute;
-      width: 4px; height: 4px;
-      border-radius: 50%;
-      background: #ffd700;
-      pointer-events: none;
-      animation: sparkleFly var(--dur, 1.4s) ease-out forwards;
-      z-index: 9999;
-    }
-    @keyframes sparkleFly {
-      0%   { transform: translate(0,0) scale(1); opacity:1; }
-      100% { transform: translate(var(--tx,0px), var(--ty,-40px)) scale(0); opacity:0; }
-    }
+            10% {
+                opacity: 1;
+            }
+
+            50% {
+                left: 160%;
+                opacity: 1;
+            }
+
+            51% {
+                opacity: 0;
+            }
+
+            100% {
+                left: 160%;
+                opacity: 0;
+            }
+        }
+
+        /* === Title WordArt === */
+        .title-word-excel {
+            font-family: 'Times New Roman', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(4.5rem, 10vw, 9rem);
+            color: #217346;
+            line-height: 1;
+            text-shadow:
+                1px 1px 0 #1a5c38,
+                2px 2px 0 #154a2d,
+                3px 4px 6px rgba(0, 0, 0, 0.45);
+        }
+
+        .title-word-magic {
+            font-family: 'Noto Serif TC', 'KaiTi', serif;
+            font-weight: 900;
+            font-size: clamp(3rem, 7vw, 6rem);
+            color: #c7a96b;
+            line-height: 1;
+            letter-spacing: 4px;
+            text-shadow:
+                1px 1px 0 #a98b4f,
+                2px 2px 0 #8f7340,
+                4px 6px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === Title Screen Layout === */
+        .cg-bg-layer {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            transition: opacity 1.8s ease-in-out;
+        }
+
+        .intro-char {
+            position: absolute;
+            bottom: 0;
+            object-fit: contain;
+            z-index: 2;
+            pointer-events: none;
+            animation: introCharFadeIn 2s ease-out forwards;
+        }
+
+        .intro-char-left {
+            left: -1%;
+            height: 105%;
+            max-height: 105vh;
+            -webkit-mask-image: linear-gradient(to right, black 55%, transparent 90%);
+            mask-image: linear-gradient(to right, black 55%, transparent 90%);
+            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.9));
+        }
+
+        .intro-char-right {
+            right: -1%;
+            height: 100%;
+            max-height: 100vh;
+            -webkit-mask-image: linear-gradient(to left, black 65%, transparent 95%);
+            mask-image: linear-gradient(to left, black 65%, transparent 95%);
+        }
+
+        @keyframes introCharFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Circle start button */
+        .title-circle-btn {
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 40% 35%, rgba(55, 35, 8, 0.95), rgba(18, 10, 2, 0.95));
+            border: 2px solid rgba(255, 215, 0, 0.65);
+            color: #fff;
+            font-family: serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            line-height: 1.5;
+            cursor: pointer;
+            text-shadow: 0 0 18px rgba(255, 200, 0, 0.9), 0 1px 3px #000;
+            box-shadow: 0 0 40px rgba(255, 175, 0, 0.22), 0 0 80px rgba(255, 140, 0, 0.1), inset 0 0 30px rgba(255, 140, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .title-circle-btn::after {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -40%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 70%);
+            pointer-events: none;
+        }
+
+        .title-circle-btn:hover {
+            border-color: rgba(255, 215, 0, 1);
+            box-shadow: 0 0 70px rgba(255, 185, 0, 0.45), 0 0 120px rgba(255, 140, 0, 0.2), inset 0 0 40px rgba(255, 160, 0, 0.1);
+            transform: scale(1.06);
+        }
+
+        /* === System Menu Triangles (GPU-layered, clip rasterized once) === */
+        .sys-tri-row {
+            position: absolute;
+            right: 2vw;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: stretch;
+            z-index: 2;
+        }
+
+        /* Each triangle is a pre-baked canvas bitmap (like the smooth char-button imgs) */
+        .sys-tri-wrap {
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* 陰影已烘焙進 canvas，hover 只移動 GPU 紋理不重繪 */
+            will-change: transform;
+        }
+
+        /* 僅使用 transform，避免 z-index 改變觸發堆疊重繪 */
+        .sys-tri-wrap:hover {
+            transform: translateY(-14px);
+        }
+
+        /* interlock: bring close without visible overlap */
+        .sys-tri-wrap+.sys-tri-wrap {
+            margin-left: -150px;
+        }
+
+        .sys-tri-wrap-center {
+            z-index: 2;
+        }
+
+        canvas.sys-tri {
+            display: block;
+        }
+
+        .sys-tri-label {
+            position: absolute;
+            top: 28%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 3px;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 24px rgba(0, 0, 0, 0.7);
+            line-height: 1.7;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .sys-tri-wrap-center .sys-tri-label {
+            top: auto;
+            bottom: 24%;
+        }
+
+        /* Corner icon buttons */
+        .sys-corner-icon {
+            position: absolute;
+            width: 72px;
+            height: 72px;
+            background: rgba(255, 255, 255, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            color: #fff;
+            font-size: 1.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.25s, transform 0.2s;
+            z-index: 10;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .sys-corner-icon:hover {
+            background: rgba(255, 255, 255, 0.38);
+            transform: scale(1.12);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .sys-corner-circle {
+            border-radius: 50%;
+        }
+
+        /* === Character Button (title screen) === */
+        .char-btn {
+            cursor: pointer;
+            pointer-events: auto;
+            position: relative;
+            display: inline-block;
+            transition: transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.38s ease;
+            will-change: transform;
+        }
+
+        .char-btn:hover {
+            transform: translateY(-18px) scale(1.04);
+        }
+
+        .char-btn.char-dimmed {
+            opacity: 0.32;
+            transform: scale(0.98);
+        }
+
+        .char-btn-label {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            background: rgba(10, 6, 0, 0.82);
+            color: #ffd700;
+            padding: 7px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.28s ease, transform 0.28s ease;
+            pointer-events: none;
+            border: 1px solid rgba(255, 215, 0, 0.45);
+        }
+
+        .char-btn:hover .char-btn-label {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Sparkle particle */
+        .sparkle-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #ffd700;
+            pointer-events: none;
+            animation: sparkleFly var(--dur, 1.4s) ease-out forwards;
+            z-index: 9999;
+        }
+
+        @keyframes sparkleFly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx, 0px), var(--ty, -40px)) scale(0);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -314,36 +404,40 @@
     </div>
 
     <!-- Init loading overlay: blocks all clicks until orchestrator.init() resolves -->
-    <div id="game-init-loading" style="position:fixed;inset:0;z-index:20000;background:#0a0704;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.6s ease;">
+    <div id="game-init-loading"
+        style="position:fixed;inset:0;z-index:20000;background:#0a0704;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.6s ease;">
         <span style="font-size:0.85rem;letter-spacing:4px;color:rgba(255,215,0,0.8);font-family:serif;">遊戲啟動中…</span>
         <div style="width:260px;height:6px;background:rgba(255,215,0,0.12);border-radius:3px;overflow:hidden;">
-            <div id="game-init-bar" style="height:100%;width:0%;background:linear-gradient(90deg,rgba(255,180,0,0.7),rgba(255,230,100,1));border-radius:3px;transition:width 0.5s ease;"></div>
+            <div id="game-init-bar"
+                style="height:100%;width:0%;background:linear-gradient(90deg,rgba(255,180,0,0.7),rgba(255,230,100,1));border-radius:3px;transition:width 0.5s ease;">
+            </div>
         </div>
-        <span id="game-init-pct" style="font-size:0.7rem;letter-spacing:2px;color:rgba(255,215,0,0.45);font-family:serif;">0%</span>
+        <span id="game-init-pct"
+            style="font-size:0.7rem;letter-spacing:2px;color:rgba(255,215,0,0.45);font-family:serif;">0%</span>
     </div>
     <script>
-    // Global safety: remove overlay after 90s even if window.load never fires
-    window._initSafetyTimer = setTimeout(function() {
-        var ol = document.getElementById('game-init-loading');
-        if (!ol) return;
-        ol.style.opacity = '0';
-        setTimeout(function() { if (ol.parentNode) ol.remove(); }, 650);
-    }, 90000);
+        // Global safety: remove overlay after 90s even if window.load never fires
+        window._initSafetyTimer = setTimeout(function () {
+            var ol = document.getElementById('game-init-loading');
+            if (!ol) return;
+            ol.style.opacity = '0';
+            setTimeout(function () { if (ol.parentNode) ol.remove(); }, 650);
+        }, 90000);
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var bar = document.getElementById('game-init-bar');
-        var lbl = document.getElementById('game-init-pct');
-        if (bar) bar.style.width = '35%';
-        if (lbl) lbl.textContent = '35%';
-        // Slowly creep toward 72% while waiting for window.load (0.4%/300ms ≈ ~28s to reach 72%)
-        var cur = 35;
-        window._initCreep = setInterval(function() {
-            if (cur >= 72) { clearInterval(window._initCreep); return; }
-            cur += 0.4;
-            if (bar) bar.style.width = cur.toFixed(1) + '%';
-            if (lbl) lbl.textContent = Math.round(cur) + '%';
-        }, 300);
-    });
+        document.addEventListener('DOMContentLoaded', function () {
+            var bar = document.getElementById('game-init-bar');
+            var lbl = document.getElementById('game-init-pct');
+            if (bar) bar.style.width = '35%';
+            if (lbl) lbl.textContent = '35%';
+            // Slowly creep toward 72% while waiting for window.load (0.4%/300ms ≈ ~28s to reach 72%)
+            var cur = 35;
+            window._initCreep = setInterval(function () {
+                if (cur >= 72) { clearInterval(window._initCreep); return; }
+                cur += 0.4;
+                if (bar) bar.style.width = cur.toFixed(1) + '%';
+                if (lbl) lbl.textContent = Math.round(cur) + '%';
+            }, 300);
+        });
     </script>
 
     <!-- [Title Screen] 全新 RPG 標題畫面 -->
@@ -351,58 +445,67 @@
         style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background-color:#0d0a05; background-image:url('BG/intro/all.png'); background-size:cover; background-position:center; background-repeat:no-repeat;">
 
         <!-- BG loading shimmer — fades out once all.png is loaded -->
-        <div id="title-bg-loading" style="position:absolute;inset:0;z-index:2;pointer-events:none;transition:opacity 1.2s ease;background:radial-gradient(ellipse at 50% 40%, rgba(80,50,15,0.55) 0%, rgba(10,7,2,0.9) 100%);">
-            <div style="position:absolute;bottom:48%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0.7;">
-                <div style="width:38px;height:38px;border:3px solid rgba(255,215,0,0.25);border-top-color:rgba(255,215,0,0.85);border-radius:50%;animation:titleBgSpin 1s linear infinite;"></div>
-                <span style="font-size:0.72rem;letter-spacing:3px;color:rgba(255,215,0,0.6);font-family:serif;">載入中…</span>
+        <div id="title-bg-loading"
+            style="position:absolute;inset:0;z-index:2;pointer-events:none;transition:opacity 1.2s ease;background:radial-gradient(ellipse at 50% 40%, rgba(80,50,15,0.55) 0%, rgba(10,7,2,0.9) 100%);">
+            <div
+                style="position:absolute;bottom:48%;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0.7;">
+                <div
+                    style="width:38px;height:38px;border:3px solid rgba(255,215,0,0.25);border-top-color:rgba(255,215,0,0.85);border-radius:50%;animation:titleBgSpin 1s linear infinite;">
+                </div>
+                <span
+                    style="font-size:0.72rem;letter-spacing:3px;color:rgba(255,215,0,0.6);font-family:serif;">載入中…</span>
             </div>
         </div>
 
         <!-- 漸層遮罩 -->
-        <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.08) 100%);"></div>
+        <div
+            style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.08) 100%);">
+        </div>
 
         <!-- 中央三角色按鈕群 (glea正中, chate偏左, miro偏右) -->
-        <div id="intro-char-group" style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;width:760px;height:100%;z-index:4;pointer-events:none;">
+        <div id="intro-char-group"
+            style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;width:760px;height:100%;z-index:4;pointer-events:none;">
 
             <!-- 3_glea.png：正中央 (z:1) -->
             <div class="char-btn" id="char-glea"
-                 style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;z-index:1;"
-                 onclick="window.uiManager.openSaveLoadMenu('load')">
+                style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;z-index:1;"
+                onclick="window.uiManager.openSaveLoadMenu('load')">
                 <img src="BG/intro/3_glea.png" style="height:90vh;object-fit:contain;display:block;" alt="">
                 <div class="char-btn-label">📜 讀取記憶</div>
             </div>
 
             <!-- 2_miro.png：glea右側 (z:3) -->
-            <div class="char-btn" id="char-miro"
-                 style="position:absolute;left:58%;bottom:0;z-index:3;"
-                 onclick="window.uiManager.openTeleportModal()">
+            <div class="char-btn" id="char-miro" style="position:absolute;left:58%;bottom:0;z-index:3;"
+                onclick="window.location.href='skill_book.html'">
                 <img src="BG/intro/2_miro.png" style="height:52vh;object-fit:contain;display:block;" alt="">
-                <div id="miro-lock-badge" style="position:absolute;top:10%;left:50%;transform:translateX(-50%);background:rgba(10,5,20,0.82);border:1px solid rgba(150,80,255,0.6);color:#c39eff;padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;letter-spacing:2px;white-space:nowrap;pointer-events:none;box-shadow:0 0 12px rgba(138,43,226,0.4);">🔒 需要解封密碼</div>
-                <div class="char-btn-label">🌌 空間傳送陣</div>
+                <div class="char-btn-label">📖 禁術大全</div>
             </div>
 
             <!-- 4_chate.png：glea左側 (z:4) -->
-            <div class="char-btn" id="char-chate"
-                 style="position:absolute;right:55%;bottom:0;z-index:4;"
-                 onclick="window.uiManager.startNewGame()">
+            <div class="char-btn" id="char-chate" style="position:absolute;right:55%;bottom:0;z-index:4;"
+                onclick="window.uiManager.startNewGame()">
                 <img src="BG/intro/4_chate.png" style="height:68vh;object-fit:contain;display:block;" alt="">
                 <div class="char-btn-label">✨ 開始新冒險</div>
             </div>
         </div>
 
         <!-- 全版面絕對定位內容 -->
-        <div id="title-content" style="position:absolute;inset:0;z-index:5;animation:fadeInDown 1.5s ease-out;pointer-events:none;">
+        <div id="title-content"
+            style="position:absolute;inset:0;z-index:5;animation:fadeInDown 1.5s ease-out;pointer-events:none;">
 
             <!-- 標題 WordArt：左 Excel(綠) 透視向右 + 右 魔法冒險(金) 透視向左 -->
             <div style="position:absolute;top:5vh;left:2vw;perspective:400px;">
-                <span class="title-word-excel" style="display:inline-block;transform:rotateY(-18deg);transform-origin:left center;">Excel</span>
+                <span class="title-word-excel"
+                    style="display:inline-block;transform:rotateY(-18deg);transform-origin:left center;">Excel</span>
             </div>
             <div style="position:absolute;top:5vh;right:2vw;perspective:400px;">
-                <span class="title-word-magic" style="display:inline-block;transform:rotateY(18deg);transform-origin:right center;">魔法冒險</span>
+                <span class="title-word-magic"
+                    style="display:inline-block;transform:rotateY(18deg);transform-origin:right center;">魔法冒險</span>
             </div>
 
             <!-- 版本資訊 -->
-            <p style="position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;color:rgba(255,255,255,0.5);text-shadow:1px 1px 2px #000;letter-spacing:2px;white-space:nowrap;">
+            <p
+                style="position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;color:rgba(255,255,255,0.5);text-shadow:1px 1px 2px #000;letter-spacing:2px;white-space:nowrap;">
                 V2 終極版</p>
         </div>
     </div>
@@ -464,16 +567,15 @@
             [W][A][S][D] 或方向鍵移動<br>
             [Enter] 進行互動<br>
             [Tab] 切換角色<br>
-            [D] 切換偵錯顯示<br>
-            [Esc] 返回系統選單
+            [F9] 切換偵錯顯示<br>
         </div>
         <div id="rpg-debug-info"
             style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.8); color:#fff; padding:10px; border-radius:8px; font-size:12px; z-index:30; pointer-events:auto; border:1px solid #ffd700; display:flex; flex-direction:column; gap:4px; font-family:monospace;">
-            <div id="rpg-debug-coords">X: 0 | Y: 0</div>
-            <div id="rpg-debug-poi">Active POI: None</div>
-            <button id="rpg-debug-btn" onclick="window.rpgEngine.toggleDebug()" 
-                style="background:#217346; color:#fff; border:1px solid #ffd700; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:10px; margin-top:5px; font-family:sans-serif; text-align:center; font-weight:bold; transition:0.2s;">
-                👁️ 隱藏偵錯牆
+            <div id="rpg-debug-coords" style="display:none;">X: 0 | Y: 0</div>
+            <div id="rpg-debug-poi" style="display:none;">Active POI: None</div>
+            <button id="rpg-debug-btn" onclick="window.rpgEngine.toggleDebug()"
+                style="background:#555555; color:#fff; border:1px solid #ffd700; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:10px; margin-top:5px; font-family:sans-serif; text-align:center; font-weight:bold; transition:0.2s;">
+                👁️ 顯示偵錯牆
             </button>
         </div>
 
@@ -508,23 +610,7 @@
             <div style="font-size:12px; color:#aaa; margin-top:10px; text-align:right;">[Enter] 繼續</div>
         </div>
 
-        <!-- [新增] RPG 地圖快速傳送快捷鍵 (Teleport Shortcut Menu) -->
-        <div id="rpg-teleport-menu"
-            style="position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,0.85); color:#fff; padding:10px; border-radius:8px; font-size:12px; z-index:30; border:1px solid #ffd700; display:flex; flex-direction:column; gap:6px; pointer-events:auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-            <div onclick="const list = document.getElementById('rpg-teleport-list'); list.style.display = list.style.display === 'none' ? 'flex' : 'none';"
-                style="font-weight:bold; border-bottom:1px solid #ffd700; padding-bottom:4px; text-align:center; color:#ffd700; cursor:pointer; user-select:none;">
-                🌌 空間傳送陣 (點擊展開)</div>
-            <div id="rpg-teleport-list" style="display:none; flex-direction:column; gap:6px; margin-top:4px;">
-                <button onclick="window.rpgEngine.loadMap('my_room')" class="rpg-teleport-btn">🏠 我的房間</button>
-                <button onclick="window.rpgEngine.loadMap('street')" class="rpg-teleport-btn">🛣️ 城鎮街道</button>
-                <button onclick="window.rpgEngine.loadMap('guild_hall')" class="rpg-teleport-btn">🏛️ 公會大廳</button>
-                <button onclick="window.rpgEngine.loadMap('dorm')" class="rpg-teleport-btn">🏢 公會宿舍</button>
-                <button onclick="window.rpgEngine.loadMap('shop_interior')" class="rpg-teleport-btn">💰 道具屋</button>
-                <button onclick="window.rpgEngine.loadMap('library')" class="rpg-teleport-btn">📚 圖書館</button>
-                <button onclick="window.rpgEngine.loadMap('training')" class="rpg-teleport-btn">⚔️ 訓練營</button>
-                <button onclick="window.rpgEngine.loadMap('secret_lab')" class="rpg-teleport-btn">🧪 秘密研究所</button>
-            </div>
-        </div>
+
     </div>
 
     <!-- [Simulator Phase] v45 遊戲結構 -->
@@ -584,37 +670,39 @@
     <div id="sys-menu-overlay" class="modal-layer sys-overlay-hide" style="display:none; background:transparent;">
 
         <!-- Sharp background image — child div so external CSS cannot override it -->
-        <div style="position:absolute;inset:0;background:url('BG/intro/1_bg.png') center/cover no-repeat;pointer-events:none;z-index:0;"></div>
+        <div
+            style="position:absolute;inset:0;background:url('BG/intro/1_bg.png') center/cover no-repeat;pointer-events:none;z-index:0;">
+        </div>
 
         <!-- 關閉按鈕 -->
         <button onclick="window.uiManager.toggleSystemMenu()"
             style="position:absolute;top:24px;right:28px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.4);color:#fff;font-size:1.4rem;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:10;transition:0.2s;"
-            onmouseover="this.style.background='rgba(0,0,0,0.4)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">✕</button>
+            onmouseover="this.style.background='rgba(0,0,0,0.4)'"
+            onmouseout="this.style.background='rgba(0,0,0,0.25)'">✕</button>
 
         <!-- 1_main.png — decorative character, left side, above triangles -->
         <img id="sys-menu-char" src="BG/intro/1_main.png" alt="" aria-hidden="true"
-             style="position:absolute;left:-5vw;bottom:0;height:85vh;object-fit:contain;pointer-events:none;z-index:1;opacity:0.92;">
+            style="position:absolute;left:-5vw;bottom:0;height:85vh;object-fit:contain;pointer-events:none;z-index:1;opacity:0.92;">
 
         <!-- 三角形主面板 (canvas-baked bitmaps — no per-frame clip) -->
         <div class="sys-tri-row">
 
             <!-- 左：pointing DOWN → 讀取記憶 -->
             <div class="sys-tri-wrap"
-                 onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('load')">
+                onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('load')">
                 <canvas class="sys-tri" data-img="BG/intro/1_bg.png" data-dir="down" data-w="360"></canvas>
                 <div class="sys-tri-label">📜<br>讀取記憶</div>
             </div>
 
             <!-- 中：pointing UP → 禁術大全 -->
-            <div class="sys-tri-wrap sys-tri-wrap-center"
-                 onclick="window.location.href='skill_book.html'">
+            <div class="sys-tri-wrap sys-tri-wrap-center" onclick="window.location.href='skill_book.html'">
                 <canvas class="sys-tri" data-img="BG/intro/1_bg.png" data-dir="up" data-w="380"></canvas>
                 <div class="sys-tri-label">📖<br>禁術大全</div>
             </div>
 
             <!-- 右：pointing DOWN → 儲存進度 -->
             <div class="sys-tri-wrap"
-                 onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('save')">
+                onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openSaveLoadMenu('save')">
                 <canvas class="sys-tri" data-img="BG/intro/1_bg.png" data-dir="down" data-w="360"></canvas>
                 <div class="sys-tri-label">💾<br>儲存進度</div>
             </div>
@@ -625,21 +713,25 @@
             onclick="window.uiManager.toggleSystemMenu(); window.uiManager.toggleFullscreen()" title="全螢幕">⛶</button>
         <button class="sys-corner-icon" style="top:32px;left:116px;"
             onclick="window.uiManager.toggleSystemMenu(); window.volModal.open()" title="環境設定 / 返回主頁">🔊</button>
-        <button class="sys-corner-icon sys-corner-circle" style="bottom:40px;left:32px;"
-            onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openTeleportModal()" title="空間傳送陣">🌌</button>
+
         <button class="sys-corner-icon" style="bottom:40px;right:32px;"
             onclick="window.uiManager.toggleSystemMenu(); window.uiManager.openDevMenu()" title="開發者工具">🛠️</button>
     </div>
     <!-- ================= 系統導航樞紐 End ================= -->
 
     <!-- ================= 裝置選擇 Modal [Mobile 2026-06-18] ================= -->
-    <div id="device-select-modal" style="display:none;position:fixed;inset:0;z-index:25000;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;flex-direction:column;">
-        <div style="background:url('BG/intro/1_bg.png') center/cover no-repeat;border-radius:16px;padding:36px 32px;max-width:420px;width:88%;box-shadow:0 0 40px rgba(0,0,0,0.7);position:relative;overflow:hidden;text-align:center;">
+    <div id="device-select-modal"
+        style="display:none;position:fixed;inset:0;z-index:25000;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;flex-direction:column;">
+        <div
+            style="background:url('BG/intro/1_bg.png') center/cover no-repeat;border-radius:16px;padding:36px 32px;max-width:420px;width:88%;box-shadow:0 0 40px rgba(0,0,0,0.7);position:relative;overflow:hidden;text-align:center;">
             <div style="position:absolute;inset:0;background:rgba(10,6,2,0.78);border-radius:16px;z-index:0;"></div>
             <div style="position:relative;z-index:1;">
                 <div style="font-size:2.2rem;margin-bottom:12px;">🎮</div>
-                <h2 style="color:#ffd700;font-size:1.3rem;margin:0 0 8px;letter-spacing:3px;font-family:serif;text-shadow:0 0 20px rgba(255,215,0,0.5);">選擇你的裝置</h2>
-                <p style="color:rgba(200,185,160,0.8);font-size:0.85rem;line-height:1.7;margin:0 0 28px;">不同裝置將提供最適合的操控介面。<br>之後可在 ⚙ 設定中隨時切換。</p>
+                <h2
+                    style="color:#ffd700;font-size:1.3rem;margin:0 0 8px;letter-spacing:3px;font-family:serif;text-shadow:0 0 20px rgba(255,215,0,0.5);">
+                    選擇你的裝置</h2>
+                <p style="color:rgba(200,185,160,0.8);font-size:0.85rem;line-height:1.7;margin:0 0 28px;">
+                    不同裝置將提供最適合的操控介面。<br>之後可在 ⚙ 設定中隨時切換。</p>
                 <div style="display:flex;flex-direction:column;gap:14px;">
                     <button onclick="window.deviceMode.set('mobile');window.deviceMode.closeModal();tryLockLandscape()"
                         style="width:100%;padding:18px 20px;background:linear-gradient(135deg,rgba(33,115,70,0.3),rgba(33,115,70,0.15));border:2px solid rgba(33,115,70,0.7);border-radius:10px;color:#fff;font-size:1rem;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:16px;"
@@ -648,7 +740,9 @@
                         <span style="font-size:2rem;">📱</span>
                         <div style="text-align:left;">
                             <div style="font-size:1rem;margin-bottom:3px;">手機模式</div>
-                            <div style="font-size:0.75rem;color:rgba(200,240,200,0.7);font-weight:400;letter-spacing:0;">顯示虛擬搖桿 · 觸控優化介面</div>
+                            <div
+                                style="font-size:0.75rem;color:rgba(200,240,200,0.7);font-weight:400;letter-spacing:0;">
+                                顯示虛擬搖桿 · 觸控優化介面</div>
                         </div>
                     </button>
                     <button onclick="window.deviceMode.set('desktop');window.deviceMode.closeModal()"
@@ -658,7 +752,9 @@
                         <span style="font-size:2rem;">💻</span>
                         <div style="text-align:left;">
                             <div style="font-size:1rem;margin-bottom:3px;">桌面模式</div>
-                            <div style="font-size:0.75rem;color:rgba(180,210,255,0.7);font-weight:400;letter-spacing:0;">鍵盤 WASD · 滑鼠操控</div>
+                            <div
+                                style="font-size:0.75rem;color:rgba(180,210,255,0.7);font-weight:400;letter-spacing:0;">
+                                鍵盤 WASD · 滑鼠操控</div>
                         </div>
                     </button>
                 </div>
@@ -668,123 +764,140 @@
     <!-- ================= 裝置選擇 Modal End ================= -->
 
     <!-- ================= 音量設定 Modal ================= -->
-    <div id="vol-modal" style="display:none; position:fixed; inset:0; z-index:20000; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center;">
-        <div style="background:url('BG/intro/4_bg.png') center/cover no-repeat; border:none; border-radius:12px; padding:0; min-width:340px; max-width:420px; width:90%; max-height:90vh; box-shadow:0 0 30px rgba(0,0,0,0.5); position:relative; overflow:hidden; display:flex; flex-direction:column;">
-        <div style="position:absolute;inset:0;background:rgba(15,20,45,0.72);border-radius:12px;z-index:0;"></div>
-        <div style="position:relative;z-index:1;overflow-y:auto;padding:32px 40px;">
-            <!-- 關閉 -->
-            <button onclick="window.volModal.close()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#aaa;font-size:1.4rem;cursor:pointer;line-height:1;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">✕</button>
-            <h3 style="color:#e8d5a3;margin:0 0 28px;font-size:1.1rem;letter-spacing:2px;text-align:center;">⚙ 環境設定</h3>
+    <div id="vol-modal"
+        style="display:none; position:fixed; inset:0; z-index:20000; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center;">
+        <div
+            style="background:url('BG/intro/4_bg.png') center/cover no-repeat; border:none; border-radius:12px; padding:0; min-width:340px; max-width:420px; width:90%; max-height:90vh; box-shadow:0 0 30px rgba(0,0,0,0.5); position:relative; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="position:absolute;inset:0;background:rgba(15,20,45,0.72);border-radius:12px;z-index:0;"></div>
+            <div style="position:relative;z-index:1;overflow-y:auto;padding:32px 40px;">
+                <!-- 關閉 -->
+                <button onclick="window.volModal.close()"
+                    style="position:absolute;top:12px;right:16px;background:none;border:none;color:#aaa;font-size:1.4rem;cursor:pointer;line-height:1;"
+                    onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">✕</button>
+                <h3 style="color:#e8d5a3;margin:0 0 28px;font-size:1.1rem;letter-spacing:2px;text-align:center;">⚙ 環境設定
+                </h3>
 
-            <!-- BGM 音量 -->
-            <div style="margin-bottom:22px;">
-                <label style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
-                    <span>🎵 背景音樂</span><span id="vol-bgm-val" style="color:#fff;min-width:32px;text-align:right;"></span>
-                </label>
-                <input id="vol-bgm" type="range" min="0" max="1" step="0.05"
-                    style="width:100%;accent-color:#4a90d9;cursor:pointer;touch-action:none;"
-                    oninput="window.volModal.setBGM(this.value)"
-                    onchange="window.volModal.setBGM(this.value)">
-            </div>
-
-            <!-- SE 音量 -->
-            <div style="margin-bottom:32px;">
-                <label style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
-                    <span>🔔 音效</span><span id="vol-se-val" style="color:#fff;min-width:32px;text-align:right;"></span>
-                </label>
-                <input id="vol-se" type="range" min="0" max="1" step="0.05"
-                    style="width:100%;accent-color:#4a90d9;cursor:pointer;touch-action:none;"
-                    oninput="window.volModal.setSE(this.value)"
-                    onchange="window.volModal.setSE(this.value)">
-            </div>
-
-            <!-- 📐 側欄寬度 (desktop only) -->
-            <div class="desktop-only-setting" style="margin-bottom:22px;">
-                <label style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
-                    <span>📐 側欄寬度</span><span id="vol-sidebar-val" style="color:#fff;min-width:32px;text-align:right;"></span>
-                </label>
-                <input id="vol-sidebar" type="range" min="18" max="45" step="1"
-                    style="width:100%;accent-color:#4a90d9;cursor:pointer;touch-action:none;"
-                    oninput="window.volModal.setSidebarW(this.value)">
-                <div style="text-align:right;margin-top:6px;">
-                    <button onclick="window.volModal.setSidebarW(26)"
-                        style="background:none;border:none;color:rgba(255,215,0,0.5);font-size:11px;cursor:pointer;letter-spacing:1px;"
-                        onmouseover="this.style.color='rgba(255,215,0,0.9)'" onmouseout="this.style.color='rgba(255,215,0,0.5)'">↺ 重設預設</button>
+                <!-- BGM 音量 -->
+                <div style="margin-bottom:22px;">
+                    <label
+                        style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
+                        <span>🎵 背景音樂</span><span id="vol-bgm-val"
+                            style="color:#fff;min-width:32px;text-align:right;"></span>
+                    </label>
+                    <input id="vol-bgm" type="range" min="0" max="1" step="0.05"
+                        style="width:100%;accent-color:#4a90d9;cursor:pointer;touch-action:none;"
+                        oninput="window.volModal.setBGM(this.value)" onchange="window.volModal.setBGM(this.value)">
                 </div>
-            </div>
 
-            <!-- 主題色彩 -->
-            <div style="margin-bottom:20px;">
-                <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:12px;">🎨 介面主題色</label>
-                <div id="theme-swatches" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-                <div style="text-align:right;margin-top:8px;">
-                    <button onclick="window.volModal.resetTheme()"
-                        style="background:none;border:none;color:rgba(255,215,0,0.5);font-size:11px;cursor:pointer;letter-spacing:1px;"
-                        onmouseover="this.style.color='rgba(255,215,0,0.9)'" onmouseout="this.style.color='rgba(255,215,0,0.5)'">↺ 重設顏色</button>
+                <!-- SE 音量 -->
+                <div style="margin-bottom:32px;">
+                    <label
+                        style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
+                        <span>🔔 音效</span><span id="vol-se-val"
+                            style="color:#fff;min-width:32px;text-align:right;"></span>
+                    </label>
+                    <input id="vol-se" type="range" min="0" max="1" step="0.05"
+                        style="width:100%;accent-color:#4a90d9;cursor:pointer;touch-action:none;"
+                        oninput="window.volModal.setSE(this.value)" onchange="window.volModal.setSE(this.value)">
                 </div>
-            </div>
 
-            <!-- 自訂左側背景 -->
-            <div style="margin-bottom:28px;">
-                <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:10px;">🖼 左側背景圖</label>
-                <div style="display:flex;gap:8px;">
-                    <button onclick="document.getElementById('bg-file-input').click()"
-                        style="flex:1;padding:9px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,215,0,0.35);border-radius:6px;color:#e8d5a3;font-size:12px;cursor:pointer;letter-spacing:1px;"
-                        onmouseover="this.style.background='rgba(255,215,0,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.10)'">
-                        📁 選擇圖片
-                    </button>
-                    <button onclick="window.volModal.resetSidebarBG()"
-                        style="padding:9px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:#aaa;font-size:12px;cursor:pointer;"
-                        onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">↺ 重設</button>
+                <!-- 📐 側欄寬度 (desktop only) -->
+                <div class="desktop-only-setting" style="margin-bottom:22px;">
+                    <label
+                        style="display:flex;justify-content:space-between;color:#c8b97a;font-size:13px;margin-bottom:8px;">
+                        <span>📐 側欄寬度</span><span id="vol-sidebar-val"
+                            style="color:#fff;min-width:32px;text-align:right;"></span>
+                    </label>
+                    <input id="vol-sidebar" type="range" min="18" max="45" step="1"
+                        style="width:100%;accent-color:#4a90d9;cursor:pointer;touch-action:none;"
+                        oninput="window.volModal.setSidebarW(this.value)">
+                    <div style="text-align:right;margin-top:6px;">
+                        <button onclick="window.volModal.setSidebarW(26)"
+                            style="background:none;border:none;color:rgba(255,215,0,0.5);font-size:11px;cursor:pointer;letter-spacing:1px;"
+                            onmouseover="this.style.color='rgba(255,215,0,0.9)'"
+                            onmouseout="this.style.color='rgba(255,215,0,0.5)'">↺ 重設預設</button>
+                    </div>
                 </div>
-                <input id="bg-file-input" type="file" accept="image/*" style="display:none"
-                    onchange="window.volModal.openBGCrop(this)">
-            </div>
 
-            <!-- [Mobile 2026-06-18] 變更裝置 -->
-            <div style="margin-bottom:20px;">
-                <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:10px;">📱 裝置模式</label>
-                <div style="display:flex;gap:8px;">
-                    <button id="vol-device-mobile"
-                        onclick="window.deviceMode.set('mobile');tryLockLandscape()"
-                        style="flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;"
-                        onmouseover="this.style.background='rgba(255,215,0,0.18)'" onmouseout="window.deviceMode.refreshBtns()">
-                        📱 手機模式
-                    </button>
-                    <button id="vol-device-desktop"
-                        onclick="window.deviceMode.set('desktop')"
-                        style="flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;"
-                        onmouseover="this.style.background='rgba(255,215,0,0.18)'" onmouseout="window.deviceMode.refreshBtns()">
-                        💻 桌面模式
-                    </button>
+                <!-- 主題色彩 -->
+                <div style="margin-bottom:20px;">
+                    <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:12px;">🎨 介面主題色</label>
+                    <div id="theme-swatches" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+                    <div style="text-align:right;margin-top:8px;">
+                        <button onclick="window.volModal.resetTheme()"
+                            style="background:none;border:none;color:rgba(255,215,0,0.5);font-size:11px;cursor:pointer;letter-spacing:1px;"
+                            onmouseover="this.style.color='rgba(255,215,0,0.9)'"
+                            onmouseout="this.style.color='rgba(255,215,0,0.5)'">↺ 重設顏色</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 返回主頁 -->
-            <button onclick="window.volModal.backToHome()"
-                style="width:100%;padding:12px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,215,0,0.5);border-radius:8px;color:#e8d5a3;font-size:14px;letter-spacing:2px;cursor:pointer;transition:0.2s;"
-                onmouseover="this.style.background='rgba(255,215,0,0.18)'"
-                onmouseout="this.style.background='rgba(255,255,255,0.12)'">
-                ⬅ 返回主頁
-            </button>
-        </div><!-- /z-index:1 wrapper -->
+                <!-- 自訂左側背景 -->
+                <div style="margin-bottom:28px;">
+                    <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:10px;">🖼 左側背景圖</label>
+                    <div style="display:flex;gap:8px;">
+                        <button onclick="document.getElementById('bg-file-input').click()"
+                            style="flex:1;padding:9px;background:rgba(255,255,255,0.10);border:1px solid rgba(255,215,0,0.35);border-radius:6px;color:#e8d5a3;font-size:12px;cursor:pointer;letter-spacing:1px;"
+                            onmouseover="this.style.background='rgba(255,215,0,0.15)'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.10)'">
+                            📁 選擇圖片
+                        </button>
+                        <button onclick="window.volModal.resetSidebarBG()"
+                            style="padding:9px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:6px;color:#aaa;font-size:12px;cursor:pointer;"
+                            onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">↺ 重設</button>
+                    </div>
+                    <input id="bg-file-input" type="file" accept="image/*" style="display:none"
+                        onchange="window.volModal.openBGCrop(this)">
+                </div>
+
+                <!-- [Mobile 2026-06-18] 變更裝置 -->
+                <div style="margin-bottom:20px;">
+                    <label style="color:#c8b97a;font-size:13px;display:block;margin-bottom:10px;">📱 裝置模式</label>
+                    <div style="display:flex;gap:8px;">
+                        <button id="vol-device-mobile" onclick="window.deviceMode.set('mobile');tryLockLandscape()"
+                            style="flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;"
+                            onmouseover="this.style.background='rgba(255,215,0,0.18)'"
+                            onmouseout="window.deviceMode.refreshBtns()">
+                            📱 手機模式
+                        </button>
+                        <button id="vol-device-desktop" onclick="window.deviceMode.set('desktop')"
+                            style="flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;"
+                            onmouseover="this.style.background='rgba(255,215,0,0.18)'"
+                            onmouseout="window.deviceMode.refreshBtns()">
+                            💻 桌面模式
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 返回主頁 -->
+                <button onclick="window.volModal.backToHome()"
+                    style="width:100%;padding:12px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,215,0,0.5);border-radius:8px;color:#e8d5a3;font-size:14px;letter-spacing:2px;cursor:pointer;transition:0.2s;"
+                    onmouseover="this.style.background='rgba(255,215,0,0.18)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.12)'">
+                    ⬅ 返回主頁
+                </button>
+            </div><!-- /z-index:1 wrapper -->
         </div><!-- /outer panel -->
     </div>
     <!-- ================= 音量設定 Modal End ================= -->
 
     <!-- ================= 自訂背景 Crop Modal ================= -->
-    <div id="bg-crop-modal" style="display:none;position:fixed;inset:0;z-index:21000;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;">
-        <div style="background:#1a1a2e;border:1px solid rgba(255,215,0,0.4);border-radius:12px;padding:24px;width:340px;box-shadow:0 0 30px rgba(0,0,0,0.6);">
+    <div id="bg-crop-modal"
+        style="display:none;position:fixed;inset:0;z-index:21000;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;">
+        <div
+            style="background:#1a1a2e;border:1px solid rgba(255,215,0,0.4);border-radius:12px;padding:24px;width:340px;box-shadow:0 0 30px rgba(0,0,0,0.6);">
             <h3 style="color:#e8d5a3;margin:0 0 16px;font-size:1rem;letter-spacing:2px;text-align:center;">✂ 裁剪背景圖</h3>
 
             <!-- Preview box — 1:2 aspect ratio matching sidebar -->
-            <div id="bg-crop-preview" style="width:280px;height:300px;margin:0 auto 16px;overflow:hidden;position:relative;border-radius:6px;border:1px solid rgba(255,215,0,0.25);cursor:grab;background:#000;user-select:none;">
-                <img id="bg-crop-img" style="position:absolute;transform-origin:top left;pointer-events:none;" draggable="false">
+            <div id="bg-crop-preview"
+                style="width:280px;height:300px;margin:0 auto 16px;overflow:hidden;position:relative;border-radius:6px;border:1px solid rgba(255,215,0,0.25);cursor:grab;background:#000;user-select:none;">
+                <img id="bg-crop-img" style="position:absolute;transform-origin:top left;pointer-events:none;"
+                    draggable="false">
             </div>
 
             <!-- Zoom slider -->
             <div style="margin-bottom:16px;">
-                <label style="color:#c8b97a;font-size:12px;display:flex;justify-content:space-between;margin-bottom:6px;">
+                <label
+                    style="color:#c8b97a;font-size:12px;display:flex;justify-content:space-between;margin-bottom:6px;">
                     <span>🔍 縮放</span><span id="bg-crop-zoom-val">100%</span>
                 </label>
                 <input id="bg-crop-zoom" type="range" min="0.3" max="3" step="0.01" value="1"
@@ -796,7 +909,8 @@
             <div style="display:flex;gap:8px;">
                 <button onclick="window.sidebarCrop.apply()"
                     style="flex:1;padding:10px;background:rgba(255,215,0,0.2);border:1px solid rgba(255,215,0,0.5);border-radius:6px;color:#e8d5a3;font-size:13px;cursor:pointer;letter-spacing:1px;"
-                    onmouseover="this.style.background='rgba(255,215,0,0.35)'" onmouseout="this.style.background='rgba(255,215,0,0.2)'">
+                    onmouseover="this.style.background='rgba(255,215,0,0.35)'"
+                    onmouseout="this.style.background='rgba(255,215,0,0.2)'">
                     ✓ 套用
                 </button>
                 <button onclick="window.sidebarCrop.close()"
@@ -809,37 +923,7 @@
     </div>
     <!-- ================= 自訂背景 Crop Modal End ================= -->
 
-    <!-- ================= 空間傳送陣彈窗 (Teleport Modal) ================= -->
-    <div id="teleport-modal" class="modal-layer" style="display:none; z-index:12000;">
-        <div class="sys-menu-panel"
-            style="max-width: 400px; text-align: center; background: #1a0f0a; border: 3px solid #ffd700; box-shadow: 0 0 25px rgba(255,215,0,0.5);">
-            <div class="sys-menu-header"
-                style="border-bottom: 2px solid #ffd700; padding-bottom: 10px; margin-bottom: 15px;">
-                <h2 style="color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.4); margin: 0; font-size: 20px;">🌌
-                    空間傳送陣</h2>
-                <div class="sys-menu-close" style="color: #ffd700; cursor: pointer; font-size: 24px;"
-                    onclick="document.getElementById('teleport-modal').style.display='none'">×</div>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <button onclick="window.uiManager.teleportTo('my_room')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">🏠 我的房間 (My Room)</button>
-                <button onclick="window.uiManager.teleportTo('street')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">🛣️ 城鎮街道 (Street)</button>
-                <button onclick="window.uiManager.teleportTo('guild_hall')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">🏛️ 公會大廳 (Guild Hall)</button>
-                <button onclick="window.uiManager.teleportTo('dorm')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">🏢 公會宿舍 (Dormitory)</button>
-                <button onclick="window.uiManager.teleportTo('shop_interior')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">💰 神秘道具屋 (Shop)</button>
-                <button onclick="window.uiManager.teleportTo('library')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">📚 圖書館 (Library)</button>
-                <button onclick="window.uiManager.teleportTo('training')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">⚔️ 冒險者訓練營 (Training)</button>
-                <button onclick="window.uiManager.teleportTo('secret_lab')" class="rpg-teleport-btn"
-                    style="font-size: 14px; padding: 10px 15px;">🧪 秘密研究所 (Secret Lab)</button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- ================= 存取檔面板 ================= -->
     <div id="save-load-overlay" class="sys-overlay-hide">
@@ -859,51 +943,51 @@
     <div id="dev-modal" class="modal-layer" style="display:none; z-index:8000;">
         <div id="dev-card"
             style="width:300px; max-height:80vh; overflow-y:auto; background:url('BG/intro/1_bg.png') center/cover no-repeat; border-radius:10px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5); position:relative;">
-            <div style="position:absolute;inset:0;background:rgba(10,8,5,0.65);border-radius:10px;z-index:0;pointer-events:none;"></div>
+            <div
+                style="position:absolute;inset:0;background:rgba(10,8,5,0.65);border-radius:10px;z-index:0;pointer-events:none;">
+            </div>
             <div style="position:relative;z-index:1;">
-            <h3 style="margin-top:0; color:#e8d5a3; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">🛠️ 開發者跳轉</h3>
-            <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-                <label style="font-size:12px; color:#c8b97a;">選擇章節：</label>
-                <select id="dev-chapter-select"
-                    style="padding:8px; border-radius:5px; border:1px solid rgba(255,255,255,0.3); font-size:14px; width:100%; background:rgba(0,0,0,0.5); color:#e8d5a3;">
-                    <option value="10">第一章 (Ch1)</option>
-                    <option value="15">第 1.5 章 (Ch1.5)</option>
-                    <option value="20">第二章 (Ch2)</option>
-                    <option value="25">第 2.5 章 (Ch2.5)</option>
-                    <option value="30">第三章 (Ch3)</option>
-                    <option value="35">第 3.5 章 (Ch3.5)</option>
-                    <option value="40">第四章 (Ch4)</option>
-                    <option value="45">第 4.5 章 (Ch4.5)</option>
-                    <option value="50">第五章 (Ch5)</option>
-                    <option value="55">第 5.5 章 (Ch5.5)</option>
-                    <option value="60">第六章 (Ch6)</option>
-                    <option value="65">第 6.5 章 (Ch6.5)</option>
-                    <option value="70">第七章 (Ch7)</option>
-                    <option value="75">第 7.5 章 (Ch7.5)</option>
-                    <option value="80">第 8 章 (Ch8)</option>
-                    <option value="85">第 8.5 章 (Ch8.5)</option>
-                </select>
-                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px; margin-top:5px;">
-                    <button onclick="window.uiManager.jumpFromDev('STORY_START')" class="dev-opt"
-                        style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">開場</button>
-                    <button onclick="window.uiManager.jumpFromDev('SIMULATOR')" class="dev-opt"
-                        style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">遊戲</button>
-                    <button onclick="window.uiManager.jumpFromDev('STORY_END')" class="dev-opt"
-                        style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">結束</button>
+                <h3
+                    style="margin-top:0; color:#e8d5a3; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">
+                    🛠️ 開發者跳轉</h3>
+                <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
+                    <label style="font-size:12px; color:#c8b97a;">選擇章節：</label>
+                    <select id="dev-chapter-select"
+                        style="padding:8px; border-radius:5px; border:1px solid rgba(255,255,255,0.3); font-size:14px; width:100%; background:rgba(0,0,0,0.5); color:#e8d5a3;">
+                        <option value="10">第一章 (Ch1)</option>
+                        <option value="15">第 1.5 章 (Ch1.5)</option>
+                        <option value="20">第二章 (Ch2)</option>
+                        <option value="25">第 2.5 章 (Ch2.5)</option>
+                        <option value="30">第三章 (Ch3)</option>
+                        <option value="35">第 3.5 章 (Ch3.5)</option>
+                        <option value="40">第四章 (Ch4)</option>
+                        <option value="45">第 4.5 章 (Ch4.5)</option>
+                        <option value="50">第五章 (Ch5)</option>
+                        <option value="55">第 5.5 章 (Ch5.5)</option>
+                        <option value="60">第六章 (Ch6)</option>
+                        <option value="65">第 6.5 章 (Ch6.5)</option>
+                        <option value="70">第七章 (Ch7)</option>
+                        <option value="75">第 7.5 章 (Ch7.5)</option>
+                        <option value="80">第 8 章 (Ch8)</option>
+                        <option value="85">第 8.5 章 (Ch8.5)</option>
+                    </select>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:5px; margin-top:5px;">
+                        <button onclick="window.uiManager.jumpFromDev('STORY_START')" class="dev-opt"
+                            style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">開場</button>
+                        <button onclick="window.uiManager.jumpFromDev('SIMULATOR')" class="dev-opt"
+                            style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">遊戲</button>
+                        <button onclick="window.uiManager.jumpFromDev('STORY_END')" class="dev-opt"
+                            style="text-align:center; padding:5px; background:rgba(255,255,255,0.12); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.3); color:#e8d5a3; border-radius:5px; cursor:pointer;">結束</button>
+                    </div>
                 </div>
-            </div>
-            <div style="margin-top:10px;">
-                <button onclick="localStorage.removeItem('metaChoiceNo'); alert('「無所謂了」記憶已清除！現在可以測試第一次的結局了！');"
-                    class="dev-opt"
-                    style="width:100%; text-align:center; background:rgba(255,238,186,0.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,215,0,0.45); color:#e8c84a; border-radius:5px; cursor:pointer;">重置「無所謂了」記憶</button>
-            </div>
-            <div style="margin-top:8px;">
-                <button onclick="window.uiManager.clearTeleportUnlock()"
-                    class="dev-opt"
-                    style="width:100%; text-align:center; background:rgba(248,215,218,0.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(220,100,100,0.45); color:#f0a0a8; border-radius:5px; cursor:pointer;">🔒 清除傳送陣解鎖記憶</button>
-            </div>
-            <button onclick="window.uiManager.openDevMenu()"
-                style="margin-top:20px; width:100%; padding:10px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:5px; cursor:pointer; color:#e8d5a3;">關閉</button>
+                <div style="margin-top:10px;">
+                    <button onclick="localStorage.removeItem('metaChoiceNo'); alert('「無所謂了」記憶已清除！現在可以測試第一次的結局了！');"
+                        class="dev-opt"
+                        style="width:100%; text-align:center; background:rgba(255,238,186,0.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,215,0,0.45); color:#e8c84a; border-radius:5px; cursor:pointer;">重置「無所謂了」記憶</button>
+                </div>
+
+                <button onclick="window.uiManager.openDevMenu()"
+                    style="margin-top:20px; width:100%; padding:10px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:5px; cursor:pointer; color:#e8d5a3;">關閉</button>
             </div><!-- /z-index:1 wrapper -->
         </div>
     </div>
@@ -1132,7 +1216,8 @@
                             </div>
                         </div>
                     </div>
-                    <p id="custom-list-hint" style="font-size:11px; color:#666; margin-top:10px; user-select:text; -webkit-user-select:text;">
+                    <p id="custom-list-hint"
+                        style="font-size:11px; color:#666; margin-top:10px; user-select:text; -webkit-user-select:text;">
                         提示：在右側輸入「重症」、「中症」、「輕症」（每行一個），然後點擊新增。</p>
                 </div>
 
@@ -1266,12 +1351,17 @@
             -webkit-user-select: none;
             user-select: none;
         }
-        #grid, #grid *,
+
+        #grid,
+        #grid *,
         #grid .cell,
-        input, textarea, select {
+        input,
+        textarea,
+        select {
             -webkit-user-select: text;
             user-select: text;
         }
+
         /* 任務關鍵字：需要玩家精確輸入的文字，允許選取複製 */
         .kw-copy {
             -webkit-user-select: text;
@@ -1663,11 +1753,7 @@
     <div id="filter-dropdown" style="display:none;"></div>
 
     <script src="code/rpg/maps/map1_street.js?v=1781286453927"></script>
-    <script src="code/rpg/missions/mission_engine.js?v=1781286453927"></script>
-    <script src="code/rpg/missions/training_records.js?v=1781286453927"></script>
-    <script src="code/rpg/rpg_interactions.js?v=1781286453927"></script>
-    <script src="code/rpg/rpg_practice_mode.js?v=1781286453927"></script>
-    <script src="code/rpg/rpg_shop.js?v=1781286453927"></script>
+
     <script src="code/rpg/rpg_dialog_ui.js?v=1781286453927"></script>
     <script src="code/rpg/story_sleep.js?v=1781368561994"></script>
     <script src="code/rpg/rpg_engine.js?v=1781373500002"></script>
@@ -1720,7 +1806,7 @@
                 if (titleOverlay) {
                     const reEnterFS = () => {
                         if (!document.fullscreenElement) {
-                            document.documentElement.requestFullscreen?.().catch(() => {});
+                            document.documentElement.requestFullscreen?.().catch(() => { });
                         }
                         titleOverlay.removeEventListener('click', reEnterFS, true);
                     };
@@ -1764,227 +1850,165 @@
                 _hideInitLoader();
             }
 
-            // 根據解鎖狀態顯示/隱藏鎖定徽章
-            const UNLOCK_KEY = 'magic_excel_teleport_unlocked';
-            function isTeleportUnlocked() {
-                return sessionStorage.getItem(UNLOCK_KEY) === '1';
-            }
-            function setTeleportUnlocked() {
-                sessionStorage.setItem(UNLOCK_KEY, '1');
-                localStorage.setItem(UNLOCK_KEY, '1');
-            }
-            function updateLockBadge() {
-                const badge = document.getElementById('miro-lock-badge');
-                if (badge) badge.style.display = isTeleportUnlocked() ? 'none' : '';
-            }
-            updateLockBadge();
 
-            // [新增] 擴充空間傳送相關方法
-            if (window.uiManager) {
-                window.uiManager.openTeleportModal = function () {
-                    if (isTeleportUnlocked()) {
-                        document.getElementById('teleport-modal').style.display = 'flex';
-                        return;
-                    }
-                    const pw = prompt('🔒 空間傳送陣已封印\n請輸入解封密碼以進入自由探索模式：');
-                    if (pw === null) return;
-                    if (pw === '7338') {
-                        setTeleportUnlocked();
-                        updateLockBadge();
-                        document.getElementById('teleport-modal').style.display = 'flex';
-                    } else {
-                        alert('❌ 密碼錯誤，空間傳送陣拒絕你的進入。');
-                    }
-                };
-                window.uiManager.teleportTo = function (mapId) {
-                    // 關閉傳送彈窗
-                    document.getElementById('teleport-modal').style.display = 'none';
-
-                    // 關閉標題畫面 (起始頁面)
-                    const titleOverlay = document.getElementById('title-screen-overlay');
-                    if (titleOverlay) {
-                        titleOverlay.style.opacity = '0';
-                        setTimeout(() => {
-                            titleOverlay.style.display = 'none';
-                        }, 800);
-                    }
-
-                    // 關閉系統選單 (如果目前開啟中)
-                    const sysOverlay = document.getElementById('sys-menu-overlay');
-                    if (sysOverlay && sysOverlay.style.display !== 'none') {
-                        window.uiManager.toggleSystemMenu();
-                    }
-
-                    // 進入 RPG 模式並載入指定地圖 (清除舊座標防止覆寫越界)
-                    if (window.orchestrator) {
-                        window.orchestrator.state.rpgMapId = mapId;
-                        window.orchestrator.state.rpgX = null;
-                        window.orchestrator.state.rpgY = null;
-                        window.orchestrator.enterRPGMode();
-                    }
-                    if (window.rpgEngine) {
-                        window.rpgEngine.loadMap(mapId);
-                    }
-                };
-            }
         });
     </script>
 
     <script>
-    (function(){
-      const CG_IMAGES = [
-        "cg/ch1.5 road.png","cg/ch1.5 start.png","cg/ch1.5.png","cg/ch2 last.png","cg/ch2 main.png",
-        "cg/ch2 start.png","cg/ch2.5 coin.png","cg/ch2.5 last.png","cg/ch2.5 main.png","cg/ch2.5 read.png",
-        "cg/ch2.5 three.png","cg/ch3 bond.png","cg/ch3 sick.png","cg/ch3.5 read.png","cg/ch3.5 two.png",
-        "cg/ch3.5.png","cg/ch4 all.png","cg/ch4 three.png","cg/ch4.5 all.png","cg/ch4.5 conflict.png",
-        "cg/ch4.5.png","cg/ch4.png","cg/ch4 royi.png","cg/ch5 sing.png","cg/ch5.5 join.png",
-        "cg/ch5.5 road.png","cg/ch5.5_tent.png","cg/ch6 all.png","cg/ch6 glea.png","cg/ch6.5 bye.png",
-        "cg/ch6.5 hand.png","cg/ch6.5 last.png","cg/ch6.5 main.png","cg/ch6.5 prince.png","cg/ch6.5 royi.png",
-        "cg/ch7 last.png","cg/ch7 sit.png","cg/ch7.5 royi arrive.png","cg/ch7 prince2.png","cg/ch7 prince.png",
-        "cg/ch3 two.png","cg/ch2.png"
-      ];
-      // Shuffle
-      for (let i = CG_IMAGES.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [CG_IMAGES[i], CG_IMAGES[j]] = [CG_IMAGES[j], CG_IMAGES[i]];
-      }
-      let idx = 0, useA = true;
-      const layerA = document.getElementById('cg-bg-a');
-      const layerB = document.getElementById('cg-bg-b');
-      function loadCG(el, src, cb) {
-        const img = new Image();
-        img.onload = cb;
-        img.onerror = cb;
-        img.src = src;
-        el.style.backgroundImage = `url('${src.replace(/'/g,"\\'")}')`;
-      }
-      function nextCG() {
-        idx = (idx + 1) % CG_IMAGES.length;
-        const next = useA ? layerB : layerA;
-        const prev = useA ? layerA : layerB;
-        loadCG(next, CG_IMAGES[idx], () => {
-          next.style.opacity = '1';
-          prev.style.opacity = '0';
-          useA = !useA;
-        });
-      }
-      // CG slideshow disabled — static BG now used
-      // window.addEventListener('DOMContentLoaded', () => { ... });
-    })();
+        (function () {
+            const CG_IMAGES = [
+                "cg/ch1.5 road.png", "cg/ch1.5 start.png", "cg/ch1.5.png", "cg/ch2 last.png", "cg/ch2 main.png",
+                "cg/ch2 start.png", "cg/ch2.5 coin.png", "cg/ch2.5 last.png", "cg/ch2.5 main.png", "cg/ch2.5 read.png",
+                "cg/ch2.5 three.png", "cg/ch3 bond.png", "cg/ch3 sick.png", "cg/ch3.5 read.png", "cg/ch3.5 two.png",
+                "cg/ch3.5.png", "cg/ch4 all.png", "cg/ch4 three.png", "cg/ch4.5 all.png", "cg/ch4.5 conflict.png",
+                "cg/ch4.5.png", "cg/ch4.png", "cg/ch4 royi.png", "cg/ch5 sing.png", "cg/ch5.5 join.png",
+                "cg/ch5.5 road.png", "cg/ch5.5_tent.png", "cg/ch6 all.png", "cg/ch6 glea.png", "cg/ch6.5 bye.png",
+                "cg/ch6.5 hand.png", "cg/ch6.5 last.png", "cg/ch6.5 main.png", "cg/ch6.5 prince.png", "cg/ch6.5 royi.png",
+                "cg/ch7 last.png", "cg/ch7 sit.png", "cg/ch7.5 royi arrive.png", "cg/ch7 prince2.png", "cg/ch7 prince.png",
+                "cg/ch3 two.png", "cg/ch2.png"
+            ];
+            // Shuffle
+            for (let i = CG_IMAGES.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [CG_IMAGES[i], CG_IMAGES[j]] = [CG_IMAGES[j], CG_IMAGES[i]];
+            }
+            let idx = 0, useA = true;
+            const layerA = document.getElementById('cg-bg-a');
+            const layerB = document.getElementById('cg-bg-b');
+            function loadCG(el, src, cb) {
+                const img = new Image();
+                img.onload = cb;
+                img.onerror = cb;
+                img.src = src;
+                el.style.backgroundImage = `url('${src.replace(/'/g, "\\'")}')`;
+            }
+            function nextCG() {
+                idx = (idx + 1) % CG_IMAGES.length;
+                const next = useA ? layerB : layerA;
+                const prev = useA ? layerA : layerB;
+                loadCG(next, CG_IMAGES[idx], () => {
+                    next.style.opacity = '1';
+                    prev.style.opacity = '0';
+                    useA = !useA;
+                });
+            }
+            // CG slideshow disabled — static BG now used
+            // window.addEventListener('DOMContentLoaded', () => { ... });
+        })();
     </script>
 
     <script>
-    (function(){
-      function spawnSparkle(btn, color) {
-        const rect = btn.getBoundingClientRect();
-        if (!rect.width) return;
-        const dot = document.createElement('div');
-        dot.className = 'sparkle-dot';
-        const x = Math.random() * rect.width;
-        const y = Math.random() * rect.height;
-        const tx = (Math.random() - 0.5) * 60;
-        const ty = -(20 + Math.random() * 50);
-        const dur = (0.9 + Math.random() * 0.8).toFixed(2) + 's';
-        dot.style.cssText = `left:${x}px;top:${y}px;--tx:${tx}px;--ty:${ty}px;--dur:${dur};background:${color};`;
-        btn.appendChild(dot);
-        dot.addEventListener('animationend', () => dot.remove());
-      }
-      // Hover-only sparkles — no always-running intervals
-      window.addEventListener('load', () => {
-        const charBtns = document.querySelectorAll('.char-btn');
-        charBtns.forEach(btn => {
-          let hoverInterval = null;
-          btn.addEventListener('mouseenter', () => {
-            charBtns.forEach(b => { if (b !== btn) b.classList.add('char-dimmed'); });
-            // burst on enter
-            for (let i = 0; i < 5; i++) {
-              setTimeout(() => spawnSparkle(btn, '#ffd700'), i * 70);
+        (function () {
+            function spawnSparkle(btn, color) {
+                const rect = btn.getBoundingClientRect();
+                if (!rect.width) return;
+                const dot = document.createElement('div');
+                dot.className = 'sparkle-dot';
+                const x = Math.random() * rect.width;
+                const y = Math.random() * rect.height;
+                const tx = (Math.random() - 0.5) * 60;
+                const ty = -(20 + Math.random() * 50);
+                const dur = (0.9 + Math.random() * 0.8).toFixed(2) + 's';
+                dot.style.cssText = `left:${x}px;top:${y}px;--tx:${tx}px;--ty:${ty}px;--dur:${dur};background:${color};`;
+                btn.appendChild(dot);
+                dot.addEventListener('animationend', () => dot.remove());
             }
-            // keep sparkling while hovering
-            hoverInterval = setInterval(() => spawnSparkle(btn, '#ffd700'), 300);
-          });
-          btn.addEventListener('mouseleave', () => {
-            charBtns.forEach(b => b.classList.remove('char-dimmed'));
-            clearInterval(hoverInterval);
-            hoverInterval = null;
-          });
-        });
-      });
-    })();
+            // Hover-only sparkles — no always-running intervals
+            window.addEventListener('load', () => {
+                const charBtns = document.querySelectorAll('.char-btn');
+                charBtns.forEach(btn => {
+                    let hoverInterval = null;
+                    btn.addEventListener('mouseenter', () => {
+                        charBtns.forEach(b => { if (b !== btn) b.classList.add('char-dimmed'); });
+                        // burst on enter
+                        for (let i = 0; i < 5; i++) {
+                            setTimeout(() => spawnSparkle(btn, '#ffd700'), i * 70);
+                        }
+                        // keep sparkling while hovering
+                        hoverInterval = setInterval(() => spawnSparkle(btn, '#ffd700'), 300);
+                    });
+                    btn.addEventListener('mouseleave', () => {
+                        charBtns.forEach(b => b.classList.remove('char-dimmed'));
+                        clearInterval(hoverInterval);
+                        hoverInterval = null;
+                    });
+                });
+            });
+        })();
     </script>
 
     <!-- System-menu triangles: bake bg textures into static canvas bitmaps once -->
     <script>
-    (function(){
-      const imgCache = {};
-      function loadImg(src){
-        return imgCache[src] || (imgCache[src] = new Promise(res => {
-          const im = new Image();
-          im.onload = () => res(im);
-          im.onerror = () => res(null);
-          im.src = src;
-        }));
-      }
-      async function bakeOne(cv){
-        const w = parseInt(cv.dataset.w, 10) || 360;
-        const h = window.innerHeight;
-        const dpr = window.devicePixelRatio || 1;
-        cv.style.width = w + 'px';
-        cv.style.height = h + 'px';
-        cv.width = Math.round(w * dpr);
-        cv.height = Math.round(h * dpr);
-        const ctx = cv.getContext('2d');
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const img = await loadImg(cv.dataset.img);
-        if(!img) return;
-        ctx.clearRect(0, 0, w, h);
+        (function () {
+            const imgCache = {};
+            function loadImg(src) {
+                return imgCache[src] || (imgCache[src] = new Promise(res => {
+                    const im = new Image();
+                    im.onload = () => res(im);
+                    im.onerror = () => res(null);
+                    im.src = src;
+                }));
+            }
+            async function bakeOne(cv) {
+                const w = parseInt(cv.dataset.w, 10) || 360;
+                const h = window.innerHeight;
+                const dpr = window.devicePixelRatio || 1;
+                cv.style.width = w + 'px';
+                cv.style.height = h + 'px';
+                cv.width = Math.round(w * dpr);
+                cv.height = Math.round(h * dpr);
+                const ctx = cv.getContext('2d');
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const img = await loadImg(cv.dataset.img);
+                if (!img) return;
+                ctx.clearRect(0, 0, w, h);
 
-        // 三角形路徑（共用）
-        function triPath(){
-          ctx.beginPath();
-          if(cv.dataset.dir === 'up'){
-            ctx.moveTo(w*0.5, 0); ctx.lineTo(w*0.06, h); ctx.lineTo(w*0.94, h);
-          } else {
-            ctx.moveTo(w*0.06, 0); ctx.lineTo(w*0.94, 0); ctx.lineTo(w*0.5, h);
-          }
-          ctx.closePath();
-        }
+                // 三角形路徑（共用）
+                function triPath() {
+                    ctx.beginPath();
+                    if (cv.dataset.dir === 'up') {
+                        ctx.moveTo(w * 0.5, 0); ctx.lineTo(w * 0.06, h); ctx.lineTo(w * 0.94, h);
+                    } else {
+                        ctx.moveTo(w * 0.06, 0); ctx.lineTo(w * 0.94, 0); ctx.lineTo(w * 0.5, h);
+                    }
+                    ctx.closePath();
+                }
 
-        // 第一步：烘焙輪廓陰影（fill 黑色 → 邊緣產生 shadow，之後被紋理蓋住）
-        ctx.save();
-        ctx.shadowColor = 'rgba(0,0,0,0.9)';
-        ctx.shadowBlur = 24;
-        ctx.shadowOffsetY = 6;
-        ctx.fillStyle = '#000';
-        triPath();
-        ctx.fill();
-        ctx.restore();
+                // 第一步：烘焙輪廓陰影（fill 黑色 → 邊緣產生 shadow，之後被紋理蓋住）
+                ctx.save();
+                ctx.shadowColor = 'rgba(0,0,0,0.9)';
+                ctx.shadowBlur = 24;
+                ctx.shadowOffsetY = 6;
+                ctx.fillStyle = '#000';
+                triPath();
+                ctx.fill();
+                ctx.restore();
 
-        // 第二步：clip 三角形，用紋理覆蓋黑色 fill（邊緣陰影保留）
-        ctx.save();
-        triPath();
-        ctx.clip();
-        // cover-fit 紋理至三角形範圍
-        const ir = img.width / img.height, cr = w / h;
-        let dw, dh, dx, dy;
-        if(ir > cr){ dh = h; dw = h * ir; dx = (w - dw)/2; dy = 0; }
-        else { dw = w; dh = w / ir; dx = 0; dy = (h - dh)/2; }
-        ctx.drawImage(img, dx, dy, dw, dh);
-        ctx.restore();
-      }
-      let lastH = 0;
-      function bakeAll(force){
-        if(!force && window.innerHeight === lastH) return;
-        lastH = window.innerHeight;
-        document.querySelectorAll('canvas.sys-tri').forEach(bakeOne);
-      }
-      window.addEventListener('load', () => bakeAll(true));
-      window.addEventListener('resize', () => bakeAll(false));
-      // Re-bake when the system menu opens (height may have changed e.g. fullscreen)
-      const btn = document.getElementById('sys-menu-btn');
-      if(btn) btn.addEventListener('click', () => setTimeout(() => bakeAll(false), 50));
-      window.bakeSysTriangles = () => bakeAll(true);
-    })();
+                // 第二步：clip 三角形，用紋理覆蓋黑色 fill（邊緣陰影保留）
+                ctx.save();
+                triPath();
+                ctx.clip();
+                // cover-fit 紋理至三角形範圍
+                const ir = img.width / img.height, cr = w / h;
+                let dw, dh, dx, dy;
+                if (ir > cr) { dh = h; dw = h * ir; dx = (w - dw) / 2; dy = 0; }
+                else { dw = w; dh = w / ir; dx = 0; dy = (h - dh) / 2; }
+                ctx.drawImage(img, dx, dy, dw, dh);
+                ctx.restore();
+            }
+            let lastH = 0;
+            function bakeAll(force) {
+                if (!force && window.innerHeight === lastH) return;
+                lastH = window.innerHeight;
+                document.querySelectorAll('canvas.sys-tri').forEach(bakeOne);
+            }
+            window.addEventListener('load', () => bakeAll(true));
+            window.addEventListener('resize', () => bakeAll(false));
+            // Re-bake when the system menu opens (height may have changed e.g. fullscreen)
+            const btn = document.getElementById('sys-menu-btn');
+            if (btn) btn.addEventListener('click', () => setTimeout(() => bakeAll(false), 50));
+            window.bakeSysTriangles = () => bakeAll(true);
+        })();
     </script>
 
     <!-- [新增] 最終選擇 Modal -->
@@ -2006,634 +2030,685 @@
     </div>
 
     <script>
-    // ── 音量設定 Modal ──
-    window.volModal = (function(){
-        const LS_BGM     = 'v2_bgm_vol';
-        const LS_SE      = 'v2_se_vol';
-        const LS_THEME   = 'v2_excel_theme';
-        const LS_SIDEBAR = 'v2_sidebar_width';
+        // ── 音量設定 Modal ──
+        window.volModal = (function () {
+            const LS_BGM = 'v2_bgm_vol';
+            const LS_SE = 'v2_se_vol';
+            const LS_THEME = 'v2_excel_theme';
+            const LS_SIDEBAR = 'v2_sidebar_width';
 
-        const THEME_COLORS = [
-            {color:'#FFB74D',light:'#FFC870'},{color:'#E87448',light:'#F08860'},
-            {color:'#D15548',light:'#DC6A5D'},{color:'#C02535',light:'#CC3A4A'},
-            {color:'#E0F8F8',light:'#EDFCFC'},{color:'#A8CC70',light:'#BAD888'},
-            {color:'#5CA870',light:'#6EBA82'},{color:'#2A7878',light:'#3A8A8A'},
-            {color:'#8ED4E0',light:'#A0E0EC'},{color:'#8898CC',light:'#9AAADE'},
-            {color:'#4848A0',light:'#5A5AB2'},{color:'#2A1E46',light:'#3C3058'},
-            {color:'#E890B2',light:'#F0A0C0'},{color:'#C076C4',light:'#CC88D0'},
-            {color:'#8858A8',light:'#9A6ABA'},{color:'#4E4888',light:'#605A9A'}
-        ];
+            const THEME_COLORS = [
+                { color: '#FFB74D', light: '#FFC870' }, { color: '#E87448', light: '#F08860' },
+                { color: '#D15548', light: '#DC6A5D' }, { color: '#C02535', light: '#CC3A4A' },
+                { color: '#E0F8F8', light: '#EDFCFC' }, { color: '#A8CC70', light: '#BAD888' },
+                { color: '#5CA870', light: '#6EBA82' }, { color: '#2A7878', light: '#3A8A8A' },
+                { color: '#8ED4E0', light: '#A0E0EC' }, { color: '#8898CC', light: '#9AAADE' },
+                { color: '#4848A0', light: '#5A5AB2' }, { color: '#2A1E46', light: '#3C3058' },
+                { color: '#E890B2', light: '#F0A0C0' }, { color: '#C076C4', light: '#CC88D0' },
+                { color: '#8858A8', light: '#9A6ABA' }, { color: '#4E4888', light: '#605A9A' }
+            ];
 
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1,3), 16);
-            const g = parseInt(hex.slice(3,5), 16);
-            const b = parseInt(hex.slice(5,7), 16);
-            return `rgba(${r},${g},${b},${alpha})`;
-        }
+            function hexToRgba(hex, alpha) {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `rgba(${r},${g},${b},${alpha})`;
+            }
 
-        function applyTheme(color, light) {
-            const tint = hexToRgba(color, 0.10);
-            const tintStrong = hexToRgba(color, 0.25);
-            document.documentElement.style.setProperty('--excel-green', color);
-            document.documentElement.style.setProperty('--excel-green-light', light);
-            document.documentElement.style.setProperty('--excel-tint', tint);
-            document.documentElement.style.setProperty('--excel-tint-strong', tintStrong);
-            localStorage.setItem(LS_THEME, JSON.stringify({color, light, tint, tintStrong}));
-            document.querySelectorAll('.theme-swatch').forEach(btn => {
-                btn.style.outline = btn.dataset.color === color
-                    ? '2.5px solid #fff' : 'none';
-                btn.style.outlineOffset = '2px';
-            });
-        }
-
-        let swatchesBuilt = false;
-        function buildSwatches() {
-            if (swatchesBuilt) return;
-            swatchesBuilt = true;
-            const grid = document.getElementById('theme-swatches');
-            if (!grid) return;
-            const saved = (function(){ try { return JSON.parse(localStorage.getItem(LS_THEME)); } catch(e){ return null; } })();
-            THEME_COLORS.forEach(({color, light}) => {
-                const btn = document.createElement('button');
-                btn.className = 'theme-swatch';
-                btn.dataset.color = color;
-                btn.title = color;
-                btn.style.cssText = `width:32px;height:32px;background:${color};border:none;border-radius:50%;cursor:pointer;transition:transform 0.15s;outline:none;`;
-                if (saved && saved.color === color) {
-                    btn.style.outline = '2.5px solid #fff';
+            function applyTheme(color, light) {
+                const tint = hexToRgba(color, 0.10);
+                const tintStrong = hexToRgba(color, 0.25);
+                document.documentElement.style.setProperty('--excel-green', color);
+                document.documentElement.style.setProperty('--excel-green-light', light);
+                document.documentElement.style.setProperty('--excel-tint', tint);
+                document.documentElement.style.setProperty('--excel-tint-strong', tintStrong);
+                localStorage.setItem(LS_THEME, JSON.stringify({ color, light, tint, tintStrong }));
+                document.querySelectorAll('.theme-swatch').forEach(btn => {
+                    btn.style.outline = btn.dataset.color === color
+                        ? '2.5px solid #fff' : 'none';
                     btn.style.outlineOffset = '2px';
-                }
-                btn.onmouseover = () => { btn.style.transform = 'scale(1.15)'; };
-                btn.onmouseout  = () => { btn.style.transform = 'scale(1)'; };
-                btn.onclick = () => applyTheme(color, light);
-                grid.appendChild(btn);
-            });
-        }
-
-        function clamp(v){ return Math.min(1, Math.max(0, parseFloat(v) || 0)); }
-        function pct(v){ return Math.round(clamp(v)*100) + '%'; }
-
-        function applySidebarW(v){
-            v = Math.min(45, Math.max(18, parseInt(v) || 26));
-            const el = document.getElementById('left-sidebar');
-            if(el){
-                el.style.width = v + '%';
-                el.style.minWidth = Math.max(200, Math.round(v * 12)) + 'px';
-                el.style.maxWidth = Math.max(300, Math.round(v * 16)) + 'px';
+                });
             }
-            localStorage.setItem(LS_SIDEBAR, v);
-            const lbl = document.getElementById('vol-sidebar-val');
-            const sl  = document.getElementById('vol-sidebar');
-            if(lbl) lbl.textContent = v + '%';
-            if(sl)  sl.value = v;
-        }
 
-        function getBGMEl(){ return document.getElementById('bgm'); }
-
-        // Apply saved volumes immediately and after every playBGM call
-        function applyBGM(v){
-            v = clamp(v);
-            const a = getBGMEl();
-            if(a) a.volume = v;
-            // [Fix 2026-06-19] iOS: also set GainNode if available
-            if(window._bgmGainNode) window._bgmGainNode.gain.value = v;
-            localStorage.setItem(LS_BGM, v);
-            const lbl = document.getElementById('vol-bgm-val');
-            const sl  = document.getElementById('vol-bgm');
-            if(lbl) lbl.textContent = pct(v);
-            if(sl)  sl.value = v;
-        }
-
-        function applySE(v){
-            v = clamp(v);
-            window._seVol = v;
-            localStorage.setItem(LS_SE, v);
-            const lbl = document.getElementById('vol-se-val');
-            const sl  = document.getElementById('vol-se');
-            if(lbl) lbl.textContent = pct(v);
-            if(sl)  sl.value = v;
-        }
-
-        // [Fix 2026-06-19] 強制將音量設置立即應用到正在播放的音頻（手機模式滑桿修復）
-        function forceApplyVolumes(){
-            const a = getBGMEl();
-            const bgmSaved = parseFloat(localStorage.getItem(LS_BGM));
-            const seSaved = parseFloat(localStorage.getItem(LS_SE));
-            if(a && !isNaN(bgmSaved)) a.volume = bgmSaved;
-            if(!isNaN(seSaved)) window._seVol = seSaved;
-        }
-
-        // Patch playBGM to re-apply saved volume after it hardcodes 0.3
-        (function patchPlayBGM(){
-            const orig = UIManager.prototype.playBGM;
-            UIManager.prototype.playBGM = function(f){
-                orig.call(this, f);
-                const saved = parseFloat(localStorage.getItem(LS_BGM));
-                if(!isNaN(saved)){ const a = getBGMEl(); if(a) a.volume = saved; }
-            };
-            const origFade = UIManager.prototype.fadeInBGM;
-            UIManager.prototype.fadeInBGM = function(f){
-                origFade.call(this, f);
-                // After fade completes, clamp to saved vol
-                const saved = parseFloat(localStorage.getItem(LS_BGM));
-                if(!isNaN(saved)){
-                    setTimeout(()=>{ const a = getBGMEl(); if(a && a.volume > saved) a.volume = saved; }, 2000);
-                }
-            };
-        })();
-
-        // Patch soundManager.playSFX to apply SE multiplier
-        (function patchSFX(){
-            if(!window.soundManager) return;
-            const orig = window.soundManager.playSFX.bind(window.soundManager);
-            window.soundManager.playSFX = function(url, volume = 1.0){
-                orig(url, volume * (window._seVol ?? 1.0));
-            };
-        })();
-
-        // [Fix 2026-06-19] BGM GainNode for iOS Safari (audio.volume unreliable on iOS)
-        function initBGMGain(){
-            if(window._bgmGainNode) return;
-            const bgmEl = getBGMEl();
-            if(!bgmEl) return;
-            try {
-                const ctx  = new (window.AudioContext || window.webkitAudioContext)();
-                const src  = ctx.createMediaElementSource(bgmEl);
-                const gain = ctx.createGain();
-                gain.gain.value = parseFloat(localStorage.getItem(LS_BGM)) || 0.3;
-                src.connect(gain);
-                gain.connect(ctx.destination);
-                window._bgmAudioCtx  = ctx;
-                window._bgmGainNode  = gain;
-                // iOS AudioContext starts suspended — resume on first user interaction
-                function resumeCtx(){ if(ctx.state === 'suspended') ctx.resume(); }
-                document.addEventListener('touchstart', resumeCtx, { once: true, passive: true });
-                document.addEventListener('click',      resumeCtx, { once: true });
-            } catch(e){ console.warn('[GainNode] init failed:', e); }
-        }
-
-        // [Fix 2026-06-19] Pointer Events-based slider patch (iOS 13+, Android, desktop)
-        // Uses setPointerCapture so drag works even outside the element.
-        // Directly calls volModal handlers — no synthetic event dispatch needed.
-        function patchRangeTouch(input, directHandler){
-            if(!input || input._touchPatched) return;
-            input._touchPatched = true;
-            input.style.touchAction = 'none';
-            let active = false;
-            function calcVal(clientX){
-                const rect = input.getBoundingClientRect();
-                const min  = parseFloat(input.min)  || 0;
-                const max  = parseFloat(input.max)  || 1;
-                const step = parseFloat(input.step) || 0.01;
-                const r    = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-                const raw  = min + r * (max - min);
-                return parseFloat(Math.min(max, Math.max(min, Math.round(raw / step) * step)).toFixed(10));
+            let swatchesBuilt = false;
+            function buildSwatches() {
+                if (swatchesBuilt) return;
+                swatchesBuilt = true;
+                const grid = document.getElementById('theme-swatches');
+                if (!grid) return;
+                const saved = (function () { try { return JSON.parse(localStorage.getItem(LS_THEME)); } catch (e) { return null; } })();
+                THEME_COLORS.forEach(({ color, light }) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'theme-swatch';
+                    btn.dataset.color = color;
+                    btn.title = color;
+                    btn.style.cssText = `width:32px;height:32px;background:${color};border:none;border-radius:50%;cursor:pointer;transition:transform 0.15s;outline:none;`;
+                    if (saved && saved.color === color) {
+                        btn.style.outline = '2.5px solid #fff';
+                        btn.style.outlineOffset = '2px';
+                    }
+                    btn.onmouseover = () => { btn.style.transform = 'scale(1.15)'; };
+                    btn.onmouseout = () => { btn.style.transform = 'scale(1)'; };
+                    btn.onclick = () => applyTheme(color, light);
+                    grid.appendChild(btn);
+                });
             }
-            function apply(clientX){
-                const v = calcVal(clientX);
-                input.value = v;
-                directHandler(v);
-            }
-            input.addEventListener('pointerdown', function(e){
-                if(e.pointerType !== 'mouse'){
-                    active = true;
-                    input.setPointerCapture(e.pointerId);
-                    apply(e.clientX);
+
+            function clamp(v) { return Math.min(1, Math.max(0, parseFloat(v) || 0)); }
+            function pct(v) { return Math.round(clamp(v) * 100) + '%'; }
+
+            function applySidebarW(v) {
+                v = Math.min(45, Math.max(18, parseInt(v) || 26));
+                const el = document.getElementById('left-sidebar');
+                if (el) {
+                    el.style.width = v + '%';
+                    el.style.minWidth = Math.max(200, Math.round(v * 12)) + 'px';
+                    el.style.maxWidth = Math.max(300, Math.round(v * 16)) + 'px';
                 }
-            });
-            input.addEventListener('pointermove', function(e){
-                if(active) apply(e.clientX);
-            });
-            input.addEventListener('pointerup', function(e){
-                if(active){ active = false; apply(e.clientX); }
-            });
-            input.addEventListener('pointercancel', function(){ active = false; });
-        }
+                localStorage.setItem(LS_SIDEBAR, v);
+                const lbl = document.getElementById('vol-sidebar-val');
+                const sl = document.getElementById('vol-sidebar');
+                if (lbl) lbl.textContent = v + '%';
+                if (sl) sl.value = v;
+            }
 
-        // Restore on load
-        window.addEventListener('load', function(){
-            const bgmSaved     = parseFloat(localStorage.getItem(LS_BGM));
-            const seSaved      = parseFloat(localStorage.getItem(LS_SE));
-            const sidebarSaved = parseInt(localStorage.getItem(LS_SIDEBAR));
-            applyBGM(isNaN(bgmSaved) ? 0.3 : bgmSaved);
-            applySE (isNaN(seSaved)  ? 1.0 : seSaved);
-            applySidebarW(isNaN(sidebarSaved) ? 26 : sidebarSaved);
-            try {
-                const t = JSON.parse(localStorage.getItem(LS_THEME));
-                if (t && t.color) applyTheme(t.color, t.light);
-            } catch(e) {}
-            // Init GainNode for iOS BGM volume control
-            initBGMGain();
-            // Patch sliders with Pointer Events for mobile
-            var sliderHandlers = {
-                'vol-bgm':     function(v){ window.volModal && window.volModal.setBGM(v); },
-                'vol-se':      function(v){ window.volModal && window.volModal.setSE(v); },
-                'vol-sidebar': function(v){ window.volModal && window.volModal.setSidebarW(v); }
-            };
-            Object.keys(sliderHandlers).forEach(function(id){
-                patchRangeTouch(document.getElementById(id), sliderHandlers[id]);
-            });
-        });
+            function getBGMEl() { return document.getElementById('bgm'); }
 
-        return {
-            open(){
-                const modal = document.getElementById('vol-modal');
-                if(!modal) return;
-                // Sync sliders to current live values
+            // Apply saved volumes immediately and after every playBGM call
+            function applyBGM(v) {
+                v = clamp(v);
                 const a = getBGMEl();
-                applyBGM(a ? a.volume : (parseFloat(localStorage.getItem(LS_BGM)) || 0.3));
-                applySE(window._seVol ?? (parseFloat(localStorage.getItem(LS_SE)) || 1.0));
-                applySidebarW(parseInt(localStorage.getItem(LS_SIDEBAR)) || 26);
-                buildSwatches();
-                modal.style.display = 'flex';
-                /* [Mobile 2026-06-18] 同步裝置按鈕高亮 */
-                if(window.deviceMode) window.deviceMode.refreshBtns();
-            },
-            close(){
-                const modal = document.getElementById('vol-modal');
-                if(modal) modal.style.display = 'none';
-            },
-            setBGM(v){ applyBGM(v); forceApplyVolumes(); },
-            setSE(v){  applySE(v); forceApplyVolumes(); },
-            setSidebarW(v){ applySidebarW(v); },
-            resetTheme(){
-                applyTheme('#217346', '#2da164');
-                localStorage.removeItem(LS_THEME);
-            },
-            resetSidebarBG(){ window.sidebarCrop && window.sidebarCrop.reset(); },
-            openBGCrop(input){
-                const file = input.files[0];
-                input.value = '';
-                if(!file) return;
-                if(sessionStorage.getItem('game_want_fullscreen') === '1') {
-                    window.parent.postMessage({ __magicExcel: 'enter-fullscreen' }, '*');
-                }
-                window.sidebarCrop && window.sidebarCrop.open(file);
-            },
-            backToHome(){
-                if(confirm('確定要返回主頁嗎？\n未儲存的進度將會遺失。')){
-                    window.volModal.close();
-                    // 淡出 BGM
-                    if(window.uiManager) window.uiManager.fadeOutBGM();
-                    // 重新顯示標題畫面
-                    const t = document.getElementById('title-screen-overlay');
-                    if(t){ t.style.display='flex'; requestAnimationFrame(()=>{ t.style.opacity='1'; }); }
-                }
+                if (a) a.volume = v;
+                // [Fix 2026-06-19] iOS: also set GainNode if available
+                if (window._bgmGainNode) window._bgmGainNode.gain.value = v;
+                localStorage.setItem(LS_BGM, v);
+                const lbl = document.getElementById('vol-bgm-val');
+                const sl = document.getElementById('vol-bgm');
+                if (lbl) lbl.textContent = pct(v);
+                if (sl) sl.value = v;
             }
-        };
-    })();
+
+            function applySE(v) {
+                v = clamp(v);
+                window._seVol = v;
+                localStorage.setItem(LS_SE, v);
+                const lbl = document.getElementById('vol-se-val');
+                const sl = document.getElementById('vol-se');
+                if (lbl) lbl.textContent = pct(v);
+                if (sl) sl.value = v;
+            }
+
+            // [Fix 2026-06-19] 強制將音量設置立即應用到正在播放的音頻（手機模式滑桿修復）
+            function forceApplyVolumes() {
+                const a = getBGMEl();
+                const bgmSaved = parseFloat(localStorage.getItem(LS_BGM));
+                const seSaved = parseFloat(localStorage.getItem(LS_SE));
+                if (a && !isNaN(bgmSaved)) a.volume = bgmSaved;
+                if (!isNaN(seSaved)) window._seVol = seSaved;
+            }
+
+            // Patch playBGM to re-apply saved volume after it hardcodes 0.3
+            (function patchPlayBGM() {
+                const orig = UIManager.prototype.playBGM;
+                UIManager.prototype.playBGM = function (f) {
+                    orig.call(this, f);
+                    const saved = parseFloat(localStorage.getItem(LS_BGM));
+                    if (!isNaN(saved)) { const a = getBGMEl(); if (a) a.volume = saved; }
+                };
+                const origFade = UIManager.prototype.fadeInBGM;
+                UIManager.prototype.fadeInBGM = function (f) {
+                    origFade.call(this, f);
+                    // After fade completes, clamp to saved vol
+                    const saved = parseFloat(localStorage.getItem(LS_BGM));
+                    if (!isNaN(saved)) {
+                        setTimeout(() => { const a = getBGMEl(); if (a && a.volume > saved) a.volume = saved; }, 2000);
+                    }
+                };
+            })();
+
+            // Patch soundManager.playSFX to apply SE multiplier
+            (function patchSFX() {
+                if (!window.soundManager) return;
+                const orig = window.soundManager.playSFX.bind(window.soundManager);
+                window.soundManager.playSFX = function (url, volume = 1.0) {
+                    orig(url, volume * (window._seVol ?? 1.0));
+                };
+            })();
+
+            // [Fix 2026-06-19] BGM GainNode for iOS Safari (audio.volume unreliable on iOS)
+            function initBGMGain() {
+                if (window._bgmGainNode) return;
+                const bgmEl = getBGMEl();
+                if (!bgmEl) return;
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const src = ctx.createMediaElementSource(bgmEl);
+                    const gain = ctx.createGain();
+                    gain.gain.value = parseFloat(localStorage.getItem(LS_BGM)) || 0.3;
+                    src.connect(gain);
+                    gain.connect(ctx.destination);
+                    window._bgmAudioCtx = ctx;
+                    window._bgmGainNode = gain;
+                    // iOS AudioContext starts suspended — resume on first user interaction
+                    function resumeCtx() { if (ctx.state === 'suspended') ctx.resume(); }
+                    document.addEventListener('touchstart', resumeCtx, { once: true, passive: true });
+                    document.addEventListener('click', resumeCtx, { once: true });
+                } catch (e) { console.warn('[GainNode] init failed:', e); }
+            }
+
+            // [Fix 2026-06-19] Pointer Events-based slider patch (iOS 13+, Android, desktop)
+            // Uses setPointerCapture so drag works even outside the element.
+            // Directly calls volModal handlers — no synthetic event dispatch needed.
+            function patchRangeTouch(input, directHandler) {
+                if (!input || input._touchPatched) return;
+                input._touchPatched = true;
+                input.style.touchAction = 'none';
+                let active = false;
+                function calcVal(clientX) {
+                    const rect = input.getBoundingClientRect();
+                    const min = parseFloat(input.min) || 0;
+                    const max = parseFloat(input.max) || 1;
+                    const step = parseFloat(input.step) || 0.01;
+                    const r = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+                    const raw = min + r * (max - min);
+                    return parseFloat(Math.min(max, Math.max(min, Math.round(raw / step) * step)).toFixed(10));
+                }
+                function apply(clientX) {
+                    const v = calcVal(clientX);
+                    input.value = v;
+                    directHandler(v);
+                }
+                input.addEventListener('pointerdown', function (e) {
+                    if (e.pointerType !== 'mouse') {
+                        active = true;
+                        input.setPointerCapture(e.pointerId);
+                        apply(e.clientX);
+                    }
+                });
+                input.addEventListener('pointermove', function (e) {
+                    if (active) apply(e.clientX);
+                });
+                input.addEventListener('pointerup', function (e) {
+                    if (active) { active = false; apply(e.clientX); }
+                });
+                input.addEventListener('pointercancel', function () { active = false; });
+            }
+
+            // Restore on load
+            window.addEventListener('load', function () {
+                const bgmSaved = parseFloat(localStorage.getItem(LS_BGM));
+                const seSaved = parseFloat(localStorage.getItem(LS_SE));
+                const sidebarSaved = parseInt(localStorage.getItem(LS_SIDEBAR));
+                applyBGM(isNaN(bgmSaved) ? 0.3 : bgmSaved);
+                applySE(isNaN(seSaved) ? 1.0 : seSaved);
+                applySidebarW(isNaN(sidebarSaved) ? 26 : sidebarSaved);
+                try {
+                    const t = JSON.parse(localStorage.getItem(LS_THEME));
+                    if (t && t.color) applyTheme(t.color, t.light);
+                } catch (e) { }
+                // Init GainNode for iOS BGM volume control
+                initBGMGain();
+                // Patch sliders with Pointer Events for mobile
+                var sliderHandlers = {
+                    'vol-bgm': function (v) { window.volModal && window.volModal.setBGM(v); },
+                    'vol-se': function (v) { window.volModal && window.volModal.setSE(v); },
+                    'vol-sidebar': function (v) { window.volModal && window.volModal.setSidebarW(v); }
+                };
+                Object.keys(sliderHandlers).forEach(function (id) {
+                    patchRangeTouch(document.getElementById(id), sliderHandlers[id]);
+                });
+            });
+
+            return {
+                open() {
+                    const modal = document.getElementById('vol-modal');
+                    if (!modal) return;
+                    // Sync sliders to current live values
+                    const a = getBGMEl();
+                    applyBGM(a ? a.volume : (parseFloat(localStorage.getItem(LS_BGM)) || 0.3));
+                    applySE(window._seVol ?? (parseFloat(localStorage.getItem(LS_SE)) || 1.0));
+                    applySidebarW(parseInt(localStorage.getItem(LS_SIDEBAR)) || 26);
+                    buildSwatches();
+                    modal.style.display = 'flex';
+                    /* [Mobile 2026-06-18] 同步裝置按鈕高亮 */
+                    if (window.deviceMode) window.deviceMode.refreshBtns();
+                },
+                close() {
+                    const modal = document.getElementById('vol-modal');
+                    if (modal) modal.style.display = 'none';
+                },
+                setBGM(v) { applyBGM(v); forceApplyVolumes(); },
+                setSE(v) { applySE(v); forceApplyVolumes(); },
+                setSidebarW(v) { applySidebarW(v); },
+                resetTheme() {
+                    applyTheme('#217346', '#2da164');
+                    localStorage.removeItem(LS_THEME);
+                },
+                resetSidebarBG() { window.sidebarCrop && window.sidebarCrop.reset(); },
+                openBGCrop(input) {
+                    const file = input.files[0];
+                    input.value = '';
+                    if (!file) return;
+                    if (sessionStorage.getItem('game_want_fullscreen') === '1') {
+                        window.parent.postMessage({ __magicExcel: 'enter-fullscreen' }, '*');
+                    }
+                    window.sidebarCrop && window.sidebarCrop.open(file);
+                },
+                backToHome() {
+                    if (confirm('確定要返回主頁嗎？\n未儲存的進度將會遺失。')) {
+                        window.volModal.close();
+                        // 淡出 BGM
+                        if (window.uiManager) window.uiManager.fadeOutBGM();
+                        // 重新顯示標題畫面
+                        const t = document.getElementById('title-screen-overlay');
+                        if (t) { t.style.display = 'flex'; requestAnimationFrame(() => { t.style.opacity = '1'; }); }
+                    }
+                }
+            };
+        })();
     </script>
 
     <script>
-    window.sidebarCrop = (function(){
-        const LS_KEY = 'v2_sidebar_bg';
-        const PW = 280, PH = 300;
-        let state = { scale:1, x:0, y:0, dragging:false, sx:0, sy:0, ox:0, oy:0 };
+        window.sidebarCrop = (function () {
+            const LS_KEY = 'v2_sidebar_bg';
+            const PW = 280, PH = 300;
+            let state = { scale: 1, x: 0, y: 0, dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 };
 
-        function getEls(){
-            return {
-                modal : document.getElementById('bg-crop-modal'),
-                img   : document.getElementById('bg-crop-img'),
-                zoom  : document.getElementById('bg-crop-zoom'),
-                zoomV : document.getElementById('bg-crop-zoom-val'),
-                prev  : document.getElementById('bg-crop-preview')
-            };
-        }
-
-        function applyTransform(){
-            const { img } = getEls();
-            if(img) img.style.transform = `translate(${state.x}px,${state.y}px) scale(${state.scale})`;
-        }
-
-        function applyToSidebar(dataUrl){
-            const el = document.getElementById('left-sidebar');
-            if(el) el.style.backgroundImage =
-                `linear-gradient(rgba(10,8,20,0.60),rgba(10,8,20,0.60)),url(${dataUrl})`;
-            localStorage.setItem(LS_KEY, dataUrl);
-        }
-
-        // Restore on load
-        window.addEventListener('load', function(){
-            const saved = localStorage.getItem(LS_KEY);
-            if(saved) applyToSidebar(saved);
-        });
-
-        return {
-            open(file){
-                const { modal, img, zoom, zoomV, prev } = getEls();
-                if(!modal || !img) return;
-                const url = URL.createObjectURL(file);
-                img.onload = function(){
-                    // Fit image to fill preview initially
-                    const fitScale = Math.max(PW / img.naturalWidth, PH / img.naturalHeight);
-                    state.scale = fitScale;
-                    state.x = (PW - img.naturalWidth * fitScale) / 2;
-                    state.y = (PH - img.naturalHeight * fitScale) / 2;
-                    zoom.min = fitScale * 0.5;
-                    zoom.max = fitScale * 4;
-                    zoom.value = fitScale;
-                    if(zoomV) zoomV.textContent = Math.round(fitScale * 100) + '%';
-                    applyTransform();
+            function getEls() {
+                return {
+                    modal: document.getElementById('bg-crop-modal'),
+                    img: document.getElementById('bg-crop-img'),
+                    zoom: document.getElementById('bg-crop-zoom'),
+                    zoomV: document.getElementById('bg-crop-zoom-val'),
+                    prev: document.getElementById('bg-crop-preview')
                 };
-                img.src = url;
-
-                // Drag events
-                prev.onmousedown = (e) => {
-                    state.dragging = true; state.sx = e.clientX; state.sy = e.clientY;
-                    state.ox = state.x; state.oy = state.y;
-                    prev.style.cursor = 'grabbing';
-                };
-                prev.onmousemove = (e) => {
-                    if(!state.dragging) return;
-                    state.x = state.ox + (e.clientX - state.sx);
-                    state.y = state.oy + (e.clientY - state.sy);
-                    applyTransform();
-                };
-                prev.onmouseup = prev.onmouseleave = () => {
-                    state.dragging = false; prev.style.cursor = 'grab';
-                };
-
-                modal.style.display = 'flex';
-            },
-            onZoom(v){
-                const { zoomV } = getEls();
-                state.scale = parseFloat(v);
-                if(zoomV) zoomV.textContent = Math.round(state.scale * 100) + '%';
-                applyTransform();
-            },
-            apply(){
-                const { img, modal } = getEls();
-                if(!img || !img.src) return;
-                const canvas = document.createElement('canvas');
-                canvas.width = PW; canvas.height = PH;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, state.x, state.y,
-                    img.naturalWidth * state.scale, img.naturalHeight * state.scale);
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-                applyToSidebar(dataUrl);
-                if(modal) modal.style.display = 'none';
-            },
-            close(){
-                const { modal } = getEls();
-                if(modal) modal.style.display = 'none';
-            },
-            reset(){
-                localStorage.removeItem(LS_KEY);
-                const el = document.getElementById('left-sidebar');
-                if(el) el.style.backgroundImage = '';
             }
-        };
-    })();
+
+            function applyTransform() {
+                const { img } = getEls();
+                if (img) img.style.transform = `translate(${state.x}px,${state.y}px) scale(${state.scale})`;
+            }
+
+            function applyToSidebar(dataUrl) {
+                const el = document.getElementById('left-sidebar');
+                if (el) el.style.backgroundImage =
+                    `linear-gradient(rgba(10,8,20,0.60),rgba(10,8,20,0.60)),url(${dataUrl})`;
+                localStorage.setItem(LS_KEY, dataUrl);
+            }
+
+            // Restore on load
+            window.addEventListener('load', function () {
+                const saved = localStorage.getItem(LS_KEY);
+                if (saved) applyToSidebar(saved);
+            });
+
+            return {
+                open(file) {
+                    const { modal, img, zoom, zoomV, prev } = getEls();
+                    if (!modal || !img) return;
+                    const url = URL.createObjectURL(file);
+                    img.onload = function () {
+                        // Fit image to fill preview initially
+                        const fitScale = Math.max(PW / img.naturalWidth, PH / img.naturalHeight);
+                        state.scale = fitScale;
+                        state.x = (PW - img.naturalWidth * fitScale) / 2;
+                        state.y = (PH - img.naturalHeight * fitScale) / 2;
+                        zoom.min = fitScale * 0.5;
+                        zoom.max = fitScale * 4;
+                        zoom.value = fitScale;
+                        if (zoomV) zoomV.textContent = Math.round(fitScale * 100) + '%';
+                        applyTransform();
+                    };
+                    img.src = url;
+
+                    // Drag events
+                    prev.onmousedown = (e) => {
+                        state.dragging = true; state.sx = e.clientX; state.sy = e.clientY;
+                        state.ox = state.x; state.oy = state.y;
+                        prev.style.cursor = 'grabbing';
+                    };
+                    prev.onmousemove = (e) => {
+                        if (!state.dragging) return;
+                        state.x = state.ox + (e.clientX - state.sx);
+                        state.y = state.oy + (e.clientY - state.sy);
+                        applyTransform();
+                    };
+                    prev.onmouseup = prev.onmouseleave = () => {
+                        state.dragging = false; prev.style.cursor = 'grab';
+                    };
+
+                    modal.style.display = 'flex';
+                },
+                onZoom(v) {
+                    const { zoomV } = getEls();
+                    state.scale = parseFloat(v);
+                    if (zoomV) zoomV.textContent = Math.round(state.scale * 100) + '%';
+                    applyTransform();
+                },
+                apply() {
+                    const { img, modal } = getEls();
+                    if (!img || !img.src) return;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = PW; canvas.height = PH;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, state.x, state.y,
+                        img.naturalWidth * state.scale, img.naturalHeight * state.scale);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    applyToSidebar(dataUrl);
+                    if (modal) modal.style.display = 'none';
+                },
+                close() {
+                    const { modal } = getEls();
+                    if (modal) modal.style.display = 'none';
+                },
+                reset() {
+                    localStorage.removeItem(LS_KEY);
+                    const el = document.getElementById('left-sidebar');
+                    if (el) el.style.backgroundImage = '';
+                }
+            };
+        })();
     </script>
 
     <!-- [Mobile 2026-06-18] 裝置模式管理 + D-Pad 觸控事件 -->
     <script>
-    /* ── deviceMode：裝置選擇管理器 ── */
-    window.deviceMode = (function(){
-        var LS_KEY = 'v2_device_mode';
+        /* ── deviceMode：裝置選擇管理器 ── */
+        window.deviceMode = (function () {
+            var LS_KEY = 'v2_device_mode';
 
-        function applyClass(mode){
-            document.body.classList.remove('mode-mobile','mode-desktop');
-            if(mode) document.body.classList.add('mode-' + mode);
-        }
-
-        function refreshBtns(){
-            var cur = localStorage.getItem(LS_KEY) || '';
-            var bM = document.getElementById('vol-device-mobile');
-            var bD = document.getElementById('vol-device-desktop');
-            if(!bM || !bD) return;
-            var baseStyle = 'flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;';
-            bM.style.cssText = baseStyle + (cur==='mobile'
-                ? 'border:2px solid #2ed573;background:rgba(33,115,70,0.4);color:#fff;font-weight:700;'
-                : 'border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;font-weight:normal;');
-            bD.style.cssText = baseStyle + (cur==='desktop'
-                ? 'border:2px solid #74b9ff;background:rgba(30,80,180,0.4);color:#fff;font-weight:700;'
-                : 'border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;font-weight:normal;');
-        }
-
-        function set(mode){
-            localStorage.setItem(LS_KEY, mode);
-            applyClass(mode);
-            refreshBtns();
-        }
-
-        function openModal(){
-            var m = document.getElementById('device-select-modal');
-            if(m){ m.style.display = 'flex'; }
-        }
-
-        function closeModal(){
-            var m = document.getElementById('device-select-modal');
-            if(m){ m.style.display = 'none'; }
-        }
-
-        function init(){
-            var saved = localStorage.getItem(LS_KEY);
-            if(!saved){
-                /* 首次：自動偵測建議，但仍讓玩家確認 */
-                openModal();
-            } else {
-                applyClass(saved);
+            function applyClass(mode) {
+                document.body.classList.remove('mode-mobile', 'mode-desktop');
+                if (mode) document.body.classList.add('mode-' + mode);
             }
-            refreshBtns();
+
+            function refreshBtns() {
+                var cur = localStorage.getItem(LS_KEY) || '';
+                var bM = document.getElementById('vol-device-mobile');
+                var bD = document.getElementById('vol-device-desktop');
+                if (!bM || !bD) return;
+                var baseStyle = 'flex:1;padding:10px 6px;border-radius:6px;font-size:13px;cursor:pointer;letter-spacing:1px;transition:0.2s;';
+                bM.style.cssText = baseStyle + (cur === 'mobile'
+                    ? 'border:2px solid #2ed573;background:rgba(33,115,70,0.4);color:#fff;font-weight:700;'
+                    : 'border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;font-weight:normal;');
+                bD.style.cssText = baseStyle + (cur === 'desktop'
+                    ? 'border:2px solid #74b9ff;background:rgba(30,80,180,0.4);color:#fff;font-weight:700;'
+                    : 'border:2px solid rgba(255,215,0,0.35);background:rgba(255,255,255,0.08);color:#e8d5a3;font-weight:normal;');
+            }
+
+            function set(mode) {
+                localStorage.setItem(LS_KEY, mode);
+                applyClass(mode);
+                refreshBtns();
+            }
+
+            function openModal() {
+                var m = document.getElementById('device-select-modal');
+                if (m) { m.style.display = 'flex'; }
+            }
+
+            function closeModal() {
+                var m = document.getElementById('device-select-modal');
+                if (m) { m.style.display = 'none'; }
+            }
+
+            function init() {
+                var saved = localStorage.getItem(LS_KEY);
+                if (!saved) {
+                    /* 首次：自動偵測建議，但仍讓玩家確認 */
+                    openModal();
+                } else {
+                    applyClass(saved);
+                }
+                refreshBtns();
+            }
+
+            return { set: set, openModal: openModal, closeModal: closeModal, refreshBtns: refreshBtns, init: init };
+        })();
+
+        /* ── D-Pad 觸控 → KeyboardEvent 模擬（一次性綁定，由 mode-mobile class 決定是否可見）── */
+        (function () {
+            var keyMap = { 'dpad-up': 'w', 'dpad-down': 's', 'dpad-left': 'a', 'dpad-right': 'd' };
+            Object.keys(keyMap).forEach(function (id) {
+                var btn = document.getElementById(id);
+                if (!btn) return;
+                var code = keyMap[id];
+                var held = false;
+                btn.addEventListener('touchstart', function (e) {
+                    e.preventDefault();
+                    if (held) return;
+                    held = true;
+                    document.dispatchEvent(new KeyboardEvent('keydown', { key: code, code: 'Key' + code.toUpperCase(), bubbles: true, cancelable: true }));
+                }, { passive: false });
+                var release = function (e) {
+                    e.preventDefault();
+                    held = false;
+                    document.dispatchEvent(new KeyboardEvent('keyup', { key: code, code: 'Key' + code.toUpperCase(), bubbles: true, cancelable: true }));
+                };
+                btn.addEventListener('touchend', release, { passive: false });
+                btn.addEventListener('touchcancel', release, { passive: false });
+            });
+
+            var interactBtn = document.getElementById('mobile-interact-btn');
+            if (interactBtn) {
+                interactBtn.addEventListener('touchstart', function (e) {
+                    e.preventDefault();
+                    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true }));
+                }, { passive: false });
+                interactBtn.addEventListener('touchend', function (e) {
+                    e.preventDefault();
+                    document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', code: 'Enter', bubbles: true, cancelable: true }));
+                }, { passive: false });
+            }
+        })();
+
+        /* ── 橫向鎖定（手機模式下嘗試鎖定 landscape，不支援時靠 CSS rotate-hint 提示）── */
+        function tryLockLandscape() {
+            if (screen.orientation && typeof screen.orientation.lock === 'function') {
+                screen.orientation.lock('landscape-primary').catch(function () { });
+            }
         }
 
-        return { set:set, openModal:openModal, closeModal:closeModal, refreshBtns:refreshBtns, init:init };
-    })();
-
-    /* ── D-Pad 觸控 → KeyboardEvent 模擬（一次性綁定，由 mode-mobile class 決定是否可見）── */
-    (function(){
-        var keyMap = { 'dpad-up':'w', 'dpad-down':'s', 'dpad-left':'a', 'dpad-right':'d' };
-        Object.keys(keyMap).forEach(function(id){
-            var btn = document.getElementById(id);
-            if(!btn) return;
-            var code = keyMap[id];
-            var held = false;
-            btn.addEventListener('touchstart', function(e){
-                e.preventDefault();
-                if(held) return;
-                held = true;
-                document.dispatchEvent(new KeyboardEvent('keydown', {key:code, code:'Key'+code.toUpperCase(), bubbles:true, cancelable:true}));
-            }, {passive:false});
-            var release = function(e){
-                e.preventDefault();
-                held = false;
-                document.dispatchEvent(new KeyboardEvent('keyup', {key:code, code:'Key'+code.toUpperCase(), bubbles:true, cancelable:true}));
-            };
-            btn.addEventListener('touchend', release, {passive:false});
-            btn.addEventListener('touchcancel', release, {passive:false});
-        });
-
-        var interactBtn = document.getElementById('mobile-interact-btn');
-        if(interactBtn){
-            interactBtn.addEventListener('touchstart', function(e){
-                e.preventDefault();
-                document.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter',code:'Enter',bubbles:true,cancelable:true}));
-            }, {passive:false});
-            interactBtn.addEventListener('touchend', function(e){
-                e.preventDefault();
-                document.dispatchEvent(new KeyboardEvent('keyup', {key:'Enter',code:'Enter',bubbles:true,cancelable:true}));
-            }, {passive:false});
-        }
-    })();
-
-    /* ── 橫向鎖定（手機模式下嘗試鎖定 landscape，不支援時靠 CSS rotate-hint 提示）── */
-    function tryLockLandscape(){
-        if(screen.orientation && typeof screen.orientation.lock === 'function'){
-            screen.orientation.lock('landscape-primary').catch(function(){});
-        }
-    }
-
-    /* ── 初始化（等 DOM 就緒）── */
-    if(document.readyState === 'loading'){
-        document.addEventListener('DOMContentLoaded', function(){
+        /* ── 初始化（等 DOM 就緒）── */
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                window.deviceMode.init();
+                if (localStorage.getItem('v2_device_mode') === 'mobile') tryLockLandscape();
+            });
+        } else {
             window.deviceMode.init();
-            if(localStorage.getItem('v2_device_mode') === 'mobile') tryLockLandscape();
-        });
-    } else {
-        window.deviceMode.init();
-        if(localStorage.getItem('v2_device_mode') === 'mobile') tryLockLandscape();
-    }
+            if (localStorage.getItem('v2_device_mode') === 'mobile') tryLockLandscape();
+        }
     </script>
 
     <style>
-    /* [Mobile 2026-06-18 Batch2] ─────────────────────────────────── */
+        /* [Mobile 2026-06-18 Batch2] ─────────────────────────────────── */
 
-    /* 旋轉提示層：手機直向時顯示 */
-    #rotate-hint {
-        display: none;
-        position: fixed; inset: 0; z-index: 99999;
-        background: #0a0704;
-        color: #e8d5a3;
-        flex-direction: column; align-items: center; justify-content: center;
-        gap: 18px; font-size: 1.3rem; text-align: center;
-        font-family: 'Noto Serif TC', serif;
-        line-height: 1.6;
-    }
-    @media (orientation: portrait) {
-        body.mode-mobile #rotate-hint { display: flex !important; }
-    }
-    @media (orientation: landscape) {
-        body.mode-mobile #rotate-hint { display: none !important; }
-    }
+        /* 旋轉提示層：手機直向時顯示 */
+        #rotate-hint {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #0a0704;
+            color: #e8d5a3;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            font-size: 1.3rem;
+            text-align: center;
+            font-family: 'Noto Serif TC', serif;
+            line-height: 1.6;
+        }
 
-    /* 手機模式下隱藏選單角色立繪 */
-    body.mode-mobile #sys-menu-char { display: none !important; }
+        @media (orientation: portrait) {
+            body.mode-mobile #rotate-hint {
+                display: flex !important;
+            }
+        }
 
-    /* [Fix Mobile] 設定儲存格格式對話框：限制寬度避免超出螢幕 */
-    body.mode-mobile .excel-dialog {
-        width: min(460px, 96vw) !important;
-        max-height: 88vh !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-    body.mode-mobile .excel-dialog-body {
-        overflow-x: hidden !important;
-    }
+        @media (orientation: landscape) {
+            body.mode-mobile #rotate-hint {
+                display: none !important;
+            }
+        }
 
-    /* vol-modal 設定面板：手機橫向時可捲動 */
-    /* [Fix 2026-06-19] 移除 -webkit-overflow-scrolling:touch，
-       該屬性會繞過子元素 touch-action:none，導致 range 滑桿 value 不更新 */
-    body.mode-mobile #vol-modal > div {
-        max-height: 88vh !important;
-        overflow-y: auto !important;
-        padding: 20px 24px !important;
-    }
-    @media (orientation: landscape) and (max-height: 500px) {
-        #vol-modal > div {
+        /* 手機模式下隱藏選單角色立繪 */
+        body.mode-mobile #sys-menu-char {
+            display: none !important;
+        }
+
+        /* [Fix Mobile] 設定儲存格格式對話框：限制寬度避免超出螢幕 */
+        body.mode-mobile .excel-dialog {
+            width: min(460px, 96vw) !important;
             max-height: 88vh !important;
             overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
         }
-    }
 
-    /* 手機模式：非主角 char-container 縮小，避免蓋過主角 */
-    body.mode-mobile .char-container:not(#main-char-container) {
-        width: 100% !important;
-        left: 0 !important;
-        transform: none !important;
-    }
-    body.mode-mobile .char-container:not(#main-char-container) .char-img {
-        object-fit: contain !important;
-        object-position: bottom center !important;
-        max-height: 100% !important;
-    }
+        body.mode-mobile .excel-dialog-body {
+            overflow-x: hidden !important;
+        }
 
-    /* 信件 UI 在手機可捲動 */
-    body.mode-mobile .letter-paper {
-        width: min(400px, 90vw) !important;
-        max-height: 80vh !important;
-        overflow-y: auto !important;
-        padding: 24px 20px !important;
-    }
-    @media (orientation: landscape) and (max-height: 500px) {
-        .letter-paper {
-            max-height: 85vh !important;
+        /* vol-modal 設定面板：手機橫向時可捲動 */
+        /* [Fix 2026-06-19] 移除 -webkit-overflow-scrolling:touch，
+       該屬性會繞過子元素 touch-action:none，導致 range 滑桿 value 不更新 */
+        body.mode-mobile #vol-modal>div {
+            max-height: 88vh !important;
             overflow-y: auto !important;
+            padding: 20px 24px !important;
         }
-    }
 
-    /* [Mobile 2026-06-18] Title Screen 手機版調整 */
-    @media screen and (max-width: 480px) {
-        /* 標題文字縮小 */
-        .title-word-excel { font-size: clamp(2.8rem, 10vw, 4.5rem) !important; }
-        .title-word-magic { font-size: clamp(2rem, 7vw, 3rem) !important; }
+        @media (orientation: landscape) and (max-height: 500px) {
+            #vol-modal>div {
+                max-height: 88vh !important;
+                overflow-y: auto !important;
+            }
+        }
 
-        /* 三角形系統選單 (sys-tri-row) 隱藏，手機不夠寬 */
-        .sys-tri-row { display: none !important; }
-
-        /* 角落按鈕縮小 */
-        .sys-corner-icon { width: 52px !important; height: 52px !important; font-size: 1.4rem !important; }
-
-        /* 角色群組：縮小並讓三人垂直排 */
-        #intro-char-group {
+        /* 手機模式：非主角 char-container 縮小，避免蓋過主角 */
+        body.mode-mobile .char-container:not(#main-char-container) {
             width: 100% !important;
             left: 0 !important;
             transform: none !important;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-end;
-            justify-content: center;
-        }
-        #char-glea, #char-miro, #char-chate {
-            position: relative !important;
-            left: auto !important; right: auto !important;
-            bottom: auto !important;
-            transform: none !important;
-        }
-        #char-glea img { height: 60vw !important; }
-        #char-miro img { height: 35vw !important; }
-        #char-chate img { height: 45vw !important; }
-
-        /* Story overlay 對話框 */
-        #story-overlay #dialogue-box {
-            padding: 12px 6% 50px !important;
         }
 
-        /* RPG container 適應手機寬度 */
-        #rpg-container {
-            border-width: 2px !important;
+        body.mode-mobile .char-container:not(#main-char-container) .char-img {
+            object-fit: contain !important;
+            object-position: bottom center !important;
+            max-height: 100% !important;
         }
 
-        /* 系統按鈕調整（game.html 內的 #s-btn / #sys-menu-btn） */
-        #s-btn { right: 12px !important; top: 10px !important; }
-        #coin-display { right: 68px !important; top: 12px !important; font-size: 13px !important; }
-    }
+        /* 信件 UI 在手機可捲動 */
+        body.mode-mobile .letter-paper {
+            width: min(400px, 90vw) !important;
+            max-height: 80vh !important;
+            overflow-y: auto !important;
+            padding: 24px 20px !important;
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+            .letter-paper {
+                max-height: 85vh !important;
+                overflow-y: auto !important;
+            }
+        }
+
+        /* [Mobile 2026-06-18] Title Screen 手機版調整 */
+        @media screen and (max-width: 480px) {
+
+            /* 標題文字縮小 */
+            .title-word-excel {
+                font-size: clamp(2.8rem, 10vw, 4.5rem) !important;
+            }
+
+            .title-word-magic {
+                font-size: clamp(2rem, 7vw, 3rem) !important;
+            }
+
+            /* 三角形系統選單 (sys-tri-row) 隱藏，手機不夠寬 */
+            .sys-tri-row {
+                display: none !important;
+            }
+
+            /* 角落按鈕縮小 */
+            .sys-corner-icon {
+                width: 52px !important;
+                height: 52px !important;
+                font-size: 1.4rem !important;
+            }
+
+            /* 角色群組：縮小並讓三人垂直排 */
+            #intro-char-group {
+                width: 100% !important;
+                left: 0 !important;
+                transform: none !important;
+                display: flex;
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: center;
+            }
+
+            #char-glea,
+            #char-miro,
+            #char-chate {
+                position: relative !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                transform: none !important;
+            }
+
+            #char-glea img {
+                height: 60vw !important;
+            }
+
+            #char-miro img {
+                height: 35vw !important;
+            }
+
+            #char-chate img {
+                height: 45vw !important;
+            }
+
+            /* Story overlay 對話框 */
+            #story-overlay #dialogue-box {
+                padding: 12px 6% 50px !important;
+            }
+
+            /* RPG container 適應手機寬度 */
+            #rpg-container {
+                border-width: 2px !important;
+            }
+
+            /* 系統按鈕調整（game.html 內的 #s-btn / #sys-menu-btn） */
+            #s-btn {
+                right: 12px !important;
+                top: 10px !important;
+            }
+
+            #coin-display {
+                right: 68px !important;
+                top: 12px !important;
+                font-size: 13px !important;
+            }
+        }
     </style>
 
     <script>
-    (function() {
-        var loader = document.getElementById('title-bg-loading');
-        if (!loader) return;
-        var img = new Image();
-        img.onload = function() {
-            loader.style.opacity = '0';
-            setTimeout(function() { loader.style.display = 'none'; }, 1300);
-        };
-        img.onerror = function() {
-            loader.style.opacity = '0';
-        };
-        img.src = 'BG/intro/all.png';
-    })();
+        (function () {
+            var loader = document.getElementById('title-bg-loading');
+            if (!loader) return;
+            var img = new Image();
+            img.onload = function () {
+                loader.style.opacity = '0';
+                setTimeout(function () { loader.style.display = 'none'; }, 1300);
+            };
+            img.onerror = function () {
+                loader.style.opacity = '0';
+            };
+            img.src = 'BG/intro/all.png';
+        })();
     </script>
 
 </body>

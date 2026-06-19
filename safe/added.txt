@@ -1,3 +1,51 @@
+[2026-06-19 補5] 修正逐字效果造成「角色立繪一直抖動」的問題 (Fix: char shake from extra clicks)
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  回報現象：加入逐字打字機效果後，主角立繪一直在抖動。
+  根因：補4 把點擊行為改成「第一次點擊補完文字、第二次才換行」，玩家等待逐字顯示時
+  會不自覺多點幾下；點到角色立繪（.char-img）時會誤觸 ui_v2_core.js 既有、與本功能
+  無關的全域彩蛋監聽器，每次點擊都讓角色播放 .elf-wow 縮放+旋轉動畫 (0.4s)，
+  多點幾次看起來就像角色一直在抖動。
+  修復：拿掉「兩次點擊」設計，nextStoryLine() 改回單次點擊＝換下一行
+  （若該行還在逐字顯示中，同一次點擊先呼叫 _skipActiveTyping() 瞬間補完文字，
+  接著照常換到下一行），完全恢復原本「點一下繼續」的操作習慣，不再需要多點。
+  同時移除已無人呼叫的 _isTyping() 輔助函式。
+  原代碼備份：safe/removed.txt 2026-06-19 補1 區塊。
+
+[2026-06-19 補4] 劇情文字逐字打字機效果 (Story Text Typewriter Effect)
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  需求：故事模式文字（s-text / e-t / p-t）原本整行瞬間出現，改為逐字跳出，速度要快、不能太慢。
+  新增函式：
+  - UIManager.prototype._typeOutHTML(el, html, speed, onDone)：把已組好的 HTML 拆成「標籤」與
+    「可視字元」兩種 token，標籤整段直接插入（不計時），可視字元每隔 speed 毫秒才插入一個，
+    避免拆散 highlightText() 產生的 <span class="highlight">/<strong> 標籤。
+  - UIManager.prototype._completeTyping(el)：補完該元素剩餘文字（點擊跳過動畫用）。
+  - UIManager.prototype._isTyping() / _skipActiveTyping()：查詢/清除目前 this._typingEls 裡
+    還在跑的逐字計時器。
+  行為調整：
+  - nextStoryLine()：點擊時若該行文字還在逐字顯示，先補完文字（不換行），補完後再點一次
+    才真正前進到下一行。
+  - renderCurrentStoryLine()：SEGMENT 分支的 et 改成 `<strong>名稱：</strong><br><span class="type-target">`
+    結構，只對 .type-target 內的文字逐字顯示；▼ CLICK 提示與自動推進 (line.auto) 一律延後到
+    逐字完成後才出現/倒數，避免文字沒打完就被提示跳走或自動跳走。
+  - skipStory()：跳過劇情時順手清掉殘留的逐字計時器。
+  新增可選欄位：劇本該行可加 `typeSpeed`（毫秒/字，預設 28）覆寫逐字速度，不影響既有章節資料
+  （第一章至 8.5 章劇本檔完全未變動，僅擴充引擎渲染邏輯）。
+  原代碼備份：safe/removed.txt 2026-06-19 區塊。
+
+[2026-06-19 補4] 主角畫面持續抖動修復 (Shake-Active Residual Fix)
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  根因：updateVisuals() 處理 shake 特效時（L623-630），只在 line.shake===true 時
+  才把 story-stage 的 shake-active 移除再加回（為了重置 CSS animation），
+  但在 line.shake 不為 true 的行完全不處理 shake-active。
+  結果：只要劇本中某行有 shake:true，shake-active 就永遠留在 story-stage 上，
+  直到下一行也有 shake:true 才會被重置。
+  animation-fill-mode:both（CSS）讓舞台在 animation 期間（以及補全幀）
+  保持 translate3d(-3px, 2px, 0)~ 等偏移，每次 updateVisuals 被呼叫時
+  （即每換一行劇本），class 的移除+重加讓瀏覽器從 shake keyframe 起點重新開始，
+  視覺上就像主角每換一行對話就跳一下（「持續抖動」）。
+  修復：在 else 分支（line.shake 為 falsy 時）加上清除 shake-active，
+  確保只有當前行有 shake: true 時舞台才播放震動動畫。
+
 [2026-06-19 補3] CTRL_ENTER_FILL 捲動可靠性修復 (Scroll Reliability Fix)
 - 檔案：v2/code/phone_helper.js [MODIFY]
   根因：步驟 9 和 9c 原本用 _scrollToCell(cellId, true, true) 把 E/F 欄帶到左上角，

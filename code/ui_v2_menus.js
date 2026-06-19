@@ -362,11 +362,7 @@ UIManager.prototype.closeMemoryDiary = function() {
     }, 200);
 };
 
-UIManager.prototype.clearTeleportUnlock = function() {
-    localStorage.removeItem('magic_excel_teleport_unlocked');
-    sessionStorage.removeItem('magic_excel_teleport_unlocked');
-    alert('✅ 傳送陣解鎖記憶已清除！下次使用空間傳送陣時將需要重新輸入密碼。');
-};
+
 
 UIManager.prototype.reviewChapter = function(chapVal) {
     if(confirm('確定要回顧這個章節嗎？\\n請注意：這會將你的進度暫時跳轉到該章節，若不希望影響目前的進度，建議您先使用【手動存檔】！')) {

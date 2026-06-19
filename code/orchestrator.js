@@ -630,9 +630,9 @@ class Orchestrator {
         if (nextIdx < flow.length) {
             this.triggerPhase(flow[nextIdx]); // #16 triggerPhase 內已呼叫 saveGame，移除重複調用
         } else if (this.state.currentPhase === 'STORY_END' || this.state.currentPhase === 'RPG_MODE') {
-            // ch8.5 完結後進入自由探索模式需要密碼
+            // ch8.5 完結後直接進入通關結算
             if (this.state.currentChapter.toString() === '85') {
-                this._enterFreeModeWithLock();
+                this.loadNextChapter();
                 return;
             }
             this.state.currentPhase = 'RPG_MODE'; // Ensure phase is explicitly RPG_MODE
@@ -653,40 +653,7 @@ class Orchestrator {
         }
     }
 
-    _enterFreeModeWithLock() {
-        const UNLOCK_KEY = 'magic_excel_teleport_unlocked';
-        if (sessionStorage.getItem(UNLOCK_KEY) === '1') {
-            this._doEnterFreeMode();
-            return;
-        }
-        // 顯示試煉完結提示，再要求密碼
-        const msg = '🎉 恭喜！第 8.5 章所有試煉已圓滿完成！\n\n🔒 自由探索模式目前封印中。\n請輸入解封密碼以進入：';
-        const pw = prompt(msg);
-        if (pw === null) return;
-        if (pw === '7338') {
-            sessionStorage.setItem(UNLOCK_KEY, '1');
-            localStorage.setItem(UNLOCK_KEY, '1');
-            this._doEnterFreeMode();
-        } else {
-            alert('❌ 密碼錯誤，自由探索模式拒絕你的進入。');
-        }
-    }
 
-    _doEnterFreeMode() {
-        this.state.currentPhase = 'RPG_MODE';
-        this.saveGame();
-        if (window.rpgEngine) {
-            if (this.state.rpgX !== null && this.state.rpgY !== null) {
-                window.rpgEngine.start(this.state.rpgMapId || "my_room");
-                window.rpgEngine.state.x = this.state.rpgX;
-                window.rpgEngine.state.y = this.state.rpgY;
-            } else {
-                window.rpgEngine.start(this.state.rpgMapId || "my_room");
-            }
-        } else {
-            this.loadNextChapter();
-        }
-    }
 
     async loadNextChapter() {
         const seq = this.ChapterSequence;
@@ -708,24 +675,7 @@ class Orchestrator {
         }
     }
 
-    /**
-     * [新增] 進入 RPG 模式 (世界地圖/自由探索)
-     */
-    enterRPGMode() {
-        this.state.currentPhase = 'RPG_MODE';
-        this.saveGame();
-        if (window.rpgEngine) {
-            if (this.state.rpgX !== null && this.state.rpgY !== null) {
-                window.rpgEngine.start(this.state.rpgMapId || "my_room");
-                window.rpgEngine.state.x = this.state.rpgX;
-                window.rpgEngine.state.y = this.state.rpgY;
-            } else {
-                window.rpgEngine.start(this.state.rpgMapId || "my_room");
-            }
-        } else {
-            console.error("[Orchestrator] RPG Engine 未載入");
-        }
-    }
+
 
     handleGameComplete() {
         const overlay = document.getElementById('notice-overlay');

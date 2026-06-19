@@ -1,5 +1,8 @@
 /**
  * UI_v2 - ui_v2_story.js
+ *
+ * [2026-06-19 新增] 劇情文字逐字顯示效果 (Typewriter Effect)：
+ * s-text / e-t / p-t 不再整行瞬間顯示，改為逐字跳出。完整異動記錄見 safe/added.txt。
  */
 
 UIManager.prototype.handlePlayStory = function({ type, data, onComplete }) {
@@ -93,7 +96,84 @@ UIManager.prototype.syncVisualsToCurrentIndex = function() {
         if (lastBGM) this.playBGM(lastBGM);
     }
 
+// ==========================================
+// [2026-06-19 新增]: 劇情文字逐字顯示效果 (Typewriter Effect)
+// ==========================================
+// 先用 innerHTML 把完整的真實 DOM 結構建好一次（<span> 等標籤正確巢狀），
+// 再用 TreeWalker 找出所有文字節點、清空內容，之後每個 tick 只把「下一個字元」填回對應的
+// 文字節點。標籤本身完全不被重新解析，避免逐次改 innerHTML 導致瀏覽器把未閉合的標籤
+// 自動補上 </span> 而把後面的字元擠到標籤外面（曾實測到的真實 bug，已修正）。
+UIManager.prototype._typeOutHTML = function(el, html, speed, onDone) {
+        if (!el) { if (onDone) onDone(); return; }
+        if (el._typeTimer) clearInterval(el._typeTimer);
+
+        el.innerHTML = html;
+        el._typeFullHTML = html;
+        el._typeDone = onDone || null;
+
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+        const nodes = [];
+        let textNode;
+        while ((textNode = walker.nextNode())) {
+            if (textNode.nodeValue) {
+                nodes.push({ node: textNode, full: textNode.nodeValue });
+                textNode.nodeValue = '';
+            }
+        }
+
+        if (nodes.length === 0) {
+            el._typeTimer = null;
+            if (onDone) onDone();
+            return;
+        }
+
+        let ni = 0, ci = 0;
+        const step = () => {
+            while (ni < nodes.length) {
+                const entry = nodes[ni];
+                if (ci < entry.full.length) {
+                    ci++;
+                    entry.node.nodeValue = entry.full.slice(0, ci);
+                    return; // 每次 tick 只揭露一個字元
+                }
+                ni++; ci = 0; // 這個文字節點已揭露完，換下一個（標籤間切換不計時）
+            }
+            clearInterval(el._typeTimer);
+            el._typeTimer = null;
+            const cb = el._typeDone;
+            el._typeDone = null;
+            if (cb) cb();
+        };
+        el._typeTimer = setInterval(step, speed);
+        step(); // 立即顯示第一個字，避免先空白一拍才開始跳字
+    }
+
+// 若該元素仍在逐字顯示中，直接補完整段文字（點擊跳過動畫用）
+UIManager.prototype._completeTyping = function(el) {
+        if (!el || !el._typeTimer) return false;
+        clearInterval(el._typeTimer);
+        el._typeTimer = null;
+        el.innerHTML = el._typeFullHTML || el.innerHTML;
+        const cb = el._typeDone;
+        el._typeDone = null;
+        if (cb) cb();
+        return true;
+    }
+
+UIManager.prototype._skipActiveTyping = function() {
+        let skipped = false;
+        (this._typingEls || []).forEach(el => { if (this._completeTyping(el)) skipped = true; });
+        return skipped;
+    }
+
 UIManager.prototype.nextStoryLine = function() {
+        // [2026-06-19 修正]: 原本設計成「第一次點擊只補完文字、第二次才換行」，
+        // 結果玩家在等文字跳完時會多點好幾次，點到角色立繪會誤觸 ui_v2_core.js 裡
+        // 既有的全域「.elf-wow」彩蛋動畫（縮放+旋轉），看起來像角色一直在抖動。
+        // 改回維持原本「點一下＝換下一行」的單次點擊習慣：若該行還在逐字顯示中，
+        // 就先把文字瞬間補完，同一次點擊馬上接著換下一行，不需要點第二次。
+        this._skipActiveTyping();
+
         if (this.autoAdvanceTimer) {
             clearTimeout(this.autoAdvanceTimer);
             this.autoAdvanceTimer = null;
@@ -103,7 +183,7 @@ UIManager.prototype.nextStoryLine = function() {
         // [關鍵]: 逐行更新存檔
         window.orchestrator.state.currentStoryIndex = this.currentStoryIndex;
         window.orchestrator.saveGame();
-        
+
         this.renderCurrentStoryLine();
     }
 
@@ -127,6 +207,17 @@ UIManager.prototype.renderCurrentStoryLine = function() {
             }
         }
 
+        // [2026-06-19 新增]: 清掉上一行殘留的逐字計時器，避免舊的打字效果繼續寫入已替換的節點
+        (this._typingEls || []).forEach(el => { if (el && el._typeTimer) { clearInterval(el._typeTimer); el._typeTimer = null; el._typeDone = null; } });
+        this._typingEls = [];
+
+        // [2026-06-19 新增]: 逐字顯示速度 (ms/字)；可在劇本該行加 typeSpeed 覆寫，數字越小越快
+        const typeSpeed = line.typeSpeed || 28;
+        // [2026-06-19 新增]: 自動跳行必須等文字逐字顯示完畢才開始倒數，否則字還沒打完就被跳走
+        const scheduleAutoAdvance = () => {
+            if (line.auto) this.autoAdvanceTimer = setTimeout(() => this.nextStoryLine(), line.auto);
+        };
+
         if (this.currentStoryType === 'SEGMENT') {
             const eb = document.getElementById('elf-bubble'), pb = document.getElementById('player-box');
             const et = document.getElementById('e-t'), pt = document.getElementById('p-t');
@@ -136,18 +227,35 @@ UIManager.prototype.renderCurrentStoryLine = function() {
                 // 玩家發言：高亮玩家盒，暗淡導師盒
                 if (pb) pb.classList.add('speaking');
                 if (eb) eb.classList.remove('speaking');
-                if (pt) pt.innerHTML = this.highlightText(line.t) + blinkTag;
+                if (pt) {
+                    this._typingEls.push(pt);
+                    this._typeOutHTML(pt, this.highlightText(line.t), typeSpeed, () => {
+                        pt.innerHTML += blinkTag;
+                        scheduleAutoAdvance();
+                    });
+                }
             } else {
                 // 導師/NPC發言：高亮導師盒，暗淡玩家盒
                 if (eb) eb.classList.add('speaking');
                 if (pb) pb.classList.remove('speaking');
-                if (et) et.innerHTML = `<strong>${line.n}：</strong><br>${this.highlightText(line.t)}${blinkTag}`;
+                if (et) {
+                    et.innerHTML = `<strong>${line.n}：</strong><br><span class="type-target"></span>`;
+                    const target = et.querySelector('.type-target');
+                    this._typingEls.push(target);
+                    this._typeOutHTML(target, this.highlightText(line.t), typeSpeed, () => {
+                        et.innerHTML += blinkTag;
+                        scheduleAutoAdvance();
+                    });
+                }
             }
         } else {
             const sn = document.getElementById('s-name'), st = document.getElementById('s-text');
             if (sn) sn.innerText = line.n || "";
-            if (st) st.innerHTML = this.highlightText(line.t);
-            
+            if (st) {
+                this._typingEls.push(st);
+                this._typeOutHTML(st, this.highlightText(line.t), typeSpeed, scheduleAutoAdvance);
+            }
+
             // [新增]: 處理信箋顯示
             if (line.letter) {
                 this.showLetter();
@@ -177,11 +285,8 @@ UIManager.prototype.renderCurrentStoryLine = function() {
         }
 
         this.updateVisuals(line);
-
-        // [新增]: 處理自動推進劇情
-        if (line.auto) {
-            this.autoAdvanceTimer = setTimeout(() => this.nextStoryLine(), line.auto);
-        }
+        // [2026-06-19 變更]: 自動推進已移到上方各分支的逐字完成回呼 (scheduleAutoAdvance) 中觸發，
+        // 不再於此處無條件啟動，避免文字還沒打完就自動跳下一行（原代碼備份於 safe/removed.txt）。
     }
 
 UIManager.prototype.showNote = function(content) {
@@ -522,6 +627,14 @@ UIManager.prototype.updateVisuals = function(line) {
                     stage.classList.remove('shake-active');
                     requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.add('shake-active')));
                 }
+            } else {
+                /* [修復 2026-06-19]: 此行沒有 shake，清除上一行殘留的 shake-active。
+                   原本只有 line.shake===true 時才 remove+add（為了重置 animation），
+                   沒有 shake 的行不做任何處理，導致 shake-active 一直留在 story-stage，
+                   animation-fill-mode:both 讓舞台（含主角）每次都從 shake 起始位置開始，
+                   視覺上呈現「主角持續抖動/閃跳」的問題。 */
+                const stage = document.getElementById('story-stage');
+                if (stage) stage.classList.remove('shake-active');
             }
             
             // [新增]: 處理電影感畫面特效 (Screen Effect: glitch, heartbeat, dissolve, glow)
@@ -835,7 +948,12 @@ UIManager.prototype.highlightText = function(txt) {
         });
     }
 
-UIManager.prototype.skipStory = function() { this.currentStoryIndex = this.storyQueue.length; this.finishStoryGroup(); }
+UIManager.prototype.skipStory = function() {
+        // [2026-06-19 新增]: 跳過劇情時順手停掉還在跑的逐字計時器
+        (this._typingEls || []).forEach(el => { if (el && el._typeTimer) { clearInterval(el._typeTimer); el._typeTimer = null; el._typeDone = null; } });
+        this.currentStoryIndex = this.storyQueue.length;
+        this.finishStoryGroup();
+    }
 
 
 UIManager.prototype.startEnvAnimation = function(folder, totalFrames, speed, loop = true) {

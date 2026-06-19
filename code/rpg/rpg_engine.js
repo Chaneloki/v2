@@ -7,7 +7,7 @@ class RPGEngine {
         this.isActive = false;
         this.currentMapId = null;
         this.mapData = null;
-        this.showDebug = true; // [新增]: 預設開啟除錯紅色區塊顯示
+        this.showDebug = false; // [修改]: 預設關閉除錯紅色區塊顯示
         
         this.state = {
             x: 0, y: 0,
@@ -802,7 +802,12 @@ class RPGEngine {
             }
         });
         
-        // 3. 更新實體按鈕文字與背景樣式
+        // 3. 更新實體按鈕與除錯面板內部資訊顯示
+        const coordsEl = document.getElementById('rpg-debug-coords');
+        if (coordsEl) coordsEl.style.display = this.showDebug ? 'block' : 'none';
+        const debugPoiEl = document.getElementById('rpg-debug-poi');
+        if (debugPoiEl) debugPoiEl.style.display = this.showDebug ? 'block' : 'none';
+
         const btn = document.getElementById('rpg-debug-btn');
         if (btn) {
             if (this.showDebug) {
