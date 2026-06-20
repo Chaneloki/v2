@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>試算表魔法冒險 - 番外篇與小型試煉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background: radial-gradient(circle at center, #08e5f466 0%, #991caf5b 100%) !important;
+            min-height: 100vh;
+            height: auto !important;
+            overflow-y: auto !important;
+            display: block !important;
+            font-family: 'Inter', 'Noto Serif TC', serif;
+            color: #3c3020;
+        }
+
+        .return-btn {
+            position: fixed; top: 16px; right: 28px;
+            padding: 8px 20px; background: rgba(140, 98, 57, 0.1);
+            color: #8c6239; border: 1px solid rgba(140, 98, 57, 0.4); border-radius: 20px;
+            font-weight: bold; cursor: pointer; text-decoration: none;
+            transition: all 0.22s; z-index: 100; font-size: 0.85rem;
+        }
+        .return-btn:hover { background: #8c6239; color: #fff; }
+
+        .extras-shell {
+            max-width: 1440px; margin: 0 auto; padding: 30px 24px 80px;
+            box-sizing: border-box;
+        }
+        .extras-header h1 {
+            font-family: 'Noto Serif TC', serif; color: #8c6239; font-size: 1.6rem;
+            letter-spacing: 2px; margin: 0 0 4px 0;
+        }
+        .extras-header p { color: #6e5e49; font-size: 0.85rem; margin: 0 0 24px 0; }
+
+        .extras-tabs { display: flex; gap: 10px; margin-bottom: 24px; }
+        .extras-tab {
+            padding: 10px 22px; background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(192,142,64,0.3); border-radius: 10px;
+            cursor: pointer; font-weight: bold; color: #6e5e49; font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .extras-tab:hover { background: rgba(192,142,64,0.1); }
+        .extras-tab.active {
+            background: rgba(192,142,64,0.2); border-color: #8c6239; color: #8c6239;
+            box-shadow: 0 0 8px rgba(192,142,64,0.15);
+        }
+        .extras-pane { display: none; }
+        .extras-pane.active { display: block; }
+
+        /* ---- 番外篇 ---- */
+        .story-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+        .story-card {
+            background: rgba(255,255,255,0.7); border: 1.5px solid rgba(192,142,64,0.35);
+            border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s;
+        }
+        .story-card:hover { border-color: #8c6239; box-shadow: 0 6px 16px rgba(140,98,57,0.15); transform: translateY(-2px); }
+        .story-card h3 { margin: 0 0 6px 0; font-size: 1rem; color: #8c6239; }
+        .story-card p { margin: 0; font-size: 0.8rem; color: #6e5e49; }
+        .story-empty { text-align: center; color: #8a7a66; padding: 40px; font-size: 0.9rem; }
+
+        #extras-story-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(15, 12, 10, 0.45);
+            z-index: 2000; flex-direction: column; align-items: center; justify-content: center;
+            transition: background 0.3s ease-in-out;
+            overflow: hidden;
+        }
+        #extras-story-overlay.active { display: flex; }
+        
+        .extras-story-bg-blur {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: blur(1px) brightness(0.65);
+            transform: scale(1.08); /* avoid white edges from blur */
+            z-index: 0;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        .extras-story-back-btn {
+            position: fixed; top: 20px; left: 24px; color: rgba(255, 255, 255, 0.85);
+            cursor: pointer; font-size: 2.2rem; z-index: 2020; transition: all 0.22s;
+            user-select: none; font-family: 'Inter', sans-serif;
+            display: flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px;
+        }
+        .extras-story-back-btn:hover { color: #fff; transform: scale(1.15); }
+
+        #extras-story-box {
+            width: min(540px, 90vw); 
+            height: 720px; 
+            max-height: 82vh;
+            padding: 50px 45px 35px;
+            display: flex; flex-direction: column;
+            position: relative;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-top-right-radius: 90px; 
+            border-bottom-left-radius: 24px; 
+            border-bottom-right-radius: 24px; 
+            border-top-left-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(255,255,255,0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-sizing: border-box;
+            margin-bottom: 90px;
+            z-index: 2;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        #extras-story-box:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.5);
+        }
+        
+        .extras-story-top-right-decor {
+            position: absolute;
+            top: 0; right: 0;
+            width: 190px; height: 230px;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            pointer-events: none;
+            -webkit-mask-image: radial-gradient(circle at top right, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+            mask-image: radial-gradient(circle at top right, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
+            opacity: 0.92;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        .extras-story-header-decor {
+            position: absolute;
+            top: 28px;
+            left: 45px;
+            font-size: 4.2rem;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-weight: 300;
+            color: rgba(140, 98, 57, 0.05);
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+        }
+
+        .extras-story-book-header {
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid rgba(140, 98, 57, 0.12);
+            padding-bottom: 18px;
+            margin-bottom: 22px;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+        #extras-story-title-display {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: #3c3020;
+            font-family: 'Noto Serif TC', serif;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .extras-story-book-subtitle {
+            font-size: 0.72rem;
+            color: #8a7b6a;
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+
+        #extras-story-speaker-tag {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+        #extras-story-speaker-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #5c4a3c;
+            font-family: 'Noto Serif TC', serif;
+            position: relative;
+            padding-left: 14px;
+        }
+        #extras-story-speaker-name::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 16px;
+            background: #8c6239;
+            border-radius: 2px;
+        }
+
+        #extras-story-text {
+            flex: 1;
+            font-size: 1.12rem; 
+            line-height: 1.85; 
+            text-align: justify; 
+            color: #2c2520;
+            font-family: 'Noto Serif TC', serif; 
+            font-weight: 500;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            padding-right: 6px;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+        #extras-story-text::-webkit-scrollbar { width: 4px; }
+        #extras-story-text::-webkit-scrollbar-thumb { background: rgba(140, 98, 57, 0.2); border-radius: 2px; }
+
+        .story-p {
+            text-indent: 2em;
+            margin: 0 0 1.2em 0;
+            text-align: justify;
+        }
+        .story-p:last-child {
+            margin-bottom: 0;
+        }
+
+        .extras-story-nav-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            border-top: 1px solid rgba(140, 98, 57, 0.12);
+            padding-top: 18px;
+            z-index: 2;
+            box-sizing: border-box;
+        }
+        .extras-story-nav-btn {
+            background: transparent;
+            border: none;
+            color: #8c6239;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .extras-story-nav-btn:hover:not(:disabled) {
+            background: rgba(140, 98, 57, 0.08);
+            color: #5c4a3c;
+        }
+        .extras-story-nav-btn:disabled {
+            color: rgba(140, 98, 57, 0.28);
+            cursor: not-allowed;
+        }
+        .extras-story-page-num {
+            font-size: 0.95rem;
+            color: #6e5e49;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .extras-story-page-timeline {
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            z-index: 2010;
+            max-width: 95vw;
+            padding: 10px 20px 22px;
+            box-sizing: border-box;
+            overflow-x: visible;
+        }
+        .extras-story-page-timeline::before {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.28) 15%, rgba(255, 255, 255, 0.28) 85%, transparent);
+            z-index: 0;
+        }
+        
+        .extras-story-page-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            z-index: 1;
+            transition: transform 0.25s ease;
+            user-select: none;
+        }
+        .extras-story-page-card-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 46px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+        }
+        .extras-story-page-card:hover .extras-story-page-card-inner {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #fff;
+            transform: translateY(-5px);
+        }
+        .extras-story-page-card.active .extras-story-page-card-inner {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: #ffd700;
+            color: #ffd700;
+            transform: translateY(-8px);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4), 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .extras-story-page-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            margin-top: 10px;
+            transition: all 0.25s ease;
+            z-index: 2;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+        .extras-story-page-card:hover .extras-story-page-dot {
+            background: rgba(255, 255, 255, 0.85);
+            transform: scale(1.2);
+        }
+        .extras-story-page-card.active .extras-story-page-dot {
+            background: #ffd700;
+            transform: scale(1.6);
+            box-shadow: 0 0 8px #ffd700;
+        }
+
+        /* ---- 小型試煉 ---- */
+        .practice-guidance-panel {
+            display: flex; gap: 20px; align-items: flex-start;
+            background: rgba(255,255,255,0.72); border: 1.5px solid rgba(192,142,64,0.35);
+            border-radius: 14px; padding: 18px 24px; margin-bottom: 18px; box-sizing: border-box;
+        }
+        @keyframes magic-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .practice-btn {
+            padding: 8px 18px; border-radius: 8px; border: 1px solid rgba(192,142,64,0.4);
+            background: linear-gradient(135deg, #e08b2b, #b85c00); color: #fff; font-weight: bold;
+            cursor: pointer; font-size: 0.85rem; box-shadow: 0 3px 0 #8c4200; transition: all 0.12s;
+            margin: 0; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .practice-btn:hover { filter: brightness(1.08); }
+        .practice-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #8c4200; }
+        .practice-btn.secondary {
+            background: rgba(255,255,255,0.85); color: #8c6239; box-shadow: none;
+            border: 1px solid rgba(192,142,64,0.4);
+        }
+        .practice-btn.secondary:hover { background: rgba(192,142,64,0.1); }
+        .practice-btn.ok { background: linear-gradient(135deg, #2da164, #1e7e34); box-shadow: 0 3px 0 #155724; }
+
+        .practice-empty { text-align: center; color: #6e5e49; padding: 60px 20px; background: rgba(255,255,255,0.6); border: 1.5px solid rgba(192,142,64,0.25); border-radius: 14px; }
+        .practice-empty h2 { color: #8c6239; margin-top: 0; font-family: 'Noto Serif TC', serif; }
+
+        .task-skill-badge {
+            display: inline-block; font-size: 0.72rem; color: #b37400; background: rgba(192,142,64,0.12);
+            border: 1px solid rgba(192,142,64,0.25); border-radius: 6px; padding: 2px 8px; font-weight: bold;
+        }
+        .task-requirement { font-size: 1.05rem; line-height: 1.6; color: #3c3020; font-weight: bold; }
+        .task-tip-box {
+            display: none;
+            position: absolute;
+            right: 12px;
+            top: 102px; /* right below the ribbon task section */
+            background: #fffbe6;
+            border: 1px solid #ffe58f;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            color: #78350f;
+            z-index: 200;
+            width: 350px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .task-tip-box.show { display: block; }
+
+        /* Excel Clone Component */
+        #excel-container {
+            height: 500px; display: flex; flex-direction: column; background: #fff;
+            border: 1.5px solid rgba(192,142,64,0.35); border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(110,80,40,0.08); overflow: hidden; margin: 10px 0;
+            position: relative;
+        }
+        #ribbon {
+            position: relative;
+        }
+        #practice-wrapper {
+            flex: 1; overflow: auto; position: relative; background: #fff; height: 100%;
+        }
+
+        /* Input inside cells */
+        .grid-cell-input {
+            width: 100%; height: 100%; border: none; outline: none; background: transparent;
+            font-family: inherit; font-size: 13px; color: #217346; font-weight: 600;
+            text-align: center; box-sizing: border-box; padding: 0 5px;
+        }
+        .grid-cell-input:focus {
+            box-shadow: inset 0 0 0 2px #217346 !important; background: #fff !important;
+        }
+        .grid-cell-input.ok {
+            background: #eaf6ed !important; color: #1e7e34 !important;
+        }
+        .grid-cell-input.fail {
+            background: #fde8e8 !important; color: #c53030 !important;
+        }
+
+        .task-feedback { font-weight: bold; font-size: 0.85rem; }
+        .task-feedback.ok { color: #1e7e34; }
+        .task-feedback.fail { color: #c53030; }
+        .task-feedback.warn { color: #b37400; }
+
+        /* Cell selections and range highlights */
+        .cell.selected-cell {
+            box-shadow: inset 0 0 0 2px #217346 !important;
+            z-index: 5;
+        }
+        .cell.range-selected {
+            background-color: rgba(33, 115, 70, 0.08) !important;
+        }
+        .cell.range-selected.selected {
+            background-color: #fff !important;
+        }
+        .cell {
+            position: relative !important;
+            user-select: none;
+        }
+        .grid-cell-input {
+            user-select: text !important;
+        }
+        .fill-handle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #217346;
+            border: 1px solid #fff;
+            right: -4px;
+            bottom: -4px;
+            z-index: 10;
+            cursor: crosshair;
+        }
+        .fill-handle::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            background: transparent;
+        }
+        .cell.answer-col.fill-drag-target {
+            background-color: rgba(33, 115, 70, 0.05) !important;
+            box-shadow: inset 0 0 0 1px dashed #217346 !important;
+        }
+
+        /* Ribbon Integrated Task Section */
+        .ribbon-task-section {
+            position: absolute;
+            right: 12px;
+            top: 26px; /* align with ribbon buttons */
+            height: 72px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 1px solid #d2d2d2;
+            padding-left: 12px;
+            z-index: 15;
+            width: 550px;
+            background: #fff; /* White background to stand out from ribbon-buttons */
+            box-shadow: -4px 0 10px rgba(0,0,0,0.05);
+            border-radius: 0 0 6px 0;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+        }
+        .ribbon-task-section.collapsed {
+            width: 280px;
+        }
+        .ribbon-task-requirement {
+            font-size: 0.82rem;
+            color: #323130;
+            line-height: 1.35;
+            max-height: 48px;
+            overflow-y: auto;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.25s ease;
+            user-select: none;
+            font-weight: 600;
+            padding-right: 4px;
+        }
+        .ribbon-task-requirement:hover {
+            color: #217346;
+        }
+        .ribbon-task-requirement.collapsed {
+            color: #2da164;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 110px;
+            max-height: 20px;
+        }
+        .ribbon-task-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+            width: 140px;
+        }
+        .ribbon-task-actions-row {
+            display: flex;
+            gap: 4px;
+        }
+        .practice-btn.mini {
+            padding: 4px 6px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            box-shadow: 0 1.5px 0 #8c4200;
+            width: 100%;
+            margin: 0;
+        }
+        .practice-btn.mini.secondary {
+            box-shadow: none;
+            background: rgba(140, 98, 57, 0.08);
+            color: #8c6239;
+            border: 1px solid rgba(140, 98, 57, 0.3);
+        }
+        .practice-btn.mini.secondary:hover {
+            background: rgba(140, 98, 57, 0.15);
+        }
+        .practice-btn.mini.ok {
+            box-shadow: 0 1.5px 0 #155724;
+            background: linear-gradient(135deg, #2da164, #1e7e34);
+        }
+    </style>
+</head>
+<body>
+    <a href="game.html?action=load" class="return-btn">⬅ 返回主遊戲</a>
+
+    <div class="extras-shell">
+        <div class="extras-header">
+            <h1>🌙 通關後額外內容</h1>
+            <p>完結 Ch1～Ch8.5 之後的延伸內容：番外篇劇情 ・ 小型試煉場（隨機抽題，每次只考一個技能）</p>
+        </div>
+
+        <div class="extras-tabs">
+            <button class="extras-tab active" id="tab-btn-story" onclick="switchExtrasTab('story')">📖 番外篇</button>
+            <button class="extras-tab" id="tab-btn-practice" onclick="switchExtrasTab('practice')">🎲 小型試煉</button>
+        </div>
+
+        <!-- ===== 番外篇 ===== -->
+        <div class="extras-pane active" id="pane-story">
+            <div class="story-card-grid" id="story-card-grid"></div>
+        </div>
+
+        <!-- ===== 小型試煉 ===== -->
+        <div class="extras-pane" id="pane-practice">
+            <div id="practice-area">
+                <div class="practice-empty">
+                    <h2>🎲 隨機技能小試煉</h2>
+                    <p style="margin-bottom: 20px;">每次會從 13 個核心 Excel 技能中隨機抽取 1 個考驗你，資料與情境均為動態生成，可無限次練習！</p>
+                    <button class="practice-btn" onclick="drawNewTask()" style="font-size: 1.1rem; padding: 12px 28px;">🎲 開始抽題挑戰</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 番外篇對話框 -->
+    <div id="extras-story-overlay">
+        <div class="extras-story-bg-blur" id="extras-story-bg-blur"></div>
+        <div class="extras-story-back-btn" onclick="closeStory(event)">〈</div>
+        
+        <div id="extras-story-box">
+            <div class="extras-story-top-right-decor" id="extras-story-top-right-decor"></div>
+            <div class="extras-story-header-decor">Story</div>
+            
+            <div class="extras-story-book-header">
+                <span id="extras-story-title-display">01 | 鏡中的裂痕</span>
+                <span class="extras-story-book-subtitle">✦ STORY ADVENTURE ✦</span>
+            </div>
+            
+            <div id="extras-story-speaker-tag" style="display:none">
+                <span id="extras-story-speaker-name"></span>
+            </div>
+            
+            <div id="extras-story-text"></div>
+            
+            <div class="extras-story-nav-row">
+                <button class="extras-story-nav-btn" id="extras-story-prev-btn" onclick="prevStoryPage(event)">〈 上一頁</button>
+                <span class="extras-story-page-num" id="extras-story-page-display">01 / 09</span>
+                <button class="extras-story-nav-btn" id="extras-story-next-btn" onclick="nextStoryPage(event)">下一頁 〉</button>
+            </div>
+        </div>
+        
+        <div class="extras-story-page-timeline" id="extras-story-timeline">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+
+    <!-- 載入所有章節數據以獲取 skillDefs（提示文字用） -->
+    <script src="chapter/ch1.js"></script>
+    <script src="chapter/ch1_5.js"></script>
+    <script src="chapter/ch2.js"></script>
+    <script src="chapter/ch2.5.js"></script>
+    <script src="chapter/ch3.js"></script>
+    <script src="chapter/ch3.5.js"></script>
+    <script src="chapter/ch4.js"></script>
+    <script src="chapter/ch4.5.js"></script>
+    <script src="chapter/ch5.js"></script>
+    <script src="chapter/ch5.5.js"></script>
+    <script src="chapter/ch6.js"></script>
+    <script src="chapter/ch6.5.js"></script>
+    <script src="chapter/ch7.js"></script>
+    <script src="chapter/ch7.5.js"></script>
+    <script src="chapter/ch8.js"></script>
+    <script src="chapter/ch8_5.js"></script>
+    <script src="code/practice_engine.js"></script>
+
+    <script>
+        // ========================================================
+        // 分頁切換
+        // ========================================================
+        function switchExtrasTab(tab) {
+            document.getElementById('tab-btn-story').classList.toggle('active', tab === 'story');
+            document.getElementById('tab-btn-practice').classList.toggle('active', tab === 'practice');
+            document.getElementById('pane-story').classList.toggle('active', tab === 'story');
+            document.getElementById('pane-practice').classList.toggle('active', tab === 'practice');
+        }
+
+        window.SIDE_STORIES = {
+            demo_001: {
+                title: "鏡中的裂痕",
+                summary: "夏特初入學院",
+                lines: [
+                    { 
+                        n: "夏特", 
+                        t: "行李箱的皮扣勒進掌心，我把它拉得死緊，指節因為用力而泛著青白。這是我從螢火村帶出來的唯一家當，此刻它躺在腳邊，顯得如此格格不入。", 
+                        a: "chate", 
+                        bgm: "kingdom sad.mp3", 
+                        bg: "bg2.png" 
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "抵達這座大城後的第十四天，我依然沒能習慣這裡。空氣裡那股甜膩的香料味，像是一層黏糊糊的膜，悶得我喉嚨發乾。比起螢火村那股終年不散的泥土氣，這裡的一切都顯得太過精緻、明亮，也遙遠得讓人恐懼。", 
+                        a: "chate", 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "我蜷在學院外的長廊上，手邊那本《初階結構學》正攤開著。書脊已經磨損了，封皮上還帶著村長蓋下的印章現在才發現這本書竟破舊得像個笑話。", 
+                        a: "chate", 
+                        se: "trans.mp3", 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "不遠處，幾個穿著燙金長袍的學長正圍在一起。風把他們的隻字片語送到我耳邊：北境的魔力導流、王室的宴席，還有那些我連發音都抓不住的貴族姓氏。", 
+                        a: "chate", 
+                        shake: true, 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "他們舉杯的動作輕得沒有一點聲響，說話時漫不經心的優雅，讓我腦中不斷浮現出村長為了幾把柴火就和鄰居爭得面紅耳赤的模樣。那種落差感太過強烈，讓我胃裡一陣翻騰。", 
+                        a: "chate", 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "我低下頭，死死盯著指尖上的墨漬。為了練寫公式，我熬了三個通宵留下了痕跡。在螢火村，村長總是用那雙佈滿老繭的手拍著我的肩膀說\n「小夏特，你是我們村未來的希望，你的筆跡，以後都要寫進村史裡的。」", 
+                        a: "chate", 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "\n...村史。\n我自嘲地扯了一下嘴角，喉嚨裡泛起一陣澀意。在這座高塔之下，誰會在乎那些歪歪斜斜的墨跡？在這裡，筆跡必須像尺規量出來一樣平整，配色必須符合那套冷酷的裝幀邏輯。否則，無論你的算式多精準，也不過是個沒人想看的瑕疵品。", 
+                        a: "chate", 
+                        flash: true,
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "「喂，那邊那個，別擋著路。」一個領口綴著藍寶石的少年冷冷地掃了我一眼。他連眼神都沒有在我身上多停留一秒。我猛地站起身，手裡的書差點滑落。臉頰像是被火燒過一樣發燙，尖銳細密的刺痛感從胸口竄起，瞬間蔓延到四肢百骸。那是徹底的、無法掩飾的自我厭惡。", 
+                        a: "chate", 
+                        flash: true, 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "原來，那個在螢火村被捧上天際的天才，在這裡，也不過是一件滿是補丁的舊衣服。我用力把那本書壓進懷裡，指甲幾乎要掐進皮肉。", 
+                        a: "chate", 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "我不服。我要融入這裡，我要變成像他們那樣。螢火村的口音、習慣，所有暴露我出身的痕跡，我要從骨髓裡、從血液裡一寸寸剔除乾淨。我轉過身，那扇高聳的學院大門像是一個吞噬光線的巨口。\n我沒再回頭，每走一步，都在心底築起一道牆。", 
+                        a: "chate", 
+                        bg: "bg2.png"
+                    },
+                    { 
+                        n: "夏特", 
+                        t: "從今天起，螢火村那個泥巴坑裡的天才死了。現在站著的是夏特，學院的首席候選人。\n也只能是。", 
+                        a: "chate", 
+                        bg: "bg2.png"
+                    }
+                ]
+            }
+        };
+
+        let _storyState = null;
+        let _extrasBgm = null;
+        let _currentBgmFile = null;
+
+        function getPlayerGender() {
+            let gender = 'girl';
+            try {
+                const raw = localStorage.getItem('magic_excel_v2_save');
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    if (data.playerConfig && data.playerConfig.gender) {
+                        gender = data.playerConfig.gender;
+                    }
+                }
+            } catch(e) {}
+            return gender;
+        }
+
+        function playExtrasBGM(file) {
+            if (_currentBgmFile === file) return;
+            if (_extrasBgm) {
+                _extrasBgm.pause();
+                _extrasBgm = null;
+            }
+            if (!file) {
+                _currentBgmFile = null;
+                return;
+            }
+            _currentBgmFile = file;
+            _extrasBgm = new Audio(`BGM/${file}`);
+            _extrasBgm.loop = true;
+            _extrasBgm.volume = 0.25;
+            _extrasBgm.play().catch(e => console.warn("BGM autoplay blocked:", e));
+        }
+
+        function playExtrasSE(file) {
+            if (!file) return;
+            let sfxFile = file;
+            const gender = getPlayerGender();
+            if (sfxFile.startsWith('me_')) {
+                sfxFile = sfxFile.replace('me_', `${gender}_`);
+            }
+            const audio = new Audio(`sound_effect/${sfxFile}`);
+            audio.volume = 0.5;
+            audio.play().catch(e => console.warn("SE play blocked:", e));
+        }
+
+        function renderStoryCards() {
+            const grid = document.getElementById('story-card-grid');
+            const ids = Object.keys(window.SIDE_STORIES || {});
+            if (ids.length === 0) {
+                grid.innerHTML = '<div class="story-empty">尚無番外篇內容。</div>';
+                return;
+            }
+            grid.innerHTML = ids.map(id => {
+                const s = window.SIDE_STORIES[id];
+                return `<div class="story-card" onclick="openStory('${id}')">
+                    <h3>${s.title}</h3>
+                    <p>${s.summary || ''}</p>
+                </div>`;
+            }).join('');
+        }
+
+        function openStory(id) {
+            const story = window.SIDE_STORIES[id];
+            if (!story) return;
+            _storyState = { lines: story.lines, index: 0, title: story.title };
+            document.getElementById('extras-story-overlay').classList.add('active');
+            
+            // Build bottom page timeline cards
+            const timeline = document.getElementById('extras-story-timeline');
+            if (timeline) {
+                timeline.innerHTML = story.lines.map((line, idx) => {
+                    return `
+                    <div class="extras-story-page-card" id="page-card-${idx}" onclick="jumpToStoryPage(${idx})">
+                        <div class="extras-story-page-card-inner">${idx + 1}</div>
+                        <div class="extras-story-page-dot"></div>
+                    </div>`;
+                }).join('');
+            }
+            
+            renderStoryLine();
+        }
+
+        function renderStoryLine() {
+            if (!_storyState) return;
+            const line = _storyState.lines[_storyState.index];
+            const overlay = document.getElementById('extras-story-overlay');
+            const bgBlurEl = document.getElementById('extras-story-bg-blur');
+            const box = document.getElementById('extras-story-box');
+            const decorPanel = document.getElementById('extras-story-top-right-decor');
+            
+            // 1. 文字與標題
+            const textEl = document.getElementById('extras-story-text');
+            if (textEl) {
+                const paragraphs = (line.t || '').split('\n').filter(p => p.trim() !== '');
+                textEl.innerHTML = paragraphs.map(p => `<p class="story-p">${p}</p>`).join('');
+            }
+            
+            const nameEl = document.getElementById('extras-story-speaker-name');
+            const charInfoEl = document.getElementById('extras-story-speaker-tag');
+            
+            if (line.n) {
+                nameEl.innerText = line.n;
+                charInfoEl.style.display = 'flex';
+            } else {
+                nameEl.innerText = '';
+                charInfoEl.style.display = 'none';
+            }
+            
+            // 右上角立繪/風景切換
+            if (decorPanel) {
+                let illustrationSrc = 'BG/bg7 garden.png'; // 預設風景
+                if (line.a) {
+                    const charAssets = {
+                        'me': getPlayerGender() === 'girl' ? 'Charater/main girl.png' : 'Charater/main boy.png',
+                        'fairy': 'Charater/fairy.png',
+                        'head': 'Charater/head.png',
+                        'system': 'Charater/魔導書.png',
+                        'glea': 'Charater/glea.png',
+                        'miro': 'Charater/Miro.png',
+                        'chate': 'Charater/chate.png',
+                        'royi': 'Charater/Royi.png',
+                        'prince': 'Charater/prince boy.png',
+                        'king': 'Charater/king.png'
+                    };
+                    illustrationSrc = charAssets[line.a] || `Charater/${line.a}.png`;
+                }
+                decorPanel.style.backgroundImage = `url('${illustrationSrc}')`;
+            }
+            
+            // 2. 全螢幕背景 / CG 顯示 (修復 bg2.png 無法顯示問題)
+            if (line.bg) {
+                let fullPath = line.bg;
+                if (!fullPath.startsWith('BG/') && !fullPath.startsWith('cg/') && !fullPath.startsWith('http')) {
+                    fullPath = 'BG/' + fullPath;
+                }
+                if (bgBlurEl) {
+                    bgBlurEl.style.backgroundImage = `url('${fullPath}')`;
+                } else {
+                    overlay.style.backgroundImage = `url('${fullPath}')`;
+                    overlay.style.backgroundSize = 'cover';
+                    overlay.style.backgroundPosition = 'center';
+                }
+            } else {
+                if (bgBlurEl) bgBlurEl.style.backgroundImage = 'none';
+                overlay.style.backgroundImage = 'none';
+            }
+            
+            // 3. 處理背景音樂 (BGM)
+            if (line.bgm === null) {
+                playExtrasBGM(null);
+            } else if (line.bgm) {
+                playExtrasBGM(line.bgm);
+            }
+            
+            // 4. 處理音效 (SE)
+            if (line.se) {
+                playExtrasSE(line.se);
+            }
+            
+            // 5. 處理電影感畫面特效
+            // 震動
+            if (line.shake) {
+                box.classList.remove('shake-active');
+                requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add('shake-active')));
+            } else {
+                box.classList.remove('shake-active');
+            }
+            
+            // 閃光
+            if (line.flash) {
+                let flashEl = document.getElementById('extras-flash-overlay');
+                if (!flashEl) {
+                    flashEl = document.createElement('div');
+                    flashEl.id = 'extras-flash-overlay';
+                    flashEl.className = 'flash-overlay';
+                    document.body.appendChild(flashEl);
+                }
+                flashEl.classList.remove('flash-active');
+                requestAnimationFrame(() => requestAnimationFrame(() => flashEl.classList.add('flash-active')));
+            }
+            
+            // 獨立畫面特效
+            if (line.screenEffect) {
+                overlay.classList.remove('screen-glitch', 'screen-heartbeat', 'screen-dissolve', 'screen-glow', 'screen-reality-tear', 'screen-reality-tear-slow', 'screen-eye-open', 'screen-dissolve-to-light');
+                requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add(`screen-${line.screenEffect}`)));
+            } else {
+                overlay.classList.remove('screen-glitch', 'screen-heartbeat', 'screen-dissolve', 'screen-glow', 'screen-reality-tear', 'screen-reality-tear-slow', 'screen-eye-open', 'screen-dissolve-to-light');
+            }
+
+            // 6. 更新導覽按鈕與進度文字
+            const prevBtn = document.getElementById('extras-story-prev-btn');
+            const nextBtn = document.getElementById('extras-story-next-btn');
+            if (prevBtn) prevBtn.disabled = (_storyState.index === 0);
+            if (nextBtn) {
+                if (_storyState.index === _storyState.lines.length - 1) {
+                    nextBtn.innerText = '結束故事 ✕';
+                } else {
+                    nextBtn.innerText = '下一頁 〉';
+                }
+            }
+
+            const pageDisp = document.getElementById('extras-story-page-display');
+            if (pageDisp) {
+                const currentPage = (_storyState.index + 1).toString().padStart(2, '0');
+                const totalPages = _storyState.lines.length.toString().padStart(2, '0');
+                pageDisp.innerText = `${currentPage} / ${totalPages}`;
+            }
+
+            const titleDisp = document.getElementById('extras-story-title-display');
+            if (titleDisp) {
+                const currentPage = (_storyState.index + 1).toString().padStart(2, '0');
+                titleDisp.innerText = `${currentPage} | ${_storyState.title}`;
+            }
+
+            // 更新底部 timeline 卡片高亮與位置
+            document.querySelectorAll('.extras-story-page-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            const activeCard = document.getElementById(`page-card-${_storyState.index}`);
+            if (activeCard) {
+                activeCard.classList.add('active');
+                const timeline = document.getElementById('extras-story-timeline');
+                if (timeline) {
+                    const scrollTarget = activeCard.offsetLeft - timeline.clientWidth / 2 + activeCard.clientWidth / 2;
+                    timeline.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+                }
+            }
+        }
+
+        function prevStoryPage(e) {
+            if (e) e.stopPropagation();
+            if (!_storyState || _storyState.index <= 0) return;
+            _storyState.index--;
+            renderStoryLine();
+        }
+
+        function nextStoryPage(e) {
+            if (e) e.stopPropagation();
+            if (!_storyState) return;
+            if (_storyState.index >= _storyState.lines.length - 1) {
+                closeStory();
+                return;
+            }
+            _storyState.index++;
+            renderStoryLine();
+        }
+
+        function jumpToStoryPage(idx) {
+            if (!_storyState || idx < 0 || idx >= _storyState.lines.length) return;
+            _storyState.index = idx;
+            renderStoryLine();
+        }
+
+        function closeStory(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('extras-story-overlay').classList.remove('active');
+            
+            const overlay = document.getElementById('extras-story-overlay');
+            overlay.classList.remove('screen-glitch', 'screen-heartbeat', 'screen-dissolve', 'screen-glow', 'screen-reality-tear', 'screen-reality-tear-slow', 'screen-eye-open', 'screen-dissolve-to-light');
+            
+            const box = document.getElementById('extras-story-box');
+            box.classList.remove('shake-active');
+            
+            _storyState = null;
+            playExtrasBGM(null);
+        }
+
+        // ========================================================
+        // 系統二：小型試煉 (Excel Small Drills)
+        // ========================================================
+        let allSkillDefs = {};
+        if (window.V2_CHAPTERS) {
+            Object.keys(window.V2_CHAPTERS).sort((a, b) => parseFloat(a) - parseFloat(b)).forEach(chId => {
+                const ch = window.V2_CHAPTERS[chId];
+                if (ch && ch.skillDefs) Object.assign(allSkillDefs, ch.skillDefs);
+            });
+        }
+
+        let currentTask = null;
+        let practiceState = {
+            displayRows: [],
+            frozen: false,
+            selectedCol: -1,
+            selectedCell: null,
+            activeRibbonTab: 'start',
+            inputValues: {},
+            singleInputValue: '',
+            selectedRange: null,
+            taskCollapsed: false,
+            feedback: { ok: null, msg: '' }
+        };
+
+        function drawNewTask() {
+            currentTask = window.PracticeEngine.drawTask(allSkillDefs);
+            practiceState = {
+                displayRows: currentTask.table.rows.map(r => r.slice()),
+                frozen: false,
+                selectedCol: currentTask.skillId === 'SORT_SIMPLE' ? currentTask.sortCol : -1,
+                selectedCell: null,
+                activeRibbonTab: currentTask.skillId === 'SORT_SIMPLE' ? 'data' : (currentTask.skillId === 'F' ? 'view' : 'start'),
+                inputValues: {},
+                singleInputValue: '',
+                selectedRange: null,
+                taskCollapsed: false,
+                feedback: { ok: null, msg: '' }
+            };
+            renderTask();
+        }
+
+        function colLetter(i) { 
+            return window.PracticeEngine.indexToColLetter ? window.PracticeEngine.indexToColLetter(i) : String.fromCharCode(65 + i); 
+        }
+
+        function switchPracticeTab(tab) {
+            practiceState.activeRibbonTab = tab;
+            document.querySelectorAll('#ribbon .tab').forEach(t => {
+                t.classList.toggle('active', t.id === `p-tab-${tab}`);
+            });
+            renderPracticeRibbon();
+        }
+
+        function renderPracticeRibbon() {
+            const container = document.getElementById('practice-ribbon-btns');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const t = currentTask;
+            const tab = practiceState.activeRibbonTab;
+
+            if (tab === 'start') {
+                createRibbonBtn("practice-autosum", "自動加總", "icon/auto sum.png", handleRibbonAutoSum, true);
+                createRibbonBtn("practice-merge", "跨欄置中", "icon/跨欄置中.png", null, false);
+                createRibbonBtn("practice-border", "所有框線", "icon/所有框線.png", null, false);
+                createRibbonBtn("practice-fill", "填滿色彩", "icon/fill colour.png", null, false);
+                createRibbonBtn("practice-painter", "格式刷", "icon/format brush.png", null, false);
+            } else if (tab === 'insert') {
+                createRibbonBtn("practice-pivot", "樞紐分析表", "icon/樞紐分析表.png", null, false);
+            } else if (tab === 'data') {
+                createRibbonBtn("practice-sort-asc", "升序排序", "icon/sort&filter.png", () => applySortPractice('asc'), true);
+                createRibbonBtn("practice-sort-desc", "降序排序", "icon/sort&filter.png", () => applySortPractice('desc'), true);
+                createRibbonBtn("practice-validation", "資料驗證", "icon/資料check.png", null, false);
+                createRibbonBtn("practice-subtotal", "小計", "icon/小計.png", null, false);
+            } else if (tab === 'view') {
+                const isFreezeActive = practiceState.frozen;
+                const btn = createRibbonBtn("practice-freeze", "凍結頂端列", "icon/凍結窗格.png", toggleFreezePractice, true);
+                if (isFreezeActive && btn) {
+                    btn.classList.add('active-toggle');
+                    btn.style.background = 'var(--active-blue)';
+                    btn.style.borderColor = '#99bce8';
+                }
+                createRibbonBtn("practice-outline", "大綱", "icon/大綱.png", null, false);
+            }
+        }
+
+        function createRibbonBtn(id, label, iconPath, clickFn, enabled) {
+            const btn = document.createElement('button');
+            btn.id = id;
+            btn.className = 'ribbon-btn big';
+            if (!enabled) {
+                btn.style.opacity = '0.4';
+                btn.style.cursor = 'not-allowed';
+            } else {
+                btn.onclick = clickFn;
+            }
+
+            const img = document.createElement('img');
+            img.src = iconPath;
+            img.alt = label;
+
+            const span = document.createElement('span');
+            span.innerText = label;
+
+            btn.appendChild(img);
+            btn.appendChild(span);
+
+            const container = document.getElementById('practice-ribbon-btns');
+            if (container) container.appendChild(btn);
+            return btn;
+        }
+
+        function handleRibbonAutoSum() {
+            const singleInput = document.getElementById('single-answer');
+            if (singleInput) {
+                singleInput.value = `=SUM(E2:E${practiceState.displayRows.length + 1})`;
+                singleInput.focus();
+                practiceState.singleInputValue = singleInput.value;
+                return;
+            }
+            const activeInput = document.activeElement;
+            if (activeInput && activeInput.classList.contains('grid-cell-input')) {
+                activeInput.value = `=SUM(E2:E${practiceState.displayRows.length + 1})`;
+                activeInput.focus();
+                const idx = parseInt(activeInput.id.replace('ans-', ''), 10);
+                if (!isNaN(idx)) {
+                    if (!practiceState.inputValues) practiceState.inputValues = {};
+                    practiceState.inputValues[idx] = activeInput.value;
+                }
+            }
+        }
+
+        function applySortPractice(dir) {
+            const col = practiceState.selectedCol;
+            if (col < 0) {
+                alert("請先點擊試算表上方的 A~K 欄位標頭來選取要排序的欄位！");
+                return;
+            }
+            practiceState.displayRows.sort((a, b) => {
+                let valA = a[col];
+                let valB = b[col];
+
+                if (typeof valA === 'string' && valA.endsWith('分')) {
+                    valA = parseInt(valA, 10);
+                }
+                if (typeof valB === 'string' && valB.endsWith('分')) {
+                    valB = parseInt(valB, 10);
+                }
+
+                if (typeof valA === 'number' && typeof valB === 'number') {
+                    return dir === 'desc' ? valB - valA : valA - valB;
+                }
+
+                valA = String(valA);
+                valB = String(valB);
+                return dir === 'desc' ? valB.localeCompare(valA) : valA.localeCompare(valB);
+            });
+            renderTask();
+        }
+
+        function toggleFreezePractice() {
+            practiceState.frozen = !practiceState.frozen;
+            renderTask();
+        }
+
+        function selectCol(colIdx) {
+            practiceState.selectedCol = colIdx;
+            practiceState.selectedCell = null;
+            renderTask();
+        }
+
+        function selectCell(rIdx, cIdx) {
+            practiceState.selectedCell = { r: rIdx, c: cIdx };
+            practiceState.selectedCol = -1;
+            practiceState.selectedRange = null;
+            renderTask();
+        }
+
+        function toggleTip() {
+            const tipBox = document.getElementById('task-tip-box');
+            if (tipBox) {
+                tipBox.classList.toggle('show');
+            }
+        }
+
+        function toggleTaskRequirement() {
+            practiceState.taskCollapsed = !practiceState.taskCollapsed;
+            renderTask();
+        }
+
+        function renderTask() {
+            const area = document.getElementById('practice-area');
+            const t = currentTask;
+            const header = t.table.header;
+
+            // 1. Calculate Grid Column Widths
+            const colWidths = ['50px'];
+            for (let i = 0; i < header.length; i++) colWidths.push('120px');
+            if (t.uiType === 'column') colWidths.push('150px');
+
+            // 2. Render Headers
+            const colHeaders = [];
+            // Corner
+            colHeaders.push(`<div class="l-head" style="grid-row: 1; grid-column: 1; position: sticky; top: 0; left: 0; z-index: 1002; border-right: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1;"></div>`);
+            
+            // A-K
+            header.forEach((h, i) => {
+                const isSelected = practiceState.selectedCol === i;
+                const headerStyle = `grid-row: 1; grid-column: ${i + 2}; position: sticky; top: 0; z-index: 1000; cursor: cell;` +
+                                    (isSelected ? ' background: rgba(33, 115, 70, 0.15) !important;' : '');
+                colHeaders.push(`<div class="l-head letter ${isSelected ? 'l-sel' : ''}" style="${headerStyle}" onclick="selectCol(${i})">${colLetter(i)}<br>${h}</div>`);
+            });
+
+            // Column mode extra header
+            if (t.uiType === 'column') {
+                colHeaders.push(`<div class="l-head letter" style="grid-row: 1; grid-column: ${header.length + 2}; position: sticky; top: 0; z-index: 1000;">${colLetter(header.length)}<br>${t.answerHeader}</div>`);
+            }
+
+            // 3. Render Rows
+            const gridCells = [];
+            const rows = practiceState.displayRows;
+
+            rows.forEach((row, i) => {
+                const excelRowNumber = i + 2; // skip header (row 1)
+                const isRow2Frozen = practiceState.frozen && i === 0;
+
+                // Row Header
+                const rowHeaderStyle = `grid-row: ${i + 2}; grid-column: 1; position: sticky; left: 0; z-index: 900;` +
+                                       (isRow2Frozen ? ' position: sticky; top: 32px; z-index: 1001; background: #f4faf6; border-bottom: 2px solid #217346;' : '');
+                gridCells.push(`<div class="l-head r-${excelRowNumber} ${isRow2Frozen ? 'frozen' : ''}" style="${rowHeaderStyle}">${excelRowNumber}</div>`);
+
+                // Data Cells
+                row.forEach((v, c) => {
+                    const isSelectedCell = practiceState.selectedCell && practiceState.selectedCell.r === i && practiceState.selectedCell.c === c;
+                    const isSelected = practiceState.selectedCol === c;
+                    const isTarget = (t.uiType === 'single' && t.targetCell && t.targetCell.r === i && t.targetCell.c === c);
+                    
+                    let inRange = false;
+                    let shadows = [];
+                    if (practiceState.selectedRange) {
+                        const minR = practiceState.selectedRange.minRow;
+                        const maxR = practiceState.selectedRange.maxRow;
+                        const minC = practiceState.selectedRange.minCol;
+                        const maxC = practiceState.selectedRange.maxCol;
+                        
+                        if (i >= minR && i <= maxR && c >= minC && c <= maxC) {
+                            inRange = true;
+                            if (i === minR) shadows.push('inset 0 2px 0 0 #217346');
+                            if (i === maxR) shadows.push('inset 0 -2px 0 0 #217346');
+                            if (c === minC) shadows.push('inset 2px 0 0 0 #217346');
+                            if (c === maxC) shadows.push('inset -2px 0 0 0 #217346');
+                        }
+                    } else if (isSelectedCell) {
+                        shadows.push('inset 0 2px 0 0 #217346', 'inset 0 -2px 0 0 #217346', 'inset 2px 0 0 0 #217346', 'inset -2px 0 0 0 #217346');
+                    }
+                    
+                    const cellClass = `cell r-${excelRowNumber} ${isSelectedCell ? 'selected' : ''} ${inRange ? 'range-selected' : ''} ${isSelected ? 'l-sel' : ''} ${isTarget ? 'task-target-cell' : ''}`;
+                    let cellStyle = `grid-row: ${i + 2}; grid-column: ${c + 2}; text-align: ${isNaN(v) ? 'left' : 'right'};` +
+                                      (isRow2Frozen ? ' position: sticky !important; top: 32px !important; z-index: 1000; background: #f4faf6 !important; border-bottom: 2px solid #217346 !important;' : '');
+                    if (shadows.length > 0) {
+                        cellStyle += ` box-shadow: ${shadows.join(', ')} !important; z-index: 5;`;
+                    }
+                    
+                    gridCells.push(`<div class="${cellClass}" style="${cellStyle}" data-row="${i}" data-col="${c}" onmousedown="onCellMouseDown(event, ${i}, ${c})" onmouseover="onCellMouseOver(event, ${i}, ${c})">${v}</div>`);
+                });
+
+                // Answer Column Input Cell
+                if (t.uiType === 'column') {
+                    const isSelectedCell = practiceState.selectedCell && practiceState.selectedCell.r === i && practiceState.selectedCell.c === (header.length);
+                    let cellStyle = `grid-row: ${i + 2}; grid-column: ${header.length + 2}; padding: 0;` +
+                                      (isRow2Frozen ? ' position: sticky !important; top: 32px !important; z-index: 1000; background: #f4faf6 !important; border-bottom: 2px solid #217346 !important;' : '');
+                    let shadows = [];
+                    if (isSelectedCell) {
+                        shadows.push('inset 0 2px 0 0 #217346', 'inset 0 -2px 0 0 #217346', 'inset 2px 0 0 0 #217346', 'inset -2px 0 0 0 #217346');
+                        cellStyle += ` box-shadow: ${shadows.join(', ')} !important; z-index: 5;`;
+                    }
+                    
+                    const val = (practiceState.inputValues && practiceState.inputValues[i] !== undefined) ? practiceState.inputValues[i] : '';
+                    
+                    gridCells.push(`
+                        <div class="cell r-${excelRowNumber} answer-col ${isSelectedCell ? 'selected-cell' : ''}" style="${cellStyle}" data-row="${i}" data-col="${header.length}" onmouseover="onAnswerCellMouseOver(event, ${i})">
+                            <input type="text" class="grid-cell-input" id="ans-${i}" placeholder="輸入公式或數值" value="${escapeHtmlAttr(val)}" onfocus="onInputFocus(event, ${i})" onblur="onInputBlur(event)" oninput="onInputChange(event, ${i})" onkeydown="onInputKeyDown(event, ${i})">
+                            ${isSelectedCell ? `<div class="fill-handle" onmousedown="onFillHandleMouseDown(event, ${i})"></div>` : ''}
+                        </div>
+                    `);
+                }
+            });
+
+            // Single mode bottom input row
+            if (t.uiType === 'single') {
+                const bottomRowNumber = rows.length + 2;
+                gridCells.push(`<div class="l-head r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: 1; position: sticky; left: 0; z-index: 900;">${bottomRowNumber}</div>`);
+                gridCells.push(`<div class="cell r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: 2; font-weight: bold; background: #f3f2f1; text-align: right;">${t.answerLabel}:</div>`);
+                
+                const val = (practiceState.singleInputValue !== undefined) ? practiceState.singleInputValue : '';
+                
+                gridCells.push(`
+                    <div class="cell r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: 3 / span 7; padding: 0;">
+                        <input type="text" id="single-answer" class="grid-cell-input" style="text-align: left; padding: 0 10px;" placeholder="輸入公式（例如 =SUM(E2:E${rows.length + 1})）或直接輸入數值" value="${escapeHtmlAttr(val)}" onfocus="onInputFocus(event, ${rows.length})" onblur="onInputBlur(event)" oninput="onInputChange(event, 'single')" onkeydown="onInputKeyDown(event, ${rows.length})">
+                    </div>
+                `);
+            }
+
+            // Assemble scroll warning if table is very wide (8 or more columns)
+            let scrollTip = "";
+            if (t.uiType === 'column' && header.length >= 8) {
+                scrollTip = `<div style="color: #b37400; font-size: 0.8rem; font-weight: bold; margin-left: auto; margin-right: 15px; display: inline-flex; align-items: center; gap: 4px;">↔️ 提示：表格較寬，請向右滑動尋找「${t.answerHeader}」欄位</div>`;
+            }
+
+            const isCollapsed = practiceState.taskCollapsed;
+            const reqHtml = isCollapsed 
+                ? `🔍 任務目標 (展開)` 
+                : `🎯 <b>任務目標：</b>${t.requirement}`;
+            
+            // Get cached feedback
+            const fb = practiceState.feedback;
+            const fbClass = fb.ok === null ? '' : (fb.ok ? 'ok' : 'fail');
+            const fbText = fb.msg || '';
+
+            // Assemble everything
+            area.innerHTML = `
+                <div id="excel-container">
+                    <div id="ribbon">
+                        <div class="ribbon-tabs">
+                            <div class="tab ${practiceState.activeRibbonTab === 'start' ? 'active' : ''}" id="p-tab-start" onclick="switchPracticeTab('start')">常用</div>
+                            <div class="tab ${practiceState.activeRibbonTab === 'insert' ? 'active' : ''}" id="p-tab-insert" onclick="switchPracticeTab('insert')">插入</div>
+                            <div class="tab ${practiceState.activeRibbonTab === 'data' ? 'active' : ''}" id="p-tab-data" onclick="switchPracticeTab('data')">資料</div>
+                            <div class="tab ${practiceState.activeRibbonTab === 'view' ? 'active' : ''}" id="p-tab-view" onclick="switchPracticeTab('view')">檢視</div>
+                        </div>
+                        <div class="ribbon-buttons" id="practice-ribbon-btns">
+                            <!-- Dynamically populated -->
+                        </div>
+
+                        <!-- Ribbon Integrated Task Section on the right -->
+                        <div class="ribbon-task-section ${isCollapsed ? 'collapsed' : ''}" id="ribbon-task-section">
+                            <div class="ribbon-task-requirement ${isCollapsed ? 'collapsed' : ''}" onclick="toggleTaskRequirement()" title="${isCollapsed ? '點擊展開任務說明' : '點擊收合任務說明'}">
+                                ${reqHtml}
+                            </div>
+                            <div class="ribbon-task-actions">
+                                <div id="task-feedback-container" class="task-feedback ${fbClass}">${fbText}</div>
+                                <div class="ribbon-task-actions-row">
+                                    <button class="practice-btn mini ok" onclick="checkAnswer()">檢查答案</button>
+                                    <button class="practice-btn mini secondary" onclick="toggleTip()">提示</button>
+                                    <button class="practice-btn mini secondary" onclick="drawNewTask()">換一題</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="task-tip-box" id="task-tip-box">
+                        <strong>💡 ${t.skillName} 提示：</strong>${t.tip}
+                    </div>
+
+                    <div class="wrapper" id="practice-wrapper">
+                        <div class="grid" id="practice-grid" style="grid-template-columns: ${colWidths.join(' ')}; grid-template-rows: repeat(${rows.length + (t.uiType === 'single' ? 2 : 1)}, 32px);">
+                            ${colHeaders.join('')}
+                            ${gridCells.join('')}
+                        </div>
+                    </div>
+                    <div id="sheet-bar">
+                        <div class="sheet active">🛡️ 練習工作表</div>
+                        <div id="add-sheet" style="opacity: 0.4; cursor: not-allowed;">+</div>
+                        ${scrollTip}
+                    </div>
+                </div>
+            `;
+
+            renderPracticeRibbon();
+        }
+
+        function checkAnswer() {
+            const t = currentTask;
+            const PE = window.PracticeEngine;
+            let isCorrect = false;
+
+            const isFormulaSkill = !['SORT_SIMPLE', 'F'].includes(t.skillId);
+
+            if (t.uiType === 'single') {
+                const input = document.getElementById('single-answer');
+                const raw = input ? input.value.trim() : '';
+                
+                if (isFormulaSkill) {
+                    if (!raw.startsWith('=')) {
+                        showFeedbackMessage(false, '❌ 請使用等號 = 開頭的公式進行計算，不要直接輸入數值！');
+                        if (input) {
+                            input.classList.remove('ok');
+                            input.classList.add('fail');
+                        }
+                        return;
+                    }
+                }
+
+                const result = PE.evaluateFormula(raw, t.table);
+                isCorrect = PE.answersMatch(result, t.correctAnswer);
+                if (input) {
+                    input.classList.toggle('ok', isCorrect);
+                    input.classList.toggle('fail', !isCorrect);
+                }
+            } else if (t.uiType === 'column') {
+                let allOk = true;
+                let anyNonFormula = false;
+                let anyNoAbsolute = false;
+
+                t.table.rows.forEach((row, i) => {
+                    const input = document.getElementById('ans-' + i);
+                    const raw = input ? input.value.trim() : '';
+
+                    if (isFormulaSkill) {
+                        if (!raw.startsWith('=')) {
+                            anyNonFormula = true;
+                        }
+                        if (t.skillId === 'REF_ABSOLUTE' && (!raw.includes('$') || !raw.toUpperCase().includes('K'))) {
+                            anyNoAbsolute = true;
+                        }
+                        if (t.skillId === 'FUNC_RANK' && !raw.includes('$')) {
+                            anyNoAbsolute = true;
+                        }
+                    }
+
+                    const result = PE.evaluateFormula(raw, t.table);
+                    const ok = PE.answersMatch(result, t.correctAnswer[i]);
+                    if (input) {
+                        input.classList.toggle('ok', ok);
+                        input.classList.toggle('fail', !ok);
+                    }
+                    if (!ok) allOk = false;
+                });
+
+                if (anyNonFormula) {
+                    showFeedbackMessage(false, '❌ 請使用等號 = 開頭的公式進行計算，不要直接輸入數值！');
+                    return;
+                }
+                if (anyNoAbsolute) {
+                    if (t.skillId === 'REF_ABSOLUTE') {
+                        showFeedbackMessage(false, '❌ 鎖定倍率錯誤：請使用絕對引用（如 $K$2）鎖定倍率儲存格！');
+                    } else if (t.skillId === 'FUNC_RANK') {
+                        showFeedbackMessage(false, '❌ 鎖定範圍錯誤：RANK 的比對範圍參數必須使用絕對引用（如 $E$2:$E$10）鎖定！');
+                    }
+                    return;
+                }
+
+                isCorrect = allOk;
+            } else if (t.uiType === 'sort') {
+                const correctOrder = t.table.rows.slice().sort((a, b) =>
+                    t.sortDir === 'desc' ? b[t.sortCol] - a[t.sortCol] : a[t.sortCol] - b[t.sortCol]);
+                isCorrect = practiceState.displayRows.every((row, i) => row[0] === correctOrder[i][0]);
+            } else if (t.uiType === 'toggle') {
+                isCorrect = (practiceState.frozen === true);
+            }
+
+            showFeedback(isCorrect);
+        }
+
+        function showFeedback(ok) {
+            showFeedbackMessage(ok, ok ? '✅ 正確！這招你學會了。' : '❌ 還不太對，再試一次，或點開上面的提示看看？');
+        }
+
+        function showFeedbackMessage(ok, msg) {
+            practiceState.feedback = { ok: ok, msg: msg };
+            const el = document.getElementById('task-feedback-container');
+            if (el) {
+                el.className = 'task-feedback ' + (ok ? 'ok' : 'fail');
+                el.innerText = msg;
+            }
+        }
+
+        // ========================================================
+        // 互動邏輯：多選、公式拖拽填滿、單擊帶入公式與 F4 絕對引用
+        // ========================================================
+        
+        function escapeHtmlAttr(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;')
+                              .replace(/"/g, '&quot;')
+                              .replace(/'/g, '&#39;')
+                              .replace(/</g, '&lt;')
+                              .replace(/>/g, '&gt;');
+        }
+
+        function adjustInputWidth(input) {
+            if (document.activeElement !== input) return;
+            const parentWidth = input.parentElement ? input.parentElement.clientWidth : 150;
+            const charCount = input.value.length;
+            const estimatedWidth = Math.max(parentWidth, charCount * 7.5 + 24);
+            input.style.width = estimatedWidth + 'px';
+        }
+
+        function onInputChange(e, idx) {
+            if (idx === 'single') {
+                practiceState.singleInputValue = e.target.value;
+            } else {
+                if (!practiceState.inputValues) practiceState.inputValues = {};
+                practiceState.inputValues[idx] = e.target.value;
+            }
+            adjustInputWidth(e.target);
+        }
+
+        function updateActiveInputValue(val) {
+            if (!practiceState.activeInput) return;
+            const input = practiceState.activeInput;
+            if (input.id === 'single-answer') {
+                practiceState.singleInputValue = val;
+            } else if (input.id.startsWith('ans-')) {
+                const idx = parseInt(input.id.replace('ans-', ''), 10);
+                if (!isNaN(idx)) {
+                    if (!practiceState.inputValues) practiceState.inputValues = {};
+                    practiceState.inputValues[idx] = val;
+                }
+            }
+            adjustInputWidth(input);
+        }
+
+        function onInputFocus(e, rIdx) {
+            const input = e.target;
+            practiceState.activeInput = input;
+            
+            // 設定當前選擇為該輸入框對應的儲存格
+            const colIdx = currentTask.uiType === 'column' ? currentTask.table.header.length : 2;
+            practiceState.selectedCell = { r: rIdx, c: colIdx };
+            practiceState.selectedCol = -1;
+            practiceState.selectedRange = null;
+            
+            // 移除可能存在的自動填滿拉柄
+            document.querySelectorAll('.fill-handle').forEach(fh => fh.remove());
+            
+            // 更新視覺框線
+            updateRangeHighlight();
+            
+            // 如果是 column 模式且是 ans- 輸入框，在其父層 cell 加入拉柄
+            if (currentTask.uiType === 'column' && input.id.startsWith('ans-')) {
+                const parentCell = input.parentElement;
+                const fillHandle = document.createElement('div');
+                fillHandle.className = 'fill-handle';
+                fillHandle.onmousedown = (event) => onFillHandleMouseDown(event, rIdx);
+                parentCell.appendChild(fillHandle);
+            }
+
+            // 讓輸入框在輸入長公式時可以向右伸展覆蓋鄰近儲存格
+            const parent = input.parentElement;
+            if (parent) {
+                parent.style.overflow = 'visible';
+                parent.style.zIndex = '100';
+            }
+            input.style.position = 'absolute';
+            input.style.left = '0';
+            input.style.top = '0';
+            input.style.zIndex = '100';
+            input.style.height = '100%';
+            input.style.textAlign = 'left';
+            input.style.background = '#fff';
+            input.style.boxShadow = 'inset 0 0 0 2px #217346, 0 4px 12px rgba(0,0,0,0.12)';
+            adjustInputWidth(input);
+        }
+
+        function onInputBlur(e) {
+            const input = e.target;
+            const parent = input.parentElement;
+            if (parent) {
+                parent.style.overflow = '';
+                parent.style.zIndex = '';
+            }
+            input.style.position = '';
+            input.style.left = '';
+            input.style.top = '';
+            input.style.zIndex = '';
+            input.style.height = '';
+            input.style.width = '';
+            input.style.textAlign = '';
+            input.style.background = '';
+            input.style.boxShadow = '';
+        }
+
+        function onCellMouseDown(e, rIdx, cIdx) {
+            if (e.button !== 0) return; // 僅限滑鼠左鍵
+            
+            // 如果目前有正在輸入公式（以 = 開頭）的輸入框，則點擊格子會自動引用該格子
+            if (practiceState.activeInput && practiceState.activeInput.value.startsWith('=')) {
+                e.preventDefault(); // 阻止焦點轉移
+                const input = practiceState.activeInput;
+                
+                practiceState.isDraggingFormulaRange = true;
+                practiceState.dragStartCell = { r: rIdx, c: cIdx };
+                
+                const text = input.value;
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
+                
+                let baseText = text.substring(0, start);
+                const endText = text.substring(end);
+                
+                // 若游標前方字元非運算子且是英文字母/數字，則預設加上 "+"
+                let prefix = "";
+                if (baseText.length > 0) {
+                    const lastChar = baseText.charAt(baseText.length - 1);
+                    if (!['+', '-', '*', '/', '(', ',', '=', ':', ' '].includes(lastChar) && /^[a-zA-Z0-9]$/.test(lastChar)) {
+                        prefix = "+";
+                    }
+                }
+                practiceState.formulaDragBaseText = baseText + prefix;
+                practiceState.formulaDragEndText = endText;
+                
+                const targetAddr = colLetter(cIdx) + (rIdx + 2);
+                input.value = practiceState.formulaDragBaseText + targetAddr + practiceState.formulaDragEndText;
+                
+                const cursorIdx = practiceState.formulaDragBaseText.length + targetAddr.length;
+                input.setSelectionRange(cursorIdx, cursorIdx);
+                
+                updateActiveInputValue(input.value);
+                
+                // 設定選取範圍高亮
+                practiceState.selectedRange = { minRow: rIdx, maxRow: rIdx, minCol: cIdx, maxCol: cIdx };
+                updateRangeHighlight();
+            } else {
+                // 一般框選拖曳
+                practiceState.isDraggingRange = true;
+                practiceState.dragStartCell = { r: rIdx, c: cIdx };
+                practiceState.selectedCell = { r: rIdx, c: cIdx };
+                practiceState.selectedCol = -1;
+                practiceState.selectedRange = { minRow: rIdx, maxRow: rIdx, minCol: cIdx, maxCol: cIdx };
+                updateRangeHighlight();
+            }
+        }
+
+        function onCellMouseOver(e, rIdx, cIdx) {
+            if (practiceState.isDraggingFormulaRange) {
+                const input = practiceState.activeInput;
+                if (!input) return;
+                
+                const minR = Math.min(practiceState.dragStartCell.r, rIdx);
+                const maxR = Math.max(practiceState.dragStartCell.r, rIdx);
+                const minC = Math.min(practiceState.dragStartCell.c, cIdx);
+                const maxC = Math.max(practiceState.dragStartCell.c, cIdx);
+                
+                let rangeStr = "";
+                if (minR === maxR && minC === maxC) {
+                    rangeStr = colLetter(minC) + (minR + 2);
+                } else {
+                    rangeStr = colLetter(minC) + (minR + 2) + ":" + colLetter(maxC) + (maxR + 2);
+                }
+                
+                input.value = practiceState.formulaDragBaseText + rangeStr + practiceState.formulaDragEndText;
+                const cursorIdx = practiceState.formulaDragBaseText.length + rangeStr.length;
+                input.setSelectionRange(cursorIdx, cursorIdx);
+                
+                updateActiveInputValue(input.value);
+                
+                practiceState.selectedRange = { minRow: minR, maxRow: maxR, minCol: minC, maxCol: maxC };
+                updateRangeHighlight();
+            } else if (practiceState.isDraggingRange) {
+                const minR = Math.min(practiceState.dragStartCell.r, rIdx);
+                const maxR = Math.max(practiceState.dragStartCell.r, rIdx);
+                const minC = Math.min(practiceState.dragStartCell.c, cIdx);
+                const maxC = Math.max(practiceState.dragStartCell.c, cIdx);
+                
+                practiceState.selectedRange = { minRow: minR, maxRow: maxR, minCol: minC, maxCol: maxC };
+                updateRangeHighlight();
+            }
+        }
+
+        function updateRangeHighlight() {
+            const selCell = practiceState.selectedCell;
+            const selRange = practiceState.selectedRange;
+            
+            document.querySelectorAll('#practice-grid .cell').forEach(cell => {
+                if (cell.classList.contains('l-head') || cell.classList.contains('letter')) return;
+                
+                const r = parseInt(cell.getAttribute('data-row'), 10);
+                const c = parseInt(cell.getAttribute('data-col'), 10);
+                if (isNaN(r) || isNaN(c)) return;
+                
+                let inRange = false;
+                let shadows = [];
+                
+                if (selRange) {
+                    const minR = selRange.minRow;
+                    const maxR = selRange.maxRow;
+                    const minC = selRange.minCol;
+                    const maxC = selRange.maxCol;
+                    
+                    if (r >= minR && r <= maxR && c >= minC && c <= maxC) {
+                        inRange = true;
+                        if (r === minR) shadows.push('inset 0 2px 0 0 #217346');
+                        if (r === maxR) shadows.push('inset 0 -2px 0 0 #217346');
+                        if (c === minC) shadows.push('inset 2px 0 0 0 #217346');
+                        if (c === maxC) shadows.push('inset -2px 0 0 0 #217346');
+                    }
+                } else if (selCell && selCell.r === r && selCell.c === c) {
+                    shadows.push('inset 0 2px 0 0 #217346', 'inset 0 -2px 0 0 #217346', 'inset 2px 0 0 0 #217346', 'inset -2px 0 0 0 #217346');
+                }
+                
+                cell.classList.toggle('range-selected', inRange);
+                cell.classList.toggle('selected', selCell && selCell.r === r && selCell.c === c);
+                
+                if (shadows.length > 0) {
+                    const isRow2Frozen = practiceState.frozen && r === 0;
+                    let extraShadow = "";
+                    if (isRow2Frozen) {
+                        extraShadow = ", inset 0 -2px 0 0 #217346";
+                    }
+                    cell.style.setProperty('box-shadow', shadows.join(', ') + extraShadow, 'important');
+                    cell.style.zIndex = '5';
+                } else {
+                    const isRow2Frozen = practiceState.frozen && r === 0;
+                    if (isRow2Frozen) {
+                        cell.style.setProperty('box-shadow', 'inset 0 -2px 0 0 #217346', 'important');
+                    } else {
+                        cell.style.boxShadow = '';
+                    }
+                    cell.style.zIndex = '';
+                }
+            });
+        }
+
+        // F4 絕對/相對參照切換
+        function onInputKeyDown(e, rIdx) {
+            if (e.key === 'F4') {
+                e.preventDefault();
+                const input = e.target;
+                const text = input.value;
+                const offset = input.selectionStart;
+                const regex = /\$?[A-Za-z]+\$?\d+/g;
+                let match;
+                let targetMatch = null;
+                while ((match = regex.exec(text)) !== null) {
+                    const start = match.index;
+                    const end = match.index + match[0].length;
+                    if (offset >= start && offset <= end) {
+                        targetMatch = match;
+                        break;
+                    }
+                }
+                if (targetMatch) {
+                    const ref = targetMatch[0];
+                    const start = targetMatch.index;
+                    const end = start + ref.length;
+                    const colMatch = ref.match(/\$?([A-Za-z]+)/);
+                    const rowMatch = ref.match(/\$?(\d+)/);
+                    const isColAbs = colMatch[0].startsWith('$');
+                    const isRowAbs = rowMatch[0].startsWith('$');
+                    const col = colMatch[1].toUpperCase();
+                    const row = rowMatch[1];
+
+                    let nextRef = ref;
+                    if (!isColAbs && !isRowAbs) nextRef = `$${col}$${row}`;
+                    else if (isColAbs && isRowAbs) nextRef = `${col}$${row}`;
+                    else if (!isColAbs && isRowAbs) nextRef = `$${col}${row}`;
+                    else nextRef = `${col}${row}`;
+
+                    const newText = text.substring(0, start) + nextRef + text.substring(end);
+                    input.value = newText;
+                    
+                    const diff = nextRef.length - ref.length;
+                    input.setSelectionRange(offset + diff, offset + diff);
+                    
+                    updateActiveInputValue(newText);
+                }
+            }
+        }
+
+        // 自動填滿拖曳 (Autofill Handle)
+        function onFillHandleMouseDown(e, rIdx) {
+            e.preventDefault();
+            e.stopPropagation();
+            practiceState.isDraggingFill = true;
+            practiceState.dragSourceIdx = rIdx;
+            practiceState.dragCurrentRowIdx = rIdx;
+            updateFillDragHighlight();
+        }
+
+        function onAnswerCellMouseOver(e, rIdx) {
+            if (practiceState.isDraggingFill) {
+                practiceState.dragCurrentRowIdx = rIdx;
+                updateFillDragHighlight();
+            }
+        }
+
+        function updateFillDragHighlight() {
+            const start = practiceState.dragSourceIdx;
+            const end = practiceState.dragCurrentRowIdx;
+            if (start === undefined || end === undefined) return;
+            const min = Math.min(start, end);
+            const max = Math.max(start, end);
+            
+            document.querySelectorAll('.cell.answer-col').forEach((c, idx) => {
+                c.classList.remove('fill-drag-target');
+                if (practiceState.isDraggingFill && idx >= min && idx <= max) {
+                    c.classList.add('fill-drag-target');
+                }
+            });
+        }
+
+        function adjustFormulaForAutofill(formula, sourceRowIdx, targetRowIdx) {
+            if (!formula.startsWith('=')) return formula; // 非公式原樣複製
+            const delta = targetRowIdx - sourceRowIdx;
+            
+            return formula.replace(/(\$?[A-Za-z]+)(\$?(\d+))/g, (match, colPart, rowPart, rowNumStr) => {
+                if (rowPart.startsWith('$')) {
+                    return colPart + rowPart; // 鎖定行號，不改變
+                } else {
+                    const rowNum = parseInt(rowNumStr, 10);
+                    const newRowNum = rowNum + delta;
+                    return colPart + Math.max(1, newRowNum); // 調整相對參照的行號
+                }
+            });
+        }
+
+        function onWindowMouseUp(e) {
+            if (practiceState.isDraggingFill) {
+                practiceState.isDraggingFill = false;
+                const start = practiceState.dragSourceIdx;
+                const end = practiceState.dragCurrentRowIdx;
+                
+                if (start !== undefined && end !== undefined && start !== end) {
+                    const min = Math.min(start, end);
+                    const max = Math.max(start, end);
+                    const sourceVal = (practiceState.inputValues && practiceState.inputValues[start] !== undefined)
+                        ? practiceState.inputValues[start]
+                        : '';
+                        
+                    if (sourceVal) {
+                        for (let i = min; i <= max; i++) {
+                            if (i === start) continue;
+                            const adjusted = adjustFormulaForAutofill(sourceVal, start, i);
+                            if (!practiceState.inputValues) practiceState.inputValues = {};
+                            practiceState.inputValues[i] = adjusted;
+                        }
+                    }
+                }
+                
+                document.querySelectorAll('.cell.answer-col').forEach(c => {
+                    c.classList.remove('fill-drag-target');
+                });
+                
+                renderTask();
+            }
+            
+            if (practiceState.isDraggingRange || practiceState.isDraggingFormulaRange) {
+                practiceState.isDraggingRange = false;
+                practiceState.isDraggingFormulaRange = false;
+            }
+        }
+
+        window.addEventListener('mouseup', onWindowMouseUp);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStoryCards();
+        });
+    </script>
+</body>
+</html>
