@@ -85,6 +85,21 @@ UIManager.prototype.openSaveLoadMenu = function(mode) {
     }));
 };
 
+/**
+ * [新增]: 番外篇與小型試煉入口（僅在完成第 8.5 章後解鎖，不需另外存檔）
+ */
+UIManager.prototype.goToExtras = function() {
+    // [Fix 2026-06-21] 改用獨立旗標 magic_excel_v2_extras_unlocked 判斷，
+    // 不再只看目前存檔的 currentChapter —— 否則 Ch8.5「無所謂了」結局
+    // 清空 localStorage 後，玩家先前已解鎖的番外篇就會被誤判成尚未解鎖。
+    const unlocked = localStorage.getItem('magic_excel_v2_extras_unlocked') === 'true';
+    if (unlocked) {
+        window.location.href = 'extras.html';
+    } else {
+        this.showMagicToast('完成第 8.5 章後即可開啟番外篇與小型試煉！', 'error');
+    }
+};
+
 UIManager.prototype.closeSaveLoadMenu = function() {
     const overlay = document.getElementById('save-load-overlay');
     if(!overlay) return;

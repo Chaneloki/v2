@@ -411,7 +411,10 @@ UIManager.prototype.updateVisuals = function(line) {
             }
             this._charImgEls.forEach(img => {
                 img.classList.remove('char-active');
-                img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake', 'char-rpg-idle', 'char-float', 'char-falling');
+                img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake', 'char-rpg-idle');
+                // [修正]: char-float/char-falling 屬於「持續性」動畫，不在這裡無條件清除，
+                // 改由下方依「是否仍是本行目標角色 + 是否仍是同一個動畫」決定是否保留，
+                // 避免每一行都重新觸發 rAF 重綁導致動畫從頭重播（飄浮感不連續）。
             });
 
             // [關鍵點]: 記錄並更新目前是否為 CG 模式
@@ -421,6 +424,10 @@ UIManager.prototype.updateVisuals = function(line) {
 
             if ((!this.isCurrentCG || line.keepChar) && line.a !== 'system') {
                 const targetImg = document.getElementById(charMap[line.a]);
+                // 非本行目標角色的立繪一律清掉持續性動畫，避免殘留飄浮效果
+                this._charImgEls.forEach(img => {
+                    if (img !== targetImg) img.classList.remove('char-float', 'char-falling');
+                });
                 if (targetImg) {
                     const correctSrc = charAssets[line.a];
                     if (correctSrc && !targetImg.src.includes(correctSrc)) targetImg.src = correctSrc;
@@ -434,23 +441,36 @@ UIManager.prototype.updateVisuals = function(line) {
                     }
                     
                     targetImg.classList.remove('char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake');
+                    // [修正]: char-float/char-falling 是持續性動畫，若本行仍要求同一個動畫
+                    // 且目前已在播放，就不重新套用 class，避免動畫被打斷重播（飄浮感不連續）。
+                    const _continuousAnimClass = ['char-float', 'char-falling'];
                     if (line.charAnim) {
-                        // Q3 rAF 雙幀取代 void offsetWidth
                         const _anim = line.charAnim;
-                        requestAnimationFrame(() => requestAnimationFrame(() => targetImg.classList.add(`char-${_anim}`)));
+                        const _animClass = `char-${_anim}`;
+                        const _isContinuous = _continuousAnimClass.includes(_animClass);
+                        if (!(_isContinuous && targetImg.classList.contains(_animClass))) {
+                            targetImg.classList.remove('char-float', 'char-falling');
+                            // Q3 rAF 雙幀取代 void offsetWidth
+                            requestAnimationFrame(() => requestAnimationFrame(() => targetImg.classList.add(_animClass)));
+                        }
+                    } else {
+                        targetImg.classList.remove('char-float', 'char-falling');
                     }
 
                     // [修正]: 僅在第一章 (Ch1) 賽爾首次登場時播放音效
                     if (line.a === 'fairy' && !this.fairyAppeared) {
                         targetImg.classList.add('fairy-appear');
                         this.fairyAppeared = true;
-                        
+
                         const state = window.orchestrator.state;
                         if (state.currentChapter.toString() === "10") {
                             this.playSFX('wow.mp3');
                         }
                     }
                 }
+            } else {
+                // 本行未保留任何立繪 (CG 全屏模式或系統旁白)，持續性動畫一律清除
+                this._charImgEls.forEach(img => img.classList.remove('char-float', 'char-falling'));
             }
 
             if (line.bg) {

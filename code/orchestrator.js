@@ -117,9 +117,16 @@ class Orchestrator {
 
     async init() {
         console.log("Orchestrator: Initializing...");
+
+        // [Fix 2026-06-21] 番外篇解鎖旗標 magic_excel_v2_extras_unlocked 與一般存檔
+        // 一樣存在 localStorage 裡，因此 Ch8.5「無所謂了」結局的 localStorage.clear()
+        // 會把它一併清掉——這是刻意保留的行為：選擇「無所謂了」代表玩家放棄了這條
+        // 故事線，番外篇與小型試煉應該跟著鎖回去，即便先前已經解鎖過也一樣。
+        // 不要在這裡把旗標補回來。
+
         // 1. 初始化渲染器 (關鍵修正：否則表格不顯示)
         if (window.gridRenderer) window.gridRenderer.init();
-        
+
         // 2. 預設載入目前章節
         await this.loadChapter(this.state.currentChapter);
         
@@ -201,7 +208,12 @@ class Orchestrator {
         }
 
         this.state.activeChapterModule = chapterModule;
-        
+
+        // [新增] 玩家抵達 Ch8.5 即永久解鎖番外篇入口旗標（與主存檔分開存放）
+        if (chapterId && chapterId.toString() === '85') {
+            localStorage.setItem('magic_excel_v2_extras_unlocked', 'true');
+        }
+
         // 只有在非「載入存檔」的情況下才重置所有數據
         if (!this._isLoadingFromSave) {
             this.state.resetChapterData();
@@ -681,31 +693,49 @@ class Orchestrator {
 
 
     handleGameComplete() {
-        const overlay = document.getElementById('notice-overlay');
-        const title = document.getElementById('notice-title');
-        const content = document.getElementById('notice-content');
-        const btn = document.getElementById('notice-btn');
-        
-        if (overlay && title && content && btn) {
-            title.innerText = "🎉 恭喜！冒險暫告一段落";
-            content.innerHTML = `
-                <div style="text-align:center; padding:20px;">
-                    <p style="font-size:18px;">您已完成了目前開放的所有章節！</p>
-                    <p>您的數據禁術已經達到了巔峰等級。</p>
-                    <p style="color:#217346; font-weight:bold; margin-top:10px;">總獲取金幣：${this.state.coins} G</p>
-                    <hr style="border:1px dashed #d2b48c; margin:20px 0;">
-                    <p style="font-size:12px; color:#666;">（敬請期待後續更多精彩章節）</p>
-                </div>
-            `;
-            btn.innerText = "✨ 回到起點重新挑戰";
-            btn.onclick = () => {
-                localStorage.removeItem('magic_excel_v2_save');
-                window.location.reload();
-            };
-            overlay.style.display = 'flex';
-        } else {
-            alert("恭喜！您已完成目前所有的魔法試煉！");
+        // [Fix 2026-06-21] 原本依賴的 #notice-overlay/#notice-title/#notice-content/#notice-btn
+        // 在 game.html 中根本不存在，導致一定會落入 else 分支跳出原生 alert()，
+        // 玩家因此完全沒看到「前往番外篇與小型試煉」的入口。改為自行動態建立彈窗 DOM。
+        let overlay = document.getElementById('game-complete-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'game-complete-overlay';
+            overlay.style.cssText =
+                'display:none;position:fixed;inset:0;z-index:30000;' +
+                'background:rgba(0,0,0,0.75);align-items:center;justify-content:center;';
+            overlay.innerHTML =
+                '<div style="background:linear-gradient(145deg,#1a0f0a,#2a1a10);' +
+                'border:2px solid rgba(255,215,0,0.6);border-radius:14px;padding:32px 30px;' +
+                'max-width:min(440px,90vw);box-shadow:0 0 40px rgba(0,0,0,0.7);text-align:center;">' +
+                '<h2 style="color:#ffd700;margin:0 0 14px;font-size:1.3rem;">🎉 恭喜！冒險暫告一段落</h2>' +
+                '<div id="game-complete-content"></div>' +
+                '</div>';
+            document.body.appendChild(overlay);
         }
+
+        const content = document.getElementById('game-complete-content');
+        content.innerHTML = `
+            <div style="text-align:center; color:#e8d5a3;">
+                <p style="font-size:18px; margin:0 0 8px;">您已完成了目前開放的所有章節！</p>
+                <p style="margin:0 0 8px;">您的數據禁術已經達到了巔峰等級。</p>
+                <p style="color:#9be8a5; font-weight:bold; margin:10px 0;">總獲取金幣：${this.state.coins} G</p>
+                <hr style="border:1px dashed rgba(255,215,0,0.3); margin:20px 0;">
+                <button id="game-complete-extras-btn" style="width:100%; padding:12px 24px; border-radius:8px; border:1px solid rgba(255,215,0,0.6); background:rgba(255,215,0,0.18); color:#ffd700; font-weight:bold; cursor:pointer; margin-bottom:8px; font-size:0.95rem;">🌙 前往番外篇與小型試煉</button>
+                <p style="font-size:12px; color:#dfb56c; margin:0 0 12px;">下次想再回來，也可以隨時點擊系統選單（⚙️）裡的 🌙 月亮圖示進入！</p>
+                <button id="game-complete-restart-btn" style="width:100%; padding:10px 24px; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#ccc; cursor:pointer; margin-bottom:12px;">✨ 回到起點重新挑戰</button>
+                <p style="font-size:12px; color:#999;">（敬請期待後續更多精彩章節）</p>
+            </div>
+        `;
+
+        document.getElementById('game-complete-extras-btn').onclick = () => {
+            window.location.href = 'extras.html';
+        };
+        document.getElementById('game-complete-restart-btn').onclick = () => {
+            localStorage.removeItem('magic_excel_v2_save');
+            window.location.reload();
+        };
+
+        overlay.style.display = 'flex';
     }
 
     start() {

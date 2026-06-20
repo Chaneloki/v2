@@ -9,62 +9,436 @@
     <style>
         body {
             margin: 0; padding: 0;
-            background: radial-gradient(circle at center, #08e5f466 0%, #991caf5b 100%) !important;
+            background: url('BG/intro/7_bg.png') no-repeat center center fixed !important;
+            background-size: cover !important;
             min-height: 100vh;
             height: auto !important;
             overflow-y: auto !important;
             display: block !important;
             font-family: 'Inter', 'Noto Serif TC', serif;
-            color: #3c3020;
+            color: #f5f0eb;
+            position: relative;
+            zoom: 0.9;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
         }
 
+        /* 頂部返回主遊戲按鈕 */
         .return-btn {
-            position: fixed; top: 16px; right: 28px;
-            padding: 8px 20px; background: rgba(140, 98, 57, 0.1);
-            color: #8c6239; border: 1px solid rgba(140, 98, 57, 0.4); border-radius: 20px;
-            font-weight: bold; cursor: pointer; text-decoration: none;
-            transition: all 0.22s; z-index: 100; font-size: 0.85rem;
+            position: absolute; top: 24px; right: 28px;
+            padding: 8px 24px; 
+            background: linear-gradient(135deg, #a61c1c, #6b0c0c);
+            color: #ffe6aa; 
+            border: 2px solid #dcb265; 
+            border-radius: 24px;
+            font-weight: 700; cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 0 8px rgba(220,178,101,0.2);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 100; font-size: 0.9rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            font-family: 'Noto Serif TC', serif;
         }
-        .return-btn:hover { background: #8c6239; color: #fff; }
+        .return-btn:hover { 
+            background: linear-gradient(135deg, #c02525, #851212); 
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 178, 101, 0.4), inset 0 0 10px rgba(255,255,255,0.2);
+        }
+        .return-btn:active {
+            transform: translateY(0);
+        }
+        .compass-icon {
+            fill: #ffe6aa;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+            transition: transform 0.5s ease;
+        }
+        .return-btn:hover .compass-icon {
+            transform: rotate(360deg);
+            fill: #ffffff;
+        }
 
         .extras-shell {
-            max-width: 1440px; margin: 0 auto; padding: 30px 24px 80px;
+            max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px;
             box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 頂部標題列 */
+        .extras-header {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .extras-title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .header-moon-icon {
+            width: 38px;
+            height: 38px;
+            filter: drop-shadow(0 0 8px rgba(220, 178, 101, 0.6));
         }
         .extras-header h1 {
-            font-family: 'Noto Serif TC', serif; color: #8c6239; font-size: 1.6rem;
-            letter-spacing: 2px; margin: 0 0 4px 0;
+            font-family: 'Noto Serif TC', serif; 
+            color: #ffffff; 
+            font-size: 2.1rem;
+            font-weight: 900;
+            letter-spacing: 2px; 
+            margin: 0;
+            text-shadow: 0 0 12px rgb(0, 0, 0), 0 2px 4px rgba(0, 0, 0, 0.6);
         }
-        .extras-header p { color: #6e5e49; font-size: 0.85rem; margin: 0 0 24px 0; }
+        .extras-header p {
+            color: #dfb56c;
+            font-size: 1.05rem;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            font-family: 'Noto Serif TC', serif;
+        }
 
-        .extras-tabs { display: flex; gap: 10px; margin-bottom: 24px; }
-        .extras-tab {
-            padding: 10px 22px; background: rgba(255,255,255,0.6);
-            border: 1px solid rgba(192,142,64,0.3); border-radius: 10px;
-            cursor: pointer; font-weight: bold; color: #6e5e49; font-size: 0.95rem;
-            transition: all 0.2s;
+        /* 標題金色裝飾分割線 */
+        .header-divider {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 14px 0 10px;
+            gap: 12px;
+            width: 100%;
+            max-width: 480px;
         }
-        .extras-tab:hover { background: rgba(192,142,64,0.1); }
-        .extras-tab.active {
-            background: rgba(192,142,64,0.2); border-color: #8c6239; color: #8c6239;
-            box-shadow: 0 0 8px rgba(192,142,64,0.15);
+        .divider-line {
+            height: 1px;
+            background: linear-gradient(to right, #dfb56c, transparent);
+            flex: 1;
         }
-        .extras-pane { display: none; }
-        .extras-pane.active { display: block; }
+        .header-divider .divider-line:first-child {
+            background: linear-gradient(to left, #dfb56c, transparent);
+            max-width: 40px;
+        }
+        .divider-diamond {
+            width: 8px;
+            height: 8px;
+            background: #dfb56c;
+            transform: rotate(45deg);
+            box-shadow: 0 0 10px #dfb56c;
+        }
 
-        /* ---- 番外篇 ---- */
-        .story-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-        .story-card {
-            background: rgba(255,255,255,0.7); border: 1.5px solid rgba(192,142,64,0.35);
-            border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s;
+        /* 左右並排格狀版面 */
+        .extras-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 36px;
+            margin-top: 20px;
+            transition: opacity 0.3s ease;
         }
-        .story-card:hover { border-color: #8c6239; box-shadow: 0 6px 16px rgba(140,98,57,0.15); transform: translateY(-2px); }
-        .story-card h3 { margin: 0 0 6px 0; font-size: 1rem; color: #8c6239; }
-        .story-card p { margin: 0; font-size: 0.8rem; color: #6e5e49; }
-        .story-empty { text-align: center; color: #8a7a66; padding: 40px; font-size: 0.9rem; }
+        @media (max-width: 850px) {
+            .extras-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .return-btn {
+                position: static;
+                margin-bottom: 20px;
+                display: flex;
+                width: fit-content;
+            }
+        }
+
+        .column-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        /* 標題徽章 */
+        .panel-tag {
+            padding: 6px 20px;
+            font-family: 'Noto Serif TC', serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #ffe6aa;
+            border-radius: 4px 12px 0 0;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .story-tag {
+            background: linear-gradient(135deg, #a72828, #7a1616);
+            border: 1.5px solid #dcb265;
+            border-bottom: none;
+        }
+        .trial-tag {
+            background: linear-gradient(135deg, #614630, #3d2a1b);
+            border: 1.5px solid #a87e56;
+            border-bottom: none;
+        }
+
+        /* 故事卡外框線 */
+        .story-card-frame {
+            width: 100%;
+            border: 4px double #cccccc;
+            border-radius: 0 16px 16px 16px;
+            padding: 5px;
+            background: rgba(255,255,255,0.06);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        .story-card-frame:hover {
+            border-color: #dfb56c;
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(223, 181, 108, 0.25), 0 12px 36px rgba(0,0,0,0.6);
+        }
+        .story-card-inner {
+            width: 100%;
+            aspect-ratio: 1.62;
+            background-image: url('BG/intro/1_bonus.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+        .story-card-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            width: 100%;
+            padding: 24px 20px 16px;
+            box-sizing: border-box;
+        }
+        .story-card-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.55rem;
+            color: #ffffff;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            letter-spacing: 1px;
+        }
+        .story-card-subtitle {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 0.95rem;
+            color: #d1c8be;
+            margin: 0;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+        }
+
+        /* 試煉卡外框線 */
+        .trial-card-frame {
+            width: 100%;
+            border: 4px double #a87e56;
+            border-radius: 0 16px 16px 16px;
+            padding: 5px;
+            background: rgba(255,255,255,0.06);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        .trial-card-frame:hover {
+            border-color: #dfb56c;
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(223, 181, 108, 0.25), 0 12px 36px rgba(0,0,0,0.6);
+        }
+        .trial-card-inner {
+            width: 100%;
+            aspect-ratio: 1.62;
+            background: rgba(18, 14, 11, 0.85);
+            border-radius: 10px;
+            box-sizing: border-box;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+        }
+        /* 試煉橫幅按鈕 */
+        .trial-banner {
+            background: linear-gradient(135deg, #2b3d30, #142718);
+            border: 2px solid #a87e56;
+            border-radius: 8px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.05);
+            transition: all 0.25s ease;
+        }
+        .trial-card-frame:hover .trial-banner {
+            border-color: #dfb56c;
+            background: linear-gradient(135deg, #38503f, #193320);
+            box-shadow: 0 8px 20px rgba(223, 181, 108, 0.2), 0 6px 15px rgba(0,0,0,0.4);
+        }
+        .trial-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            transition: transform 0.3s ease;
+        }
+        .trial-card-frame:hover .trial-icon {
+            transform: scale(1.1);
+        }
+        .trial-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.6rem;
+            color: #ffe3a8;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .trial-card-frame:hover .trial-title {
+            color: #ffffff;
+        }
+        /* 試煉說明列表 */
+        .trial-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .trial-details li {
+            font-size: 0.95rem;
+            color: #ddd3c5;
+            padding-left: 18px;
+            position: relative;
+            line-height: 1.4;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .trial-details li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #a87e56;
+            font-size: 0.8rem;
+        }
+        .trial-card-frame:hover .trial-details li::before {
+            color: #dfb56c;
+            text-shadow: 0 0 5px #dfb56c;
+        }
+
+        /* 底部 Carousel 指示點 */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            margin-top: 16px;
+            padding-left: 0;
+            box-sizing: border-box;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 1.5px solid #a87e56;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .dot:hover {
+            border-color: #dfb56c;
+            background: rgba(223, 181, 108, 0.2);
+            transform: scale(1.2);
+        }
+        .dot.active {
+            background: #dfb56c;
+            border-color: #dfb56c;
+            box-shadow: 0 0 8px #dfb56c;
+            transform: scale(1.2);
+        }
+
+        /* ---- Excel 試煉工作區 ---- */
+        #trial-workspace {
+            width: 100%;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(223, 181, 108, 0.25);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .trial-workspace-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1.5px solid rgba(223, 181, 108, 0.25);
+            padding-bottom: 16px;
+        }
+        .back-to-menu-btn {
+            background: transparent;
+            border: 1px solid #dfb56c;
+            color: #dfb56c;
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Noto Serif TC', serif;
+        }
+        .back-to-menu-btn:hover {
+            background: rgba(223, 181, 108, 0.1);
+            color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px rgba(223, 181, 108, 0.3);
+        }
+        .trial-workspace-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.45rem;
+            color: #ffe6aa;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* 吐司通知提示 */
+        .toast-msg {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(18, 14, 11, 0.95);
+            border: 1.5px solid #dfb56c;
+            color: #ffe3a8;
+            padding: 12px 28px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            z-index: 9999;
+            font-weight: 700;
+            font-family: 'Noto Serif TC', serif;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .story-empty { text-align: center; color: #ca750e; padding: 40px; font-size: 0.9rem; }
 
         #extras-story-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(15, 12, 10, 0.45);
+            display: none; position: fixed; inset: 0; background: rgba(243, 243, 243, 0.062);
             z-index: 2000; flex-direction: column; align-items: center; justify-content: center;
             transition: background 0.3s ease-in-out;
             overflow: hidden;
@@ -104,7 +478,7 @@
             border-bottom-left-radius: 24px; 
             border-bottom-right-radius: 24px; 
             border-top-left-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(255,255,255,0.4);
+            box-shadow: 0 20px 50px rgb(0, 0, 0), inset 0 0 0 1px rgba(255,255,255,0.4);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             box-sizing: border-box;
@@ -236,7 +610,7 @@
         .extras-story-nav-btn {
             background: transparent;
             border: none;
-            color: #8c6239;
+            color: #8c3939;
             font-size: 0.95rem;
             font-weight: bold;
             cursor: pointer;
@@ -347,28 +721,16 @@
         }
 
         /* ---- 小型試煉 ---- */
-        .practice-guidance-panel {
-            display: flex; gap: 20px; align-items: flex-start;
-            background: rgba(255,255,255,0.72); border: 1.5px solid rgba(192,142,64,0.35);
-            border-radius: 14px; padding: 18px 24px; margin-bottom: 18px; box-sizing: border-box;
-        }
-        @keyframes magic-float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(2deg); }
-        }
+
         .practice-btn {
-            padding: 8px 18px; border-radius: 8px; border: 1px solid rgba(192,142,64,0.4);
-            background: linear-gradient(135deg, #e08b2b, #b85c00); color: #fff; font-weight: bold;
-            cursor: pointer; font-size: 0.85rem; box-shadow: 0 3px 0 #8c4200; transition: all 0.12s;
+            padding: 8px 18px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.4);
+            background: linear-gradient(135deg, #e02b2b, #0022b8); color: #fff; font-weight: bold;
+            cursor: pointer; font-size: 0.85rem; box-shadow: 0 3px 0 #ffffff; transition: all 0.12s;
             margin: 0; display: inline-flex; align-items: center; justify-content: center;
         }
         .practice-btn:hover { filter: brightness(1.08); }
         .practice-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #8c4200; }
-        .practice-btn.secondary {
-            background: rgba(255,255,255,0.85); color: #8c6239; box-shadow: none;
-            border: 1px solid rgba(192,142,64,0.4);
-        }
-        .practice-btn.secondary:hover { background: rgba(192,142,64,0.1); }
+
         .practice-btn.ok { background: linear-gradient(135deg, #2da164, #1e7e34); box-shadow: 0 3px 0 #155724; }
 
         .practice-empty { text-align: center; color: #6e5e49; padding: 60px 20px; background: rgba(255,255,255,0.6); border: 1.5px solid rgba(192,142,64,0.25); border-radius: 14px; }
@@ -397,11 +759,15 @@
         .task-tip-box.show { display: block; }
 
         /* Excel Clone Component */
+        #practice-stage {
+            display: flex; align-items: flex-start; gap: 16px; position: relative;
+        }
         #excel-container {
             height: 500px; display: flex; flex-direction: column; background: #fff;
             border: 1.5px solid rgba(192,142,64,0.35); border-radius: 12px;
             box-shadow: 0 8px 24px rgba(110,80,40,0.08); overflow: hidden; margin: 10px 0;
             position: relative;
+            flex: 1; min-width: 0;
         }
         #ribbon {
             position: relative;
@@ -474,117 +840,216 @@
             box-shadow: inset 0 0 0 1px dashed #217346 !important;
         }
 
-        /* Ribbon Integrated Task Section */
-        .ribbon-task-section {
-            position: absolute;
-            right: 12px;
-            top: 26px; /* align with ribbon buttons */
-            height: 72px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-left: 1px solid #d2d2d2;
-            padding-left: 12px;
-            z-index: 15;
-            width: 550px;
-            background: #fff; /* White background to stand out from ribbon-buttons */
-            box-shadow: -4px 0 10px rgba(0,0,0,0.05);
-            border-radius: 0 0 6px 0;
-            transition: all 0.25s ease;
+        /* 魔法羊皮紙懸浮視窗 (Option 3) */
+        /* Default: sits as a sidebar next to #excel-container (see #practice-stage),
+           so the simulated Excel window (ribbon directly above the grid) stays
+           untouched. Once the user drags it (see makeWidgetDraggable), it switches to
+           position:absolute (relative to #practice-stage) so it can float freely. */
+        .floating-widget {
+            position: relative;
+            flex-shrink: 0;
+            width: 320px;
+            background:url('BG/intro/6_bg.png');
+            border: 2px solid #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 1000;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
             box-sizing: border-box;
-        }
-        .ribbon-task-section.collapsed {
-            width: 280px;
-        }
-        .ribbon-task-requirement {
-            font-size: 0.82rem;
-            color: #323130;
-            line-height: 1.35;
-            max-height: 48px;
-            overflow-y: auto;
-            cursor: pointer;
-            flex: 1;
-            transition: all 0.25s ease;
-            user-select: none;
-            font-weight: 600;
-            padding-right: 4px;
-        }
-        .ribbon-task-requirement:hover {
-            color: #217346;
-        }
-        .ribbon-task-requirement.collapsed {
-            color: #2da164;
-            font-weight: bold;
-            white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 110px;
-            max-height: 20px;
-        }
-        .ribbon-task-actions {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
-            width: 140px;
         }
-        .ribbon-task-actions-row {
-            display: flex;
-            gap: 4px;
-        }
-        .practice-btn.mini {
-            padding: 4px 6px;
-            font-size: 0.75rem;
-            border-radius: 4px;
-            box-shadow: 0 1.5px 0 #8c4200;
-            width: 100%;
+        .floating-widget.free-floating {
+            /* fixed (viewport-relative), not absolute, so the player can drag it
+               anywhere on screen — including outside the simulated Excel window */
+            position: fixed;
             margin: 0;
+        }
+        .floating-widget:hover {
+            border-color: #dfb56c;
+            box-shadow: 0 12px 35px rgba(223, 181, 108, 0.18), 0 10px 30px rgba(0, 0, 0, 0);
+        }
+        .widget-header {
+            background: linear-gradient(to right, #062ef990, #b8d2fdfe);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move; /* drag cursor */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            user-select: none;
+            flex-shrink: 0;
+        }
+        .widget-title {
+            font-family: 'Noto Serif TC', serif;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        .widget-toggle-btn {
+            background: transparent;
+            border: none;
+            color: #ffe6aa;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .widget-toggle-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .widget-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-sizing: border-box;
+            transition: opacity 0.2s ease;
+        }
+        .widget-requirement {
+            font-size: 0.85rem;
+            color: #f0e6da;
+            line-height: 1.45;
+            font-weight: 600;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .widget-answer-location {
+            font-size: 0.82rem;
+            color: #ffe6aa;
+            background: rgba(223, 181, 108, 0.12);
+            border: 1px solid rgba(223, 181, 108, 0.35);
+            border-radius: 6px;
+            padding: 6px 10px;
+            line-height: 1.4;
+        }
+        .widget-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .widget-actions button {
+            flex: 1;
+        }
+
+        /* Collapsed state */
+        .floating-widget.collapsed {
+            width: 120px;
+            height: 38px;
+            border-color: #a87e56;
+        }
+        .floating-widget.collapsed:hover {
+            border-color: #dfb56c;
+        }
+        .floating-widget.collapsed .widget-body {
+            opacity: 0;
+            pointer-events: none;
+            display: none;
         }
         .practice-btn.mini.secondary {
             box-shadow: none;
             background: rgba(140, 98, 57, 0.08);
-            color: #8c6239;
+            color: #ffffffa0;
             border: 1px solid rgba(140, 98, 57, 0.3);
         }
         .practice-btn.mini.secondary:hover {
             background: rgba(140, 98, 57, 0.15);
         }
         .practice-btn.mini.ok {
-            box-shadow: 0 1.5px 0 #155724;
-            background: linear-gradient(135deg, #2da164, #1e7e34);
+            box-shadow: 0 1.5px 0 #15572400;
+            background: linear-gradient(135deg, #0015fefb, #0022ff7e);
         }
     </style>
 </head>
 <body>
-    <a href="game.html?action=load" class="return-btn">⬅ 返回主遊戲</a>
+    <a href="game.html?action=load" class="return-btn">
+        <svg class="compass-icon" viewBox="0 0 24 24" width="18" height="18">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <line x1="12" y1="2" x2="12" y2="22" stroke="currentColor" stroke-width="1" stroke-dasharray="1 3"/>
+            <line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1" stroke-dasharray="1 3"/>
+            <path d="M12,4 L15,12 L12,20 L9,12 Z" fill="currentColor"/>
+            <path d="M12,4 L12,12 L9,12 Z" fill="#ffffff" opacity="0.6"/>
+            <circle cx="12" cy="12" r="1.5" fill="#5a0808"/>
+        </svg>
+        返回主遊戲
+    </a>
 
     <div class="extras-shell">
-        <div class="extras-header">
-            <h1>🌙 通關後額外內容</h1>
-            <p>完結 Ch1～Ch8.5 之後的延伸內容：番外篇劇情 ・ 小型試煉場（隨機抽題，每次只考一個技能）</p>
+        <div class="extras-header" id="extras-header-section">
+            <div class="extras-title-row">
+                <svg class="header-moon-icon" viewBox="0 0 32 32">
+                    <path fill="url(#goldGradient)" d="M16.5,2A14.5,14.5,0,1,0,31,16.5,14.53,14.53,0,0,0,16.5,2Zm0,25A10.5,10.5,0,0,1,8.1,7.2,12.52,12.52,0,0,0,23.8,22.9,10.42,10.42,0,0,1,16.5,27Z"/>
+                    <defs>
+                        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ffe8a1" />
+                            <stop offset="50%" stop-color="#d1a13b" />
+                            <stop offset="100%" stop-color="#805d15" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>通關後額外內容</h1>
+            </div>
+            <div class="header-divider">
+                <div class="divider-line"></div>
+                <div class="divider-diamond"></div>
+                <div class="divider-line"></div>
+            </div>
         </div>
 
-        <div class="extras-tabs">
-            <button class="extras-tab active" id="tab-btn-story" onclick="switchExtrasTab('story')">📖 番外篇</button>
-            <button class="extras-tab" id="tab-btn-practice" onclick="switchExtrasTab('practice')">🎲 小型試煉</button>
-        </div>
-
-        <!-- ===== 番外篇 ===== -->
-        <div class="extras-pane active" id="pane-story">
-            <div class="story-card-grid" id="story-card-grid"></div>
-        </div>
-
-        <!-- ===== 小型試煉 ===== -->
-        <div class="extras-pane" id="pane-practice">
-            <div id="practice-area">
-                <div class="practice-empty">
-                    <h2>🎲 隨機技能小試煉</h2>
-                    <p style="margin-bottom: 20px;">每次會從 13 個核心 Excel 技能中隨機抽取 1 個考驗你，資料與情境均為動態生成，可無限次練習！</p>
-                    <button class="practice-btn" onclick="drawNewTask()" style="font-size: 1.1rem; padding: 12px 28px;">🎲 開始抽題挑戰</button>
+        <!-- 雙欄並排主儀表板 -->
+        <div class="extras-grid" id="extras-dashboard">
+            <!-- 左欄：番外篇 -->
+            <div class="column-panel">
+                <div class="panel-tag story-tag">📖 番外篇</div>
+                <div class="story-card-frame" onclick="openStory('demo_001')">
+                    <div class="story-card-inner">
+                        <div class="story-card-overlay">
+                            <h3 class="story-card-title">鏡中的裂痕</h3>
+                            <p class="story-card-subtitle">夏特初入學院</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-dots">
+                    <span class="dot" onclick="showDotToast(0)"></span>
+                    <span class="dot active" onclick="openStory('demo_001')"></span>
+                    <span class="dot" onclick="showDotToast(2)"></span>
+                    <span class="dot" onclick="showDotToast(3)"></span>
+                    <span class="dot" onclick="showDotToast(4)"></span>
+                </div>
+            </div>
+            <!-- 右欄：小型試煉 -->
+            <div class="column-panel">
+                <div class="panel-tag trial-tag">⏳ 小型試煉</div>
+                <div class="trial-card-frame" onclick="startTrialSession()">
+                    <div class="trial-card-inner">
+                        <div class="trial-banner">
+                            <img src="BG/intro/excel_icon.png" class="trial-icon" alt="小型試煉">
+                            <span class="trial-title">小型試煉</span>
+                        </div>
+                        <ul class="trial-details">
+                            <li>隨機抽題：1技能考驗</li>
+                            <li>情境與數據動態生成，可無限次練習</li>
+                            <li>包含 13 個核心 Excel 技能挑戰</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Excel 試煉工作區 (預設隱藏) -->
+        <div id="trial-workspace" style="display: none;">
+            <div class="trial-workspace-header">
+                <button class="back-to-menu-btn" onclick="exitTrialSession()">⬅ 返回額外內容選單</button>
+                <span class="trial-workspace-title">🔮 Excel 小型試煉場</span>
+            </div>
+            <div id="practice-area"></div>
+        </div>
     </div>
+
+    <!-- 吐司通知容器 -->
+    <div id="toast-container" class="toast-msg">更多內容敬請期待！</div>
 
     <!-- 番外篇對話框 -->
     <div id="extras-story-overlay">
@@ -641,11 +1106,32 @@
         // ========================================================
         // 分頁切換
         // ========================================================
-        function switchExtrasTab(tab) {
-            document.getElementById('tab-btn-story').classList.toggle('active', tab === 'story');
-            document.getElementById('tab-btn-practice').classList.toggle('active', tab === 'practice');
-            document.getElementById('pane-story').classList.toggle('active', tab === 'story');
-            document.getElementById('pane-practice').classList.toggle('active', tab === 'practice');
+        // ========================================================
+        // 介面切換與互動邏輯
+        // ========================================================
+        function startTrialSession() {
+            drawNewTask();
+            document.getElementById('extras-header-section').style.display = 'none';
+            document.getElementById('extras-dashboard').style.display = 'none';
+            document.getElementById('trial-workspace').style.display = 'block';
+        }
+
+        function exitTrialSession() {
+            document.getElementById('trial-workspace').style.display = 'none';
+            document.getElementById('extras-header-section').style.display = 'block';
+            document.getElementById('extras-dashboard').style.display = 'grid';
+        }
+
+        let _toastTimeout = null;
+        function showDotToast(dotIndex) {
+            const toast = document.getElementById('toast-container');
+            if (!toast) return;
+            toast.innerText = "更多內容敬請期待！";
+            toast.classList.add('show');
+            if (_toastTimeout) clearTimeout(_toastTimeout);
+            _toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
         }
 
         window.SIDE_STORIES = {
@@ -777,6 +1263,7 @@
 
         function renderStoryCards() {
             const grid = document.getElementById('story-card-grid');
+            if (!grid) return;
             const ids = Object.keys(window.SIDE_STORIES || {});
             if (ids.length === 0) {
                 grid.innerHTML = '<div class="story-empty">尚無番外篇內容。</div>';
@@ -1019,10 +1506,14 @@
             singleInputValue: '',
             selectedRange: null,
             taskCollapsed: false,
-            feedback: { ok: null, msg: '' }
+            feedback: { ok: null, msg: '' },
+            widgetPos: null,
+            widgetCollapsed: false
         };
 
         function drawNewTask() {
+            const prevPos = practiceState.widgetPos;
+            const prevCollapsed = practiceState.widgetCollapsed;
             currentTask = window.PracticeEngine.drawTask(allSkillDefs);
             practiceState = {
                 displayRows: currentTask.table.rows.map(r => r.slice()),
@@ -1034,7 +1525,9 @@
                 singleInputValue: '',
                 selectedRange: null,
                 taskCollapsed: false,
-                feedback: { ok: null, msg: '' }
+                feedback: { ok: null, msg: '' },
+                widgetPos: prevPos,
+                widgetCollapsed: prevCollapsed
             };
             renderTask();
         }
@@ -1307,11 +1800,16 @@
                 scrollTip = `<div style="color: #b37400; font-size: 0.8rem; font-weight: bold; margin-left: auto; margin-right: 15px; display: inline-flex; align-items: center; gap: 4px;">↔️ 提示：表格較寬，請向右滑動尋找「${t.answerHeader}」欄位</div>`;
             }
 
-            const isCollapsed = practiceState.taskCollapsed;
-            const reqHtml = isCollapsed 
-                ? `🔍 任務目標 (展開)` 
-                : `🎯 <b>任務目標：</b>${t.requirement}`;
-            
+            // 答案位置提示：題目與資料每次都是隨機產生，答案欄位的字母與位置會變動，
+            // 直接告訴玩家要填在哪裡，不用自己找。
+            let answerLocationHint = "";
+            if (t.uiType === 'column') {
+                const colL = colLetter(header.length);
+                answerLocationHint = `📍 <b>答案位置：</b>${colL} 欄（${colL}2 至 ${colL}${rows.length + 1}）`;
+            } else if (t.uiType === 'single') {
+                answerLocationHint = `📍 <b>答案位置：</b>表格下方「${t.answerLabel}」右側的輸入格`;
+            }
+
             // Get cached feedback
             const fb = practiceState.feedback;
             const fbClass = fb.ok === null ? '' : (fb.ok ? 'ok' : 'fail');
@@ -1319,66 +1817,94 @@
 
             // Assemble everything
             area.innerHTML = `
-                <div id="excel-container">
-                    <div id="ribbon">
-                        <div class="ribbon-tabs">
-                            <div class="tab ${practiceState.activeRibbonTab === 'start' ? 'active' : ''}" id="p-tab-start" onclick="switchPracticeTab('start')">常用</div>
-                            <div class="tab ${practiceState.activeRibbonTab === 'insert' ? 'active' : ''}" id="p-tab-insert" onclick="switchPracticeTab('insert')">插入</div>
-                            <div class="tab ${practiceState.activeRibbonTab === 'data' ? 'active' : ''}" id="p-tab-data" onclick="switchPracticeTab('data')">資料</div>
-                            <div class="tab ${practiceState.activeRibbonTab === 'view' ? 'active' : ''}" id="p-tab-view" onclick="switchPracticeTab('view')">檢視</div>
-                        </div>
-                        <div class="ribbon-buttons" id="practice-ribbon-btns">
-                            <!-- Dynamically populated -->
-                        </div>
-
-                        <!-- Ribbon Integrated Task Section on the right -->
-                        <div class="ribbon-task-section ${isCollapsed ? 'collapsed' : ''}" id="ribbon-task-section">
-                            <div class="ribbon-task-requirement ${isCollapsed ? 'collapsed' : ''}" onclick="toggleTaskRequirement()" title="${isCollapsed ? '點擊展開任務說明' : '點擊收合任務說明'}">
-                                ${reqHtml}
+                <div id="practice-stage">
+                    <div id="excel-container">
+                        <div id="ribbon">
+                            <div class="ribbon-tabs">
+                                <div class="tab ${practiceState.activeRibbonTab === 'start' ? 'active' : ''}" id="p-tab-start" onclick="switchPracticeTab('start')">常用</div>
+                                <div class="tab ${practiceState.activeRibbonTab === 'insert' ? 'active' : ''}" id="p-tab-insert" onclick="switchPracticeTab('insert')">插入</div>
+                                <div class="tab ${practiceState.activeRibbonTab === 'data' ? 'active' : ''}" id="p-tab-data" onclick="switchPracticeTab('data')">資料</div>
+                                <div class="tab ${practiceState.activeRibbonTab === 'view' ? 'active' : ''}" id="p-tab-view" onclick="switchPracticeTab('view')">檢視</div>
                             </div>
-                            <div class="ribbon-task-actions">
-                                <div id="task-feedback-container" class="task-feedback ${fbClass}">${fbText}</div>
-                                <div class="ribbon-task-actions-row">
-                                    <button class="practice-btn mini ok" onclick="checkAnswer()">檢查答案</button>
-                                    <button class="practice-btn mini secondary" onclick="toggleTip()">提示</button>
-                                    <button class="practice-btn mini secondary" onclick="drawNewTask()">換一題</button>
-                                </div>
+                            <div class="ribbon-buttons" id="practice-ribbon-btns">
+                                <!-- Dynamically populated -->
                             </div>
                         </div>
-                    </div>
 
-                    <div class="task-tip-box" id="task-tip-box">
-                        <strong>💡 ${t.skillName} 提示：</strong>${t.tip}
-                    </div>
+                        <div class="task-tip-box" id="task-tip-box">
+                            <strong>💡 ${t.skillName} 提示：</strong>${t.tip}
+                        </div>
 
-                    <div class="wrapper" id="practice-wrapper">
-                        <div class="grid" id="practice-grid" style="grid-template-columns: ${colWidths.join(' ')}; grid-template-rows: repeat(${rows.length + (t.uiType === 'single' ? 2 : 1)}, 32px);">
-                            ${colHeaders.join('')}
-                            ${gridCells.join('')}
+                        <div class="wrapper" id="practice-wrapper">
+                            <div class="grid" id="practice-grid" style="grid-template-columns: ${colWidths.join(' ')}; grid-template-rows: repeat(${rows.length + (t.uiType === 'single' ? 2 : 1)}, 32px);">
+                                ${colHeaders.join('')}
+                                ${gridCells.join('')}
+                            </div>
+                        </div>
+                        <div id="sheet-bar">
+                            <div class="sheet active">🛡️ 練習工作表</div>
+                            <div id="add-sheet" style="opacity: 0.4; cursor: not-allowed;">+</div>
+                            ${scrollTip}
                         </div>
                     </div>
-                    <div id="sheet-bar">
-                        <div class="sheet active">🛡️ 練習工作表</div>
-                        <div id="add-sheet" style="opacity: 0.4; cursor: not-allowed;">+</div>
-                        ${scrollTip}
+
+                    <!-- 魔法羊皮紙懸浮視窗：位於模擬 Excel 視窗之外，不影響其版面 -->
+                    <div id="trial-floating-widget" class="floating-widget">
+                        <div id="widget-drag-handle" class="widget-header">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span class="widget-icon">📜</span>
+                                <span class="widget-title">任務</span>
+                            </div>
+                            <button class="widget-toggle-btn" onclick="toggleWidgetCollapse(event)">➖</button>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-requirement">
+                                🎯 <b>任務目標：</b>${t.requirement}
+                            </div>
+                            ${answerLocationHint ? `<div class="widget-answer-location">${answerLocationHint}</div>` : ''}
+                            <div id="task-feedback-container" class="task-feedback ${fbClass}">${fbText}</div>
+                            <div class="widget-actions">
+                                <button class="practice-btn mini ok" onclick="checkAnswer()">檢查</button>
+                                <button class="practice-btn mini secondary" onclick="toggleTip()">提示</button>
+                                <button class="practice-btn mini secondary" onclick="drawNewTask()">換一題</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
 
             renderPracticeRibbon();
+
+            // 套用歷史位置與折疊狀態，並啟動拖曳功能
+            setTimeout(() => {
+                const widget = document.getElementById('trial-floating-widget');
+                if (widget) {
+                    if (practiceState.widgetPos) {
+                        widget.classList.add('free-floating');
+                        widget.style.top = practiceState.widgetPos.top + "px";
+                        widget.style.left = practiceState.widgetPos.left + "px";
+                        widget.style.right = "auto";
+                    }
+                    if (practiceState.widgetCollapsed) {
+                        widget.classList.add('collapsed');
+                        const toggleBtn = widget.querySelector('.widget-toggle-btn');
+                        if (toggleBtn) toggleBtn.innerText = '➕';
+                    }
+                    makeWidgetDraggable();
+                }
+            }, 0);
         }
 
         function checkAnswer() {
             const t = currentTask;
             const PE = window.PracticeEngine;
             let isCorrect = false;
-
             const isFormulaSkill = !['SORT_SIMPLE', 'F'].includes(t.skillId);
 
             if (t.uiType === 'single') {
                 const input = document.getElementById('single-answer');
                 const raw = input ? input.value.trim() : '';
-                
+
                 if (isFormulaSkill) {
                     if (!raw.startsWith('=')) {
                         showFeedbackMessage(false, '❌ 請使用等號 = 開頭的公式進行計算，不要直接輸入數值！');
@@ -1802,6 +2328,135 @@
                     return colPart + Math.max(1, newRowNum); // 調整相對參照的行號
                 }
             });
+        }
+
+        function makeWidgetDraggable() {
+            const widget = document.getElementById('trial-floating-widget');
+            const handle = document.getElementById('widget-drag-handle');
+            if (!widget || !handle) return;
+            
+            let mouseX = 0, mouseY = 0, curTop = 0, curLeft = 0;
+
+            handle.addEventListener('mousedown', dragStart);
+            handle.addEventListener('touchstart', dragStart, { passive: false });
+
+            function dragStart(e) {
+                if (e.target.classList.contains('widget-toggle-btn')) {
+                    return;
+                }
+
+                // free-floating uses position:fixed (viewport-relative), so the
+                // widget can be dragged anywhere on screen, not just inside the
+                // simulated Excel window. Unlike position:absolute, a fixed element's
+                // box is NOT rescaled by the page's CSS zoom, so top/left here track
+                // clientX/clientY 1:1 with no zoom conversion.
+                const widgetRect = widget.getBoundingClientRect();
+                if (!widget.classList.contains('free-floating')) {
+                    widget.classList.add('free-floating');
+                }
+                curTop = widgetRect.top;
+                curLeft = widgetRect.left;
+                widget.style.top = curTop + "px";
+                widget.style.left = curLeft + "px";
+                widget.style.right = "auto";
+
+                const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+
+                e.preventDefault();
+                mouseX = clientX;
+                mouseY = clientY;
+
+                if (e.type === 'mousedown') {
+                    document.addEventListener('mouseup', dragEnd);
+                    document.addEventListener('mousemove', dragMove);
+                } else {
+                    document.addEventListener('touchend', dragEnd);
+                    document.addEventListener('touchmove', dragMove, { passive: false });
+                }
+            }
+
+            function dragMove(e) {
+                const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+
+                e.preventDefault();
+                const dx = clientX - mouseX;
+                const dy = clientY - mouseY;
+                mouseX = clientX;
+                mouseY = clientY;
+
+                curTop += dy;
+                curLeft += dx;
+
+                // Clamp to the viewport (not the excel box) so the widget can leave
+                // the simulated Excel window but never go fully off-screen.
+                const maxTop = window.innerHeight - widget.offsetHeight;
+                const maxLeft = window.innerWidth - widget.offsetWidth;
+
+                if (curTop < 0) curTop = 0;
+                if (curTop > maxTop) curTop = maxTop;
+
+                if (curLeft < 0) curLeft = 0;
+                if (curLeft > maxLeft) curLeft = maxLeft;
+
+                widget.style.top = curTop + "px";
+                widget.style.left = curLeft + "px";
+                widget.style.right = "auto";
+                practiceState.widgetPos = { top: curTop, left: curLeft };
+            }
+            
+            function dragEnd(e) {
+                document.removeEventListener('mouseup', dragEnd);
+                document.removeEventListener('mousemove', dragMove);
+                document.removeEventListener('touchend', dragEnd);
+                document.removeEventListener('touchmove', dragMove);
+            }
+        }
+
+        function toggleWidgetCollapse(e) {
+            if (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            const widget = document.getElementById('trial-floating-widget');
+            if (widget) {
+                const isCollapsed = widget.classList.toggle('collapsed');
+                practiceState.widgetCollapsed = isCollapsed;
+                const btn = widget.querySelector('.widget-toggle-btn');
+                if (btn) {
+                    btn.innerText = isCollapsed ? '➕' : '➖';
+                }
+
+                if (!isCollapsed && widget.classList.contains('free-floating')) {
+                    setTimeout(() => {
+                        if (widget) {
+                            const rect = widget.getBoundingClientRect();
+                            let currentTop = rect.top;
+                            let currentLeft = rect.left;
+
+                            const maxTop = window.innerHeight - widget.offsetHeight;
+                            const maxLeft = window.innerWidth - widget.offsetWidth;
+
+                            let adjusted = false;
+                            if (currentTop > maxTop) {
+                                currentTop = Math.max(0, maxTop);
+                                adjusted = true;
+                            }
+                            if (currentLeft > maxLeft) {
+                                currentLeft = Math.max(0, maxLeft);
+                                adjusted = true;
+                            }
+                            
+                            if (adjusted) {
+                                widget.style.top = currentTop + "px";
+                                widget.style.left = currentLeft + "px";
+                                practiceState.widgetPos = { top: currentTop, left: currentLeft };
+                            }
+                        }
+                    }, 320);
+                }
+            }
         }
 
         function onWindowMouseUp(e) {

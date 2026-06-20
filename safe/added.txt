@@ -1,3 +1,52 @@
+[2026-06-21] 修正 char-float/char-falling 持續性動畫每行重播導致飄浮不連續
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  原邏輯每行對話都會無條件清除角色立繪上的 char-falling/char-float class，
+  並在下一行透過 rAF 重新加回去——只要劇本連續多行都要求同一個飄浮動畫，
+  CSS animation 就會被重綁、強制從 0% 重新開始，造成「每句話都重新飄一次」
+  的不連續、跳動感。
+  已改為：若本行的目標角色與上一行相同、且 charAnim 仍是同一個持續性動畫
+  (char-float / char-falling)，則不移除也不重新套用 class，讓 CSS
+  animation 自然連續播放；只有在「換了角色」「換了動畫」或「本行未保留
+  立繪 (CG 全屏/系統旁白)」時才清除，避免動畫殘留在錯誤的立繪上。
+
+[2026-06-21] Ch8.5 結尾「書頁墜落」場景：補上 charAnim: "falling" 讓角色持續飄浮
+- 檔案：v2/chapter/ch8_5.js [非破壞性擴充，僅新增屬性，未刪改任何對話文字/資源]
+  原本「第一部完」結尾段落中，a: "me_falling" 的對話行只有第一句帶
+  charAnim: "falling"；因 code/ui_v2_story.js 每行都會先移除
+  char-bounce/sink/...等 class，只有當該行明確帶 charAnim 才會重新加回
+  char-falling，導致角色只飄浮一拍就靜止。已為該結尾段落（含
+  handleChoiceYes 內的 queue.push 後續對話）所有 a: "me_falling" 的行
+  補上 charAnim: "falling"，讓飄浮/緩慢墜落動畫貫穿整段劇情。
+  CSS 動畫本身（char-falling, charFallingAnim）無變動，沿用 style.css
+  既有定義。
+
+[2026-06-21] 番外篇解鎖規則：選擇「無所謂了」會（再次）鎖回番外篇，這是預期行為
+- 檔案：v2/code/orchestrator.js [MODIFY]
+  loadChapter(chapterId)：玩家章節進度抵達 '85' 時，寫入獨立旗標
+  magic_excel_v2_extras_unlocked='true'（與主存檔 key 分開存放，但仍在同一個
+  localStorage 內，因此會被下方的 clear() 一併清掉——這是刻意設計）。
+  ⚠️ 曾在 init() 加過「偵測到 metaChoiceNo==='true' 就把旗標補回來」的修正，
+  後來確認那是誤解需求：選擇「無所謂了」代表玩家放棄了這條故事線，番外篇與
+  小型試煉應該跟著鎖回去，即便先前已經解鎖過也一樣。該補回邏輯已移除。
+- 檔案：v2/code/ui_v2_menus.js [MODIFY]
+  goToExtras() 讀取 magic_excel_v2_extras_unlocked 旗標來判斷是否解鎖；
+  此旗標只有在玩家章節抵達 '85' 且尚未被 ch8.5「無所謂了」結局的
+  localStorage.clear() 清空時才為 true。
+
+[2026-06-21] 新增「番外篇與小型試煉」常駐入口（不需每次重新打到 Ch8.5 結尾）
+- 檔案：v2/code/orchestrator.js [MODIFY]
+  handleGameComplete() 原本依賴 #notice-overlay/#notice-title/#notice-content/#notice-btn，
+  但這幾個元素在 game.html 中根本不存在，導致永遠落入 else 分支跳出原生 alert()，
+  玩家完全看不到任何前往番外篇的入口。已改為自行動態建立 #game-complete-overlay 彈窗
+  （內含「🌙 前往番外篇與小型試煉」與「✨ 回到起點重新挑戰」兩顆按鈕），不再依賴不存在的 DOM。
+- 檔案：v2/code/ui_v2_menus.js [MODIFY]
+  新增 UIManager.prototype.goToExtras()：檢查 orchestrator.state.currentChapter === '85'
+  （代表玩家已進入/完成第 8.5 章），符合才導向 extras.html，否則彈出提示尚未解鎖。
+  extras.html 本身不需要寫入任何存檔資料，僅借用既有存檔的章節進度做存取判斷。
+- 檔案：v2/game.html [MODIFY]
+  系統選單 (#sys-menu-overlay) 左下角新增「🌙」角落按鈕，呼叫 goToExtras()，
+  讓玩家完成 Ch8.5 後可隨時從系統選單再次進入 extras.html，不必重新觸發通關結算畫面。
+
 [2026-06-20] 新增「玩家留言」雲端化功能 (Cloud-backed player comment system)
 - 檔案：v2/code/firebase-config.js [NEW]
   新建共用 Firebase 初始化檔，匯出 window.db（Firestore 實例）與
