@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>???閮??- 蝞∠?敺</title>
+    <title>冒險者留言板 - 管理後台</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -78,43 +78,45 @@
 </head>
 <body>
     <div class="admin-container">
-        <h1>?? ???閮??(蝞∠?敺)</h1>
-        
-        <div id="comments-list">
-            <!-- ??撠?ㄐ???? -->
+        <h1>🔍 冒險者留言板（僅站長可見）</h1>
+
+        <div id="auth-gate">
+            <p style="text-align:center;margin-bottom:15px;">請輸入管理密碼以查看留言：</p>
+            <div style="display:flex;gap:10px;justify-content:center;">
+                <input type="password" id="admin-password" placeholder="密碼" style="padding:10px;border-radius:5px;border:1px solid var(--gold);background:#2a2a3d;color:#fff;">
+                <button class="btn btn-back" onclick="checkPassword()">進入</button>
+            </div>
+            <p id="auth-error" style="color:#ff6b6b;text-align:center;margin-top:10px;display:none;">密碼錯誤，請再試一次。</p>
         </div>
 
-        <div class="actions">
-            <button class="btn btn-back" onclick="window.location.href='game.html'">漎? 餈??</button>
-            <button class="btn btn-clear" onclick="clearComments()">??儭?皜???閮</button>
+        <div id="comments-wrapper" style="display:none;">
+            <div id="comments-list">
+                <!-- 留言會由 JS 動態插入 -->
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-back" onclick="window.location.href='game.html'">⬅ 返回遊戲</button>
+                <button class="btn btn-clear" onclick="clearComments()">🗑 清空所有留言</button>
+            </div>
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="code/firebase-config.js"></script>
     <script>
-        function loadComments() {
-            const listDiv = document.getElementById('comments-list');
-            const feedbackList = JSON.parse(localStorage.getItem('adventure_feedback') || '[]');
-            
-            if (feedbackList.length === 0) {
-                listDiv.innerHTML = '<p class="no-data">?桀?撠???閮...</p>';
-                return;
-            }
+        // ⚠️ 請把這裡改成只有你自己知道的密碼
+        const ADMIN_PASSWORD = '1029384756';
 
-            listDiv.innerHTML = feedbackList.reverse().map(item => `
-                <div class="feedback-item">
-                    <div class="feedback-header">
-                        <span class="p-name">? ${escapeHtml(item.name)}</span>
-                        <span class="p-date">?? ${item.date}</span>
-                    </div>
-                    <div class="p-comment">${escapeHtml(item.comment)}</div>
-                </div>
-            `).join('');
-        }
-
-        function clearComments() {
-            if (confirm('蝣箏?閬??斗???瘜?閮??甇文?雿瘜儔??)) {
-                localStorage.removeItem('adventure_feedback');
+        function checkPassword() {
+            const input = document.getElementById('admin-password').value;
+            if (input === ADMIN_PASSWORD) {
+                sessionStorage.setItem('admin_authed', '1');
+                document.getElementById('auth-gate').style.display = 'none';
+                document.getElementById('comments-wrapper').style.display = 'block';
                 loadComments();
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
             }
         }
 
@@ -124,8 +126,60 @@
             return div.innerHTML;
         }
 
-        // ????頛?
-        loadComments();
+        function loadComments() {
+            const listDiv = document.getElementById('comments-list');
+            listDiv.innerHTML = '<p class="no-data">載入中...</p>';
+
+            const readPromise = window.db.collection(window.FEEDBACK_COLLECTION).orderBy('timestamp', 'desc').get();
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => reject(new Error('timeout')), 8000);
+            });
+
+            Promise.race([readPromise, timeoutPromise])
+                .then((snapshot) => {
+                    if (snapshot.empty) {
+                        listDiv.innerHTML = '<p class="no-data">目前尚無冒險者留言...</p>';
+                        return;
+                    }
+                    listDiv.innerHTML = snapshot.docs.map(doc => {
+                        const item = doc.data();
+                        return `
+                            <div class="feedback-item">
+                                <div class="feedback-header">
+                                    <span class="p-name">👤 ${escapeHtml(item.name || '匿名冒險者')}</span>
+                                    <span class="p-date">📅 ${escapeHtml(item.date || '')}</span>
+                                </div>
+                                <div class="p-comment">${escapeHtml(item.comment || '')}</div>
+                            </div>
+                        `;
+                    }).join('');
+                })
+                .catch((err) => {
+                    console.error('Load comments failed:', err);
+                    listDiv.innerHTML = '<p class="no-data">⚠️ 留言載入失敗，請確認 Firebase 設定與網路連線。</p>';
+                });
+        }
+
+        function clearComments() {
+            if (!confirm('確定要清除所有魔法留言嗎？此動作無法復原。')) return;
+
+            window.db.collection(window.FEEDBACK_COLLECTION).get().then((snapshot) => {
+                const deletes = snapshot.docs.map(doc => doc.ref.delete());
+                return Promise.all(deletes);
+            }).then(() => {
+                loadComments();
+            }).catch((err) => {
+                console.error('Clear comments failed:', err);
+                alert('清空失敗，請稍後再試。');
+            });
+        }
+
+        // 同一個瀏覽器分頁內，已經驗證過密碼就不用再輸入一次
+        if (sessionStorage.getItem('admin_authed') === '1') {
+            document.getElementById('auth-gate').style.display = 'none';
+            document.getElementById('comments-wrapper').style.display = 'block';
+            loadComments();
+        }
     </script>
 </body>
 </html>

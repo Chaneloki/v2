@@ -1,3 +1,24 @@
+[2026-06-20] 新增「玩家留言」雲端化功能 (Cloud-backed player comment system)
+- 檔案：v2/code/firebase-config.js [NEW]
+  新建共用 Firebase 初始化檔，匯出 window.db（Firestore 實例）與
+  window.FEEDBACK_COLLECTION（collection 名稱 'feedback'）。
+  內含 FIREBASE_CONFIG 佔位物件，需由站長自行到 Firebase Console 申請專案後填入真實值。
+- 檔案：v2/instructions.html [MODIFY]
+  #feedback-form 的 submit handler 從寫入 localStorage('adventure_feedback')
+  改為寫入 Firestore feedback collection（含 serverTimestamp），並加上失敗時的錯誤提示。
+  同步補上 Firebase compat SDK 與 code/firebase-config.js 的 <script> 載入。
+- 檔案：v2/admin_comments.html [MODIFY]
+  原本直接讀 localStorage 顯示留言，改為：
+  1) 加入簡單密碼鎖（ADMIN_PASSWORD 常數，需站長自行修改成自己的密碼）通過後才顯示留言區。
+  2) loadComments() 改為從 Firestore 讀取（orderBy timestamp desc）。
+  3) clearComments() 改為刪除 Firestore 內全部留言文件。
+  ⚠️ 注意：此密碼鎖僅為前端 UI 層的簡單防呆（擋一般玩家），Firestore 安全規則
+  本身仍允許任何人讀寫 feedback collection，並非真正的伺服器端權限控管。
+  附帶修正：本檔與 title 內原本因編碼問題損毀的繁體中文文字，已順手重寫為正常文字。
+- 檔案：v2/index.html [MODIFY]
+  #topbar 與手機選單 #mobile-nav-menu 都新增「💬 留言」按鈕，
+  導向 instructions.html#feedback-section，玩家可直接從首頁進入留言表單。
+
 [2026-06-19 補5] 修正逐字效果造成「角色立繪一直抖動」的問題 (Fix: char shake from extra clicks)
 - 檔案：v2/code/ui_v2_story.js [MODIFY]
   回報現象：加入逐字打字機效果後，主角立繪一直在抖動。

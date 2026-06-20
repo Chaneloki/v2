@@ -1,13 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel 擳?? - ???</title>
+    <title>Excel 魔法冒險 - 冒險指南</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-            background: #0b0b14 url('BG/bg1.png') no-repeat center center fixed;
+            background: #0b0b14 url('BG/intro/1_bg.png') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             justify-content: center;
@@ -20,8 +20,8 @@
         .instruction-book {
             width: 100%;
             max-width: 800px;
-            background: #fdfaf0; /* Parchment color */
-            border: 12px double #8b4513;
+            background: #287e8b48; /* Parchment color */
+            border: 12px double #209e9c45;
             border-radius: 15px;
             padding: 40px;
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
@@ -30,7 +30,7 @@
         }
         h1 {
             text-align: center;
-            color: #8b4513;
+            color: #150ee1;
             font-family: serif;
             font-size: 36px;
             margin-bottom: 30px;
@@ -38,14 +38,15 @@
             padding-bottom: 10px;
         }
         h2 {
-            color: #217346;
-            border-left: 5px solid #217346;
+            color: #2f2173a8;
+            border-left: 5px solid #2f2173a8;
             padding-left: 15px;
             margin-top: 30px;
         }
         p, li {
             font-size: 18px;
             line-height: 1.8;
+            color: #000000
         }
         .guide-section {
             margin-bottom: 40px;
@@ -54,7 +55,7 @@
             display: inline-block;
             margin-top: 30px;
             padding: 12px 25px;
-            background: #8b4513;
+            background: #209e9ca4;
             color: #fdf5e6;
             text-decoration: none;
             border-radius: 8px;
@@ -62,7 +63,7 @@
             transition: 0.3s;
         }
         .btn-back:hover {
-            background: #5d4037;
+            background: #2538c1;
             transform: scale(1.05);
         }
         /* Feedback Form Styles */
@@ -80,7 +81,7 @@
             display: block;
             font-weight: bold;
             margin-bottom: 8px;
-            color: #8b4513;
+            color: #2f2173a8;
         }
         input[type="text"], textarea {
             width: 100%;
@@ -96,7 +97,7 @@
             resize: vertical;
         }
         .btn-submit {
-            background: #217346;
+            background: #21734681;
             color: #fff;
             border: none;
             padding: 12px 30px;
@@ -107,11 +108,14 @@
             transition: 0.3s;
         }
         .btn-submit:hover {
-            background: #2da164;
+            background: #1cd171;
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         #success-msg {
             display: none;
-            color: #217346;
             font-weight: bold;
             margin-top: 15px;
             text-align: center;
@@ -120,71 +124,73 @@
 </head>
 <body>
     <div class="instruction-book">
-        <h1>?? 閰衣?銵券?撠嚗??芣???/h1>
-        
-        <div class="guide-section">
-            <h2>???蝪∩?</h2>
-            <p>甇∟?靘擳?摮賊嚗?ㄐ嚗?撠飛蝧?雿??具岫蝞”蝳???Excel) 靘圾瘙箏?蝔桀??芷憿??渡?鋆?皜?啗?蝞?瘜摰喉?瘥??澆??質??怨?撘瑕之????/p>
-        </div>
+        <h1>📜 試算表魔導書：冒險指南</h1>
 
         <div class="guide-section">
-            <h2>? ?箸??</h2>
-            <ul>
-                <li><b>?詨??桀???/b>嚗??”?潔葉?遙雿?蝵桐????/li>
-                <li><b>頛詨擳?</b>嚗?詨???銝剛撓?交?潭??砍???/li>
-                <li><b>?瑁?蝳?</b>嚗撓?亙??Ｗ??? Enter ?蛛?擳?撠?????/li>
-                <li><b>餈賡撘?</b>嚗???Ｗ椰?渡??移??撣怒?憟寞?蝯虫?雿?銝甇亦??內??/li>
-            </ul>
-        </div>
-
-        <div class="guide-section">
-            <h2>? ?撠?甇?/h2>
-            <p>?嗡???圈???臭誑?岫?亦???虜?具??賢?嚗鋆⊿??閮勗?撘瑕之???拙極?瑯?敺??瑼?隞亙?擳??賡?瘚仃嚗?/p>
+            <h2>💡 冒險小提示</h2>
+            <p>記得隨時存檔！</p>
         </div>
 
         <div id="feedback-section">
-            <h2>? ???擖?/h2>
-            <p>??撣賊?閬????芷?撽????遙雿遣霅唳??潛鈭?瘜???Bug嚗?隢?閮湔???</p>
+            <h2>💬 冒險者回饋</h2>
+            <p>我們非常重視你的冒險體驗。如果你有任何建議或發現了Bug，請告訴我們！</p>
             <form id="feedback-form">
                 <div class="form-group">
-                    <label for="p-name">??之??</label>
-                    <input type="text" id="p-name" placeholder="隢撓?乩??迂??.." required>
+                    <label for="p-name">冒險者大名：</label>
+                    <input type="text" id="p-name" placeholder="請輸入你的稱呼..." required>
                 </div>
                 <div class="form-group">
-                    <label for="p-comment">雿???嚗?/label>
-                    <textarea id="p-comment" placeholder="撖思?雿??敹??遣霅?.." required></textarea>
+                    <label for="p-comment">你的留言：</label>
+                    <textarea id="p-comment" placeholder="寫下你的冒險心得或建議..." required></textarea>
                 </div>
-                <button type="submit" class="btn-submit">?喲?瘜???/button>
-                <div id="success-msg">??閮撌脫???憭折?撠葦??銝哨???雿?????/div>
+                <button type="submit" class="btn-submit">傳送魔法訊息</button>
+                <div id="success-msg"></div>
             </form>
         </div>
 
-        <a href="game.html" class="btn-back">漎? ??韏琿?</a>
+        <a href="index.html" class="btn-back">⬅️ 回到冒險起點</a>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="code/firebase-config.js"></script>
     <script>
         document.getElementById('feedback-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('p-name').value;
             const comment = document.getElementById('p-comment').value;
-            const date = new Date().toLocaleString();
-            
-            // ?脣???localStorage
-            const feedbackList = JSON.parse(localStorage.getItem('adventure_feedback') || '[]');
-            feedbackList.push({ name, comment, date });
-            localStorage.setItem('adventure_feedback', JSON.stringify(feedbackList));
-            
-            // 璅⊥?喲???
-            console.log('Feedback saved locally:', { name, comment, date });
-            
-            // 憿舐內??閮銝阡?”??
-            document.getElementById('success-msg').style.display = 'block';
-            this.reset();
-            
-            // 3蝘??梯?閮
-            setTimeout(() => {
-                document.getElementById('success-msg').style.display = 'none';
-            }, 3000);
+            const submitBtn = this.querySelector('.btn-submit');
+            const successMsg = document.getElementById('success-msg');
+            const form = this;
+
+            submitBtn.disabled = true;
+
+            const writePromise = window.db.collection(window.FEEDBACK_COLLECTION).add({
+                name,
+                comment,
+                date: new Date().toLocaleString(),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => reject(new Error('timeout')), 8000);
+            });
+
+            Promise.race([writePromise, timeoutPromise]).then(() => {
+                successMsg.textContent = '✨ 訊息已成功傳送到大魔導師的手中！感謝你的回饋。';
+                successMsg.style.color = '#217346';
+                successMsg.style.display = 'block';
+                form.reset();
+            }).catch((err) => {
+                console.error('Feedback submit failed:', err);
+                successMsg.textContent = '⚠️ 傳送失敗了！請確認網路連線後再試一次魔法。';
+                successMsg.style.color = '#b22222';
+                successMsg.style.display = 'block';
+            }).finally(() => {
+                submitBtn.disabled = false;
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            });
         });
     </script>
 </body>
