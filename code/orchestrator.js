@@ -248,6 +248,8 @@ class Orchestrator {
      * [新增]: 多槽位存檔邏輯 (支援 auto, manual_1, manual_2)
      */
     saveGame(slotType = 'auto') {
+        // 禁術回顧模式只是借用章節資料展示教學片段，禁止寫入存檔覆蓋玩家真實進度
+        if (this.state._isReplayMode) return;
         // [性能優化]: 使用 debounce 非同步處理存檔，避免阻塞 UI (no lag)
         if (this._saveTimeout) clearTimeout(this._saveTimeout);
         
@@ -468,8 +470,9 @@ class Orchestrator {
                 if (window.gridRenderer) window.gridRenderer.render();
                 
                 // [新增]: 啟動時播放第一項任務的引導劇情 (如有)
+                // 禁術回顧模式會自行指定要播放的單一片段，需跳過此處的自動引導，避免兩段劇情搶播
                 const firstTask = simulator.tasks?.[this.state.currentTaskIndex];
-                if (firstTask && firstTask.storySegmentBefore && !this._isLoadingFromSave) {
+                if (firstTask && firstTask.storySegmentBefore && !this._isLoadingFromSave && !this.state._isReplayMode) {
                     this.playStorySegment(firstTask.storySegmentBefore);
                 }
                 break;
@@ -975,31 +978,23 @@ class Orchestrator {
         }
     }
 
-    // #22 在 init 時建立 skillId → {chId, storyKey, storyObj} 查表，避免 playSkillReplay 每次 O(chapters×tasks)
+    // #22 在 init 時建立 skillId → {chId, taskIndex} 查表，避免 playSkillReplay 每次 O(chapters×tasks)
     _buildSkillReplayIndex() {
         this._skillReplayIndex = {};
         if (!window.V2_CHAPTERS) return;
         for (const chId of Object.keys(window.V2_CHAPTERS)) {
             const ch = window.V2_CHAPTERS[chId];
             if (!ch || !ch.simulator || !ch.simulator.tasks) continue;
-            for (const task of ch.simulator.tasks) {
+            ch.simulator.tasks.forEach((task, taskIndex) => {
                 if (task.unlockSkillId && !this._skillReplayIndex[task.unlockSkillId]) {
-                    this._skillReplayIndex[task.unlockSkillId] = {
-                        chId,
-                        storyKey: task.storySegmentAfter || task.storySegmentBefore,
-                        storyObj: ch.story
-                    };
+                    this._skillReplayIndex[task.unlockSkillId] = { chId, taskIndex };
                 }
-            }
-        }
-        // 特別處理 Ch1 的搜尋技能
-        if (window.V2_CHAPTERS['1']) {
-            this._skillReplayIndex['SEARCH'] = { chId: '1', storyKey: 'discovery_F', storyObj: window.V2_CHAPTERS['1'].story };
+            });
         }
     }
 
-    // [新增] 禁術大全專用：回顧特定禁術的教學劇情
-    playSkillReplay(skillId) {
+    // [新增] 禁術大全專用：直接跳到該禁術誕生的確切章節與任務畫面 (任務提示本身就是操作教學，不需插播前後台詞鋪陳)
+    async playSkillReplay(skillId) {
         const sModal = document.getElementById('s-modal');
         if (sModal) sModal.style.display = 'none';
 
@@ -1007,38 +1002,21 @@ class Orchestrator {
         if (!this._skillReplayIndex) this._buildSkillReplayIndex();
         const entry = this._skillReplayIndex[skillId];
 
-        let targetChapterId = entry ? entry.chId : null;
-        let targetStoryKey = entry ? entry.storyKey : null;
-        let targetStoryObj = entry ? entry.storyObj : null;
-
-        if (!targetStoryKey || !targetStoryObj || !targetStoryObj[targetStoryKey]) {
-            alert('這項禁術的教學回顧影片似乎遺失了！');
+        if (!entry) {
+            alert('這項禁術的教學回顧似乎遺失了！');
             if (sModal) sModal.style.display = 'block';
             return;
         }
 
+        // 進入唯讀回顧模式：封鎖存檔，避免把這段暫時載入的章節覆寫到玩家的真實進度
         this.state._isReplayMode = true;
-        window.uiManager.showStory();
+        this.state.currentChapter = entry.chId;
+        await this.loadChapter(entry.chId);
 
-        const seg = targetStoryObj[targetStoryKey];
-        
-        const processDialog = (lines, index) => {
-            if (index >= lines.length) {
-                this.state._isReplayMode = false;
-                if (this.state.currentPhase === 'simulator') {
-                    window.uiManager.showSimulator();
-                } else {
-                    window.uiManager.hideStory();
-                }
-                if (sModal) sModal.style.display = 'block';
-                return;
-            }
-            window.uiManager.renderDialog(lines[index], () => {
-                processDialog(lines, index + 1);
-            });
-        };
-        
-        processDialog(seg, 0);
+        // 精確還原到該技能誕生的那一個任務 (loadChapter 會重置 currentTaskIndex，須在其後設定)
+        this.state.currentTaskIndex = entry.taskIndex;
+        this.triggerPhase('SIMULATOR');
+        // 不主動插播劇情對白：玩家若真的在此操作成功，原有的 storySegmentAfter 仍會自然觸發顯示
     }
 
     emit(n, d) { this.eventBus.dispatchEvent(new CustomEvent(n, { detail: d })); }

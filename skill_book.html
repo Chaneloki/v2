@@ -10,33 +10,33 @@
         /* 技能書獨立頁面美化樣式 */
         body {
             margin: 0; padding: 0;
-            background: radial-gradient(circle at center, #fbf8f2 0%, #dfd4be 100%);
+            background: radial-gradient(circle at center, #10b0b8a9 0%, #d2bb0bc7 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 100vh; overflow: hidden;
             font-family: 'Inter', 'Noto Serif TC', serif;
-            color: #3c3020;
+            color: #203c2b;
         }
 
         /* 頂部返回按鈕 */
         .return-btn {
-            position: absolute; top: 16px; right: 28px;
-            padding: 8px 20px; background: rgba(140, 98, 57, 0.1);
-            color: #8c6239; border: 1px solid rgba(140, 98, 57, 0.4); border-radius: 20px;
+            position: absolute; top: 5px; right: 28px;
+            padding: 8px 20px; background: rgba(206, 21, 21, 0.619);
+            color: #ffffff; border-radius: 20px;
             font-weight: bold; cursor: pointer; text-decoration: none;
             transition: all 0.22s; z-index: 100;
             font-size: 0.88rem;
             backdrop-filter: blur(10px);
         }
-        .return-btn:hover { background: #8c6239; color: #fff; box-shadow: 0 0 15px rgba(140, 98, 57, 0.3); }
+        .return-btn:hover { background: #ff0000; color: #fff; box-shadow: 0 0 15px rgba(140, 98, 57, 0.3); }
 
         .grimoire-layout.standalone-grimoire {
             width: 95vw !important;
             height: 90vh !important;
             max-width: 1400px !important;
-            background: rgba(253, 251, 245, 0.98) !important;
-            border: 2px solid rgba(192, 142, 64, 0.45) !important;
+            background: rgba(249, 154, 2, 0.283) !important;
+            border: 2px solid rgb(0, 0, 0) !important;
             border-radius: 16px !important;
-            box-shadow: 0 20px 60px rgba(110, 80, 40, 0.15) !important;
+            box-shadow: 0 20px 60px rgb(0, 0, 0) !important;
             overflow: hidden !important;
             display: flex;
             position: relative;
@@ -46,10 +46,10 @@
         .grimoire-bg-overlay {
             position: absolute; inset: 0;
             background: url('BG/intro/2_bg.png') center/cover no-repeat;
-            opacity: 0.18;
+            opacity: 0.5;
             pointer-events: none;
             z-index: 0;
-            filter: grayscale(20%) blur(3px);
+            filter: grayscale(20%) blur(0px);
         }
 
         .grimoire-left {
@@ -64,8 +64,8 @@
 
         #s-header {
             padding: 12px 30px !important;
-            background: rgba(245, 238, 222, 0.6) !important;
-            border-bottom: 1px solid rgba(192, 142, 64, 0.2) !important;
+            background: rgba(165, 121, 27, 0.377) !important;
+            border-bottom: 1px solid rgba(156, 101, 13, 0.301) !important;
         }
         .header-main-row {
             display: flex;
@@ -75,7 +75,7 @@
         #s-header h3 {
             margin: 0;
             font-size: 1.35rem;
-            color: #8c6239;
+            color: #ffffff;
             font-family: 'Noto Serif TC', serif;
             font-weight: 900;
             letter-spacing: 2px;
@@ -84,11 +84,11 @@
         .grimoire-subtitle {
             margin: 2px 0 0 0;
             font-size: 0.8rem;
-            color: #6e5e49;
+            color: #ffffff;
         }
         #progress-text {
             font-size: 0.85rem;
-            color: #b37400;
+            color: #ffffff;
             font-weight: bold;
         }
 
@@ -97,7 +97,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(245, 238, 222, 0.45) !important;
+            background: rgba(229, 245, 222, 0.45) !important;
             border-bottom: 1px solid rgba(192, 142, 64, 0.2) !important;
             padding: 6px 30px !important;
             gap: 20px;
@@ -112,21 +112,21 @@
             align-items: center;
             gap: 6px;
             padding: 6px 12px;
-            background: rgba(255,255,255,0.6);
-            border: 1px solid rgba(192, 142, 64, 0.25);
+            background: rgba(128, 215, 138, 0.6);
+            border: 1px solid rgb(0, 0, 0);
             border-radius: 8px;
             cursor: pointer;
-            color: #6e5e49;
+            color: #6e494f;
             transition: all 0.2s;
         }
         .skill-tab:hover {
-            background: rgba(192, 142, 64, 0.08);
-            border-color: rgba(192, 142, 64, 0.5);
+            background: rgb(0, 252, 63);
+            border-color: rgb(0, 0, 0);
             color: #554433;
         }
         .skill-tab.active {
-            background: rgba(192, 142, 64, 0.18);
-            border-color: #8c6239;
+            background: rgba(183, 34, 44, 0.58);
+            border-color: #000000;
             color: #8c6239;
             box-shadow: 0 0 8px rgba(192, 142, 64, 0.1);
         }
@@ -141,11 +141,11 @@
         #skill-search {
             width: 100%;
             padding: 6px 14px;
-            border: 1px solid rgba(192, 142, 64, 0.3);
+            border: 1px solid rgb(0, 0, 0);
             border-radius: 20px;
             font-size: 0.8rem;
             outline: none;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.105);
             color: #3c3020;
             box-sizing: border-box;
             transition: all 0.2s;
@@ -163,7 +163,7 @@
             flex: 1;
             overflow: auto;
             position: relative;
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0);
         }
 
         /* 樹狀分層背景 */
@@ -175,7 +175,7 @@
         }
         .tree-grid-col {
             flex: 1;
-            border-right: 1px dashed rgba(192, 142, 64, 0.2);
+            border-right: 1px dashed rgba(64, 192, 87, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -184,8 +184,8 @@
             box-sizing: border-box;
         }
         .tree-grid-col-title {
-            font-size: 11px;
-            color: rgba(140, 98, 57, 0.75);
+            font-size: 15px;
+            color: rgb(0, 0, 0);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -207,12 +207,12 @@
         }
         .tree-link {
             fill: none;
-            stroke: rgba(192, 142, 64, 0.25);
+            stroke: rgba(236, 236, 2, 0.393);
             stroke-width: 3;
             transition: stroke 0.22s, stroke-width 0.22s, filter 0.22s;
         }
         .tree-link.unlocked {
-            stroke: rgba(192, 142, 64, 0.55);
+            stroke: rgb(18, 223, 131);
             stroke-width: 3.5;
         }
         .tree-link.highlight-upstream {
@@ -531,7 +531,7 @@
         <div class="grimoire-left">
             <div id="s-header">
                 <div class="header-main-row">
-                    <h3>📖 實戰魔導書 (Skill Grimoire)</h3>
+                    <h3>📖 實戰魔導書</h3>
                     <div id="progress-text">已領悟技能：0 / 0 (0%)</div>
                 </div>
                 <p class="grimoire-subtitle">以關卡所面臨的實戰難題為導向，尋找對應的試算表解決技能。</p>
@@ -680,24 +680,24 @@
                 subtitle: "公式賦能，實現多維度求和、排名，以及大容量資料分組與多層條件邏輯判斷。",
                 tiers: ["Tier 1: 啟動", "Tier 2: 相對計算", "Tier 3: 鎖定排名", "Tier 4: 基礎分流", "Tier 5: 複合邏輯", "Tier 6: 分組大綱", "Tier 7: 多維統計"],
                 nodes: [
-                    { id: "FORMULA_BASIC", x: 60, y: 150, tier: 1 },
-                    { id: "REF_RELATIVE", x: 230, y: 40, tier: 2 },
-                    { id: "SUM", x: 230, y: 120, tier: 2 },
-                    { id: "TEXT_TO_NUM", x: 230, y: 200, tier: 2 },
-                    { id: "COMPARE_OP", x: 230, y: 280, tier: 2 },
-                    { id: "REF_ABSOLUTE", x: 400, y: 60, tier: 3 },
-                    { id: "FUNC_SUM_MULTI", x: 400, y: 160, tier: 3 },
-                    { id: "FUNC_RANK", x: 570, y: 60, tier: 4 },
-                    { id: "IF_BASIC", x: 570, y: 180, tier: 4 },
-                    { id: "IFS", x: 740, y: 30, tier: 5 },
-                    { id: "IF_PLUS", x: 740, y: 110, tier: 5 },
-                    { id: "IF_CONCAT", x: 740, y: 190, tier: 5 },
-                    { id: "IF_AND", x: 740, y: 270, tier: 5 },
-                    { id: "SUBTOTAL", x: 910, y: 60, tier: 6 },
-                    { id: "PIVOT_CREATE", x: 910, y: 180, tier: 6 },
-                    { id: "SUBTOTAL_NESTED", x: 1080, y: 60, tier: 7 },
-                    { id: "PIVOT_METHOD", x: 1080, y: 150, tier: 7 },
-                    { id: "PIVOT_GROUP", x: 1080, y: 240, tier: 7 }
+                    { id: "FORMULA_BASIC", x: 25, y: 150, tier: 1 },
+                    { id: "REF_RELATIVE", x: 195, y: 40, tier: 2 },
+                    { id: "SUM", x: 195, y: 120, tier: 2 },
+                    { id: "TEXT_TO_NUM", x: 195, y: 200, tier: 2 },
+                    { id: "COMPARE_OP", x: 195, y: 280, tier: 2 },
+                    { id: "REF_ABSOLUTE", x: 365, y: 60, tier: 3 },
+                    { id: "FUNC_SUM_MULTI", x: 365, y: 160, tier: 3 },
+                    { id: "FUNC_RANK", x: 535, y: 60, tier: 4 },
+                    { id: "IF_BASIC", x: 535, y: 180, tier: 4 },
+                    { id: "IFS", x: 705, y: 30, tier: 5 },
+                    { id: "IF_PLUS", x: 705, y: 110, tier: 5 },
+                    { id: "IF_CONCAT", x: 705, y: 190, tier: 5 },
+                    { id: "IF_AND", x: 705, y: 270, tier: 5 },
+                    { id: "SUBTOTAL", x: 875, y: 60, tier: 6 },
+                    { id: "PIVOT_CREATE", x: 875, y: 180, tier: 6 },
+                    { id: "SUBTOTAL_NESTED", x: 1045, y: 60, tier: 7 },
+                    { id: "PIVOT_METHOD", x: 1045, y: 150, tier: 7 },
+                    { id: "PIVOT_GROUP", x: 1045, y: 240, tier: 7 }
                 ],
                 connections: [
                     { from: "FORMULA_BASIC", to: "REF_RELATIVE" },
@@ -1104,8 +1104,8 @@
                     </div>
 
                     <div class="detail-footer">
-                        <button class="review-btn" disabled style="background: #cccccc !important; color: #888888 !important; box-shadow: none !important; cursor: not-allowed !important;">
-                            🎬 重溫精靈教學 (未完成)
+                        <button class="review-btn" onclick="triggerCrossPageReplay('${id}')">
+                            🎬 重溫精靈教學
                         </button>
                     </div>
                 `;
@@ -1162,7 +1162,7 @@
 
         // 回看模擬器關卡重播
         function triggerCrossPageReplay(skillId) {
-            window.location.href = `game.html?replaySkill=${skillId}`;
+            window.location.href = `game.html?replaySkill=${encodeURIComponent(skillId)}`;
         }
     </script>
 </body>

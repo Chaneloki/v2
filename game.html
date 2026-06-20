@@ -909,6 +909,18 @@
 </head>
 
 <body>
+    <!-- [新增] 禁術回顧模式專用橫幅：從實戰魔導書跳轉觀看教學時顯示，平時 display:none 不影響原有畫面 -->
+    <div id="replay-back-banner"
+        style="display:none; position:fixed; top:0; left:0; right:0; z-index:21000; align-items:center; justify-content:space-between; gap:12px; padding:8px 20px; background:linear-gradient(135deg,#3c2a18,#2a1a10); border-bottom:2px solid rgba(255,215,0,0.5); box-shadow:0 2px 10px rgba(0,0,0,0.4); font-family:'Noto Serif TC', serif;">
+        <span style="color:#e8d5a3; font-size:13px; letter-spacing:1px;">🎬 禁術回顧模式中，不會影響你的真實存檔進度</span>
+        <button onclick="window.location.href='skill_book.html'"
+            style="padding:6px 16px;border-radius:8px;border:1px solid rgba(255,215,0,0.6);background:rgba(255,215,0,0.18);color:#ffd700;font-weight:bold;font-size:13px;cursor:pointer;white-space:nowrap;"
+            onmouseover="this.style.background='rgba(255,215,0,0.32)'"
+            onmouseout="this.style.background='rgba(255,215,0,0.18)'">
+            📖 返回實戰魔導書
+        </button>
+    </div>
+
     <!-- [Mobile 2026-06-18] 旋轉提示：手機直向時顯示，橫向時隱藏 -->
     <div id="rotate-hint" aria-hidden="true">
         <div style="font-size:3.5rem;line-height:1;">📱↻</div>
@@ -2285,18 +2297,18 @@
     <script src="code/rpg/rpg_engine.js?v=1781373500002"></script>
     <script src="code/utils.js?v=1781286453925"></script>
     <script src="code/orchestrator.js?v=1781286453925"></script>
-    <script src="chapter/ch1.js?v=1781286453925"></script>
-    <script src="chapter/ch1_5.js?v=1781286453925"></script>
-    <script src="chapter/ch2.js?v=1781286453925"></script>
-    <script src="chapter/ch2.5.js?v=1781286453925"></script>
-    <script src="chapter/ch3.js?v=1781590000000"></script>
-    <script src="chapter/ch3.5.js?v=1781590000000"></script>
-    <script src="chapter/ch4.js?v=1781286453925"></script>
-    <script src="chapter/ch4.5.js?v=1781286453925"></script>
-    <script src="chapter/ch5.js?v=1781286453925"></script>
-    <script src="chapter/ch5.5.js?v=1781286453925"></script>
-    <script src="chapter/ch6.js?v=1781286453925"></script>
-    <script src="chapter/ch6.5.js?v=1781286453925"></script>
+    <script src="chapter/ch1.js?v=1782100000000"></script>
+    <script src="chapter/ch1_5.js?v=1782100000000"></script>
+    <script src="chapter/ch2.js?v=1782100000000"></script>
+    <script src="chapter/ch2.5.js?v=1782100000000"></script>
+    <script src="chapter/ch3.js?v=1782100000000"></script>
+    <script src="chapter/ch3.5.js?v=1782100000000"></script>
+    <script src="chapter/ch4.js?v=1782100000000"></script>
+    <script src="chapter/ch4.5.js?v=1782100000000"></script>
+    <script src="chapter/ch5.js?v=1782100000000"></script>
+    <script src="chapter/ch5.5.js?v=1782100000000"></script>
+    <script src="chapter/ch6.js?v=1782100000000"></script>
+    <script src="chapter/ch6.5.js?v=1782100000000"></script>
     <script src="chapter/ch7.js?v=1781286453925"></script>
     <script src="chapter/ch7.5.js?v=1781286453925"></script>
     <script src="chapter/ch8.js?v=1781555000000"></script>
@@ -2374,12 +2386,20 @@
 
                     // Parse query parameters to auto-load save if ?action=load
                     const urlParams = new URLSearchParams(window.location.search);
+                    const replaySkillId = urlParams.get('replaySkill');
                     if (urlParams.get('action') === 'load') {
                         setTimeout(() => {
                             if (window.uiManager) {
                                 window.uiManager.openSaveLoadMenu('load');
                             }
                         }, 100);
+                    } else if (replaySkillId && window.orchestrator) {
+                        // 從實戰魔導書跳轉而來：跳過標題畫面，直接定位到該禁術誕生的章節與任務
+                        const titleScreen = document.getElementById('title-screen-overlay');
+                        if (titleScreen) titleScreen.style.display = 'none';
+                        const banner = document.getElementById('replay-back-banner');
+                        if (banner) banner.style.display = 'flex';
+                        window.orchestrator.playSkillReplay(decodeURIComponent(replaySkillId));
                     }
                 }).catch(_hideInitLoader);
             } else {
