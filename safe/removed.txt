@@ -1,3 +1,21 @@
+--- 2026-06-22 ---
+[移除 ch6 插入選單中未實作的「圖片」「圖表」佔位項]
+檔案: v2/action/ch6_actions.js
+原因: 使用者確認「圖片」「圖表」這兩個樞紐分析表插入選單下拉項從未真正使用，點了只會跳出
+「此功能尚未被魔導書解鎖喔！」的提示，要求直接移除。連帶移除只被這兩項呼叫的 todo() 方法。
+移除以下代碼：
+    insert_group(anchorEl) {
+        window.uiManager.showDropdown([
+            { icon: '📊', text: '樞紐分析表', action: 'pivot_create' },
+            { icon: '🖼️', text: '圖片', action: 'todo' },
+            { icon: '📈', text: '圖表', action: 'todo' }
+        ], anchorEl);
+    },
+
+    todo() {
+        window.uiManager.showMagicToast("「此功能尚未被魔導書解鎖喔！」", "error");
+    },
+
 --- 2026-06-21 補2 ---
 [移除小型試煉進階篩選任務與相關的死代碼]
 檔案: v2/code/practice_engine.js

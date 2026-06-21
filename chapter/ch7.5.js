@@ -78,7 +78,7 @@ window.V2_CHAPTERS["75"] = {
         // ── 開場：早飯後，庭院集合 ──────────────────────────────────────
         start: [
             { n: "系統", t: "（早飯後的庭院，晨光正斜斜地切過地面，將一整排梅樹的影子拉得又長又細。）", a: "system",
-              bg: "bg7 garden.png", bgm: "daily.mp3", bgPos: "center", bgZoom: 1.1,
+              bg: "bg7 garden.png", bgm: ".daily.mp3", bgPos: "center", bgZoom: 1.1,
               env: "light/1", envFrames: 25, envspeed: 80, envOpacity: 0.3, envDrift: true },
             { n: "我", t: "（手裡的茶碗還透著熱氣，指尖輕輕摩挲著瓷邊，目光時不時越過花叢看向走廊的轉角。）", a: "me",
               bgPos: "right", bgZoom: 1.5, bgDur: "8s", se: "clothes1.mp3" },
@@ -108,7 +108,7 @@ window.V2_CHAPTERS["75"] = {
 
             // 晏出場
             { n: "系統", t: "（走廊盡頭，那道纖細的身影終於顯現。）", a: "system",
-              bg: "bg7 garden.png", bgm: "prince.mp3", bgPos: "left", bgZoom: 1.8,
+              bg: "bg7 garden.png", bgm: ".prince.mp3", bgPos: "left", bgZoom: 1.8,
               flash: true, flashSFX: "bell.mp3", vol: 0.8 },
             { n: "我", t: "（與昨天那身華麗的禮裙不同，她今日換了一襲簡約的素色長衫，袖口紮得利落。）", a: "me", bgPos: "center", bgZoom: 1.2, bgDur: "5s" },
             { n: "我", t: "（手裡拎著一個舊燈籠，燈殼上蒙著一層薄灰。）", a: "me" },
@@ -124,7 +124,7 @@ window.V2_CHAPTERS["75"] = {
 
             // 走廊——往文牘庫
             { n: "系統", t: "（我們跟隨晏步入側道。這裡比主廊路窄得多，只容兩人並肩。）", a: "system",
-              bg: "bg7 corridor.png", bgm: "greatscare.mp3", bgPos: "right", bgZoom: 1.5,
+              bg: "bg7 corridor.png", bgm: ".suspense.mp3", bgPos: "right", bgZoom: 1.5,
               flash: true, flashSFX: "trans.mp3", vol: 0.8,
               env: "white smoke/1", envFrames: 25, envspeed: 60, envOpacity: 0.15, envDrift: true },
             { n: "系統", t: "（兩側牆面透出一股經年累月累積下來的潮濕與冰冷。）", a: "system" },
@@ -149,7 +149,7 @@ window.V2_CHAPTERS["75"] = {
             // 柔依進門找燈
             { n: "柔依", t: "（踏入了門檻。室內滯悶的灰塵隨著她的動作微微揚起。）", a: "royi",
               bg: "bg7.5 dark.png", bgPos: "right", bgZoom: 2.0,
-              flash: true, flashSFX: "trans.mp3", vol: 0.8, bgm: "bad things.mp3" },
+              flash: true, flashSFX: "trans.mp3", vol: 0.8, bgm: ".suspense.mp3" },
             { n: "我", t: "（她沒有絲毫遲疑，更沒有向四處張望，徑直穿過黑暗，朝著右側的角落走去。）", a: "me", se: "walk.mp3" },
             { n: "我", t: "（我緊隨其後跨入門內，視線被濃重的黑暗擋住，只能憑本能摸索門邊牆上的凸起。）", a: "me" },
             { n: "柔依", t: "（右側角落靜靜佇立著一座矮木架。探手取下一盞舊油燈。）", a: "royi" },
@@ -200,7 +200,7 @@ window.V2_CHAPTERS["75"] = {
 
             // 轉向任務
             { n: "王子", t: "（目光落回手裡的冊子，翻到某一頁，聲音和剛才沒什麼兩樣）欸，找到了。", a: "prince",
-              se: "girl_smile1.mp3", vol: 0.8, bgm: "kingdom.mp3" },
+              se: "girl_smile1.mp3", vol: 0.8, bgm: ".kingdom.mp3" },
             { n: "米羅", t: "（快步走到晏的身側）找到什麼了？", a: "miro", se: "walk.mp3" },
             { n: "王子", t: "這幾年地方調度記錄，從來沒人整理過。", a: "prince" },
             { n: "王子", t: "我想看各地異常調度量的排名，和幾個特定地區的合計。", a: "prince" },
@@ -264,7 +264,7 @@ window.V2_CHAPTERS["75"] = {
         end: [
             { n: "系統", t: "（帳冊歸回木架。柔依把油燈吹滅，燈罩放回矮木架的原位，動作跟取燈時一樣俐落。）", a: "system",
               bg: "bg7.5 archive.png", bgPos: "center", bgZoom: 1.1,
-              se: "wind1.mp3", vol: 0.5, bgm: "sweet.mp3", flash: true, flashSFX: "trans.mp3" },
+              se: "wind1.mp3", vol: 0.5, bgm: ".sweet.mp3", flash: true, flashSFX: "trans.mp3" },
             { n: "米羅", t: "（忍不住回頭望了那扇破舊的矮門一眼）真的不需要叫人來打掃一下嗎？", a: "miro",bg: "bg7.5 dark.png" },
             { n: "王子", t: "（單手將那扇腐朽的木門重新合上）不必。", a: "prince", se: "door open.mp3",bg: "bg7.5 archive door.png" },
             { n: "米羅", t: "（不解地追問）為什麼？", a: "miro", shake: true },
@@ -275,7 +275,7 @@ window.V2_CHAPTERS["75"] = {
 
             // 庭院
             { n: "系統", t: "（午前的陽光溢滿了整座庭院，光影比早晨更加熾烈。）", a: "system",
-              bg: "bg7 garden.png", bgm: "sweet2.mp3", bgPos: "center", bgZoom: 1.1,
+              bg: "bg7 garden.png", bgm: ".2_emotional.mp3", bgPos: "center", bgZoom: 1.1,
               flash: true, flashSFX: "bell.mp3", vol: 0.8,
               env: "light/1", envFrames: 25, envspeed: 80, envOpacity: 0.3, envDrift: true },
             { n: "王子", t: "（隨手將那盞積灰的舊燈籠擱在廊下的欄杆上，撣了撣袖口。）", a: "prince",
@@ -327,7 +327,7 @@ window.V2_CHAPTERS["75"] = {
         ] },
 
     simulator: {
-        bgm: "BGM/game_bgm.mp3",
+        bgm: "BGM/.game.mp3",
         tasks: [
             {
                 id:           "FORMULA_ARITH_TASK",

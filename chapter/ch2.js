@@ -58,7 +58,7 @@ window.V2_CHAPTERS["20"] = {
     story: {
         "start": [
             { n: "系統", t: "（老馬緩緩停靠在那座被浮雲環繞的尖塔之下。）", a: "system", bg: "cg/ch2 school.png"
-                , bgm: "school.mp3", env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true, bgPos: "center", bgZoom: 1.2},
+                , bgm: ".school.mp3", env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true, bgPos: "center", bgZoom: 1.2},
             { n: "系統", t: "（高塔的巨大陰影遮蔽了晨曦的溫度。）", a: "system", bgPos: "top", bgZoom: 1.5, bgDur:"10s"},
             { n: "賽爾", t: "少年，在我們正式踏入王城那座權力旋渦之前，你得先在這裡看清楚一件事。 ", a: "fairy" },
             { n: "賽爾", t: "王宮裡那幫眼睛長在頭頂上的典儀官，可不像公會倉庫裡的大叔那麼好說話。 ", a: "fairy" },
@@ -130,7 +130,7 @@ window.V2_CHAPTERS["20"] = {
             { n: "我", t: "繼續死磕後半張表，讓這堆混亂歸位！", a: "me"}, 
         ],
         "end": [
-            { n: "我", t: "（我長長地吐出了一口濁氣，發出一聲清脆的響動。）", a: "me", bg: "bg2.png", bgm: "school.mp3", se: "girl_ow.mp3", vol: 1.0  },
+            { n: "我", t: "（我長長地吐出了一口濁氣，發出一聲清脆的響動。）", a: "me", bg: "bg2.png", bgm: ".school.mp3", se: "girl_ow.mp3", vol: 1.0  },
             { n: "我", t: "（我重重地放下了手中的羽毛筆。）", a: "me", se: "pen.mp3", vol: 1.0, shake:true },
             { n: "我", t: "呼……雖然這整套排版的過程繁瑣到讓人抓狂。 ", a: "me",bgPos: "center", bgZoom: 1.5, bgDur:"3s"  },
             { n: "我", t: "但現在回頭看去，原本密密麻麻的新生數據，確實變得賞心悅目了不少。 ", 
@@ -144,7 +144,7 @@ window.V2_CHAPTERS["20"] = {
             { n: "蘭吉教授", t: "這場關於『秩序』的對決，是你贏了。 ", a: "lange",se:"woman_smile.mp3", vol:1.0},
             { n: "蘭吉教授", t: "這是我親筆簽署的王廷推薦函，是你應得的獎賞。 ", a: "lange",se:"paper down.mp3", vol:1.0, bg: "bg2.png" },
             
-            { n: "系統", t: "（夏特看著那份名冊，眼底的高傲微微收斂了一些。）", a: "system", bgm: "sweet.mp3",bg:"cg/ch2 start.png",bgPos: "right top", bgZoom: 2.0  , se: "paper down.mp3", vol: 0.8 },
+            { n: "系統", t: "（夏特看著那份名冊，眼底的高傲微微收斂了一些。）", a: "system", bgm: ".sweet.mp3",bg:"cg/ch2 start.png",bgPos: "right top", bgZoom: 2.0  , se: "paper down.mp3", vol: 0.8 },
             { n: "夏特", t: "……是我輸了。", a: "chate", flash:true, flashSFX:"flash.mp3",vol:1.0 },
             { n: "夏特", t: "（他低聲喃喃自語）徹底打破陳規的切分邏輯……不帶任何諂媚的色彩的流向……", a: "chate",bgPos: "right top", bgZoom: 1.5, bgDur:"5s"},
             { n: "夏特", t: "（我曾經也……）", a: "chate" },
@@ -170,7 +170,7 @@ window.V2_CHAPTERS["20"] = {
             , se: "run.mp3", bgm: "no.mp3",bgPos: "center", bgZoom: 1.2},
             { n: "夏特", t: "（他突然大步追了上來，對著我深深地鞠了一躬。）", a: "chate"
             ,bg: "cg/ch2.png",bgPos: "bottom", bgZoom: 2.0, flash:true, flashSFX:"flash.mp3",vol:1.0},
-            { n: "夏特", t: "萬分感謝。這場試煉，確實是我徹底敗北了。 ", a: "chate", bgm: "sweet.mp3",bgPos: "top", bgZoom: 1.5, bgDur:"8s"  },
+            { n: "夏特", t: "萬分感謝。這場試煉，確實是我徹底敗北了。 ", a: "chate", bgm: ".sweet.mp3",bgPos: "top", bgZoom: 1.5, bgDur:"8s"  },
             { n: "夏特", t: "希望在不久的將來，我也能拿出一本真正具備靈魂、不被束縛的作品……", a: "chate" },
             { n: "夏特", t: "再次請閣下，親自過目。 ", a: "chate" },
             
@@ -191,7 +191,7 @@ window.V2_CHAPTERS["20"] = {
             , flash:true, flashSFX:"fun1.mp3",vol:1.0, bg: "cg/ch2 last.png",bgPos: "right", bgZoom: 2.0 },
             { n: "賽爾", t: "好了啦！別在這裡跟那位憂鬱的天才依依不捨了，簡直看得我肉麻。 ", a: "fairy" },
             { n: "賽爾", t: "全速出發吧少年！目標是——王城！！", a: "fairy",shake:true },
-            { n: "我", t: "（一開始，真的只是想混口飯吃，活著就好。）", a: "me",bgPos: "center", bgZoom: 1.5, bgDur:"4s", bgm: "sweet2.mp3"  },                             
+            { n: "我", t: "（一開始，真的只是想混口飯吃，活著就好。）", a: "me",bgPos: "center", bgZoom: 1.5, bgDur:"4s", bgm: ".2_emotional.mp3"  },                             
             { n: "我", t: "（但親手把那些混亂理順……看著他們鬆口氣的樣子。那種被需要的重量。）", a: "me" },       
             { n: "我", t: "（我很快樂。）", a: "me" },                                                   
             { n: "我", t: "（我望向官道的盡頭，語氣平靜且堅定）……王城。走吧。", a: "me" }  ,
@@ -279,7 +279,7 @@ window.V2_CHAPTERS["20"] = {
     },
 
     simulator: {
-        bgm: "game_bgm.mp3",
+        bgm: ".game.mp3",
         tasks: [
             {
                 id: "MERGE_TASK",

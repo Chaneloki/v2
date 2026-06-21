@@ -43,14 +43,8 @@ window.ch6Actions = {
 
     insert_group(anchorEl) {
         window.uiManager.showDropdown([
-            { icon: '📊', text: '樞紐分析表', action: 'pivot_create' },
-            { icon: '🖼️', text: '圖片', action: 'todo' },
-            { icon: '📈', text: '圖表', action: 'todo' }
+            { icon: '📊', text: '樞紐分析表', action: 'pivot_create' }
         ], anchorEl);
-    },
-
-    todo() {
-        window.uiManager.showMagicToast("「此功能尚未被魔導書解鎖喔！」", "error");
     },
 
     pivot_create() {

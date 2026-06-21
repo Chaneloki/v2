@@ -2673,13 +2673,29 @@
 
             function getBGMEl() { return document.getElementById('bgm'); }
 
+            function getAdjustedBGMVolume(baseVol, filename) {
+                if (!filename) return baseVol;
+                if (filename.includes('daily.mp3')) {
+                    return Math.min(1.0, baseVol * 1.5); // Boost daily.mp3 volume by 50%
+                }
+                if (filename.includes('sweet.mp3') || filename.includes('town.mp3')) {
+                    return Math.min(1.0, baseVol * 1.3); // Boost sweet.mp3 & town.mp3 volume by 30%
+                }
+                return baseVol;
+            }
+
             // Apply saved volumes immediately and after every playBGM call
             function applyBGM(v) {
                 v = clamp(v);
                 const a = getBGMEl();
-                if (a) a.volume = v;
+                let finalVol = v;
+                if (a) {
+                    const currentSrc = a.getAttribute('data-current') || a.src || '';
+                    finalVol = getAdjustedBGMVolume(v, currentSrc);
+                    a.volume = finalVol;
+                }
                 // [Fix 2026-06-19] iOS: also set GainNode if available
-                if (window._bgmGainNode) window._bgmGainNode.gain.value = v;
+                if (window._bgmGainNode) window._bgmGainNode.gain.value = finalVol;
                 localStorage.setItem(LS_BGM, v);
                 const lbl = document.getElementById('vol-bgm-val');
                 const sl = document.getElementById('vol-bgm');
@@ -2702,7 +2718,12 @@
                 const a = getBGMEl();
                 const bgmSaved = parseFloat(localStorage.getItem(LS_BGM));
                 const seSaved = parseFloat(localStorage.getItem(LS_SE));
-                if (a && !isNaN(bgmSaved)) a.volume = bgmSaved;
+                if (a && !isNaN(bgmSaved)) {
+                    const currentSrc = a.getAttribute('data-current') || a.src || '';
+                    const finalVol = getAdjustedBGMVolume(bgmSaved, currentSrc);
+                    a.volume = finalVol;
+                    if (window._bgmGainNode) window._bgmGainNode.gain.value = finalVol;
+                }
                 if (!isNaN(seSaved)) window._seVol = seSaved;
             }
 
@@ -2712,16 +2733,28 @@
                 UIManager.prototype.playBGM = function (f) {
                     orig.call(this, f);
                     const saved = parseFloat(localStorage.getItem(LS_BGM));
-                    if (!isNaN(saved)) { const a = getBGMEl(); if (a) a.volume = saved; }
+                    const a = getBGMEl();
+                    if (a) {
+                        const baseVol = isNaN(saved) ? 0.3 : saved;
+                        const finalVol = getAdjustedBGMVolume(baseVol, f);
+                        a.volume = finalVol;
+                        if (window._bgmGainNode) window._bgmGainNode.gain.value = finalVol;
+                    }
                 };
                 const origFade = UIManager.prototype.fadeInBGM;
                 UIManager.prototype.fadeInBGM = function (f) {
                     origFade.call(this, f);
                     // After fade completes, clamp to saved vol
                     const saved = parseFloat(localStorage.getItem(LS_BGM));
-                    if (!isNaN(saved)) {
-                        setTimeout(() => { const a = getBGMEl(); if (a && a.volume > saved) a.volume = saved; }, 2000);
-                    }
+                    setTimeout(() => {
+                        const a = getBGMEl();
+                        if (a) {
+                            const baseVol = isNaN(saved) ? 0.3 : saved;
+                            const finalVol = getAdjustedBGMVolume(baseVol, f);
+                            a.volume = finalVol;
+                            if (window._bgmGainNode) window._bgmGainNode.gain.value = finalVol;
+                        }
+                    }, 2000);
                 };
             })();
 
@@ -2736,6 +2769,10 @@
 
             // [Fix 2026-06-19] BGM GainNode for iOS Safari (audio.volume unreliable on iOS)
             function initBGMGain() {
+                if (window.location.protocol === 'file:') {
+                    console.warn('[GainNode] Running under file:// protocol. Bypassing Web Audio to prevent CORS muting.');
+                    return;
+                }
                 if (window._bgmGainNode) return;
                 const bgmEl = getBGMEl();
                 if (!bgmEl) return;

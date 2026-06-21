@@ -94,7 +94,7 @@ window.V2_CHAPTERS["70"] = {
         start: [
             // 城門廣場——感官先行
             { n: "系統", t: "（皇宮的外城牆壓在頭頂上。磚縫裡積了幾十年的苔蘚，叫人想到的只有重量。）", a: "system",
-              bg: "bg7 gate.png", bgm: "kingdom sad.mp3", bgPos: "center", bgZoom: 1.1, env: "white smoke/1", envFrames: 25, envspeed: 80, envOpacity: 0.2, envDrift: true },
+              bg: "bg7 gate.png", bgm: ".sad.mp3", bgPos: "center", bgZoom: 1.1, env: "white smoke/1", envFrames: 25, envspeed: 80, envOpacity: 0.2, envDrift: true },
             { n: "系統", t: "（廣場正午的石板曬得泛白，刺得人眼睛發酸。）", a: "system"
             , bgPos: "bottom", bgZoom: 1.5,flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "系統", t: "（守門侍衛的手死死扣在槍柄上，視線像是一把平滑的鈍刀從我們頭頂掃過去。）", a: "system"
@@ -117,7 +117,7 @@ window.V2_CHAPTERS["70"] = {
 
             // 走廊——群像
             { n: "系統", t: "（這條走廊長得沒完沒了。）", a: "system",
-              bg: "bg7 corridor.png", bgm: "greatscare.mp3", bgPos: "center", bgZoom: 1.2, vol: 0.5, flash: true, flashSFX: "trans.mp3" },
+              bg: "bg7 corridor.png", bgm: ".suspense.mp3", bgPos: "center", bgZoom: 1.2, vol: 0.5, flash: true, flashSFX: "trans.mp3" },
             { n: "系統", t: "（每走七步，就會撞進下一盞燈架的火光裡。）", a: "system", bgPos: "right", bgZoom: 1.5, bgDur: "10s" },
             { n: "系統", t: "（那火苗連晃都不晃一下，安靜得像是在嘲諷外頭那個千瘡百孔的世界。）", a: "system"},
 
@@ -133,20 +133,20 @@ window.V2_CHAPTERS["70"] = {
 
             { n: "我", t: "（賽爾縮在書頁裡，甚至沒探出半個腦袋。）", a: "me", se: "fairy_sleep.mp3",bg: "bg7 corridor.png" },
 
-            { n: "葛蕾", t: "（這條走廊長得離譜，燈架又密。）", a: "glea", bgPos: "center", bgZoom: 1.2,bg: "bg7 glea.png", bgm: "not match.mp3" },
+            { n: "葛蕾", t: "（這條走廊長得離譜，燈架又密。）", a: "glea", bgPos: "center", bgZoom: 1.2,bg: "bg7 glea.png", bgm: ".investigate.mp3" },
             { n: "葛蕾", t: "（按這火苗燃燒的速度，一日至少得換兩次燈油。）", a: "glea" },
             { n: "葛蕾", t: "（全宮算下來……嘖，誰管後勤的？簡直在燒錢！）", a: "glea", shake: true, bgPos: "center", bgZoom: 1.5 },
             { n: "葛蕾", t: "（把手背到身後。我是客人，不是管事。）", a: "glea", se: "clothes1.mp3", bgPos: "center", bgZoom: 1.2 , bgDur:"6s" },
             // 安頓
             { n: "管事", t: "（帶到住所，逐一發放房間鑰匙。）如有任何需要，拉這條繩子即可。", a: "npc2",
-              bg: "bg7 room.png", se: "put down.mp3", vol: 0.8, flash: true, flashSFX: "trans.mp3", bgPos: "center", bgZoom: 1.1, bgm: "kingdom sad.mp3" },
+              bg: "bg7 room.png", se: "put down.mp3", vol: 0.8, flash: true, flashSFX: "trans.mp3", bgPos: "center", bgZoom: 1.1, bgm: ".sad.mp3" },
             { n: "管事", t: "今晚餐食在西廂。三日後宴會前不另行安排，諸位可自行在宮中走動。", a: "npc2" },
             { n: "我", t: "（鑰匙是黃銅的，比我想像中沉。）謝謝。", a: "me", se: "coin2.mp3" },
             { n: "米羅", t: "（輕聲）這床比我整年睡過的加起來都要軟……", a: "miro", se: "boy_breath.mp3" },
 
             // 庭院——出來走走
             { n: "系統", t: "（在這房間裡坐了一盞茶的時間，卻連一個字都沒辦法思考。）", a: "system",
-              bg: "bg7 room.png", bgm: "bad things.mp3", bgPos: "center", bgZoom: 1.1, flash: true, flashSFX: "flash.mp3" },
+              bg: "bg7 room.png", bgm: ".suspense.mp3", bgPos: "center", bgZoom: 1.1, flash: true, flashSFX: "flash.mp3" },
             { n: "系統", t: "（杯底的茶早就涼透了，杯沿上甚至沒沾到一點唇印。）", a: "system", se: "put down.mp3", bgPos: "center", bgZoom: 1.5 , bgDur:"10s" },
             { n: "系統", t: "（我實在坐不住，乾脆走到庭院裡。）", a: "system"},
             { n: "系統", t: "（皇宮的庭院，梅樹被規訓得毫無生氣，地面更是連一絲雜草的縫隙都不留。）", a: "system"
@@ -156,7 +156,7 @@ window.V2_CHAPTERS["70"] = {
             { n: "我", t: "（我原本只是漫不經心地掃過，庭院裡的梅樹修得太過規整，看久了眼球會發酸）", a: "me",
               bgPos: "right", bgZoom: 1.5 },
             { n: "我", t: "（正準備把目光挪開時，角落裡的一抹亮色卻像鉤子一樣，強行扯住了我的視線)"
-            , a: "me", flash: true, flashSFX: "bell.mp3",bg:"cg/ch7 prince.png",bgm:"showup.mp3"  },
+            , a: "me", flash: true, flashSFX: "bell.mp3",bg:"cg/ch7 prince.png",bgm: ".prince2.mp3"  },
             { n: "我", t: "(那是個背對著我的身影。）", a: "me" },
             { n: "我", t: "（她的手搭在粗糙的石柱上，指節細得過分，白得像是不沾一點塵土的細瓷。）"
             , a: "me", bgPos: "center", bgZoom: 2.0, bgDur: "5s", se: "wind1.mp3", vol: 1.0
@@ -197,7 +197,7 @@ window.V2_CHAPTERS["70"] = {
             // 那個人轉過來——臉熟悉，但腦子一時跟不上
             { n: "我", t: "（那個人轉過身來。我看見了熟悉的眉眼，那雙笑起來會瞇成碎金線的眼睛。）", a: "me",
             flash: true, flashSFX: "flash.mp3", vol: 1.0,bg:"cg/no.png",
-            bgm: "prince.mp3", bgPos: "center", bgZoom: 1.1,stuff:"prince eyes.png",stuffScale: 1.7},
+            bgm: ".prince.mp3", bgPos: "center", bgZoom: 1.1,stuff:"prince eyes.png",stuffScale: 1.7},
             { n: "我", t: "（只是，他身上沒了船上那件袍子。)"
             , a: "me", bgPos: "bottom", bgZoom: 1.5,bg:"cg/ch7 prince2.png",flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "我", t: "（取而代之的是一襲純白色的長裙。）", a: "me", bgPos: "center", bgZoom: 1.5,bgDur:"10s"},
@@ -221,9 +221,9 @@ window.V2_CHAPTERS["70"] = {
 
             // ——只有玩家能看到：王子的記憶——
             { bg: "cg/prince card.png", flash: true, flashSFX: "boom.mp3", vol: 0.8,
-              bgm: "rose.mp3", bgPos: "center", bgZoom: 1.1 },
+              bgm: ".rose.mp3", bgPos: "center", bgZoom: 1.1 },
             { n: "系統", t: "（廊道長得沒了邊際，壓得人透不過氣。）", a: "system",
-              bg: "bg7 corridor.png", bgm: "conspiracy.mp3", bgPos: "center", bgZoom: 1.5, bgDur: "10s", env: "white smoke/1", envOpacity: 0.3 },
+              bg: "bg7 corridor.png", bgm: ".investigate.mp3", bgPos: "center", bgZoom: 1.5, bgDur: "10s", env: "white smoke/1", envOpacity: 0.3 },
             { n: "系統", t: "（暗橘色的燈火懸在半空，光芒在那層晦暗的積塵面前顯得無力，怎麼也照不到腳邊。）"
             , a: "system", se: "heartbeat.mp3", vol: 1.0
 },
@@ -242,7 +242,7 @@ window.V2_CHAPTERS["70"] = {
             // ——記憶結束——
             { n: "系統", t: "（記憶結束）", a: "system",
               bg: "cg/ch7_prince.png", flash: true, flashSFX: "memory_out.mp3", vol: 0.8,
-              bgm: "prince.mp3", bgPos: "center", bgZoom: 2.0, env: null },
+              bgm: ".prince.mp3", bgPos: "center", bgZoom: 2.0, env: null },
 
             { n: "王子", t: "（他轉身揮了揮手，示意身後的宮人退下。）"
             ,bg: "bg7 garden.png", a: "prince", se: "girl_smile1.mp3", vol: 0.8},
@@ -271,7 +271,7 @@ window.V2_CHAPTERS["70"] = {
 
             // 差事——不然今天這麼長的走廊白走了
             { n: "王子", t: "（從欄杆上跳下來，從袖裡取出一本冊子）正好有個差事。不然今天這麼長的走廊白走了。", a: "prince",
-              se: "paper down.mp3", vol: 0.8, bgPos: "center", bgZoom: 1.1,bgm:"daily.mp3" },
+              se: "paper down.mp3", vol: 0.8, bgPos: "center", bgZoom: 1.1,bgm: ".daily.mp3" },
             { n: "王子", t: "選才考核冊，二十個人，分數都在，但總分和排名還沒算出來。文員搞了兩天沒搞定。", a: "prince" },
             { n: "我", t: "（接過冊子翻了翻。「總分」和「排名」兩欄空著，一個數字都沒有。）", a: "me", se: "paper down.mp3", vol: 0.7 },
             { n: "王子", t: "策論今年加了係數，1.5，在冊子右側那格。", a: "prince" },
@@ -391,7 +391,7 @@ window.V2_CHAPTERS["70"] = {
         // ── 結局 ──────────────────────────────────────────────────────
         end: [
             { n: "系統", t: "（帳冊被最後一名侍從小心翼翼地捧走，庭院隨之安靜下來。）", a: "system",
-              bg: "bg7 garden.png", bgm: "sweet.mp3", bgPos: "right", bgZoom: 1.5,
+              bg: "bg7 garden.png", bgm: ".sweet.mp3", bgPos: "right", bgZoom: 1.5,
               se: "put down.mp3", vol: 0.7 },
             { n: "系統", t: "（夕陽殘照，我們幾個人就這樣站在晏的面前，彷彿剛結束一場不可思議的夢。）"
             , a: "system", bgPos: "center", bgZoom: 1.1 , bgDur:"10s"},
@@ -400,7 +400,7 @@ window.V2_CHAPTERS["70"] = {
             { n: "米羅", t: "（忍不住問道）……晏，這宮裡真的哪裡都能走嗎？", a: "miro"  },
             { n: "王子", t: "大多數地方都行。你們是客人。", a: "prince" },
             { n: "王子", t: "（他忽然停下腳步，回過頭看向我們，那雙漂亮的眼眸裡閃過一抹難得的雀躍）"
-            , a: "prince", flash: true, flashSFX: "bell.mp3",bg:"cg/ch7 last.png",bgm:"prince2.mp3"
+            , a: "prince", flash: true, flashSFX: "bell.mp3",bg:"cg/ch7 last.png",bgm: ".prince2.mp3"
             , env: "light/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true, bgPos: "left top", bgZoom: 2.0 },
             { n: "王子", t: "對了，明天有個地方想帶你們去。住在這裡的人才知道在哪，外面找不著。", a: "prince", bgPos: "center", bgZoom: 1.1 , bgDur:"10s"},
             { n: "王子", t: "(微微歪過頭，語氣裡透著邀請朋友去私藏秘密基地的口吻）去嗎？", a: "prince"},
@@ -448,7 +448,7 @@ window.V2_CHAPTERS["70"] = {
         ] },
 
     simulator: {
-        bgm: "BGM/game_bgm.mp3",
+        bgm: "BGM/.game.mp3",
         tasks: [
             {
                 id:           "FORMULA_BASIC_INPUT_TASK",

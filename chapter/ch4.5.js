@@ -74,7 +74,7 @@ window.V2_CHAPTERS["45"] = {
     story: {
         // ── 開場：夏特重逢 ──────────────────────────────────────────
         start: [
-            { n: "系統", t: "（走出小鎮後，我們在官道上又跋涉了大半日)", a: "system", bg: "road.png", bgm: "daily.mp3"
+            { n: "系統", t: "（走出小鎮後，我們在官道上又跋涉了大半日)", a: "system", bg: "road.png", bgm: ".daily.mp3"
             ,se:"horse run.mp3",vol:1.0,bgPos: "center", bgZoom: 1.2},
             { n: "系統", t: "（腳步踏在乾燥的泥土上揚起陣陣細碎的微塵）", a: "system", bg: "road.png",se:"walk.mp3",vol:1.0
             ,bgPos: "center", bgZoom: 1.5, bgDur:"5s"},
@@ -99,7 +99,7 @@ window.V2_CHAPTERS["45"] = {
             { n: "米羅", t: "（他有些侷促地壓低聲音問道） 隊長，是熟人嗎？", a: "miro" },
             { n: "我", t: "學院試煉時的老對手。夏特，那個雲端尖塔的首席天才。", a: "me", se: "girl_en1.mp3", vol: 1.0  },
 
-            { n: "夏特", t: "（他緩緩抬起頭，視線與你交匯)", a: "chate", bg: "cg/ch4.5.png", bgm: "school.mp3",env:null,
+            { n: "夏特", t: "（他緩緩抬起頭，視線與你交匯)", a: "chate", bg: "cg/ch4.5.png", bgm: ".school.mp3",env:null,
             bgPos: "top", bgZoom: 1.1, bgDur:"5s"},
             { n: "夏特", t: "（指尖那支白金羽毛筆熟練地轉了一個漂亮的圓弧） 果然是你。", a: "chate", se: "boy_lowsmile.mp3", vol: 1.0
             ,flash: true, flashSFX: "flash.mp3", vol: 1.0,bgPos: "top", bgZoom: 2.0},
@@ -124,7 +124,7 @@ window.V2_CHAPTERS["45"] = {
             { n: "夏特", t: "（他低笑一聲，那笑聲中竟帶了幾分自嘲） 彼此彼此。招牌沒了，心裡反倒清淨了。 ", a: "chate", se: "boy_smile.mp3"
             , bg: "cg/ch4.5.png",bgPos: "center", bgZoom: 1.5, bgDur:"4s"},
 
-            { n: "管事", t: "（一名管事急急忙忙地跑過來，滿頭大汗） 夏特先生！壞了，名冊又亂套啦！", a: "npc1", bgm: "bad things.mp3", bg: "bg4.5.png"
+            { n: "管事", t: "（一名管事急急忙忙地跑過來，滿頭大汗） 夏特先生！壞了，名冊又亂套啦！", a: "npc1", bgm: ".suspense.mp3", bg: "bg4.5.png"
             , se: "run.mp3", vol: 1.0,flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "管事", t: "今早三個片區同時湧進一堆難民，登記的人手各記各的，全混在一起了！", a: "npc1",bgPos: "center", bgZoom: 1.1},
             { n: "管事", t: "命危的、斷糧好幾個小時的、剛到的，全攪成了一團！", a: "npc1"},
@@ -201,7 +201,7 @@ window.V2_CHAPTERS["45"] = {
 
             { n: "夏特", t: "（他從容地收起羽毛筆，語氣輕鬆了不少） ", a: "chate"
             ,bg:"cg/ch4.5 all.png",bgPos: "left top", bgZoom: 2.0},
-            { n: "夏特", t: "剛才那份名冊。我們合作得很完美。 ", a: "chate", bgm: "goofy.mp3", se: "paper down.mp3", vol: 0.8 },
+            { n: "夏特", t: "剛才那份名冊。我們合作得很完美。 ", a: "chate", bgm: ".funny.mp3", se: "paper down.mp3", vol: 0.8 },
             { n: "夏特", t: "你看見了數據的順序，而我解決了人類的理解成本。這兩者缺一不可。", a: "chate"},
             { n: "我", t: "（我心裡其實已經猜到他接下來想說什麼了） 所以呢？你想表達什麼？", a: "me", se: "girl_underest.mp3", vol: 1.0
             ,bgPos: "right", bgZoom: 2.0},
@@ -234,7 +234,7 @@ window.V2_CHAPTERS["45"] = {
             { n: "夏特", t: "（他邁步走過來，眼神居高臨下卻已不顯得刻薄） 接下來的戰術安排聽你的我絕不干涉。", a: "chate"
             ,bg:"bg4.5.png", se: "walk.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.5,bgDur:"4s"},
             { n: "夏特", t: "但今後名冊的所有『臉面』問題，都必須歸我管。", a: "chate" , se: "paper down.mp3", vol: 0.8 },
-            { n: "米羅", t: "（他立刻抬頭反駁） 救命的東西必須優先，臉面什麼的，再說。 ", a: "miro", bg: "cg/ch4.5 conflict.png", bgm: "sweet.mp3"
+            { n: "米羅", t: "（他立刻抬頭反駁） 救命的東西必須優先，臉面什麼的，再說。 ", a: "miro", bg: "cg/ch4.5 conflict.png", bgm: ".miro_chate.mp3"
             ,flash: true, flashSFX: "flash.mp3", vol: 1.0,bgPos: "left", bgZoom: 2.0},
             { n: "夏特", t: "（他驚訝地挑了挑眉） 記帳的，你現在這句，倒是比今天早上那句要聰明得多了。", a: "chate"
             , se: "boy_lowsmile.mp3", vol: 1.0,bgPos: "top", bgZoom: 2.0,bgDur:"2s"},
@@ -302,7 +302,7 @@ window.V2_CHAPTERS["45"] = {
     },
 
     simulator: {
-        bgm: "BGM/game_bgm.mp3",
+        bgm: "BGM/.game.mp3",
         tasks: [
             {
                 id: "SORT_LIMIT_TASK",

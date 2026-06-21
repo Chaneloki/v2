@@ -77,7 +77,7 @@ window.V2_CHAPTERS["30"] = {
             ,bgPos: "right top", bgZoom: 1.5, bgDur:"4s"},
             { n: "我", t: "（我費力地在粘稠的人潮中擠出一條生路，看見一名憔悴的母親正死死摟著懷中的幼子。）", a: "me", bg: "cg/ch3 sick.png", bgm: "no.mp3"
             , se: "wind1.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.1, bgDur:"4s"},
-            { n: "我", t: "（孩子的小臉燒得如炭火般通紅，那種近乎沈寂的虛弱，令人感到一陣錐心的寒意。）", a: "me", bgm: "sad.mp3"  },
+            { n: "我", t: "（孩子的小臉燒得如炭火般通紅，那種近乎沈寂的虛弱，令人感到一陣錐心的寒意。）", a: "me", bgm: ".sad.mp3"  },
             { n: "我", t: "我從王城那片死寂中一路馬不停蹄地趕回楓鈴驛站，只為了找到米羅……", a: "me"
             ,bgPos: "top", bgZoom: 1.5, bgDur:"4s"},
             { n: "我", t: "我原以為，在那扇冰冷的城門前已經見識過了這世間最壞的光景。 "
@@ -96,7 +96,7 @@ window.V2_CHAPTERS["30"] = {
             { n: "我", t: "這段時間發生的變故，我必須從頭向你解釋。 ", a: "me"},
             { n: "我", t: "就在幾天前，我帶著那封沉甸甸的推薦信，終於抵達了那座傳說中的王城。 ", a: "me"},
         
-            { n: "系統", t: "（回憶的灰燼在眼前緩緩燃起。）", a: "system", bg: "bg3 kingdom.png", bgm: "kingdom sad.mp3", isMemory: true
+            { n: "系統", t: "（回憶的灰燼在眼前緩緩燃起。）", a: "system", bg: "bg3 kingdom.png", bgm: ".sad.mp3", isMemory: true
             ,env: "trans1/1", envFrames: 21, envspeed:100, envOpacity: 1.0,envDrift:true, envLoop: false},
             { n: "我", t: "那裡的城門已經封閉了整整十六個晝夜", a: "me", isMemory: true,
             bgPos: "center 20%", bgZoom: 3.0, bgDur:"6s"},
@@ -122,12 +122,12 @@ window.V2_CHAPTERS["30"] = {
             { n: "賽爾", t: "國王神隱，公會崩塌。聽起來簡直像是要把世界推向深淵，對吧？", a: "fairy", isMemory: true },
             { n: "賽爾", t: "但在本仙子這漫長的三百年記憶中……", a: "fairy", isMemory: true, bgm: "no.mp3" },
             { n: "賽爾", t: "那些真正被後世傳頌的冒險史詩，幾乎全都是以這樣的廢墟作為開場。 ", a: "fairy", isMemory: true
-            ,bgPos: "center", bgZoom: 1.1, flash:true, flashSFX: "high peach.mp3", vol: 1.0, bg: "cg/ch3 text.png", bgm: "rose.mp3", env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true},
+            ,bgPos: "center", bgZoom: 1.1, flash:true, flashSFX: "high peach.mp3", vol: 1.0, bg: "cg/ch3 text.png", bgm: ".rose.mp3", env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true},
             { n: "賽爾", t: "這一次，別讓我再在那座無聊的抽屜裡，等下一個三百年了。 ", a: "fairy", isMemory: true,
             bgPos: "left bottom", bgZoom: 1.1, bgDur:"5s"},
             { n: "賽爾", t: "去吧，去把你內心真正認可的夥伴……一個接著一個地，從這亂世中找回來。 ", a: "fairy", isMemory: true },
 
-            { n: "系統", t: "（回憶散去。米羅聽完這番話後，整個人如遭雷擊，怔怔地站在冷風中。）", a: "miro", bg: "bg1.5.png", bgm: "sad.mp3", se: "wind1.mp3", vol: 1.0, env:null },
+            { n: "系統", t: "（回憶散去。米羅聽完這番話後，整個人如遭雷擊，怔怔地站在冷風中。）", a: "miro", bg: "bg1.5.png", bgm: ".sad.mp3", se: "wind1.mp3", vol: 1.0, env:null },
             { n: "系統", t: "（他雙手緊緊抱住那本磨損的名冊，像是要在這崩塌的世界中抓住最後一根浮木。）", a: "miro"
             ,bgPos: "center", bgZoom: 1.1, shake:true},
             { n: "米羅", t: "公會……竟然就這樣……消失了嗎？（他的語氣低微得近乎呢喃）", a: "miro" },
@@ -178,7 +178,7 @@ window.V2_CHAPTERS["30"] = {
         ],
         end: [
             { n: "系統", t: "（夜幕降臨。驛站的院子裡總算是恢復了久違的、名為『秩序』的安寧。）"
-            , bg: "bg3 rule.png", a: "system", bgm: "conspiracy.mp3",bgPos: "center", bgZoom: 1.1  },
+            , bg: "bg3 rule.png", a: "system", bgm: ".investigate.mp3",bgPos: "center", bgZoom: 1.1  },
             { n: "系統", t: "（旅客們依照名冊上精確的號次，一列一列、安安靜靜地領到了今晚維持生命的口糧。）", a: "system"
             ,bgPos: "center", bgZoom: 1.5, bgDur:"8s"},
             { n: "米羅", t: "（他那雙粗糙的手顫抖著捧起這本煥然一新的名冊，聲音因為過度的激動而哽咽。）", a: "miro new"
@@ -192,7 +192,7 @@ window.V2_CHAPTERS["30"] = {
             { n: "米羅", t: "（他點了點頭，眼神中展現出一種脫胎換骨般的清澈）想清楚了。 ", a: "miro new"
             ,bgPos: "right",flash:true,flashSFX:"flash.mp3" },
             { n: "米羅", t: "你那天跟我說過：唯有當我先徹底理清了驛站的這場亂象……", a: "miro new" , bg: "cg/ch3 bond.png"
-            , bgm: "sweet2.mp3",bgPos: "left", bgZoom: 1.1, bgDur:"10s" },
+            , bgm: ".2_emotional.mp3",bgPos: "left", bgZoom: 1.1, bgDur:"10s" },
             { n: "米羅", t: "我才有資格，去與你談論所謂的『走』與『不走』。 ", a: "miro new" },
             { n: "米羅", t: "（他用那佈滿老繭的手掌，用力拍了拍那本名冊） ", a: "miro new" , se: "paper down.mp3", vol: 0.8 , shake: true },
             { n: "米羅", t: "現在，這本秩序之冊，就是這裡的規矩。 ", a: "miro new" },
@@ -208,7 +208,7 @@ window.V2_CHAPTERS["30"] = {
             , se: "girl_smile1.mp3", vol: 1.0,bg:"cg/ch3 two.png",bgPos: "left"},
             { n: "我", t: "很好。這支隊伍的第一個核心成員，果然就該是你。歡迎加入，隊友。 ", a: "me"},
             { n: "米羅", t: "（他重重地回握住我的手，眼神中燃燒著一種名為『勇氣』的火焰，用力地點頭。） 嗯！", a: "miro new",bgPos: "right",shake:true},
-            { n: "系統", t: "（夕陽的最後一抹餘暉中，賽爾咻地一聲飛回了我的肩膀。）", a: "system", bg: "bg3 rule.png", bgm: "sweet.mp3", se: "fun2.mp3", vol: 1.0  },
+            { n: "系統", t: "（夕陽的最後一抹餘暉中，賽爾咻地一聲飛回了我的肩膀。）", a: "system", bg: "bg3 rule.png", bgm: ".sweet.mp3", se: "fun2.mp3", vol: 1.0  },
             { n: "賽爾", t: "一支具備靈魂的隊伍，總算是湊齊了最基石的第一塊碎片。 ", a: "fairy" },
             { n: "賽爾", t: "這份實感，可比那一封見不到國王的燙金廢紙，要實在得太多了。 ", a: "fairy" },
             { n: "我", t: "賽爾，那我們的下一個節點，究竟該往這片大陸的哪個方向進發？", a: "me"},
@@ -316,7 +316,7 @@ window.V2_CHAPTERS["30"] = {
     },
 
     simulator: {
-        bgm: "BGM/game_bgm.mp3",
+        bgm: "BGM/.game.mp3",
         tasks: [
             {
                 id: "SEARCH_TASK",

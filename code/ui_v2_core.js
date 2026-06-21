@@ -366,9 +366,12 @@ class UIManager {
             const _tid = state.activeChapterModule?.simulator?.tasks?.[state.currentTaskIndex]?.id;
             // Ch8 / Ch8.5 的公式任務均需玩家拖拉填充，雖非主技能但必須允許
             const _ch8FormulaTasks = ['IF_BASIC_TASK', 'IFS_TASK', 'IF_PLUS_TASK', 'IF_AND_TASK'];
+            // [修正]: Ch7 / Ch7.5 除了基礎自動填滿，絕對引用（含示範錯誤的相對引用陷阱）
+            // 與 RANK 任務也都需要玩家拖拉公式填充，原本漏了這幾個 id 導致被誤判為非法拖拉。
+            const _ch7FormulaTasks = ['FORMULA_AUTOFILL_TASK', 'ABS_REF_FAIL_TASK', 'ABS_REF_FIX_TASK', 'ABS_REF_TASK', 'RANK_TASK'];
             const _autofillOk =
                 ((_ch === '10' || _ch === '15') && _tid === 'AUTO_FILL') ||
-                ((_ch === '70' || _ch === '75') && _tid === 'FORMULA_AUTOFILL_TASK') ||
+                ((_ch === '70' || _ch === '75') && _ch7FormulaTasks.includes(_tid)) ||
                 ((_ch === '80' || _ch === '85') && _ch8FormulaTasks.includes(_tid));
 
             if (_autofillOk) {

@@ -303,22 +303,23 @@ UIManager.prototype.openMemoryDiary = function() {
         localStorage.setItem('magic_excel_max_chapter', maxChap);
     }
 
+    // [修正]: 統一全部使用阿拉伯數字，避免「第一章」「第 1.5 章」中文/阿拉伯數字混用不一致。
     const chapMap = [
-        {val: 10, name: '第一章'},
+        {val: 10, name: '第 1 章'},
         {val: 15, name: '第 1.5 章'},
-        {val: 20, name: '第二章'},
+        {val: 20, name: '第 2 章'},
         {val: 25, name: '第 2.5 章'},
-        {val: 30, name: '第三章'},
+        {val: 30, name: '第 3 章'},
         {val: 35, name: '第 3.5 章'},
-        {val: 40, name: '第四章'},
+        {val: 40, name: '第 4 章'},
         {val: 45, name: '第 4.5 章'},
-        {val: 50, name: '第五章'},
+        {val: 50, name: '第 5 章'},
         {val: 55, name: '第 5.5 章'},
-        {val: 60, name: '第六章'},
+        {val: 60, name: '第 6 章'},
         {val: 65, name: '第 6.5 章'},
-        {val: 70, name: '第七章'},
+        {val: 70, name: '第 7 章'},
         {val: 75, name: '第 7.5 章'},
-        {val: 80, name: '第八章'},
+        {val: 80, name: '第 8 章'},
         {val: 85, name: '第 8.5 章'}
     ];
 

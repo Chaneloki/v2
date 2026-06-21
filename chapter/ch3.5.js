@@ -82,7 +82,7 @@ window.V2_CHAPTERS["35"] = {
 
     story: {
         start: [
-            { n: "系統", t: "（楓鈴驛站。隔日清晨。）", a: "system", bg: "bg1.5.png", bgm: "great mission.mp3"
+            { n: "系統", t: "（楓鈴驛站。隔日清晨。）", a: "system", bg: "bg1.5.png", bgm: ".hero.mp3"
             ,trans:true,se:"wind1.mp3",vol:1.0 },
             { n: "系統", t: "（昨夜掛起的燈籠尚未熄滅，在稀薄的晨霧中沈默地搖曳著。）", a: "system"
             , env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true},
@@ -99,7 +99,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "我", t: "賽爾！別開這種無聊的玩笑了，趕快給我出來！", a: "me",flash: true, flashSFX: "flash.mp3", vol: 1.0,shake:true , se: "girl_laugh.mp3", vol: 1.0 },
 
             { n: "系統", t: "（米羅端著兩碗正冒著熱氣的稀粥走進了視野，看著我失態的模樣，不由得愣住了。）", a: "miro", se: "walk.mp3", vol: 1.0  },
-            { n: "米羅", t: "隊長，你這麼大聲是在呼喚誰呢？", a: "miro", bgm: "conspiracy.mp3" , se: "bell.mp3", vol: 1.0   },
+            { n: "米羅", t: "隊長，你這麼大聲是在呼喚誰呢？", a: "miro", bgm: ".investigate.mp3" , se: "bell.mp3", vol: 1.0   },
             { n: "我", t: "賽爾……就是那隻平時一直繞著書飛的精靈。", a: "me",
             bg:"cg/ch3.5 two.png" ,bgPos: "left", bgZoom: 1.5, bgDur:"5s"},
             { n: "我", t: "昨晚睡前她明明還在的，現在竟然消失得無影無蹤了。", a: "me" },
@@ -122,7 +122,7 @@ window.V2_CHAPTERS["35"] = {
                 noteContent: "別來找我。我去把後面那條討厭的尾巴給引開。\n[[別擔心我。|strike]]\n聽著，有人衝著這本魔導書來。\n魔導書我留給你了，第三章學的那五招你全用過，自己動動腦袋好好用。\n米羅雖然才剛入隊，但他並不笨，記得讓他幫你。\n萬一我真的沒能回來，[[你就找個地方把這本魔導書給燒了吧。|strike]]你一定可以做到的，我相信你。我也會努力回..."
             , bgm: "no.mp3" , se: "book.mp3", vol: 1.0 , se: "wind1.mp3", vol: 1.0 },
 
-            { n: "系統", t: "（當指尖觸碰到紙條邊緣那抹冷硬且不詳的暗紅時，我的心跳猛地漏了一拍。）", a: "system", bgm: "bad things.mp3" ,se: "heartbeat.mp3", vol: 1.0
+            { n: "系統", t: "（當指尖觸碰到紙條邊緣那抹冷硬且不詳的暗紅時，我的心跳猛地漏了一拍。）", a: "system", bgm: ".suspense.mp3" ,se: "heartbeat.mp3", vol: 1.0
             ,shake:true,bgPos: "left"},
             { n: "我", t: "（這哪裡是去辦什麼正事……她分明是抱著必死的覺悟，去充當那誘餌。 ）", a: "me" },
             { n: "系統", t: "（米羅的神色在一瞬間變得慘白，死死地盯著那道突然中斷、再無下文的墨痕。）", a: "miro",bgPos: "right" , flash: true, flashSFX: "flash.mp3" },
@@ -136,7 +136,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "我", t: "我們必須重塑秩序。唯有如此，當她回來的那一刻才能看見一個能讓她落腳的歸宿", a: "me" },
 
             { n: "系統", t: "（就在這時，院牆外傳來了一陣急促且沈重的馬蹄聲像是敲碎了這清晨最後的寂靜）", a: "system"
-            , bgm: "great mission.mp3", se:"horse run.mp3",vol:1.0,
+            , bgm: ".hero.mp3", se:"horse run.mp3",vol:1.0,
             env: "horse run/1", envFrames: 24, envspeed:80, envOpacity: 1.0, envDrift:true  },
             { n: "系統", t: "（一名滿面塵埃、幾乎脫力的少年信使，踉踉蹌蹌地從馬背上跌落在地。）", a: "system"
             , se:"door open.mp3",vol:1.0, bg:"bg1.5.png",env:null},
@@ -207,7 +207,7 @@ window.V2_CHAPTERS["35"] = {
         ],
 
         end: [
-            { n: "系統", t: "（名冊終於重歸秩序。村民的狀態更新完畢，戶號也已被全部填補。）", a: "system", bg: "bg1.5.png", bgm: "sad.mp3"  , se: "paper down.mp3", vol: 0.8 },
+            { n: "系統", t: "（名冊終於重歸秩序。村民的狀態更新完畢，戶號也已被全部填補。）", a: "system", bg: "bg1.5.png", bgm: ".sad.mp3"  , se: "paper down.mp3", vol: 0.8 },
             { n: "信使", t: "（顫抖著雙手接過名冊，聲音中帶著一絲喜極而泣的顫抖。）", a: "npc1", bg: "bg1.5.png",flash: true, flashSFX: "flash.mp3", vol: 1.0 , se: "paper down.mp3", vol: 0.8 , shake: true },
             { n: "信使", t: "有了這份名冊下一個驛站的主管，真的…真的就會為我們簽發救命的糧草了嗎？", a: "npc1", bg: "bg1.5.png" , se: "paper down.mp3", vol: 0.8 },
             { n: "系統", t: "（米羅跨步上前，用他那雙佈滿老繭的手，重重地拍在了信使單薄的肩膀上。）", a: "miro", bg: "bg1.5.png"
@@ -248,7 +248,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "系統", t: "（但她隨即被某種自尊心支撐著，倔強地端正了姿態清了清嘶啞的嗓子）", a: "fairy", bg: "bg1.5.png",se: "girl_attraction.mp3", vol: 1.0 
             ,bgPos: "center", bgZoom: 1.5},
             { n: "賽爾", t: "怎麼？本仙子才稍微離開了那麼一小會兒，你們就把名冊給搞砸了嗎？", a: "fairy", bg: "bg1.5.png",shake:true , se: "paper down.mp3", vol: 0.8 },
-            { n: "我", t: "（我瞪大了雙眼，驚喜地看著眼前這個滿身倦意的小生命）  ", a: "me", bg: "bg1.5.png", bgm: "sweet.mp3"
+            { n: "我", t: "（我瞪大了雙眼，驚喜地看著眼前這個滿身倦意的小生命）  ", a: "me", bg: "bg1.5.png", bgm: ".sweet.mp3"
             ,bgPos: "center", bgZoom: 1.1,flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "我", t: "賽爾！妳這傢伙……總算捨得滾回來了。 ", a: "me", bg: "bg1.5.png" },
             { n: "賽爾", t: "我辦完該辦的麻煩事，自然就會回來了。瞧你那副沒見過世面的樣子。 ", a: "fairy", bg: "bg1.5.png", se: "fairy.mp3", vol: 1.0   },
@@ -394,7 +394,7 @@ window.V2_CHAPTERS["35"] = {
     },
 
     simulator: {
-        bgm: "game_bgm.mp3",
+        bgm: ".game.mp3",
         tasks: [
             {
                 id: "SEARCH_TASK",

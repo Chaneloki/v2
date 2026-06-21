@@ -441,3 +441,23 @@
     - 將資料列順延至 CSS `grid-row: i + 3`（Excel Row `i + 2`）。
     - 移除原本資料列第 2 列因 Freeze 屬性強制黏附的 sticky 邏輯，改為若凍結時使 Excel Row 1（CSS `grid-row: 2`）黏附於 `top: 32px`。
     - 將單一輸入框答案列順延至 CSS `grid-row: bottomRowNumber + 1`（即 `rows.length + 3`）。
+
+[2026-06-22] BGM 換版權音檔（覆寫音檔內容，未動章節 .js 邏輯）
+- 檔案：v2/BGM/game_bgm.mp3 [REPLACE]
+  - 原因：第 1 章至第 8 章（不含 8.5）模擬器/自由模式共用同一首 `game_bgm.mp3`，全部換成新曲 `.game.mp3` 的內容。
+  - 因 ch1～ch8.5 的劇情與 bgm 欄位字串屬鎖定範圍（README 第 36 行），不修改任何 .js 內的 `bgm:` 字串，改為直接覆寫同名音檔的二進位內容。
+  - 舊檔備份於 v2/safe/bgm_backup/game_bgm.mp3.bak。
+  - 待辦：ch8.5 專用的 `rpg game_bgm.mp3` 預計改用 `.game_8bit.mp3`，但該新檔尚未放入 BGM 資料夾，暫緩。
+
+[2026-06-22] BGM 全面換版權音檔（取得使用者同意後，直接修改 ch1～ch8.5 的 bgm: 字串）
+- 檔案：v2/chapter/*.js（全部 16 個章節檔）[MODIFY]
+  - 使用者已明確同意暫時解除 README 第 36 行的鎖定限制，針對 bgm 欄位進行修改。
+  - 透過 node 腳本，將 128 處 `bgm: "xxx.mp3"` 字串依下表全面替換成新版權音檔（含 BGM/ 前綴的寫法保留前綴）：
+    daily→.daily｜sad/kingdom sad→.sad｜sweet→.sweet｜sweet2→.2_emotional｜warm end→.touching｜
+    goofy→.funny｜conspiracy/not match→.investigate｜bad things/greatscare→.suspense｜kingdom→.kingdom｜
+    prince→.prince｜prince2/prince3→.prince2｜story_bgm1→.main_theme｜system/system2→.85_pixel_world｜
+    great mission/showup→.hero｜story_bgm2.5/winter→.town｜empty→.empty｜grand1→.grand1｜grand2→.grand2｜
+    intense→.intense｜rose→.rose｜school→.school｜sunset→.50_sunset｜game_bgm→.game｜rpg game_bgm→.game_8bit。
+  - 順手修正 v2/chapter/ch6.js 第 63 行原本指向不存在檔案的 `silent.mp3`，改為 `.town.mp3`。
+  - 仍未變動（尚無對應新音檔）：`begin.mp3`、`finish.mp3`、`magic.mp3`，以及特殊靜音指令字串 `no.mp3`（不可動，引擎判斷 bgm===null 才會停止播放，"no.mp3" 其實也是壞引用但屬既有行為，非本次範圍）。
+  - 舊版 BGM 二進位檔已於前次紀錄備份在 v2/safe/bgm_backup/。

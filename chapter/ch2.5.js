@@ -50,13 +50,13 @@ window.V2_CHAPTERS["25"] = {
         FILL_COLOR: { n: "填滿色彩", s: "選取儲存格 ➜ 【常用】頁籤 ➜ 點選【填滿色彩】(油漆桶)", pain: "表格缺乏重點色彩標示，重要的標題列與下方數百行數據混成一片，難以分辨層級。", d: "變更選取儲存格的背景顏色，用克制的色彩強調標題列或特定關鍵行。", cat: "layout", parents: ["MERGE_CENTER"], icon: "icon/fill colour.png" },
         FORMAT: { n: "格式刷", s: "選取已設定格式的儲存格 ➜ 【常用】頁籤 ➜ 點選【格式刷】 ➜ 塗抹目標區域", pain: "已經為首行設定好字體、框線和顏色，下方還有數十行需要重做，手動設定耗時費力。", d: "複製選取格的整套格式樣式，快速塗刷套用到其他區域，一秒同步視覺。", cat: "layout", parents: ["BORDER","FILL_COLOR"], icon: "icon/format brush.png" },
         NUMBER: { n: "自訂格式", s: "Ctrl+1", d: "設定數據的顯示單位與格式", cat: "data", icon: "icon/所有框線.png" },
-        SUM: { n: "自動加總", s: "選取儲存格 ➜ 按住 Alt + =", pain: "核對長長一列物資的總額時，用算盤逐個累加耗時且容易算錯。", d: "一鍵自動偵測相鄰的連續數值儲存格，並在末端產生 SUM 加總公式。", cat: "calc", parents: ["FORMULA_BASIC"] }
+        SUM: { n: "自動加總", s: "選取儲存格 ➜ 按住 Alt + =", pain: "核對長長一列物資的總額時，用算盤逐個累加耗時且容易算錯。", d: "一鍵自動偵測相鄰的連續數值儲存格，並在末端產生 SUM 加總公式。", cat: "calc", parents: ["FORMULA_BASIC"], icon: "icon/auto sum.png" }
     },
 
     story: {
         "start": [
             { n: "系統", t: "（金穗鎮繁忙的廣場上）", a: "system"
-            , bg: "bg2.5 ppl.png", bgm: "goofy.mp3",bgPos: "center", bgZoom: 1.1 },
+            , bg: "bg2.5 ppl.png", bgm: ".funny.mp3",bgPos: "center", bgZoom: 1.1 },
             { n: "系統", t: "（鼎沸的人聲與遠處的麥浪聲交織在一起。）"
             , a: "system", se: "people.mp3", vol: 1.0,bgPos: "right bottom", bgZoom: 2.0 },
             { n: "我", t: "（我望著眼前那疊堆積如山的祭典文書，感到一陣隱隱作痛的頭大。）", a: "me"
@@ -73,7 +73,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "我", t: "好吧，至少這份義務比回後山去跟雙足飛龍的糞便打交道要強得多了。", a: "me"
             , isMemory: true, bg: "bg1.png"},
             { n: "系統", t: "（空氣中瀰漫著剛出爐烤麵包的香甜與釀造中的麥酒那股醇厚氣息。）", a: "system"
-            , bg: "bg2.5.png", bgm: "story_bgm2.5.mp3", 
+            , bg: "bg2.5.png", bgm: ".town.mp3", 
             env: "trans1/1", envFrames: 21, envspeed:100, envOpacity: 1.0,envDrift:true, envLoop: false,se:"fun1.mp3",vol:1.0},
             { n: "賽爾", t: "這地方看起來充滿了生命力呢。 ", a: "fairy", se: "fairy_laugh.mp3", vol: 1.0
             ,bgPos: "center", bgZoom: 1.5,env:null},
@@ -129,7 +129,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "我", t: "（在那一刻，我在內心深處，做出了一個大膽且不合規矩的決定。）", a: "me" }
         ],
         "end": [
-            { n: "系統", t: "（落日的餘暉透過帳篷的縫隙灑入。）", bgm: 'winter.mp3', bg: 'bg2.5.png'
+            { n: "系統", t: "（落日的餘暉透過帳篷的縫隙灑入。）", bgm: '.town.mp3', bg: 'bg2.5.png'
             , bgPos: "left top", bgZoom: 1.5, bgDur: "3s"
             , env: "light/1", envFrames: 25, envspeed:50, envOpacity: 0.8, envDrift:true}, 
             { n: "系統", t: "（葛蕾急匆匆地推簾而入，步履依舊匆忙。）", bg:"cg/ch2.5.png", se: "run.mp3", vol: 1.0
@@ -142,7 +142,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "系統", t: "（葛蕾有些狐疑地翻開名冊，原本麻利的動作）", a: "system", bg: 'cg/ch2.5 read.png', bgm: 'no.mp3' , se: "paper down.mp3", vol: 0.8 },
             { n: "系統", t: "（在觸碰到第一頁的瞬間，徹底凝固了。）", a: "system" , se: "heartbeat.mp3", vol: 1.0, flash: true, flashSFX: "flash.mp3" },
             { n: "系統", t: "（在名冊最顯眼的位置，那個原本被邊緣化的『後勤支援組』，被賦予了最為宏大的標題與配色。）", a: "system", bg: 'cg/ch2.5 read.png', se: "book.mp3", vol: 1.0 },
-            { n: "系統", t: "（在那行工整的文字下方，我悄悄刻上了一句備註：）", a: "system", bg: 'cg/ch2.5 read.png', bgm: 'sweet2.mp3' },
+            { n: "系統", t: "（在那行工整的文字下方，我悄悄刻上了一句備註：）", a: "system", bg: 'cg/ch2.5 read.png', bgm: '.2_emotional.mp3' },
             { n: "系統", t: "（『致使這場豐收祭成真的每一雙手』。）", a: "system",flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "系統", t: "（她有些失神地往後翻閱，指尖在紙面上輕輕顫抖著。）", a: "system", bg: 'cg/ch2.5 read.png',shake:true
             ,bgPos: "bottom", bgZoom: 1.5, bgDur: "8s"},
@@ -190,7 +190,7 @@ window.V2_CHAPTERS["25"] = {
 
             { n: "系統", t: "（隨着鎮長那爽朗的笑聲遠去，空蕩蕩的帳篷內，再次只剩下我與葛蕾兩個人。）", 
             a: "system", bgm: 'no.mp3', se: "wind1.mp3", vol: 1.0,bg:"cg/ch2.5 two.png",bgPos: "bottom", bgZoom: 2.0},
-            { n: "葛蕾", t: "你這傢伙……膽子真的比我想像中的還要大。 ", a: "glea", bgm: 'sweet.mp3'
+            { n: "葛蕾", t: "你這傢伙……膽子真的比我想像中的還要大。 ", a: "glea", bgm: '.sweet.mp3'
             ,bgPos: "left top", bgZoom: 2.0, bgDur:"4s"},
             { n: "葛蕾", t: "自作主張改動呈報的名冊，萬一鎮長發起火來，公會那邊可護不住你。", a: "glea" , se: "paper down.mp3", vol: 0.8 },
             { n: "我", t: "我有什麼好畏懼的？鎮長剛才不是已經親口給出答案了嗎？", a: "me",bgPos: "right top", bgZoom: 2.0, bgDur:"4s" },
@@ -233,7 +233,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "賽爾", t: "少年，這裡的因果已經圓滿了。我們走吧！", a: "fairy" },
             { n: "賽爾", t: "正式踏入那條通往王城的官道！", a: "fairy" },
             { n: "系統", t: "（就在葛蕾踏入帳篷深處，背對着你，身影即將消失在陰影中的那一刻。）", a: "system", bgm: 'no.mp3', se: "wind1.mp3", vol: 1.0 },
-            { n: "葛蕾", t: "（她的腳步頓了一下，聲音清冷卻依舊清晰地傳來）", a: "glea", bgm: 'sweet.mp3'
+            { n: "葛蕾", t: "（她的腳步頓了一下，聲音清冷卻依舊清晰地傳來）", a: "glea", bgm: '.sweet.mp3'
             ,flash:true,flashSFX:"flash.mp3", bg:"cg/ch2.5 last.png" ,bgPos: "center", bgZoom: 1.1},
             { n: "葛蕾", t: "金穗鎮的紅茶，確實是全大陸最頂尖的。 ", a: "glea" , se: "girl_attraction.mp3", vol: 1.0
             ,bgPos: "center", bgZoom: 1.5, bgDur:"4s"},
@@ -262,7 +262,7 @@ window.V2_CHAPTERS["25"] = {
     initialGridData: generateCh2_5Data(),
 
     simulator: {
-        bgm: "game_bgm.mp3",
+        bgm: ".game.mp3",
         tasks: [
             {
                 id: "MERGE_TASK",

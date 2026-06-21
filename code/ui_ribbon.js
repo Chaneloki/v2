@@ -21,7 +21,9 @@ UIManager.prototype.renderRibbon = function(config) {
         const tasks = config.tasks;
         const currentTask = tasks[state.currentTaskIndex];
         const chapterId = state.currentChapter.toString();
-        const cacheKey = `${chapterId}_${state.currentTaskIndex}`;
+        // [修正]: cacheKey 必須包含 activeTab，否則切換頁籤（如 常用→資料）時
+        // 會誤判「章節+任務未變」而跳過重建，導致畫面殘留前一個頁籤的按鈕。
+        const cacheKey = `${chapterId}_${state.currentTaskIndex}_${this.activeTab}`;
         if (container.dataset.cacheKey === cacheKey) return;
         container.dataset.cacheKey = cacheKey;
         container.innerHTML = "";
@@ -53,11 +55,15 @@ UIManager.prototype.renderRibbon = function(config) {
             challengeBtns.forEach(btnCfg => {
                 const skill = window.orchestrator.skillDefs[btnCfg.skill];
                 if (skill) {
-                    let taskTab = 'start';
+                    // [修正]: 先採用該任務在章節資料裡明確定義的 tab（與標準模式一致），
+                    // 而不是只憑 skill.cat 猜測——skillDefs 的 cat 值（query/calc/entry...）
+                    // 跟這裡原本比對的 data/insert/move/view 對不上，導致全部誤判為 'start'。
+                    const matchingTask = tasks.find(t => t.unlockBtnId === btnCfg.id);
+                    let taskTab = (matchingTask && matchingTask.tab) || 'start';
                     if (skill.cat === 'move' || skill.cat === 'view') taskTab = 'view';
                     if (skill.cat === 'data') taskTab = 'data';
                     if (skill.cat === 'insert') taskTab = 'insert';
-                    
+
                     if (taskTab === this.activeTab) {
                         this._createRibbonBtn(btnCfg.id, btnCfg.skill, container);
                     }

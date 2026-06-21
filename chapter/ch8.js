@@ -70,7 +70,7 @@ window.V2_CHAPTERS["80"] = {
     story: {
         start: [
             { n: "系統", t: "（申時正。宮廷長廊內的燈火比往常璀璨了一倍。）", a: "system",
-              bg: "bg7 glea.png", bgm: "grand1.mp3", bgmFade: "in", bgPos: "top right", bgZoom: 2.0, bgDur: "0s",
+              bg: "bg7 glea.png", bgm: ".grand1.mp3", bgmFade: "in", bgPos: "top right", bgZoom: 2.0, bgDur: "0s",
               env: "light/1", envFrames: 25, envspeed: 80, envOpacity: 0.6, envDrift: true },
             { n: "系統", t: "（紅燈籠一盞接一盞掛到廊柱上，在昏黃的光裡暈出重疊的影子。）", a: "system",
               bgPos: "center", bgZoom: 1.1, bgDur: "12s", se: "wind1.mp3", vol: 0.6, screenEffect: "glow" },
@@ -95,7 +95,7 @@ window.V2_CHAPTERS["80"] = {
               se: "fairy_laugh.mp3", vol: 0.8 },
 
             { n: "系統", t: "（踏入大殿的瞬間，穹頂宏大得近乎非人。）", a: "system",
-              bg: "bg8 hall.png", bgm: "grand2.mp3", bgmFade: "in", bgPos: "bottom", bgZoom: 2.0, bgDur: "0s",
+              bg: "bg8 hall.png", bgm: ".grand2.mp3", bgmFade: "in", bgPos: "bottom", bgZoom: 2.0, bgDur: "0s",
               flash: true, flashSFX: "trans.mp3", vol: 0.8,
               env: "light/1", envFrames: 25, envspeed: 60, envOpacity: 0.5, envDrift: true },
             { n: "系統", t: "（貼金的柱子如森林般聳立，燈火層層推進，將深處染得金碧輝煌。）", a: "system",
@@ -116,7 +116,7 @@ window.V2_CHAPTERS["80"] = {
             { n: "國王", t: "皇宮備有薄宴，若有招待不周之處，告知下人便是。", a: "king" },
 
             { n: "系統", t: "（宴席開始，各桌官員的話聲像潮水般浮了起來。）", a: "system",
-              bg: "bg8 hall.png", bgm: "daily.mp3", bgPos: "center", bgZoom: 1.1,
+              bg: "bg8 hall.png", bgm: ".daily.mp3", bgPos: "center", bgZoom: 1.1,
               flash: true, flashSFX: "bell.mp3", vol: 0.7 },
             { n: "柔依", t: "（靜靜地站在我們這桌身後的陰影裡，視線冷冽地掃視著場內。）", a: "royi",
               bgPos: "left", bgZoom: 1.5 },
@@ -242,7 +242,7 @@ window.V2_CHAPTERS["80"] = {
 
         end: [
             { n: "系統", t: "（評鑑冊已被侍從取走。大殿內，賓客們陸續離席。）", a: "system",
-              bg: "bg8 hall.png", bgm: "sweet.mp3", bgmFade: "out", bgPos: "center", bgZoom: 1.1,
+              bg: "bg8 hall.png", bgm: ".sweet.mp3", bgmFade: "out", bgPos: "center", bgZoom: 1.1,
               flash: true, flashSFX: "trans.mp3", vol: 0.7,
               env: "light/1", envFrames: 25, envspeed: 80, envOpacity: 0.3, envDrift: true },
             { n: "我", t: "（我緩緩將魔導書合上。指尖觸及書封的瞬間，一股異樣的溫熱透過掌心傳來)", a: "me",
@@ -280,7 +280,7 @@ window.V2_CHAPTERS["80"] = {
               shake: true, screenEffect: "dissolve",bg: "white.png" },
             { n: "系統", t: "（光吞沒了大殿。吞沒了燈火。吞沒了所有聲音。）", a: "system",
               bg: "black.png", clearWhiteout: true,
-              bgm: "system.mp3",se:"broke.mp3",vol:2.0, screenEffect: "glow"},
+              bgm: ".85_pixel_world.mp3",se:"broke.mp3",vol:2.0, screenEffect: "glow"},
             { n: "系統", t: "（它帶著我們所有人都離開了）", a: "system",
               bgPos: "center", bgZoom: 1.5, bgDur: "10s",se:"broke.mp3",vol:1.0 },
             { n: "系統", t: "……", a: "system",
@@ -330,7 +330,7 @@ window.V2_CHAPTERS["80"] = {
         ] },
 
     simulator: {
-        bgm: "game_bgm.mp3",
+        bgm: ".game.mp3",
         tasks: [
             {
                 id:           "IF_BASIC_TASK",

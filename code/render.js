@@ -1060,7 +1060,9 @@ class GridRenderer {
                 cell.classList.toggle('formula-ref-cell', isInRefRange);
             }
 
-            const shouldHaveHandle = isInRange && rIdx === range.maxRow && cIdx === range.maxCol;
+            // [修正]: 表頭列 (rIdx === 0) 不應出現自動填滿控制柄，避免其擴張的隱形熱區
+            // 蓋住同一格右下角的篩選箭頭按鈕，導致玩家點擊篩選時誤觸拖曳填滿。
+            const shouldHaveHandle = isInRange && rIdx === range.maxRow && cIdx === range.maxCol && rIdx !== 0;
             let handle = cell.querySelector('.fill-handle');
 
             if (shouldHaveHandle) {
