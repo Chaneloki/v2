@@ -58,7 +58,7 @@ if (line.auto) {
 
 檔案: style.css
 移除: `.cell.active` 與 `.syntax-overlay` 的 `min-width: 100%` 或 `max-content` 單一限制，改由 JavaScript 完全接管動態寬度運算，避免瀏覽器對 `contenteditable` 的渲染 BUG。
-2026-06-14: �R�� v2\code\rpg\rpg_engine.js�A�]�����O���ƥB���ϥΪ��o���ɮסC��ڨϥΪ��O v2\code\rpg_engine.js�C
+2026-06-14: 移除 v2\code\rpg\rpg_engine.js，因為這是不小心用到的舊檔案。現在使用的是 v2\code\rpg_engine.js。
 
 [2026-06-15 01:15:00] 備份 UIManager.prototype.handlePlayStory 原代碼：
 UIManager.prototype.handlePlayStory = function({ type, data, onComplete }) {
@@ -138,3 +138,57 @@ toggleDebug() {
     // 舊版 toggleDebug 無對 .rpg-poi-icon 的顯示隱藏處理
     ...
 }
+
+--- 2026-06-21 ---
+[小型試煉場隨機邏輯與技能擴充 移除的舊程式碼]
+檔案: v2/code/practice_engine.js
+原因: 重寫資料表產生器為 5 大情境與 Prefix/Suffix 動態人名/品項生成器，並擴充技能模板至 33 項。
+原 `generatePracticeTable` 與 `TEMPLATES` 與 `drawTask` 代碼：
+
+    function generatePracticeTable(rowCount) {
+        rowCount = rowCount || randomInt(8, 10);
+        const header = ["編號", "姓名", "地區", "等級", "數值A", "數值B", "文字型分數", "日期"];
+        const rows = [];
+        for (let i = 1; i <= rowCount; i++) {
+            const numA = randomInt(10, 99);
+            const numB = randomInt(10, 99);
+            rows.push([
+                i,
+                randomName(),
+                pickRandom(REGIONS),
+                pickRandom(GRADES),
+                numA,
+                numB,
+                numB + "分",
+                randomDate(2025, 2026)
+            ]);
+        }
+        return { header, rows };
+    }
+
+    const TEMPLATES = [
+        {
+            skillId: 'SUM', uiType: 'single', answerLabel: '數值A 總和',
+            build(t) {
+                const sum = t.rows.reduce((s, r) => s + r[4], 0);
+                return { requirement: `這份名單的「數值A」欄需要核對總量，請計算「數值A」欄的總和，填入答案格。`, correctAnswer: sum };
+            }
+        },
+        ... (其餘 12 個舊模板)
+    ];
+
+    function drawTask(skillDefs) {
+        const tpl = pickRandom(TEMPLATES);
+        const table = generatePracticeTable();
+        const built = tpl.build(table);
+        const def = (skillDefs && skillDefs[tpl.skillId]) || {};
+        return Object.assign({
+            skillId: tpl.skillId,
+            uiType: tpl.uiType,
+            answerHeader: tpl.answerHeader,
+            answerLabel: tpl.answerLabel,
+            tip: def.s || '（這項禁術的提示尚未記載）',
+            skillName: def.n || tpl.skillId,
+            table
+        }, built);
+    }

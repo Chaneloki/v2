@@ -961,6 +961,212 @@
             box-shadow: 0 1.5px 0 #15572400;
             background: linear-gradient(135deg, #0015fefb, #0022ff7e);
         }
+        
+        /* Excel Modals & Dialogs */
+        .modal-layer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .excel-dialog {
+            width: 460px;
+            background: #f0f0f0;
+            border: 1px solid #888;
+            border-radius: 3px;
+            font-family: "Microsoft JhengHei", sans-serif;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+        .excel-dialog-header {
+            background: #fff;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+        }
+        .excel-close {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .excel-dialog-tabs {
+            display: flex;
+            padding: 10px 10px 0 10px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #fff;
+        }
+        .excel-tab {
+            padding: 5px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 2px;
+            border-radius: 3px 3px 0 0;
+            color: #333;
+        }
+        .excel-tab.active {
+            background: #fff;
+            border-color: #ccc;
+            border-bottom: 1px solid #fff;
+            margin-bottom: -1px;
+        }
+        .excel-dialog-body {
+            background: #fff;
+            margin: 0 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+        .excel-style-box {
+            border: 1px solid #ccc;
+            height: 120px;
+            padding: 5px;
+            background: #fff;
+            overflow-y: auto;
+        }
+        .excel-color-picker {
+            border: 1px solid #ccc;
+            padding: 3px;
+            font-size: 11px;
+            margin-top: 5px;
+            text-align: center;
+            background: #fff;
+        }
+        .excel-preset {
+            border: 1px solid #ddd;
+            padding: 5px;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50px;
+            background: #f9f9f9;
+        }
+        .excel-preview-box {
+            border: 1px solid #ccc;
+            background: #fff;
+            position: relative;
+        }
+        .excel-btn-edge {
+            border: 1px solid #ccc;
+            background: #eee;
+            font-size: 10px;
+            text-align: center;
+            line-height: 25px;
+            cursor: default;
+        }
+        .excel-btn-edge-v {
+            border: 1px solid #ccc;
+            background: #eee;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+        }
+        .excel-btn-diag {
+            width: 40px;
+            height: 40px;
+            background: #eee;
+            border: 1px solid #bbb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+        .excel-btn-diag:hover {
+            background: #eef7ff;
+            border-color: #217346;
+        }
+        .excel-btn-diag svg {
+            display: block;
+        }
+        .excel-dialog-footer {
+            padding: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .excel-ok, .excel-cancel {
+            padding: 5px 25px;
+            font-size: 12px;
+            border: 1px solid #888;
+            cursor: pointer;
+            border-radius: 2px;
+            color: #333;
+        }
+        .excel-ok {
+            background: #eee;
+        }
+        .excel-ok:hover {
+            border-color: #217346;
+            background: #eef7ff;
+        }
+        .excel-category-list {
+            border: 1px solid #ccc;
+            background: #fff;
+            height: 150px;
+            overflow-y: auto;
+        }
+        .category-item {
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            color: #333;
+            text-align: left;
+        }
+        .category-item:hover {
+            background: #f0f0f0;
+        }
+        .category-item.active {
+            background: #0078d4;
+            color: #fff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .group-opt {
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            color: #333;
+            text-align: left;
+        }
+        .group-opt:hover {
+            background: #f0f0f0;
+        }
+        .group-opt.active {
+            background: #0078d4;
+            color: #fff;
+        }
+        .filter-arrow-btn {
+            border: none;
+            background: #e1e1e1;
+            color: #333;
+            border-radius: 2px;
+            padding: 1px 4px;
+            font-size: 9px;
+            line-height: 1;
+            margin-left: 4px;
+        }
+        .filter-arrow-btn:hover {
+            background: #c0c0c0;
+        }
     </style>
 </head>
 <body>
@@ -1003,20 +1209,20 @@
             <!-- 左欄：番外篇 -->
             <div class="column-panel">
                 <div class="panel-tag story-tag">📖 番外篇</div>
-                <div class="story-card-frame" onclick="openStory('demo_001')">
-                    <div class="story-card-inner">
+                <div class="story-card-frame" onclick="openActiveStory()">
+                    <div class="story-card-inner" id="story-card-frame-inner" style="background-image: url('BG/intro/1_bonus.png');">
                         <div class="story-card-overlay">
-                            <h3 class="story-card-title">鏡中的裂痕</h3>
-                            <p class="story-card-subtitle">夏特初入學院</p>
+                            <h3 class="story-card-title" id="story-card-frame-title">碎鏡葬舊生</h3>
+                            <p class="story-card-subtitle" id="story-card-frame-subtitle">夏特初入學院</p>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-dots">
-                    <span class="dot" onclick="showDotToast(0)"></span>
-                    <span class="dot active" onclick="openStory('demo_001')"></span>
-                    <span class="dot" onclick="showDotToast(2)"></span>
-                    <span class="dot" onclick="showDotToast(3)"></span>
-                    <span class="dot" onclick="showDotToast(4)"></span>
+                    <span class="dot active" onclick="selectStoryCard(0)"></span>
+                    <span class="dot" onclick="selectStoryCard(1)"></span>
+                    <span class="dot" onclick="selectStoryCard(2)"></span>
+                    <span class="dot" onclick="selectStoryCard(3)"></span>
+                    <span class="dot" onclick="selectStoryCard(4)"></span>
                 </div>
             </div>
             <!-- 右欄：小型試煉 -->
@@ -1045,6 +1251,119 @@
                 <span class="trial-workspace-title">🔮 Excel 小型試煉場</span>
             </div>
             <div id="practice-area"></div>
+
+            <!-- [NEW] Excel Dialog Modals for Small Drills -->
+            <!-- 1. 進階篩選對話框 (Advanced Filter) -->
+            <div id="excel-adv-filter-modal" class="modal-layer" style="display:none; background:rgba(0,0,0,0.5);">
+                <div class="excel-dialog" style="width: 350px;">
+                    <div class="excel-dialog-header">
+                        <span>進階篩選</span>
+                        <button class="excel-close" onclick="closeAdvFilterDialog()">×</button>
+                    </div>
+                    <div class="excel-dialog-body" style="padding: 15px;">
+                        <div style="font-size:11px; margin-bottom:10px;">方式</div>
+                        <div style="margin-left:20px; font-size:11px; display:flex; flex-direction:column; gap:5px;">
+                            <label><input type="radio" name="filter-action" checked> 在原有區域顯示篩選結果(F)</label>
+                            <label><input type="radio" name="filter-action" disabled> 將篩選結果複製到其他位置(O)</label>
+                        </div>
+
+                        <div style="margin-top:15px; display:grid; grid-template-columns: 80px 1fr 25px; gap:10px; align-items:center;">
+                            <label style="font-size:11px;">資料範圍(L):</label>
+                            <input type="text" value="$A$1:$H$11" disabled style="font-size:11px; padding:2px; border:1px solid #ccc;">
+                            <button style="padding:0; height:18px;">📉</button>
+
+                            <label style="font-size:11px;">條件範圍(C):</label>
+                            <input type="text" id="adv-filter-criteria" placeholder="請輸入條件範圍，如: I1:J2" style="font-size:11px; padding:2px; border:1px solid #217346;">
+                            <button style="padding:0; height:18px;">📉</button>
+                        </div>
+
+                        <div style="margin-top:15px; font-size:11px;">
+                            <label><input type="checkbox"> 僅選取不重複的紀錄(R)</label>
+                        </div>
+                    </div>
+                    <div class="excel-dialog-footer">
+                        <button class="excel-ok" onclick="confirmAdvFilterDialog()" style="padding: 5px 25px;">確定</button>
+                        <button class="excel-cancel" onclick="closeAdvFilterDialog()" style="padding: 5px 25px;">取消</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 排序對話框 (Multi-level Sort) -->
+            <div id="excel-sort-modal" class="modal-layer" style="display:none; background:rgba(0,0,0,0.5);">
+                <div class="excel-dialog" style="width: 550px;">
+                    <div class="excel-dialog-header">
+                        <span>排序</span>
+                        <button class="excel-close" onclick="closeSortDialog()">×</button>
+                    </div>
+                    <div class="excel-dialog-body" style="padding: 15px;">
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <button class="excel-ok" onclick="addSortLevel()" style="font-size:11px; padding:3px 10px; width:auto;">➕ 新增層級(A)</button>
+                            <button class="excel-ok" onclick="deleteSortLevel()" style="font-size:11px; padding:3px 10px; width:auto;">➖ 刪除層級(D)</button>
+                            <button class="excel-ok" style="font-size:11px; padding:3px 10px; opacity:0.5; cursor:not-allowed; width:auto;">複製層級</button>
+                            <div style="flex:1"></div>
+                            <label style="font-size:11px; display:flex; align-items:center;"><input type="checkbox" checked disabled style="margin-right:5px;"> 我的資料有標題(H)</label>
+                        </div>
+
+                        <div style="border:1px solid #999; background:#fff; height:180px; overflow-y:auto;">
+                            <table style="width:100%; border-collapse:collapse; font-size:11px;">
+                                <thead style="background:#f5f5f5; position:sticky; top:0; border-bottom:1px solid #ccc;">
+                                    <tr>
+                                        <th style="width:180px; padding:5px; text-align:left; border-right:1px solid #ddd;">欄位</th>
+                                        <th style="width:150px; padding:5px; text-align:left; border-right:1px solid #ddd;">排序對象</th>
+                                        <th style="padding:5px; text-align:left;">順序</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sort-levels-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="excel-dialog-footer">
+                        <button class="excel-ok" onclick="confirmSortDialog()" style="padding: 5px 30px;">確定</button>
+                        <button class="excel-cancel" onclick="closeSortDialog()" style="padding: 5px 30px;">取消</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 自訂清單與格式對話框 (Format / Custom List) -->
+            <div id="excel-format-modal" class="modal-layer" style="display:none; background:rgba(0,0,0,0.5);">
+                <div class="excel-dialog">
+                    <div class="excel-dialog-header">
+                        <span>設定儲存格格式</span>
+                        <button onclick="closeFormatDialog()" class="excel-close">×</button>
+                    </div>
+                    <div class="excel-dialog-tabs" id="excel-tabs-strip">
+                        <div class="excel-tab" data-tab="number" onclick="switchFormatTab('number')">數字</div>
+                        <div class="excel-tab active" data-tab="customlist" onclick="switchFormatTab('customlist')">自訂清單</div>
+                    </div>
+
+                    <div class="excel-dialog-body">
+                        <div id="tab-content-customlist" class="tab-content" style="display:block;">
+                            <div style="display:flex; gap:15px; height: 220px;">
+                                <div style="width:160px; border-right:1px solid #eee; display:flex; flex-direction:column;">
+                                    <label style="font-size:11px; color:#333; margin-bottom:5px;">自訂清單(L):</label>
+                                    <div id="excel-custom-lists-pane" class="excel-category-list" style="flex:1; overflow-y:auto; border:1px solid #999;">
+                                        <div class="category-item active">新清單</div>
+                                    </div>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column;">
+                                    <label style="font-size:11px; color:#333; margin-bottom:5px;">清單項目(E):</label>
+                                    <textarea id="excel-custom-entries" style="flex:1; width:100%; border:1px solid #999; font-size:12px; padding:5px; resize:none; font-family: sans-serif;" placeholder="輸入項目後按 Enter 分隔..."></textarea>
+                                    <div style="margin-top:10px; display:flex; justify-content:flex-end;">
+                                        <button onclick="addCustomListFromUI()" style="padding:5px 20px; font-size:11px; background:#eee; border:1px solid #888; border-radius:2px; cursor:pointer;">新增(A)</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p id="custom-list-hint" style="font-size:11px; color:#666; margin-top:10px;">提示：在右側輸入「重症」、「中症」、「輕症」（每行一個），然後點擊新增。</p>
+                        </div>
+                    </div>
+
+                    <div class="excel-dialog-footer">
+                        <button onclick="confirmFormatDialog()" class="excel-ok">確定</button>
+                        <button onclick="closeFormatDialog()" class="excel-cancel">取消</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1061,7 +1380,7 @@
             <div class="extras-story-header-decor">Story</div>
             
             <div class="extras-story-book-header">
-                <span id="extras-story-title-display">01 | 鏡中的裂痕</span>
+                <span id="extras-story-title-display">01 | 碎鏡葬舊生</span>
                 <span class="extras-story-book-subtitle">✦ STORY ADVENTURE ✦</span>
             </div>
             
@@ -1136,7 +1455,7 @@
 
         window.SIDE_STORIES = {
             demo_001: {
-                title: "鏡中的裂痕",
+                title: "碎鏡葬舊生",
                 summary: "夏特初入學院",
                 lines: [
                     { 
@@ -1144,75 +1463,148 @@
                         t: "行李箱的皮扣勒進掌心，我把它拉得死緊，指節因為用力而泛著青白。這是我從螢火村帶出來的唯一家當，此刻它躺在腳邊，顯得如此格格不入。", 
                         a: "chate", 
                         bgm: "kingdom sad.mp3", 
-                        bg: "bg2.png" 
+                        bg: "intro/1_bonus.png" 
                     },
                     { 
                         n: "夏特", 
                         t: "抵達這座大城後的第十四天，我依然沒能習慣這裡。空氣裡那股甜膩的香料味，像是一層黏糊糊的膜，悶得我喉嚨發乾。比起螢火村那股終年不散的泥土氣，這裡的一切都顯得太過精緻、明亮，也遙遠得讓人恐懼。", 
                         a: "chate", 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "我蜷在學院外的長廊上，手邊那本《初階結構學》正攤開著。書脊已經磨損了，封皮上還帶著村長蓋下的印章現在才發現這本書竟破舊得像個笑話。", 
                         a: "chate", 
                         se: "trans.mp3", 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "不遠處，幾個穿著燙金長袍的學長正圍在一起。風把他們的隻字片語送到我耳邊：北境的魔力導流、王室的宴席，還有那些我連發音都抓不住的貴族姓氏。", 
                         a: "chate", 
                         shake: true, 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "他們舉杯的動作輕得沒有一點聲響，說話時漫不經心的優雅，讓我腦中不斷浮現出村長為了幾把柴火就和鄰居爭得面紅耳赤的模樣。那種落差感太過強烈，讓我胃裡一陣翻騰。", 
                         a: "chate", 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "我低下頭，死死盯著指尖上的墨漬。為了練寫公式，我熬了三個通宵留下了痕跡。在螢火村，村長總是用那雙佈滿老繭的手拍著我的肩膀說\n「小夏特，你是我們村未來的希望，你的筆跡，以後都要寫進村史裡的。」", 
                         a: "chate", 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "\n...村史。\n我自嘲地扯了一下嘴角，喉嚨裡泛起一陣澀意。在這座高塔之下，誰會在乎那些歪歪斜斜的墨跡？在這裡，筆跡必須像尺規量出來一樣平整，配色必須符合那套冷酷的裝幀邏輯。否則，無論你的算式多精準，也不過是個沒人想看的瑕疵品。", 
                         a: "chate", 
                         flash: true,
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "「喂，那邊那個，別擋著路。」一個領口綴著藍寶石的少年冷冷地掃了我一眼。他連眼神都沒有在我身上多停留一秒。我猛地站起身，手裡的書差點滑落。臉頰像是被火燒過一樣發燙，尖銳細密的刺痛感從胸口竄起，瞬間蔓延到四肢百骸。那是徹底的、無法掩飾的自我厭惡。", 
                         a: "chate", 
                         flash: true, 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "原來，那個在螢火村被捧上天際的天才，在這裡，也不過是一件滿是補丁的舊衣服。我用力把那本書壓進懷裡，指甲幾乎要掐進皮肉。", 
                         a: "chate", 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
                     { 
                         n: "夏特", 
                         t: "我不服。我要融入這裡，我要變成像他們那樣。螢火村的口音、習慣，所有暴露我出身的痕跡，我要從骨髓裡、從血液裡一寸寸剔除乾淨。我轉過身，那扇高聳的學院大門像是一個吞噬光線的巨口。\n我沒再回頭，每走一步，都在心底築起一道牆。", 
                         a: "chate", 
-                        bg: "bg2.png"
+                        bg: "intro/1_bonus.png"
                     },
-                    { 
-                        n: "夏特", 
-                        t: "從今天起，螢火村那個泥巴坑裡的天才死了。現在站著的是夏特，學院的首席候選人。\n也只能是。", 
-                        a: "chate", 
-                        bg: "bg2.png"
+                    {
+                        n: "夏特",
+                        t: "從今天起，螢火村那個泥巴坑裡的天才死了。現在站著的是夏特，學院的首席候選人。\n也只能是。",
+                        a: "chate",
+                        bg: "intro/1_bonus.png"
                     }
+                ]
+            },
+            demo_002: {
+                title: "破土築鐵魂",
+                summary: "米羅的抗爭",
+                lines: [
+                    { n: "米羅", t: "寒意是從靴底一點點爬上來的，像是有無數條冰冷的蟲子鑽進了腳踝。我死死扣住那根粗糙的車軸，木頭紋理摩擦著掌心的繭，關節因為用力過度而發出陣陣震顫。那滋味連同後頭斷斷續續傳來的哀求聲，攪得我胃裡一陣翻騰，酸得眼眶發乾。", a: "miro", bg: "intro/2_bonus.png",bgm:"sad.mp3" },
+                    { n: "米羅", t: "「一、二，起！」\n嗓子像是被砂紙磨過，吼出來的聲音破碎又乾澀。我把全身的重量撞進肩膀，可那木輪始終深陷在淤泥裡，除了噴濺出一大片散發著腥臭的黑水，紋絲不動。", a: "miro", bg: "intro/2_bonus.png",shake:true  },
+                    { n: "米羅", t: "我眼角的餘光瞥見旁邊的小吉。\n他才多大？十一，還是十二？那張總是髒兮兮的臉上此刻沒了血色，那雙本該握著木劍胡亂揮舞的手，現在竟滿是紅痕。他突然鬆了手，整個人像是被抽去了骨頭一樣癱坐在泥邊，劇烈的喘息聲聽得我心口一窒。", a: "miro", bg: "intro/2_bonus.png"},
+                    { n: "米羅", t: "我看著他，喉嚨像是被人塞進了一團乾棉花。\n我是哥哥啊。是走在他前面的人，理應替他擋住那些刺骨的風雨才對。這個世道本就薄情，誰都能退縮，唯獨我不能。只要我還站著，我就得把這份擔子硬扛著，不然這孩子，還有身後那些老人家，真的就只能在寒冬裡變成一尊尊冰塊了。", a: "miro", bg: "intro/2_bonus.png" },
+                    { n: "米羅", t: "可我就是推不動。\n肩膀被那根木桿勒得皮開肉綻，鑽心的疼。我再次發力，甚至能感覺到骨頭在對抗著這死寂的泥沼，可車身依舊像是長在了土裡。那種無力感，像是從腳底直衝心臟的寒潮，凍得我四肢冰涼。", a: "miro", bg: "intro/2_bonus.png",flash:true },
+                    { n: "米羅", t: "「小吉，再試一次。」\n我轉過頭，強迫臉部肌肉硬生生擠出一個弧度。我知道我一定笑得很難看，但我必須這麼做，我不能讓他看見我心裡的恐慌。\n「我們能行的。」", a: "miro", bg: "intro/2_bonus.png" },
+                    { n: "米羅", t: "小吉抬起頭，那雙清澈如水的眼睛，現在只剩下滿滿的迷茫與恐懼。他搖著頭，聲音抖得不成樣子：\n「米羅哥……我們推不動的。我們只是孩子誰都救不了……」", a: "miro", bg: "intro/2_bonus.png" },
+                    { n: "米羅", t: "這句話比任何鞭子都狠，結結實實地抽在我心口。他沒說錯，我們不過是一群孩子。我想我能撐起我的家，也能成為村裡的支柱，可現實卻給了我一記響亮的耳光。\n我連把他從這泥潭裡拉出來的能力都沒有。我不僅無能，甚至還自私地拖著他陪我一起耗盡力氣。", a: "miro", bg: "intro/2_bonus.png",flash:true  },
+                    { n: "米羅", t: "渴望力量的念頭，簡直像是要在體內燒出一個洞來。\n如果有力量就好了。如果我不只是站在這泥坑裡，而是站在某個能一揮手就移平道路的高處……那樣的話，小吉就不必露出這種眼神，身後的老人們也不必瑟瑟發抖。", a: "miro", bg: "intro/2_bonus.png" },
+                    { n: "米羅", t: "我死死咬著後槽牙，將眼底翻湧的濕熱硬生生逼了回去。不能哭，哭了，我就真的只能是個廢物。\n我重新扣住車緣，指甲縫被碎石狠狠劃開，鮮血混著污泥淌進了皮膚裡。我不後悔我在這裡，但我恨透了自己只能靠蠻力來換取微薄生機的無助。只要我活著，我一定要學會某種能真正守護別人的力量。", a: "miro", bg: "intro/2_bonus.png",shake:true },
+                    { n: "米羅", t: "「小吉，沒事的。」我再次重複，這話是對他說，也是在對那個正陷在泥潭裡的自己喊。\n「我們不是救不了，是還沒推到那一下。」\n我把全身的重量砸進去，我不知我的憤怒從何而起，但這是我對命運唯一的抗爭。", a: "miro", bg: "intro/2_bonus.png" },
+                    { n: "米羅", t: "車輪終於動了。當那路過的大叔加入推車時，車身猛地一震，阻力輕易被崩解了。我們像是一群被逼急了的雛鳥，瘋了一樣狂推。\n車子脫困了。", a: "miro", bg: "intro/2_bonus.png" },
+                    { n: "米羅", t: "直到車隊遠去，道謝聲變得模糊，我才終於頹然坐進泥裡，掌心的傷口一抽一抽地跳著疼。我沒力氣去回禮，只是盯著這雙滿是污垢的手發愣。\n我太弱了。弱得連那一丁點的公平都給不了身邊的人。我不能這樣，絕對不能。我一定要去學點什麼，一定要去找那個能讓我也變得像大人一樣可靠、甚至比大人更強大的辦法。", a: "miro", bg: "intro/2_bonus.png" },
+                    { n: "米羅", t: "執念，在這一刻，像是燒紅的烙鐵，在我心底刻下了印記，清晰得甚至有些刺痛。", a: "miro", bg: "intro/2_bonus.png",flash:true   }
+                ]
+            },
+            demo_003: {
+                title: "止步悔恨時",
+                summary: "葛蕾的愧疚",
+                lines: [
+                    { n: "葛蕾", t: "金穗鎮的午夜，蠟燭燃燒殆盡，剩下殘餘的蠟油順著燭台滴落，發出細微的凝固聲。我的手指因為長時間握筆而僵硬得幾乎無法伸直，指腹上那層薄薄的繭在燈影下顯得有些發亮。帳簿上的字跡很亂，那是剛從泥濘的貨運碼頭送進來的清單，紙張邊緣還沾著沒乾透的泥水。我用力揉了揉酸澀的雙眼，視線重新聚焦在那些跳動的數字上。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "「葛蕾，妳還在算？」\n前輩的聲音是一陣風，溫和地吹散了這屋子裡的沈悶。他站在門口，手裡提著那盞防風燈，金屬外殼被擦得錚亮。他是我入職後最敬重的人，總是在我手忙腳亂時遞來一杯溫熱的清茶，用那種沉穩的語氣告訴我：數據錯了可以改，但人累壞了，這鎮子就失去支持了。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "我放下筆，挺直了痠痛的背脊，輕輕吁了一口氣。窗外是大雨敲擊木板的聲音，節奏亂得讓人心慌。\n「還有這幾頁，核對完我就走。」\n「妳太過賣力了。」前輩笑了笑。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "笑容在搖曳的燭火中顯得異常慈祥，帶著一種令我無法抗拒的寬容。\n「看看妳，眼睛都紅了。這份清單，我早看過一遍了，沒問題的。妳現在就回去睡吧，剩下的我來結尾就好。」", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "他走過來，動作自然地將我手裡的帳簿抽走。那雙手溫暖而乾燥，帶著一種讓人無條件信賴的力度。我本能地想拒絕，但心臟深處那股隱隱作祟的緊繃感，在他的安撫下徹底瓦解。\n「妳相信我嗎？」\n我點了點頭。在這亂世裡，他是唯一一個讓我相信秩序真的存在的人。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "那一晚，我睡得很沈。沒有成堆的貨運單，只有碼頭上吹來的鹹腥冷風。直到清晨，急促的拍門聲將我從夢境撕碎。\n「葛蕾！出事了！庫房……庫房空了！」", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "當我跌跌撞撞趕到辦公帳篷時，鎮長那張漲成豬肝色的臉成了我記憶裡最恐怖的底色。桌上的櫃子大開著，原本存放糧食配額與藥材存單的鐵盒，只剩下一道空洞的縫隙。我不相信。發瘋似地翻開備份清單，指尖顫抖著劃過每一行。原本應該在那裡的蓋章，全都消失了。連同那些重要的原件、鎮上的印章，以及那位一直以來帶領著我的前輩的名字。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "我耳邊「嗡」的一聲。三天前。他跟我說他要休息，而他早就準備好要離開。我的雙手僵在半空中，指尖還沾著昨天深夜為了核對帳目而染上的墨跡。那個瞬間，整個帳篷裡的空氣彷彿瞬間被抽乾，寒意從腳底板直竄天靈蓋。我不斷在心裡尖叫著：如果那天晚上我沒有聽他的話離開，如果我堅持把帳算完……沒有如果。因為那一刻的懈怠，金穗鎮最重要的物資底牌被人連根拔起。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "「葛蕾，這到底是怎麼回事！」鎮長的咆哮聲在帳篷裡炸開，但我什麼都聽不見了。\n我只看到紙面上那一行行空白的表格。它們像是一張張張開的嘴，嘲弄著我的無知與輕信。原本牢牢抓在手心裡的沙子，因為我的一時放鬆，被風吹得一乾二淨。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "自那之後。我只要閒下來，大腦就會自動重播那一晚，他抽走帳簿的手，搖晃的燈光，以及我自己那句「謝謝」。每一分、每一秒的停頓，都化作了蝕骨的愧疚。所以我只能不停地做，不停地算。我將每一個細節精確到連小數點後三位都不放過。有時候，鎮民看著我那副不知疲倦的樣子，會小心翼翼地問我是不是太累了，但我總會搖搖頭，然後更用力地將筆尖戳進紙張。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "我知道，只要我不停下來，那些令我恐懼的空白就不會追上我。只要我不做錯任何事，那個夢魘般的早晨就不會再次降臨。\n我是這鎮子裡的後勤官。我不需要名聲，也不需要金錢，我只需要這一份帳目在我的指尖下，永遠保持著完美的、令人心安的秩序。", a: "glea", bg: "intro/3_bonus.png" },
+                    { n: "葛蕾", t: "那是我的救贖，也是我唯一的生存方式。只要我還在做，只要我還沒停下，我就依然是那個有用的、不會再犯錯的葛蕾。", a: "glea", bg: "intro/3_bonus.png" }
                 ]
             }
         };
+
+        window.STORY_CARDS = [
+            { id: 'demo_001', title: '碎鏡葬舊生', subtitle: '夏特初入學院', cover: 'BG/intro/1_bonus.png' },
+            { id: 'demo_002', title: '破土築鐵魂', subtitle: '米羅的抗爭', cover: 'BG/intro/2_bonus.png' },
+            { id: 'demo_003', title: '止步悔恨時', subtitle: '葛蕾的愧疚', cover: 'BG/intro/3_bonus.png' }
+        ];
+        let _activeStoryCardIndex = 0;
+
+        function renderActiveStoryCard() {
+            const card = window.STORY_CARDS[_activeStoryCardIndex];
+            if (!card) return;
+            const innerEl = document.getElementById('story-card-frame-inner');
+            const titleEl = document.getElementById('story-card-frame-title');
+            const subtitleEl = document.getElementById('story-card-frame-subtitle');
+            if (innerEl) innerEl.style.backgroundImage = `url('${card.cover}')`;
+            if (titleEl) titleEl.innerText = card.title;
+            if (subtitleEl) subtitleEl.innerText = card.subtitle;
+            document.querySelectorAll('.carousel-dots .dot').forEach((d, i) => {
+                d.classList.toggle('active', i === _activeStoryCardIndex);
+            });
+        }
+
+        function selectStoryCard(idx) {
+            if (idx < 0 || idx >= window.STORY_CARDS.length) {
+                showDotToast(idx);
+                return;
+            }
+            _activeStoryCardIndex = idx;
+            renderActiveStoryCard();
+        }
+
+        function openActiveStory() {
+            const card = window.STORY_CARDS[_activeStoryCardIndex];
+            if (card) openStory(card.id);
+        }
 
         let _storyState = null;
         let _extrasBgm = null;
@@ -1346,7 +1738,7 @@
                 decorPanel.style.backgroundImage = `url('${illustrationSrc}')`;
             }
             
-            // 2. 全螢幕背景 / CG 顯示 (修復 bg2.png 無法顯示問題)
+            // 2. 全螢幕背景 / CG 顯示 (修復 intro/1_bonus.png 無法顯示問題)
             if (line.bg) {
                 let fullPath = line.bg;
                 if (!fullPath.startsWith('BG/') && !fullPath.startsWith('cg/') && !fullPath.startsWith('http')) {
@@ -1527,8 +1919,27 @@
                 taskCollapsed: false,
                 feedback: { ok: null, msg: '' },
                 widgetPos: prevPos,
-                widgetCollapsed: prevCollapsed
+                widgetCollapsed: prevCollapsed,
+                
+                // New states
+                outlineVisible: false,
+                outlineEnabled: false,
+                filterEnabled: false,
+                filteredOutVals: null,
+                cellHighlights: {},
+                searchFound: false,
+                painterCopied: false,
+                painterApplied: false,
+                validationApplied: false,
+                hasBorders: false,
+                hasHeaderFill: false,
+                mergedRange: null
             };
+            
+            if (currentTask.skillId === 'AUTOFILL') {
+                practiceState.inputValues[0] = currentTask.initialFormula;
+            }
+            
             renderTask();
         }
 
@@ -1554,17 +1965,20 @@
 
             if (tab === 'start') {
                 createRibbonBtn("practice-autosum", "自動加總", "icon/auto sum.png", handleRibbonAutoSum, true);
-                createRibbonBtn("practice-merge", "跨欄置中", "icon/跨欄置中.png", null, false);
-                createRibbonBtn("practice-border", "所有框線", "icon/所有框線.png", null, false);
-                createRibbonBtn("practice-fill", "填滿色彩", "icon/fill colour.png", null, false);
-                createRibbonBtn("practice-painter", "格式刷", "icon/format brush.png", null, false);
+                createRibbonBtn("practice-merge", "跨欄置中", "icon/跨欄置中.png", handleRibbonMerge, true);
+                createRibbonBtn("practice-border", "所有框線", "icon/所有框線.png", handleRibbonBorder, true);
+                createRibbonBtn("practice-fill", "填滿色彩", "icon/fill colour.png", handleRibbonFill, true);
+                createRibbonBtn("practice-painter", "格式刷", "icon/format brush.png", handleRibbonPainter, true);
             } else if (tab === 'insert') {
-                createRibbonBtn("practice-pivot", "樞紐分析表", "icon/樞紐分析表.png", null, false);
+                createRibbonBtn("practice-pivot", "樞紐分析表", "icon/樞紐分析表.png", handleRibbonPivot, true);
             } else if (tab === 'data') {
                 createRibbonBtn("practice-sort-asc", "升序排序", "icon/sort&filter.png", () => applySortPractice('asc'), true);
                 createRibbonBtn("practice-sort-desc", "降序排序", "icon/sort&filter.png", () => applySortPractice('desc'), true);
-                createRibbonBtn("practice-validation", "資料驗證", "icon/資料check.png", null, false);
-                createRibbonBtn("practice-subtotal", "小計", "icon/小計.png", null, false);
+                createRibbonBtn("practice-sort-custom", "自訂排序", "icon/sort&filter.png", openSortDialog, true);
+                createRibbonBtn("practice-filter", "篩選", "icon/sort&filter.png", toggleFilterPractice, true);
+                createRibbonBtn("practice-filter-adv", "進階篩選", "icon/sort&filter.png", openAdvFilterDialog, true);
+                createRibbonBtn("practice-validation", "資料驗證", "icon/資料check.png", openValidationDialog, true);
+                createRibbonBtn("practice-subtotal", "小計", "icon/小計.png", openSubtotalDialog, true);
             } else if (tab === 'view') {
                 const isFreezeActive = practiceState.frozen;
                 const btn = createRibbonBtn("practice-freeze", "凍結頂端列", "icon/凍結窗格.png", toggleFreezePractice, true);
@@ -1573,7 +1987,7 @@
                     btn.style.background = 'var(--active-blue)';
                     btn.style.borderColor = '#99bce8';
                 }
-                createRibbonBtn("practice-outline", "大綱", "icon/大綱.png", null, false);
+                createRibbonBtn("practice-outline", "大綱", "icon/大綱.png", toggleOutlinePractice, true);
             }
         }
 
@@ -1687,26 +2101,54 @@
             const header = t.table.header;
 
             // 1. Calculate Grid Column Widths
-            const colWidths = ['50px'];
+            const colWidths = [];
+            if (practiceState.outlineVisible) colWidths.push('40px');
+            colWidths.push('50px');
             for (let i = 0; i < header.length; i++) colWidths.push('120px');
             if (t.uiType === 'column') colWidths.push('150px');
 
             // 2. Render Headers
             const colHeaders = [];
+            if (practiceState.outlineVisible) {
+                colHeaders.push(`<div class="l-head" style="grid-row: 1; grid-column: 1; position: sticky; top: 0; left: 0; z-index: 1003; font-weight: bold; font-size: 10px; display:flex; justify-content:center; align-items:center; border-right:1px solid #e1e1e1; border-bottom:1px solid #e1e1e1; background:#f5f5f5; color:#333;">1 2</div>`);
+            }
             // Corner
-            colHeaders.push(`<div class="l-head" style="grid-row: 1; grid-column: 1; position: sticky; top: 0; left: 0; z-index: 1002; border-right: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1;"></div>`);
+            const cornerColIdx = practiceState.outlineVisible ? 2 : 1;
+            colHeaders.push(`<div class="l-head" style="grid-row: 1; grid-column: ${cornerColIdx}; position: sticky; top: 0; left: ${practiceState.outlineVisible ? '40px' : '0'}; z-index: 1002; border-right: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1;"></div>`);
             
+            // Check if merged header is active
+            const isHeaderMerged = (practiceState.mergedRange && practiceState.mergedRange.minRow === -1 && practiceState.mergedRange.maxRow === -1 && practiceState.mergedRange.minCol === 0 && practiceState.mergedRange.maxCol === 7);
+
             // A-K
             header.forEach((h, i) => {
                 const isSelected = practiceState.selectedCol === i;
-                const headerStyle = `grid-row: 1; grid-column: ${i + 2}; position: sticky; top: 0; z-index: 1000; cursor: cell;` +
+                let headerStyle = `grid-row: 1; grid-column: ${practiceState.outlineVisible ? i + 3 : i + 2}; position: sticky; top: 0; z-index: 1000; cursor: cell;` +
                                     (isSelected ? ' background: rgba(33, 115, 70, 0.15) !important;' : '');
-                colHeaders.push(`<div class="l-head letter ${isSelected ? 'l-sel' : ''}" style="${headerStyle}" onclick="selectCol(${i})">${colLetter(i)}<br>${h}</div>`);
+                
+                if (practiceState.hasHeaderFill) {
+                    headerStyle += ' background-color: #fce4d6 !important; color: #333 !important;';
+                }
+
+                let filterArrow = "";
+                if (practiceState.filterEnabled) {
+                    filterArrow = `<button class="filter-arrow-btn" onclick="openFilterDropdown(event, ${i})" style="margin-left: 5px; font-size: 8px; cursor: pointer; padding: 1px 3px;">▼</button>`;
+                }
+
+                if (isHeaderMerged) {
+                    if (i === 0) {
+                        const spanCols = t.uiType === 'column' ? 9 : 8;
+                        headerStyle += ` grid-column: ${practiceState.outlineVisible ? 3 : 2} / span ${spanCols}; text-align: center; font-weight: bold; background: #fff !important;`;
+                        colHeaders.push(`<div class="cell l-head letter" style="${headerStyle}" data-row="-1" data-col="${i}" onmousedown="onCellMouseDown(event, -1, ${i})" onmouseover="onCellMouseOver(event, -1, ${i})">${h}${filterArrow}</div>`);
+                    }
+                } else {
+                    colHeaders.push(`<div class="cell l-head letter ${isSelected ? 'l-sel' : ''}" style="${headerStyle}" data-row="-1" data-col="${i}" onmousedown="onCellMouseDown(event, -1, ${i})" onmouseover="onCellMouseOver(event, -1, ${i})" oncontextmenu="onCellContextMenu(event, -1, ${i})">${colLetter(i)}<br>${h}${filterArrow}</div>`);
+                }
             });
 
             // Column mode extra header
             if (t.uiType === 'column') {
-                colHeaders.push(`<div class="l-head letter" style="grid-row: 1; grid-column: ${header.length + 2}; position: sticky; top: 0; z-index: 1000;">${colLetter(header.length)}<br>${t.answerHeader}</div>`);
+                const extraColIdx = practiceState.outlineVisible ? header.length + 3 : header.length + 2;
+                colHeaders.push(`<div class="l-head letter" style="grid-row: 1; grid-column: ${extraColIdx}; position: sticky; top: 0; z-index: 1000;">${colLetter(header.length)}<br>${t.answerHeader}</div>`);
             }
 
             // 3. Render Rows
@@ -1717,9 +2159,17 @@
                 const excelRowNumber = i + 2; // skip header (row 1)
                 const isRow2Frozen = practiceState.frozen && i === 0;
 
+                // Prepend Outline tree fold indicator cell
+                if (practiceState.outlineVisible) {
+                    const isSubtotalRow = row[2] && String(row[2]).includes("總計");
+                    const indicator = isSubtotalRow ? '[-]─' : ' |  ';
+                    gridCells.push(`<div style="grid-row: ${i + 2}; grid-column: 1; position: sticky; left: 0; z-index: 901; display: flex; align-items: center; justify-content: center; font-size: 10px; color:#666; border-right: 1px solid #ddd; background:#f9f9f9; border-bottom:1px solid #f0f0f0;">${indicator}</div>`);
+                }
+
                 // Row Header
-                const rowHeaderStyle = `grid-row: ${i + 2}; grid-column: 1; position: sticky; left: 0; z-index: 900;` +
-                                       (isRow2Frozen ? ' position: sticky; top: 32px; z-index: 1001; background: #f4faf6; border-bottom: 2px solid #217346;' : '');
+                const rowHeaderLeft = practiceState.outlineVisible ? '40px' : '0';
+                const rowHeaderStyle = `grid-row: ${i + 2}; grid-column: ${practiceState.outlineVisible ? 2 : 1}; position: sticky; left: ${rowHeaderLeft}; z-index: 900;` +
+                                       (isRow2Frozen ? ` position: sticky; top: 32px; z-index: 1001; background: #f4faf6; border-bottom: 2px solid #217346;` : '');
                 gridCells.push(`<div class="l-head r-${excelRowNumber} ${isRow2Frozen ? 'frozen' : ''}" style="${rowHeaderStyle}">${excelRowNumber}</div>`);
 
                 // Data Cells
@@ -1748,24 +2198,49 @@
                     }
                     
                     const cellClass = `cell r-${excelRowNumber} ${isSelectedCell ? 'selected' : ''} ${inRange ? 'range-selected' : ''} ${isSelected ? 'l-sel' : ''} ${isTarget ? 'task-target-cell' : ''}`;
-                    let cellStyle = `grid-row: ${i + 2}; grid-column: ${c + 2}; text-align: ${isNaN(v) ? 'left' : 'right'};` +
+                    const cellColIdx = practiceState.outlineVisible ? c + 3 : c + 2;
+                    let cellStyle = `grid-row: ${i + 2}; grid-column: ${cellColIdx}; text-align: ${isNaN(v) ? 'left' : 'right'};` +
                                       (isRow2Frozen ? ' position: sticky !important; top: 32px !important; z-index: 1000; background: #f4faf6 !important; border-bottom: 2px solid #217346 !important;' : '');
+                    
                     if (shadows.length > 0) {
                         cellStyle += ` box-shadow: ${shadows.join(', ')} !important; z-index: 5;`;
                     }
                     
-                    gridCells.push(`<div class="${cellClass}" style="${cellStyle}" data-row="${i}" data-col="${c}" onmousedown="onCellMouseDown(event, ${i}, ${c})" onmouseover="onCellMouseOver(event, ${i}, ${c})">${v}</div>`);
+                    // Format painter formatting styles
+                    if (t.skillId === 'FORMAT') {
+                        if (i === 0 || practiceState.painterApplied) {
+                            cellStyle += ' background-color: #fff9c4 !important; border: 1.5px solid #217346 !important;';
+                        }
+                    }
+                    
+                    // Custom border highlights
+                    if (practiceState.hasBorders) {
+                        cellStyle += ' border: 1px solid #333 !important;';
+                    }
+                    
+                    // Highlight fuzzy search cell matches or other cellHighlights
+                    const highlight = (practiceState.cellHighlights && practiceState.cellHighlights[`${i}-${c}`]);
+                    if (highlight) {
+                        cellStyle += ` background-color: ${highlight.backgroundColor} !important; color: ${highlight.color} !important; font-weight: ${highlight.fontWeight} !important;`;
+                    }
+                    
+                    gridCells.push(`<div class="${cellClass}" style="${cellStyle}" data-row="${i}" data-col="${c}" onmousedown="onCellMouseDown(event, ${i}, ${c})" onmouseover="onCellMouseOver(event, ${i}, ${c})" oncontextmenu="onCellContextMenu(event, ${i}, ${c})">${v}</div>`);
                 });
 
                 // Answer Column Input Cell
                 if (t.uiType === 'column') {
                     const isSelectedCell = practiceState.selectedCell && practiceState.selectedCell.r === i && practiceState.selectedCell.c === (header.length);
-                    let cellStyle = `grid-row: ${i + 2}; grid-column: ${header.length + 2}; padding: 0;` +
+                    const ansColIdx = practiceState.outlineVisible ? header.length + 3 : header.length + 2;
+                    let cellStyle = `grid-row: ${i + 2}; grid-column: ${ansColIdx}; padding: 0;` +
                                       (isRow2Frozen ? ' position: sticky !important; top: 32px !important; z-index: 1000; background: #f4faf6 !important; border-bottom: 2px solid #217346 !important;' : '');
                     let shadows = [];
                     if (isSelectedCell) {
                         shadows.push('inset 0 2px 0 0 #217346', 'inset 0 -2px 0 0 #217346', 'inset 2px 0 0 0 #217346', 'inset -2px 0 0 0 #217346');
                         cellStyle += ` box-shadow: ${shadows.join(', ')} !important; z-index: 5;`;
+                    }
+                    
+                    if (practiceState.hasBorders) {
+                        cellStyle += ' border: 1px solid #333 !important;';
                     }
                     
                     const val = (practiceState.inputValues && practiceState.inputValues[i] !== undefined) ? practiceState.inputValues[i] : '';
@@ -1782,13 +2257,18 @@
             // Single mode bottom input row
             if (t.uiType === 'single') {
                 const bottomRowNumber = rows.length + 2;
-                gridCells.push(`<div class="l-head r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: 1; position: sticky; left: 0; z-index: 900;">${bottomRowNumber}</div>`);
-                gridCells.push(`<div class="cell r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: 2; font-weight: bold; background: #f3f2f1; text-align: right;">${t.answerLabel}:</div>`);
+                const rowHeaderLeft = practiceState.outlineVisible ? '40px' : '0';
+                if (practiceState.outlineVisible) {
+                    gridCells.push(`<div style="grid-row: ${bottomRowNumber}; grid-column: 1; position: sticky; left: 0; z-index: 901; background:#f9f9f9; border-right:1px solid #ddd; border-bottom:1px solid #f0f0f0;"></div>`);
+                }
+                gridCells.push(`<div class="l-head r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: ${practiceState.outlineVisible ? 2 : 1}; position: sticky; left: ${rowHeaderLeft}; z-index: 900;">${bottomRowNumber}</div>`);
+                gridCells.push(`<div class="cell r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: ${practiceState.outlineVisible ? 3 : 2}; font-weight: bold; background: #f3f2f1; text-align: right;">${t.answerLabel}:</div>`);
                 
                 const val = (practiceState.singleInputValue !== undefined) ? practiceState.singleInputValue : '';
                 
+                const spanColStart = practiceState.outlineVisible ? 4 : 3;
                 gridCells.push(`
-                    <div class="cell r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: 3 / span 7; padding: 0;">
+                    <div class="cell r-${bottomRowNumber}" style="grid-row: ${bottomRowNumber}; grid-column: ${spanColStart} / span 7; padding: 0;">
                         <input type="text" id="single-answer" class="grid-cell-input" style="text-align: left; padding: 0 10px;" placeholder="輸入公式（例如 =SUM(E2:E${rows.length + 1})）或直接輸入數值" value="${escapeHtmlAttr(val)}" onfocus="onInputFocus(event, ${rows.length})" onblur="onInputBlur(event)" oninput="onInputChange(event, 'single')" onkeydown="onInputKeyDown(event, ${rows.length})">
                     </div>
                 `);
@@ -1800,8 +2280,7 @@
                 scrollTip = `<div style="color: #b37400; font-size: 0.8rem; font-weight: bold; margin-left: auto; margin-right: 15px; display: inline-flex; align-items: center; gap: 4px;">↔️ 提示：表格較寬，請向右滑動尋找「${t.answerHeader}」欄位</div>`;
             }
 
-            // 答案位置提示：題目與資料每次都是隨機產生，答案欄位的字母與位置會變動，
-            // 直接告訴玩家要填在哪裡，不用自己找。
+            // 答案位置提示
             let answerLocationHint = "";
             if (t.uiType === 'column') {
                 const colL = colLetter(header.length);
@@ -1895,11 +2374,1222 @@
             }, 0);
         }
 
+        // Ribbon formatting helpers
+        function handleRibbonMerge() {
+            const t = currentTask;
+            if (t.skillId === 'MERGE_CENTER') {
+                const sel = practiceState.selectedRange;
+                if (sel && sel.minRow === -1 && sel.maxRow === -1 && sel.minCol === 0 && sel.maxCol === 7) {
+                    practiceState.mergedRange = { ...sel };
+                    renderTask();
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, "❌ 請選取 A1 至 H1 的表頭範圍再點擊跨欄置中！");
+                }
+            }
+        }
+
+        function handleRibbonBorder() {
+            const t = currentTask;
+            if (t.skillId === 'BORDER') {
+                const sel = practiceState.selectedRange;
+                const correct = t.correctAnswer;
+                if (sel && sel.minRow === correct.minRow && sel.maxRow === correct.maxRow && sel.minCol === correct.minCol && sel.maxCol === correct.maxCol) {
+                    practiceState.hasBorders = true;
+                    renderTask();
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, `❌ 請選取整個數據區域（A2 至 H${practiceState.displayRows.length + 1}）再套用所有框線！`);
+                }
+            }
+        }
+
+        function handleRibbonFill() {
+            const t = currentTask;
+            if (t.skillId === 'FILL_COLOR') {
+                const sel = practiceState.selectedRange;
+                if (sel && sel.minRow === -1 && sel.maxRow === -1 && sel.minCol === 0 && sel.maxCol === 7) {
+                    practiceState.hasHeaderFill = true;
+                    renderTask();
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, "❌ 請選取 A1 至 H1 的表頭範圍再套用填滿色彩！");
+                }
+            }
+        }
+
+        function handleRibbonPainter() {
+            const t = currentTask;
+            if (t.skillId === 'FORMAT') {
+                const sel = practiceState.selectedRange;
+                if (!practiceState.painterCopied) {
+                    if (sel && sel.minRow === 0 && sel.maxRow === 0 && sel.minCol === 0 && sel.maxCol === 7) {
+                        practiceState.painterCopied = true;
+                        showFeedbackMessage(true, "✨ 已複製格式！請選取其餘各行（A3:H" + (practiceState.displayRows.length + 1) + "）進行塗刷。");
+                    } else {
+                        showFeedbackMessage(false, "❌ 請先選取已設定格式的 A2:H2 範圍，再點擊格式刷！");
+                    }
+                } else {
+                    if (sel && sel.minRow === 1 && sel.maxRow === practiceState.displayRows.length - 1 && sel.minCol === 0 && sel.maxCol === 7) {
+                        practiceState.painterApplied = true;
+                        renderTask();
+                        showFeedback(true);
+                    } else {
+                        showFeedbackMessage(false, "❌ 請選取 A3:H" + (practiceState.displayRows.length + 1) + " 範圍以塗刷格式！");
+                    }
+                }
+            }
+        }
+
+        // Find and Replace Modal
+        function openFindReplaceModal(tab = 'find') {
+            let m = document.getElementById('excel-fr-modal');
+            if (!m) {
+                m = document.createElement('div');
+                m.id = 'excel-fr-modal';
+                m.className = 'excel-modal fr-modal';
+                m.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#f3f2f1; border:1px solid #999; box-shadow:0 4px 15px rgba(0,0,0,0.2); z-index:10000; font-family:sans-serif; width:340px; color:#333;";
+                m.innerHTML = `
+                    <div class="excel-modal-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
+                        <div class="fr-tabs" style="display:flex; gap:15px; cursor:pointer;">
+                            <span id="tab-f" style="padding:2px 5px; color:#666;" onclick="switchFRTab('find')">尋找</span>
+                            <span id="tab-r" style="padding:2px 5px; color:#666;" onclick="switchFRTab('replace')">取代</span>
+                        </div>
+                        <span class="close" style="cursor:pointer; font-size:16px; color:#666;" onclick="this.parentElement.parentElement.style.display='none'">✕</span>
+                    </div>
+                    <div class="excel-modal-body" style="padding:15px; font-size:12px;">
+                        <div class="fr-row" style="margin-bottom:10px; display:flex; align-items:center; gap:5px;">
+                            <span style="width:80px; display:inline-block">尋找目標(N):</span>
+                            <input type="text" id="fr-find" style="width:200px">
+                        </div>
+                        <div class="fr-row" id="replace-row" style="display:none; margin-bottom:10px; display:flex; align-items:center; gap:5px;">
+                            <span style="width:80px; display:inline-block">取代為(P):</span>
+                            <input type="text" id="fr-replace" style="width:200px">
+                        </div>
+                        <div id="fr-options" style="display:none; margin-top:10px; border-top:1px solid #ddd; padding-top:10px">
+                            <div style="display:flex; align-items:center; gap:10px">
+                                <span>格式：</span>
+                                <div id="fr-format-preview" style="width:60px; height:20px; border:1px solid #999; background:#fff"></div>
+                                <button onclick="setFRFormat()" style="font-size:11px">設定格式...</button>
+                                <button onclick="clearFRFormat()" style="font-size:11px">清除格式</button>
+                            </div>
+                        </div>
+                        <div style="text-align:right; margin-top:15px; display:flex; justify-content:space-between">
+                            <button onclick="toggleFROptions()" style="font-size:11px">選項(T) >></button>
+                            <div>
+                                <button id="btn-replace-all" style="display:none; padding:4px 10px; margin-left:3px; cursor:pointer;" onclick="executeReplace(true)">全部取代</button>
+                                <button onclick="executeFind()" style="padding:4px 10px; margin-left:3px; cursor:pointer;">找下一個</button>
+                                <button onclick="executeFindAll()" style="padding:4px 10px; margin-left:3px; cursor:pointer;">全部尋找</button>
+                                <button onclick="this.parentElement.parentElement.parentElement.parentElement.style.display='none'" style="padding:4px 10px; margin-left:3px; cursor:pointer;">關閉</button>
+                            </div>
+                        </div>
+                    </div>`;
+                document.body.appendChild(m);
+                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    .fr-tabs span.active { color:#000 !important; border-bottom:2px solid #217346; }
+                    .excel-modal input { border:1px solid #ccc; padding:3px; }
+                    .excel-modal button { border:1px solid #aaa; background:#e1e1e1; padding:3px 8px; cursor:pointer; }
+                    .excel-modal button:hover { background:#d0d0d0; }
+                `;
+                document.head.appendChild(style);
+            }
+            m.style.display = 'block';
+            switchFRTab(tab);
+            document.getElementById('fr-find').focus();
+        }
+
+        function switchFRTab(tab) {
+            const row = document.getElementById('replace-row'), 
+                  btnRA = document.getElementById('btn-replace-all'), 
+                  tf = document.getElementById('tab-f'), 
+                  tr = document.getElementById('tab-r');
+            if (tab === 'replace') { 
+                row.style.display = 'flex'; 
+                btnRA.style.display = 'inline-block'; 
+                tf.classList.remove('active'); 
+                tr.classList.add('active'); 
+            } else { 
+                row.style.display = 'none'; 
+                btnRA.style.display = 'none'; 
+                tf.classList.add('active'); 
+                tr.classList.remove('active'); 
+            }
+        }
+
+        function toggleFROptions() { 
+            const opt = document.getElementById('fr-options'); 
+            opt.style.display = (opt.style.display === 'none') ? 'block' : 'none'; 
+        }
+
+        let _frSelectedFormat = null;
+        function setFRFormat() { 
+            const preview = document.getElementById('fr-format-preview'); 
+            preview.style.backgroundColor = '#217346'; 
+            preview.style.color = '#ffffff'; 
+            preview.innerText = '樣式'; 
+            preview.style.fontSize = '10px'; 
+            preview.style.textAlign = 'center'; 
+            preview.style.lineHeight = '20px';
+            _frSelectedFormat = { backgroundColor: '#217346', color: '#ffffff', fontWeight: 'bold' }; 
+        }
+
+        function clearFRFormat() { 
+            const preview = document.getElementById('fr-format-preview'); 
+            preview.style.backgroundColor = '#ffffff'; 
+            preview.style.color = '#000000';
+            preview.innerText = ''; 
+            _frSelectedFormat = null; 
+        }
+
+        function executeFind() {
+            const val = document.getElementById('fr-find').value.trim();
+            if (!val) return;
+            const rows = practiceState.displayRows;
+            
+            let startR = 0;
+            if (practiceState.selectedCell) {
+                startR = (practiceState.selectedCell.r + 1) % rows.length;
+            }
+            
+            const regex = new RegExp('^' + val.replace(/\*/g, '.*').replace(/\?/g, '.') + '$', 'i');
+            const isFuzzy = val.includes('*') || val.includes('?');
+            
+            for (let count = 0; count < rows.length; count++) {
+                let r = (startR + count) % rows.length;
+                for (let c = 0; c < rows[r].length; c++) {
+                    const cellVal = String(rows[r][c] || "");
+                    if (isFuzzy ? regex.test(cellVal) : cellVal.includes(val)) {
+                        selectCell(r, c);
+                        
+                        if (currentTask.skillId === 'SEARCH' && cellVal === currentTask.correctAnswer) {
+                            practiceState.searchFound = true;
+                            showFeedback(true);
+                        }
+                        return;
+                    }
+                }
+            }
+            alert("找不到項目：" + val);
+        }
+
+        function executeFindAll() {
+            const val = document.getElementById('fr-find').value.trim();
+            if (!val) return;
+            const rows = practiceState.displayRows;
+            
+            const regex = new RegExp('^' + val.replace(/\*/g, '.*').replace(/\?/g, '.') + '$', 'i');
+            const isFuzzy = val.includes('*') || val.includes('?');
+            
+            if (currentTask.skillId === 'FUZZY') {
+                if (!isFuzzy) {
+                    showFeedbackMessage(false, "❌ 模糊搜尋任務必須使用萬用字元（如 *）！");
+                    return;
+                }
+                if (!_frSelectedFormat) {
+                    showFeedbackMessage(false, "❌ 模糊搜尋任務前，請點選「選項 >>」設定高亮格式！");
+                    return;
+                }
+            }
+            
+            let matches = 0;
+            if (!practiceState.cellHighlights) practiceState.cellHighlights = {};
+            
+            for (let r = 0; r < rows.length; r++) {
+                for (let c = 0; c < rows[r].length; c++) {
+                    const cellVal = String(rows[r][c] || "");
+                    if (isFuzzy ? regex.test(cellVal) : cellVal.includes(val)) {
+                        matches++;
+                        if (_frSelectedFormat) {
+                            practiceState.cellHighlights[`${r}-${c}`] = _frSelectedFormat;
+                        }
+                    }
+                }
+            }
+            
+            renderTask();
+            
+            if (currentTask.skillId === 'FUZZY') {
+                if (val === currentTask.correctAnswer) {
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, "❌ 搜尋條件不符合題目要求（應該是：" + currentTask.correctAnswer + "）");
+                }
+            }
+        }
+
+        function executeReplace(all = true) {
+            const oldVal = document.getElementById('fr-find').value.trim();
+            const newVal = document.getElementById('fr-replace').value.trim();
+            if (!oldVal) return;
+            
+            if (currentTask.skillId === 'REPLACE') {
+                if (oldVal !== currentTask.correctAnswer.oldVal || newVal !== currentTask.correctAnswer.newVal) {
+                    showFeedbackMessage(false, `❌ 取代值不對！應將「${currentTask.correctAnswer.oldVal}」取代為「${currentTask.correctAnswer.newVal}」。`);
+                    return;
+                }
+            }
+            
+            const rows = practiceState.displayRows;
+            let replacedCount = 0;
+            
+            for (let r = 0; r < rows.length; r++) {
+                for (let c = 0; c < rows[r].length; c++) {
+                    if (String(rows[r][c]) === oldVal) {
+                        rows[r][c] = newVal;
+                        replacedCount++;
+                        if (!all) break;
+                    }
+                }
+                if (!all && replacedCount > 0) break;
+            }
+            
+            renderTask();
+            
+            if (currentTask.skillId === 'REPLACE') {
+                showFeedback(true);
+            }
+        }
+
+        // Multi-sort & custom sort
+        let _sortLevels = [];
+        let _activeSortOrderSelect = null;
+        let _selectedCustomList = null;
+
+        function openSortDialog() {
+            const modal = document.getElementById('excel-sort-modal');
+            const body = document.getElementById('sort-levels-body');
+            if (!modal || !body) return;
+
+            if (!_sortLevels || _sortLevels.length === 0) {
+                body.innerHTML = ""; 
+                _sortLevels = []; 
+                addSortLevel(); 
+                
+                const firstRow = body.querySelector('tr');
+                if (firstRow) {
+                    const colSelect = firstRow.querySelector('.sort-col');
+                    if (colSelect) colSelect.value = "3"; 
+                }
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeSortDialog() {
+            const modal = document.getElementById('excel-sort-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function addSortLevel() {
+            const body = document.getElementById('sort-levels-body');
+            if (!body) return;
+            const row = document.createElement('tr');
+            const levelIdx = _sortLevels ? _sortLevels.length : 0;
+            
+            const headers = currentTask.table.header;
+            const colOptions = headers.map((h, i) => `<option value="${i}">${h}</option>`).join('');
+
+            row.innerHTML = `
+                <td style="padding:5px; border-right:1px solid #eee;">
+                    <select class="sort-col" style="width:100%; border:1px solid #ccc; font-size:11px; color:#333;">
+                        ${colOptions}
+                    </select>
+                </td>
+                <td style="padding:5px; border-right:1px solid #eee;">
+                    <select style="width:100%; border:1px solid #ccc; font-size:11px; color:#333;" disabled>
+                        <option>值</option>
+                    </select>
+                </td>
+                <td style="padding:5px;">
+                    <select class="sort-order" onchange="handleSortOrderChange(this, ${levelIdx})" style="width:100%; border:1px solid #ccc; font-size:11px; color:#333;">
+                        <option value="asc">A 到 Z</option>
+                        <option value="desc">Z 到 A</option>
+                        <option value="custom">自訂清單...</option>
+                    </select>
+                </td>
+            `;
+
+            body.appendChild(row);
+            if (!_sortLevels) _sortLevels = [];
+            _sortLevels.push(row);
+        }
+
+        function deleteSortLevel() {
+            if (_sortLevels && _sortLevels.length > 1) {
+                const row = _sortLevels.pop();
+                row.remove();
+            }
+        }
+
+        function handleSortOrderChange(selectEl, idx) {
+            if (selectEl.value === 'custom') {
+                _activeSortOrderSelect = selectEl;
+                openFormatDialog('customlist');
+                selectEl.value = 'desc'; 
+            }
+        }
+
+        function confirmSortDialog() {
+            const levels = [];
+            const rows = document.querySelectorAll('#sort-levels-body tr');
+            rows.forEach(row => {
+                const colSelect = row.querySelector('.sort-col');
+                const orderSelect = row.querySelector('.sort-order');
+                if (colSelect && orderSelect) {
+                    const col = parseInt(colSelect.value);
+                    const order = orderSelect.value;
+                    levels.push({ col, order });
+                }
+            });
+
+            executeComplexSort(levels);
+            closeSortDialog();
+        }
+
+        function executeComplexSort(levels) {
+            const rows = practiceState.displayRows;
+            const customOrder = currentTask.scenario.customOrder; 
+            
+            rows.sort((a, b) => {
+                for (let i = 0; i < levels.length; i++) {
+                    const { col, order } = levels[i];
+                    let valA = a[col];
+                    let valB = b[col];
+                    
+                    if (order === 'custom_done') {
+                        const idxA = customOrder.indexOf(valA);
+                        const idxB = customOrder.indexOf(valB);
+                        if (idxA !== -1 && idxB !== -1) {
+                            if (idxA !== idxB) return idxA - idxB;
+                        } else if (idxA !== -1) {
+                            return -1;
+                        } else if (idxB !== -1) {
+                            return 1;
+                        }
+                    } else {
+                        const isDesc = order === 'desc';
+                        if (typeof valA === 'number' && typeof valB === 'number') {
+                            if (valA !== valB) return isDesc ? valB - valA : valA - valB;
+                        } else {
+                            const cmp = String(valA).localeCompare(String(valB), 'zh-Hant');
+                            if (cmp !== 0) return isDesc ? -cmp : cmp;
+                        }
+                    }
+                }
+                return 0;
+            });
+
+            renderTask();
+            
+            if (currentTask.skillId === 'SORT_MULTI' || currentTask.skillId === 'SORT_CUSTOM') {
+                let correct = true;
+                for (let i = 0; i < rows.length - 1; i++) {
+                    const idxA = customOrder.indexOf(rows[i][3]);
+                    const idxB = customOrder.indexOf(rows[i+1][3]);
+                    if (idxA > idxB) {
+                        correct = false;
+                        break;
+                    }
+                }
+                if (correct) {
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, "❌ 排序順序與自訂清單不符！請設定為自訂清單排序。");
+                }
+            }
+        }
+
+        // Format dialogues (customlist)
+        function openFormatDialog(defaultTab = 'number') {
+            const modal = document.getElementById('excel-format-modal');
+            if (!modal) return;
+
+            if (currentTask.skillId === "SORT_CUSTOM" || currentTask.skillId === "SORT_MULTI") {
+                defaultTab = 'customlist';
+            }
+
+            switchFormatTab(defaultTab);
+
+            if (defaultTab === 'customlist') {
+                const hintEl = document.getElementById('custom-list-hint');
+                if (hintEl) {
+                    const customOrder = currentTask.scenario.customOrder;
+                    hintEl.innerText = "提示：在右側輸入「" + customOrder.join("」、「") + "」（每行一個項目），然後點擊新增。";
+                }
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeFormatDialog() {
+            const modal = document.getElementById('excel-format-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function switchFormatTab(tabName) {
+            const tabsStrip = document.getElementById('excel-tabs-strip');
+            if (tabName === 'customlist') {
+                if (tabsStrip) tabsStrip.style.display = 'none';
+                const headerTitle = document.querySelector('#excel-format-modal .excel-dialog-header span');
+                if (headerTitle) headerTitle.innerText = "自訂清單";
+            } else {
+                if (tabsStrip) tabsStrip.style.display = 'flex';
+                const headerTitle = document.querySelector('#excel-format-modal .excel-dialog-header span');
+                if (headerTitle) headerTitle.innerText = "設定儲存格格式";
+            }
+
+            document.querySelectorAll('#excel-format-modal .excel-tab').forEach(t => {
+                t.classList.toggle('active', t.getAttribute('data-tab') === tabName);
+            });
+            document.querySelectorAll('#excel-format-modal .tab-content').forEach(c => {
+                c.style.display = (c.id === `tab-content-${tabName}`) ? 'block' : 'none';
+            });
+        }
+
+        function addCustomListFromUI() {
+            const textarea = document.getElementById('excel-custom-entries');
+            const pane = document.getElementById('excel-custom-lists-pane');
+            if (!textarea || !pane) return;
+
+            const lines = textarea.value.split('\n').map(l => l.trim()).filter(l => l !== "");
+            if (lines.length === 0) {
+                alert("請輸入清單項目！");
+                return;
+            }
+
+            const expected = currentTask.scenario.customOrder;
+            const isMatch = expected.length > 0 && expected.every(e => lines.includes(e));
+
+            if (isMatch) {
+                const newItem = document.createElement('div');
+                newItem.className = 'category-item';
+                newItem.innerText = lines.join(', ');
+                newItem.onclick = (e) => {
+                    pane.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
+                    newItem.classList.add('active');
+                    _selectedCustomList = lines;
+                };
+                pane.appendChild(newItem);
+                
+                textarea.value = ""; 
+                alert("清單已成功新增！現在請在左側選取該清單並按確定。");
+            } else {
+                alert(`排序序列不符合邏輯（提示：需要包含 ${expected.join('、')}）`);
+            }
+        }
+
+        function confirmFormatDialog() {
+            const activeTabContent = document.querySelector('#excel-format-modal .tab-content[style*="display: block"]');
+            const activeTab = activeTabContent ? activeTabContent.id : '';
+            
+            if (activeTab === 'tab-content-customlist') {
+                if (_selectedCustomList) {
+                    if (_activeSortOrderSelect) {
+                        const listStr = _selectedCustomList.join(', ');
+                        
+                        let exists = false;
+                        for (let opt of _activeSortOrderSelect.options) {
+                            if (opt.value === 'custom_done') {
+                                opt.text = listStr;
+                                exists = true;
+                                break;
+                            }
+                        }
+
+                        if (!exists) {
+                            const newOpt = new Option(listStr, 'custom_done');
+                            _activeSortOrderSelect.add(newOpt, 0); 
+                        }
+                        _activeSortOrderSelect.value = 'custom_done';
+                        _activeSortOrderSelect = null;
+                    }
+                    
+                    closeFormatDialog();
+                    return;
+                } else {
+                    alert("請先在左側清單中選取您剛才新增的排序規則！");
+                    return;
+                }
+            }
+            closeFormatDialog();
+        }
+
+        // Data Validation
+        function openValidationDialog() {
+            const modalId = 'ch5-validation-modal';
+            let modal = document.getElementById(modalId);
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = 'modal-layer';
+                modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; color:#333;";
+                modal.innerHTML = `
+                    <div class="excel-dialog" style="width: 320px; background:#f3f2f1; border:1px solid #999; border-radius:3px; font-family:sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        <div class="excel-dialog-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
+                            <span>資料驗證</span>
+                            <button class="excel-close" onclick="closeValidationDialog()">×</button>
+                        </div>
+                        <div class="excel-dialog-body" style="padding: 15px; font-size:12px; background:#fff;">
+                            <label>儲存格內允許(A):</label><br>
+                            <select id="validation-type" style="width:100%; margin:5px 0; border: 1px solid #ccc; padding: 3px;" onchange="toggleValidationInput()">
+                                <option value="ANY">任何值</option>
+                                <option value="WHOLE">整數</option>
+                                <option value="LIST">清單</option>
+                            </select>
+                            <br><br>
+                            <div id="validation-numeric-range" style="display:none">
+                                <label>資料(D): 介於</label><br>
+                                <div style="display:flex; gap:5px; margin-top:5px;">
+                                    <input type="number" id="val-min" style="width:50%; padding:3px;" placeholder="最小值">
+                                    <input type="number" id="val-max" style="width:50%; padding:3px;" placeholder="最大值">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="excel-dialog-footer" style="padding: 15px; display:flex; justify-content:flex-end; gap:10px;">
+                            <button class="excel-ok" onclick="confirmValidationDialog()" style="padding: 5px 25px; cursor:pointer;">確定</button>
+                            <button class="excel-cancel" onclick="closeValidationDialog()" style="padding: 5px 25px; cursor:pointer;">取消</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            document.getElementById('validation-type').value = "WHOLE";
+            toggleValidationInput();
+            modal.style.display = 'flex';
+        }
+
+        function toggleValidationInput() {
+            const type = document.getElementById('validation-type').value;
+            document.getElementById('validation-numeric-range').style.display = (type === 'WHOLE') ? 'block' : 'none';
+        }
+
+        function closeValidationDialog() {
+            const modal = document.getElementById('ch5-validation-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function confirmValidationDialog() {
+            const type = document.getElementById('validation-type').value;
+            const min = parseInt(document.getElementById('val-min').value);
+            const max = parseInt(document.getElementById('val-max').value);
+            
+            closeValidationDialog();
+            
+            if (currentTask.skillId === 'VALIDATION') {
+                const correctCol = currentTask.correctAnswer.col;
+                const correctMin = currentTask.correctAnswer.min;
+                const correctMax = currentTask.correctAnswer.max;
+                
+                if (practiceState.selectedCol !== correctCol) {
+                    showFeedbackMessage(false, `❌ 請先點選「${currentTask.table.header[correctCol]}」欄（欄位 ${colLetter(correctCol)}）標頭選取整欄，再施展資料驗證！`);
+                    return;
+                }
+                
+                if (type === 'WHOLE' && min === correctMin && max === correctMax) {
+                    practiceState.validationApplied = true;
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, `❌ 驗證規則錯誤：必須為整數，且介於 ${correctMin} 到 ${correctMax} 之間！`);
+                }
+            }
+        }
+
+        // Subtotal
+        function openSubtotalDialog() {
+            const modalId = 'ch5-subtotal-modal';
+            let modal = document.getElementById(modalId);
+            
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = 'modal-layer';
+                modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; color:#333;";
+                document.body.appendChild(modal);
+            }
+
+            const groupColIdx = currentTask.correctAnswer.groupCol;
+            const groupColName = currentTask.table.header[groupColIdx];
+            const sumColIdx = currentTask.correctAnswer.sumCol;
+            const sumColName = currentTask.table.header[sumColIdx];
+
+            modal.innerHTML = `
+                <div class="excel-dialog" style="width: 320px; background:#f3f2f1; border:1px solid #999; border-radius:3px; font-family:sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <div class="excel-dialog-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
+                        <span>小計</span>
+                        <button class="excel-close" onclick="closeSubtotalDialog()">×</button>
+                    </div>
+                    <div class="excel-dialog-body" style="padding: 15px; font-size:12px; background:#fff;">
+                        <label>分組小計欄位(A):</label><br>
+                        <select id="subtotal-group-col" style="width:100%; margin:5px 0; border: 1px solid #ccc; padding: 3px;">
+                            <option value="${groupColIdx}">${groupColName}</option>
+                        </select>
+                        <br><br>
+                        <label>使用函數(U):</label><br>
+                        <select style="width:100%; margin:5px 0; border: 1px solid #ccc; padding: 3px;" disabled>
+                            <option>加總</option>
+                        </select>
+                        <br><br>
+                        <label>新增小計位置(V):</label><br>
+                        <div style="border:1px solid #999; height:80px; background:#fff; padding:5px; overflow-y:auto; margin:5px 0;">
+                            <label><input type="checkbox" id="subtotal-sum-col" value="${sumColIdx}" checked> ${sumColName}</label><br>
+                        </div>
+                    </div>
+                    <div class="excel-dialog-footer" style="padding: 15px; display:flex; justify-content:flex-end; gap:10px;">
+                        <button class="excel-ok" onclick="confirmSubtotalDialog()" style="padding: 5px 25px; cursor:pointer;">確定</button>
+                        <button class="excel-cancel" onclick="closeSubtotalDialog()" style="padding: 5px 25px; cursor:pointer;">取消</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeSubtotalDialog() {
+            const modal = document.getElementById('ch5-subtotal-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function confirmSubtotalDialog() {
+            closeSubtotalDialog();
+            
+            if (currentTask.skillId === 'SUBTOTAL') {
+                const groupCol = currentTask.correctAnswer.groupCol;
+                const sumCol = currentTask.correctAnswer.sumCol;
+                
+                const rows = practiceState.displayRows;
+                let isSorted = true;
+                for (let i = 0; i < rows.length - 1; i++) {
+                    if (String(rows[i][groupCol]).localeCompare(String(rows[i+1][groupCol]), 'zh-Hant') > 0) {
+                        isSorted = false;
+                        break;
+                    }
+                }
+                
+                if (!isSorted) {
+                    showFeedbackMessage(false, `❌ 請先按「${currentTask.table.header[groupCol]}」欄進行升序排序，否則小計無法正確分組！`);
+                    return;
+                }
+                
+                const newData = [];
+                let lastGroup = rows[0][groupCol];
+                let subtotal = 0;
+                let grandTotal = 0;
+                const highlightRows = [];
+                
+                for (let i = 0; i < rows.length; i++) {
+                    if (rows[i][groupCol] !== lastGroup) {
+                        const subRow = Array(currentTask.table.header.length).fill("");
+                        subRow[groupCol] = lastGroup + " 總計";
+                        subRow[sumCol] = subtotal;
+                        highlightRows.push(newData.length);
+                        newData.push(subRow);
+                        grandTotal += subtotal;
+                        lastGroup = rows[i][groupCol];
+                        subtotal = 0;
+                    }
+                    newData.push(rows[i]);
+                    subtotal += Number(rows[i][sumCol]) || 0;
+                }
+                
+                const finalSubRow = Array(currentTask.table.header.length).fill("");
+                finalSubRow[groupCol] = lastGroup + " 總計";
+                finalSubRow[sumCol] = subtotal;
+                highlightRows.push(newData.length);
+                newData.push(finalSubRow);
+                grandTotal += subtotal;
+                
+                const grandTotalRow = Array(currentTask.table.header.length).fill("");
+                grandTotalRow[groupCol] = "總計";
+                grandTotalRow[sumCol] = grandTotal;
+                highlightRows.push(newData.length);
+                newData.push(grandTotalRow);
+                
+                practiceState.displayRows = newData;
+                practiceState.outlineEnabled = true;
+                
+                if (!practiceState.cellHighlights) practiceState.cellHighlights = {};
+                highlightRows.forEach(rIdx => {
+                    for (let c = 0; c < currentTask.table.header.length; c++) {
+                        practiceState.cellHighlights[`${rIdx}-${c}`] = { backgroundColor: '#f2f2f2', color: '#000', fontWeight: 'bold' };
+                    }
+                });
+                
+                renderTask();
+                showFeedback(true);
+            }
+        }
+
+        // Outline toggle
+        function toggleOutlinePractice() {
+            practiceState.outlineVisible = !practiceState.outlineVisible;
+            renderTask();
+            if (currentTask.skillId === 'OUTLINE') {
+                showFeedback(true);
+            }
+        }
+
+        // Filter practice
+        function toggleFilterPractice() {
+            practiceState.filterEnabled = !practiceState.filterEnabled;
+            renderTask();
+            if (currentTask.skillId === 'FILTER' && practiceState.filterEnabled) {
+                showFeedbackMessage(true, "✨ 篩選按鈕已開啟！請點擊「" + currentTask.table.header[currentTask.colIdx] + "」旁的 ▼ 進行篩選。");
+            }
+        }
+
+        function openFilterDropdown(event, colIdx) {
+            event.stopPropagation();
+            event.preventDefault();
+            
+            const existing = document.getElementById('excel-filter-dropdown');
+            if (existing) existing.remove();
+            
+            const rect = event.target.getBoundingClientRect();
+            const dropdown = document.createElement('div');
+            dropdown.id = 'excel-filter-dropdown';
+            dropdown.style.cssText = `position: fixed; top: ${rect.bottom + window.scrollY}px; left: ${rect.left + window.scrollX}px; width: 180px; background: #fff; border: 1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 10500; font-family: sans-serif; font-size: 12px; color: #333; display: flex; flex-direction: column;`;
+            
+            const rows = currentTask.table.rows;
+            const uniqueVals = [...new Set(rows.map(r => r[colIdx]))].sort();
+            
+            let checklistHtml = uniqueVals.map(val => {
+                const isChecked = !practiceState.filteredOutVals || !practiceState.filteredOutVals.includes(val);
+                return `<label style="display: flex; align-items: center; gap: 5px; padding: 4px 8px; cursor: pointer;">
+                    <input type="checkbox" class="filter-chk" value="${escapeHtmlAttr(val)}" ${isChecked ? 'checked' : ''}> ${val}
+                </label>`;
+            }).join('');
+            
+            dropdown.innerHTML = `
+                <div style="padding: 6px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; font-weight: bold; background: #f5f5f5;">
+                    <span>篩選設定</span>
+                    <span onclick="this.parentElement.parentElement.remove()" style="cursor:pointer;">✕</span>
+                </div>
+                <div style="max-height: 150px; overflow-y: auto; padding: 5px;">
+                    ${checklistHtml}
+                </div>
+                <div style="padding: 6px; border-top: 1px solid #eee; text-align: right; background: #f5f5f5;">
+                    <button onclick="confirmFilterDropdown(${colIdx})" style="font-size: 11px; padding: 2px 8px; border: 1px solid #888; background: #eee; cursor: pointer;">確定</button>
+                </div>
+            `;
+            
+            document.body.appendChild(dropdown);
+        }
+
+        function confirmFilterDropdown(colIdx) {
+            const chks = document.querySelectorAll('.filter-chk');
+            const checkedVals = [];
+            const uncheckedVals = [];
+            chks.forEach(chk => {
+                if (chk.checked) checkedVals.push(chk.value);
+                else uncheckedVals.push(chk.value);
+            });
+            
+            practiceState.filteredOutVals = uncheckedVals;
+            
+            const allRows = currentTask.table.rows;
+            practiceState.displayRows = allRows.filter(row => {
+                const val = String(row[colIdx]);
+                return !uncheckedVals.includes(val);
+            });
+            
+            renderTask();
+            
+            const dropdown = document.getElementById('excel-filter-dropdown');
+            if (dropdown) dropdown.remove();
+            
+            if (currentTask.skillId === 'FILTER' && currentTask.colIdx === colIdx) {
+                if (checkedVals.length === 1 && checkedVals[0] === currentTask.correctAnswer) {
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, `❌ 篩選條件不符合任務要求（應該只勾選「${currentTask.correctAnswer}」）。`);
+                }
+            }
+        }
+
+        // Advanced Filter
+        function openAdvFilterDialog() {
+            let m = document.getElementById('excel-adv-filter-modal');
+            if (!m) {
+                m = document.createElement('div');
+                m.id = 'excel-adv-filter-modal';
+                m.className = 'modal-layer';
+                m.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; color:#333;";
+                m.innerHTML = `
+                    <div class="excel-dialog" style="width: 350px; background:#f3f2f1; border:1px solid #999; border-radius:3px; font-family:sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        <div class="excel-dialog-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
+                            <span>進階篩選</span>
+                            <button class="excel-close" onclick="closeAdvFilterDialog()" style="background:none; border:none; cursor:pointer; font-size:16px;">×</button>
+                        </div>
+                        <div class="excel-dialog-body" style="padding: 15px; font-size:12px;">
+                            <div style="font-size:11px; margin-bottom:10px;">方式</div>
+                            <div style="margin-left:20px; font-size:11px; display:flex; flex-direction:column; gap:5px;">
+                                <label><input type="radio" name="filter-action" checked> 在原有區域顯示篩選結果(F)</label>
+                                <label><input type="radio" name="filter-action" disabled> 將篩選結果複製到其他位置(O)</label>
+                            </div>
+
+                            <div style="margin-top:15px; display:grid; grid-template-columns: 80px 1fr 25px; gap:10px; align-items:center;">
+                                <label style="font-size:11px;">資料範圍(L):</label>
+                                <input type="text" value="$A$1:$H$11" disabled style="font-size:11px; padding:2px; border:1px solid #ccc;">
+                                <button style="padding:0; height:18px;">📉</button>
+
+                                <label style="font-size:11px;">條件範圍(C):</label>
+                                <input type="text" id="adv-filter-criteria" placeholder="請輸入條件範圍，如: I1:J2" style="font-size:11px; padding:2px; border:1px solid #217346;">
+                                <button style="padding:0; height:18px;">📉</button>
+                            </div>
+
+                            <div style="margin-top:15px; font-size:11px;">
+                                <label><input type="checkbox"> 僅選取不重複的紀錄(R)</label>
+                            </div>
+                        </div>
+                        <div class="excel-dialog-footer" style="padding: 15px; display:flex; justify-content:flex-end; gap:10px;">
+                            <button class="excel-ok" onclick="confirmAdvFilterDialog()" style="padding: 5px 25px; cursor:pointer;">確定</button>
+                            <button class="excel-cancel" onclick="closeAdvFilterDialog()" style="padding: 5px 25px; cursor:pointer;">取消</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(m);
+            }
+            m.style.display = 'flex';
+        }
+
+        function closeAdvFilterDialog() {
+            const m = document.getElementById('excel-adv-filter-modal');
+            if (m) m.style.display = 'none';
+        }
+
+        function confirmAdvFilterDialog() {
+            const crit = document.getElementById('adv-filter-criteria').value.trim().toUpperCase();
+            closeAdvFilterDialog();
+            
+            if (currentTask.skillId === 'FILTER_ADV') {
+                const targetCat = currentTask.correctAnswer.cat;
+                const targetStatus = currentTask.correctAnswer.status;
+                
+                if (crit !== '') {
+                    const allRows = currentTask.table.rows;
+                    practiceState.displayRows = allRows.filter(row => {
+                        return row[2] === targetCat || row[3] === targetStatus;
+                    });
+                    renderTask();
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, "❌ 請輸入或選取進階篩選條件範圍！");
+                }
+            }
+        }
+
+        // Pivot Table Create & Grouping
+        function handleRibbonPivot() {
+            const modalId = 'ch6-pivot-range-modal';
+            let modal = document.getElementById(modalId);
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = 'modal-layer';
+                modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; color:#333;";
+                modal.innerHTML = `
+                    <div class="excel-dialog" style="width: 400px; background:#f3f2f1; border:1px solid #999; border-radius:3px; font-family:sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        <div class="excel-dialog-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
+                            <span>建立樞紐分析表</span>
+                            <button class="excel-close" onclick="closePivotRangeDialog()">×</button>
+                        </div>
+                        <div class="excel-dialog-body" style="padding: 15px; font-size:12px; background:#fff;">
+                            <p style="margin-top:0;">請選擇要分析的資料：</p>
+                            <div style="margin-left:10px; border:1px solid #ccc; padding:10px; background:#f9f9f9;">
+                                <label><input type="radio" checked> 選取區域(S):</label>
+                                <input type="text" value="$A$1:$H$11" disabled style="width:100%; margin-top:5px; border:1px solid #ccc; padding:2px;">
+                            </div>
+                            <p style="margin-top:15px;">選擇放置樞紐分析表的位置：</p>
+                            <div style="margin-left:10px; display:flex; flex-direction:column; gap:8px;">
+                                <label><input type="radio" name="pivot-pos" checked> 新工作表(N)</label>
+                                <label><input type="radio" name="pivot-pos" disabled> 現有工作表(E)</label>
+                            </div>
+                        </div>
+                        <div class="excel-dialog-footer" style="padding: 15px; display:flex; justify-content:flex-end; gap:10px;">
+                            <button class="excel-ok" onclick="confirmPivotRangeDialog()" style="padding: 5px 25px; cursor:pointer;">確定</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closePivotRangeDialog() {
+            const modal = document.getElementById('ch6-pivot-range-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        let _pivotState = {
+            rows: [],
+            cols: [],
+            vals: [],
+            isGrouped: false
+        };
+
+        function confirmPivotRangeDialog() {
+            closePivotRangeDialog();
+            setTimeout(() => {
+                openPivotSetupDialog();
+            }, 500);
+        }
+
+        function openPivotSetupDialog() {
+            const modalId = 'ch6-pivot-setup-modal';
+            let modal = document.getElementById(modalId);
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = 'modal-layer';
+                modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; color:#333;";
+                document.body.appendChild(modal);
+            }
+            
+            _pivotState = {
+                rows: [],
+                cols: [],
+                vals: [],
+                isGrouped: false
+            };
+            
+            renderPivotSetupUI();
+            modal.style.display = 'flex';
+        }
+
+        function renderPivotSetupUI() {
+            const modal = document.getElementById('ch6-pivot-setup-modal');
+            const fields = currentTask.table.header;
+            
+            modal.innerHTML = `
+                <div class="excel-dialog" style="width: 600px; height: 500px; display:flex; flex-direction:column; background:#f3f2f1; border:1px solid #999; border-radius:3px; font-family:sans-serif; box-shadow:0 4px 15px rgba(0,0,0,0.2);">
+                    <div class="excel-dialog-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
+                        <span>樞紐分析表欄位清單</span>
+                        <button class="excel-close" onclick="closePivotSetupDialog()">×</button>
+                    </div>
+                    <div class="excel-dialog-body" style="flex:1; padding: 15px; display: flex; gap: 20px; background: #f3f3f3; overflow:hidden;">
+                        <div style="width: 220px; display:flex; flex-direction:column; background: #fff; border: 1px solid #ccc; padding: 10px;">
+                            <p style="font-weight:bold; margin-top:0; font-size:12px;">拖動欄位到下方區域：</p>
+                            <div style="flex:1; overflow-y:auto; border: 1px solid #eee;">
+                                ${fields.map(f => `<div class="pivot-field-item" draggable="true" ondragstart="onPivotDragStart(event, '${f}')" style="padding: 8px 12px; cursor:grab; font-size:12px; display:flex; align-items:center; gap:8px; background: #fff; border-bottom: 1px solid #f0f0f0;">
+                                    <span style="color: #666;">⠿</span><span>${f}</span></div>`).join('')}
+                            </div>
+                        </div>
+                        <div style="flex:1; display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap:10px;">
+                            ${renderDropArea("篩選", "filters", [])} 
+                            ${renderDropArea("欄", "cols", _pivotState.cols)}
+                            ${renderDropArea("列", "rows", _pivotState.rows)} 
+                            ${renderDropArea("值", "vals", _pivotState.vals)}
+                        </div>
+                    </div>
+                    <div class="excel-dialog-footer" style="padding:15px; display:flex; justify-content:flex-end; gap:10px;">
+                        <p style="flex:1; font-size:11px; color:#666; text-align:left; margin:0;">提示：從左側按住欄位，拖曳至右側方框中放開。</p>
+                        <button class="excel-ok" onclick="confirmPivotSetup()" style="padding: 5px 25px; cursor:pointer;">確定</button>
+                    </div>
+                </div>
+                <style>
+                    .pivot-field-item:hover { background: #eef7ff; }
+                    .pivot-area-box { background: #fff; border: 1px solid #ccc; padding: 8px; display:flex; flex-direction:column; }
+                    .pivot-area-box.drag-over { border: 2px solid #217346; background: #e8f5e9; }
+                    .pivot-area-title { font-size:11px; font-weight:bold; margin-bottom:5px; color:#444; border-bottom: 1px solid #eee; }
+                    .pivot-area-list { flex:1; border: 1px dashed #ddd; overflow-y:auto; font-size:11px; min-height: 40px; }
+                    .pivot-tag { background: #e8f5e9; border: 1px solid #c8e6c9; margin: 2px; padding: 2px 8px; display:flex; justify-content:space-between; border-radius:3px; color: #217346; }
+                </style>
+            `;
+        }
+
+        function renderDropArea(label, key, data) {
+            return `
+                <div class="pivot-area-box" ondragover="onPivotDragOver(event)" ondragleave="onPivotDragLeave(event)" ondrop="onPivotDrop(event, '${key}')">
+                    <div class="pivot-area-title"><span>${label}</span></div>
+                    <div class="pivot-area-list">
+                        ${data.map(f => `
+                            <div class="pivot-tag">
+                                <span>${f}</span>
+                                <span onclick="removePivotField('${key}', '${f}')" style="cursor:pointer; color:#999; margin-left:8px;">×</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function onPivotDragStart(e, f) { e.dataTransfer.setData("text/plain", f); }
+        function onPivotDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+        function onPivotDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+        function onPivotDrop(e, key) {
+            e.preventDefault(); 
+            const f = e.dataTransfer.getData("text/plain"); 
+            e.currentTarget.classList.remove('drag-over');
+            
+            ["rows", "cols", "vals"].forEach(k => _pivotState[k] = _pivotState[k].filter(item => item !== f));
+            _pivotState[key].push(f); 
+            renderPivotSetupUI();
+        }
+
+        function removePivotField(key, f) {
+            _pivotState[key] = _pivotState[key].filter(keyVal => keyVal !== f); 
+            renderPivotSetupUI();
+        }
+
+        function closePivotSetupDialog() {
+            const modal = document.getElementById('ch6-pivot-setup-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function confirmPivotSetup() {
+            closePivotSetupDialog();
+            
+            const s = _pivotState;
+            if (currentTask.skillId === 'PIVOT_CREATE') {
+                const correctRow = currentTask.correctAnswer.row;
+                const correctVal = currentTask.correctAnswer.val;
+                
+                if (s.rows.includes(correctRow) && s.vals.includes(correctVal)) {
+                    generatePivotTableData();
+                    showFeedback(true);
+                } else {
+                    showFeedbackMessage(false, `❌ 請將「${correctRow}」拖曳至【列】，並將「${correctVal}」拖曳至【值】區域！`);
+                }
+            } else if (currentTask.skillId === 'PIVOT_GROUP') {
+                generatePivotTableData();
+                showFeedbackMessage(true, "✨ 樞紐分析表已生成！請右鍵點選「月份」（如 三月）儲存格，選擇【組成群組】。");
+            }
+        }
+
+        function generatePivotTableData() {
+            const headers = ["列標籤", "加總 - " + currentTask.table.header[4]];
+            const categoryIdx = 2;
+            const valueIdx = 4;
+            const rows = currentTask.table.rows;
+            
+            const summary = {};
+            rows.forEach(r => {
+                let key = r[categoryIdx];
+                if (currentTask.skillId === 'PIVOT_GROUP') {
+                    const dateStr = r[7];
+                    const m = parseInt(dateStr.split('/')[1]);
+                    if (_pivotState.isGrouped) {
+                        if (m <= 3) key = "第一季";
+                        else if (m <= 6) key = "第二季";
+                        else if (m <= 9) key = "第三季";
+                        else key = "第四季";
+                    } else {
+                        const months = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+                        key = months[m - 1];
+                    }
+                }
+                
+                summary[key] = (summary[key] || 0) + (Number(r[valueIdx]) || 0);
+            });
+            
+            const pivotRows = [];
+            let grandTotal = 0;
+            Object.keys(summary).sort().forEach(key => {
+                pivotRows.push([key, summary[key]]);
+                grandTotal += summary[key];
+            });
+            pivotRows.push(["總計", grandTotal]);
+            
+            practiceState.displayRows = pivotRows;
+            currentTask.table.header = headers; 
+            
+            renderTask();
+        }
+
+        // Context menu & Pivot Grouping dialog
+        function onCellContextMenu(e, rIdx, cIdx) {
+            if (currentTask.skillId !== 'PIVOT_GROUP') return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const cellVal = String(practiceState.displayRows[rIdx][cIdx]);
+            if (!cellVal.includes("月") && !cellVal.includes("季")) {
+                alert("請右鍵點選月份或季度標籤（如：三月）以進行分組！");
+                return;
+            }
+            
+            const existing = document.getElementById('excel-context-menu');
+            if (existing) existing.remove();
+            
+            const menu = document.createElement('div');
+            menu.id = 'excel-context-menu';
+            menu.style.cssText = `position: fixed; top: ${e.clientY}px; left: ${e.clientX}px; width: 140px; background: #fff; border: 1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 10500; font-family: sans-serif; font-size: 12px; color: #333; cursor: pointer;`;
+            
+            menu.innerHTML = `
+                <div style="padding: 6px 12px; border-bottom: 1px solid #eee; font-weight: bold; background: #f5f5f5;">快捷選單</div>
+                <div onclick="openPivotGroupDialog()" style="padding: 8px 12px; hover: background: #f0f0f0;">組成群組(G)...</div>
+            `;
+            
+            document.body.appendChild(menu);
+            
+            document.addEventListener('click', () => {
+                menu.remove();
+            }, { once: true });
+        }
+
+        function openPivotGroupDialog() {
+            const modalId = 'ch6-group-modal';
+            let modal = document.getElementById(modalId);
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = 'modal-layer';
+                modal.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; color:#333;";
+                document.body.appendChild(modal);
+            }
+            
+            modal.innerHTML = `
+                <div class="excel-dialog" style="width: 280px; background:#f3f2f1; border:1px solid #999; border-radius:3px; font-family:sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <div class="excel-dialog-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
+                        <span>群組</span>
+                        <button class="excel-close" onclick="closePivotGroupDialog()">×</button>
+                    </div>
+                    <div class="excel-dialog-body" style="padding: 15px; font-size:12px; background:#fff;">
+                        <div style="margin-bottom:10px; border:1px solid #ccc; padding:10px; background:#f9f9f9; color:#666;">
+                            <label><input type="checkbox" checked disabled> 起始於(S): 2026/01/01</label><br>
+                            <label><input type="checkbox" checked disabled> 結束於(E): 2026/12/31</label>
+                        </div>
+                        
+                        <p style="margin-top:10px; margin-bottom:5px; color:#444;">依據下列項目的分組方式：</p>
+                        <div style="border: 1px solid #999; background: #fff; height: 100px; overflow-y: auto;">
+                            <div class="group-opt" style="padding: 3px 10px;">月</div>
+                            <div class="group-opt active" style="padding: 3px 10px; background:#0078d4; color:#fff;">季</div>
+                            <div class="group-opt" style="padding: 3px 10px;">年</div>
+                        </div>
+                    </div>
+                    <div class="excel-dialog-footer" style="padding: 15px; display:flex; justify-content:flex-end; gap:10px;">
+                        <button class="excel-ok" onclick="confirmPivotGroup()" style="padding: 5px 25px; cursor:pointer;">確定</button>
+                        <button class="excel-cancel" onclick="closePivotGroupDialog()" style="padding: 5px 25px; cursor:pointer;">取消</button>
+                    </div>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function closePivotGroupDialog() {
+            const m = document.getElementById('ch6-group-modal');
+            if (m) m.style.display = 'none';
+        }
+
+        function confirmPivotGroup() {
+            closePivotGroupDialog();
+            _pivotState.isGrouped = true;
+            generatePivotTableData();
+            if (currentTask.skillId === 'PIVOT_GROUP') {
+                showFeedback(true);
+            }
+        }
+
         function checkAnswer() {
             const t = currentTask;
             const PE = window.PracticeEngine;
             let isCorrect = false;
-            const isFormulaSkill = !['SORT_SIMPLE', 'F'].includes(t.skillId);
+            
+            const FORMULA_SKILLS = ['SUM', 'AUTOFILL', 'IF_CONCAT', 'FORMULA_BASIC', 'REF_RELATIVE', 'FUNC_SUM_MULTI', 'IF_BASIC', 'IFS', 'IF_AND', 'IF_PLUS', 'REF_ABSOLUTE', 'FUNC_RANK', 'COMPARE_OP', 'TEXT_TO_NUM'];
+            const isFormulaSkill = FORMULA_SKILLS.includes(t.skillId);
 
             if (t.uiType === 'single') {
                 const input = document.getElementById('single-answer');
@@ -1914,10 +3604,12 @@
                         }
                         return;
                     }
+                    const result = PE.evaluateFormula(raw, t.table);
+                    isCorrect = PE.answersMatch(result, t.correctAnswer);
+                } else {
+                    isCorrect = PE.answersMatch(raw, t.correctAnswer);
                 }
-
-                const result = PE.evaluateFormula(raw, t.table);
-                isCorrect = PE.answersMatch(result, t.correctAnswer);
+                
                 if (input) {
                     input.classList.toggle('ok', isCorrect);
                     input.classList.toggle('fail', !isCorrect);
@@ -1972,6 +3664,39 @@
                 isCorrect = practiceState.displayRows.every((row, i) => row[0] === correctOrder[i][0]);
             } else if (t.uiType === 'toggle') {
                 isCorrect = (practiceState.frozen === true);
+            } else if (t.skillId === 'MERGE_CENTER') {
+                isCorrect = (practiceState.mergedRange && practiceState.mergedRange.minRow === -1 && practiceState.mergedRange.maxRow === -1 && practiceState.mergedRange.minCol === 0 && practiceState.mergedRange.maxCol === 7);
+            } else if (t.skillId === 'BORDER') {
+                isCorrect = practiceState.hasBorders === true;
+            } else if (t.skillId === 'FILL_COLOR') {
+                isCorrect = practiceState.hasHeaderFill === true;
+            } else if (t.skillId === 'FORMAT') {
+                isCorrect = practiceState.painterApplied === true;
+            } else if (t.skillId === 'VALIDATION') {
+                isCorrect = practiceState.validationApplied === true;
+            } else if (t.skillId === 'SUBTOTAL') {
+                const lastRow = practiceState.displayRows[practiceState.displayRows.length - 1];
+                isCorrect = lastRow && lastRow[t.correctAnswer.groupCol] === "總計";
+            } else if (t.skillId === 'PIVOT_CREATE') {
+                isCorrect = currentTask.table.header[0] === "列標籤";
+            } else if (t.skillId === 'PIVOT_GROUP') {
+                isCorrect = _pivotState.isGrouped === true;
+            } else if (t.skillId === 'OUTLINE') {
+                isCorrect = practiceState.outlineVisible === true;
+            } else if (t.skillId === 'SORT_MULTI' || t.skillId === 'SORT_CUSTOM') {
+                const customOrder = currentTask.scenario.customOrder;
+                let correct = true;
+                for (let i = 0; i < practiceState.displayRows.length - 1; i++) {
+                    const idxA = customOrder.indexOf(practiceState.displayRows[i][3]);
+                    const idxB = customOrder.indexOf(practiceState.displayRows[i+1][3]);
+                    if (idxA > idxB) {
+                        correct = false;
+                        break;
+                    }
+                }
+                isCorrect = correct;
+            } else if (t.skillId === 'SEARCH') {
+                isCorrect = practiceState.searchFound === true;
             }
 
             showFeedback(isCorrect);
@@ -2490,12 +4215,40 @@
             }
             
             if (practiceState.isDraggingRange || practiceState.isDraggingFormulaRange) {
+                const start = practiceState.dragStartCell;
+                const sel = practiceState.selectedRange;
+                if (start && start.r === -1 && sel && sel.minCol === sel.maxCol && sel.minRow === sel.maxRow) {
+                    practiceState.selectedCol = start.c;
+                    practiceState.selectedCell = null;
+                    practiceState.selectedRange = null;
+                    renderTask();
+                }
                 practiceState.isDraggingRange = false;
                 practiceState.isDraggingFormulaRange = false;
             }
         }
 
         window.addEventListener('mouseup', onWindowMouseUp);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey) {
+                if (e.key === ';') {
+                    e.preventDefault();
+                    if (practiceState.activeInput) {
+                        const today = new Date();
+                        const todayStr = today.getFullYear() + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + String(today.getDate()).padStart(2, '0');
+                        practiceState.activeInput.value = todayStr;
+                        updateActiveInputValue(todayStr);
+                    }
+                } else if (e.key.toLowerCase() === 'f') {
+                    e.preventDefault();
+                    openFindReplaceModal('find');
+                } else if (e.key.toLowerCase() === 'h') {
+                    e.preventDefault();
+                    openFindReplaceModal('replace');
+                }
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             renderStoryCards();
