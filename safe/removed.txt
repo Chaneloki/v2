@@ -1,3 +1,20 @@
+--- 2026-06-22 補2 ---
+[移除 style.css 重複定義的 .shake-active / @keyframes stage-shake]
+檔案: v2/style.css
+原因: 該規則被完整複製貼上了兩次（行 1093 跟行 1287，內容逐字相同），刪除第二份，
+保留第一份。內容本身無害（規則相同不會互相打架），純粹清理冗余。
+移除以下代碼：
+.shake-active {
+    animation: stage-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes stage-shake {
+    10%, 90% { transform: translate3d(-3px, 2px, 0); }
+    20%, 80% { transform: translate3d(5px, -3px, 0); }
+    30%, 50%, 70% { transform: translate3d(-10px, 4px, 0); }
+    40%, 60% { transform: translate3d(10px, -4px, 0); }
+}
+
 --- 2026-06-22 ---
 [移除 ch6 插入選單中未實作的「圖片」「圖表」佔位項]
 檔案: v2/action/ch6_actions.js

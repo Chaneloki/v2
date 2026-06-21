@@ -442,6 +442,16 @@
     - 移除原本資料列第 2 列因 Freeze 屬性強制黏附的 sticky 邏輯，改為若凍結時使 Excel Row 1（CSS `grid-row: 2`）黏附於 `top: 32px`。
     - 將單一輸入框答案列順延至 CSS `grid-row: bottomRowNumber + 1`（即 `rows.length + 3`）。
 
+[2026-06-22 補] 修正多個 code/*.js 編輯後忘記 bump game.html 的 ?v= 快取版本號
+- 檔案：v2/game.html [MODIFY]
+  - 原因：今日修改了 action/ch6_actions.js、code/ui_v2_core.js、code/ui_v2_story.js、code/ui_ribbon.js、
+    code/render.js、code/ui_v2_menus.js、style.css，但對應 <script>/<link> 標籤的 ?v= 都沒同步 bump，
+    導致玩家瀏覽器持續使用快取住的舊版檔案——這正是賽爾震動特效「修了很多次卻一直復發」的根本原因
+    （2026-06-19 寫進 ui_v2_story.js 的 shake-active 重置修復，?v= 卻還停在 2026-06-16，從未真正生效過）。
+  - 全部統一 bump 為 ?v=1782100800000。
+  - ⚠️ 提醒：日後修改任何 code/*.js 或 style.css 後，務必同步 bump game.html 對應標籤的 ?v= 值，
+    這個提醒已經寫過第二次了，務必養成習慣。
+
 [2026-06-22] BGM 換版權音檔（覆寫音檔內容，未動章節 .js 邏輯）
 - 檔案：v2/BGM/game_bgm.mp3 [REPLACE]
   - 原因：第 1 章至第 8 章（不含 8.5）模擬器/自由模式共用同一首 `game_bgm.mp3`，全部換成新曲 `.game.mp3` 的內容。
