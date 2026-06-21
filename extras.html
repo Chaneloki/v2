@@ -1209,6 +1209,56 @@
         #practice-drawer-list::-webkit-scrollbar-thumb:hover {
             background: rgba(223, 181, 108, 0.45);
         }
+
+        /* ---- 玩家自訂背景音樂小工具 (左下角玻璃面板) ---- */
+        .user-music-widget {
+            position: fixed; left: 20px; bottom: 20px; width: 230px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 14px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+            z-index: 9998;
+            color: #fff;
+            font-family: 'Noto Serif TC', serif;
+            overflow: hidden;
+        }
+        .user-music-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 12px; background: rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        .user-music-title { font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; }
+        .user-music-hide-btn {
+            background: transparent; border: none; color: #ffe6aa;
+            font-size: 1rem; cursor: pointer; line-height: 1; padding: 0 4px;
+        }
+        .user-music-hide-btn:hover { color: #fff; }
+        .user-music-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .user-music-track-name {
+            font-size: 0.75rem; color: #f0e6da; overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap;
+        }
+        .user-music-controls { display: flex; gap: 8px; }
+        .user-music-btn {
+            flex: 1; padding: 6px 8px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.1);
+            color: #fff; cursor: pointer; font-size: 0.8rem; transition: background 0.2s;
+            font-family: 'Noto Serif TC', serif;
+        }
+        .user-music-btn:hover { background: rgba(255,255,255,0.22); }
+        #user-music-volume { width: 100%; }
+        .user-music-show-btn {
+            position: fixed; left: 20px; bottom: 20px; width: 46px; height: 46px;
+            border-radius: 50%; background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.35);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 9998;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+            display: none; align-items: center; justify-content: center;
+        }
+        .user-music-show-btn:hover { background: rgba(255,255,255,0.25); }
     </style>
 </head>
 <body>
@@ -1469,6 +1519,24 @@
         </div>
     </div>
 
+    <!-- 左下角：玩家自訂背景音樂小工具 -->
+    <div id="user-music-widget" class="user-music-widget">
+        <div class="user-music-header">
+            <span class="user-music-title">🎵 我的音樂</span>
+            <button class="user-music-hide-btn" onclick="toggleUserMusicWidget()" title="隱藏">−</button>
+        </div>
+        <div class="user-music-body">
+            <div id="user-music-track-name" class="user-music-track-name">尚未選擇音樂</div>
+            <input type="file" id="user-music-file-input" accept="audio/*" onchange="handleUserMusicFile(event)" style="display:none;">
+            <div class="user-music-controls">
+                <button class="user-music-btn" onclick="document.getElementById('user-music-file-input').click()">📁 選擇</button>
+                <button class="user-music-btn" id="user-music-play-btn" onclick="toggleUserMusicPlay()">▶</button>
+            </div>
+            <input type="range" id="user-music-volume" min="0" max="1" step="0.01" value="0.4" oninput="setUserMusicVolume(this.value)">
+        </div>
+    </div>
+    <button id="user-music-show-btn" class="user-music-show-btn" onclick="toggleUserMusicWidget()" title="顯示音樂播放器">🎵</button>
+
     <!-- 載入所有章節數據以獲取 skillDefs（提示文字用） -->
     <script src="chapter/ch1.js"></script>
     <script src="chapter/ch1_5.js"></script>
@@ -1677,6 +1745,111 @@
         let _extrasBgm = null;
         let _currentBgmFile = null;
 
+        // ---- 玩家自訂背景音樂 (獨立音軌，不影響番外篇 BGM) ----
+        // 上傳的音樂檔會存進 IndexedDB，重新整理頁面後可自動讀回。
+        let _userBgm = null;
+        let _userBgmObjectUrl = null;
+        let _userBgmWasPlaying = false;
+
+        const USER_MUSIC_DB = 'extras_user_music_db';
+        const USER_MUSIC_STORE = 'tracks';
+
+        function openUserMusicDB() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(USER_MUSIC_DB, 1);
+                req.onupgradeneeded = () => {
+                    req.result.createObjectStore(USER_MUSIC_STORE);
+                };
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function saveUserMusicToDB(file) {
+            try {
+                const db = await openUserMusicDB();
+                await new Promise((resolve, reject) => {
+                    const tx = db.transaction(USER_MUSIC_STORE, 'readwrite');
+                    tx.objectStore(USER_MUSIC_STORE).put({ name: file.name, blob: file }, 'track');
+                    tx.oncomplete = resolve;
+                    tx.onerror = () => reject(tx.error);
+                });
+            } catch (err) {
+                console.warn('儲存自訂音樂到本機失敗:', err);
+            }
+        }
+
+        async function loadUserMusicFromDB() {
+            try {
+                const db = await openUserMusicDB();
+                const record = await new Promise((resolve, reject) => {
+                    const tx = db.transaction(USER_MUSIC_STORE, 'readonly');
+                    const req = tx.objectStore(USER_MUSIC_STORE).get('track');
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+                if (record && record.blob) {
+                    setupUserMusic(record.blob, record.name, false);
+                }
+            } catch (err) {
+                console.warn('讀取本機自訂音樂失敗:', err);
+            }
+        }
+
+        function setupUserMusic(blobOrFile, name, autoplay) {
+            if (_userBgmObjectUrl) URL.revokeObjectURL(_userBgmObjectUrl);
+            if (_userBgm) { _userBgm.pause(); _userBgm = null; }
+            _userBgmObjectUrl = URL.createObjectURL(blobOrFile);
+            _userBgm = new Audio(_userBgmObjectUrl);
+            _userBgm.loop = true;
+            _userBgm.volume = parseFloat(document.getElementById('user-music-volume').value);
+            document.getElementById('user-music-track-name').innerText = name;
+            const btn = document.getElementById('user-music-play-btn');
+            if (autoplay) {
+                _userBgm.play().then(() => {
+                    if (btn) btn.innerText = '⏸';
+                }).catch(err => console.warn('使用者音樂播放被阻擋:', err));
+            } else if (btn) {
+                btn.innerText = '▶';
+            }
+        }
+
+        function handleUserMusicFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            setupUserMusic(file, file.name, true);
+            saveUserMusicToDB(file);
+        }
+
+        loadUserMusicFromDB();
+
+        function toggleUserMusicPlay() {
+            if (!_userBgm) {
+                document.getElementById('user-music-file-input').click();
+                return;
+            }
+            const btn = document.getElementById('user-music-play-btn');
+            if (_userBgm.paused) {
+                _userBgm.play();
+                btn.innerText = '⏸';
+            } else {
+                _userBgm.pause();
+                btn.innerText = '▶';
+            }
+        }
+
+        function setUserMusicVolume(val) {
+            if (_userBgm) _userBgm.volume = parseFloat(val);
+        }
+
+        function toggleUserMusicWidget() {
+            const widget = document.getElementById('user-music-widget');
+            const showBtn = document.getElementById('user-music-show-btn');
+            const hidden = widget.style.display === 'none';
+            widget.style.display = hidden ? 'block' : 'none';
+            showBtn.style.display = hidden ? 'none' : 'flex';
+        }
+
         function getPlayerGender() {
             let gender = 'girl';
             try {
@@ -1740,6 +1913,15 @@
         function openStory(id) {
             const story = window.SIDE_STORIES[id];
             if (!story) return;
+
+            // 進入番外篇前，暫停玩家自訂音樂（不影響其播放進度），離開後恢復
+            if (_userBgm && !_userBgm.paused) {
+                _userBgmWasPlaying = true;
+                _userBgm.pause();
+            } else {
+                _userBgmWasPlaying = false;
+            }
+
             _storyState = { lines: story.lines, index: 0, title: story.title };
             document.getElementById('extras-story-overlay').classList.add('active');
             
@@ -1941,6 +2123,15 @@
             
             _storyState = null;
             playExtrasBGM(null);
+
+            // 離開番外篇後，若先前玩家自訂音樂正在播放，則自動恢復播放
+            if (_userBgmWasPlaying && _userBgm) {
+                _userBgm.play().then(() => {
+                    const btn = document.getElementById('user-music-play-btn');
+                    if (btn) btn.innerText = '⏸';
+                }).catch(() => {});
+            }
+            _userBgmWasPlaying = false;
         }
 
         // ========================================================
