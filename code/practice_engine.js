@@ -388,7 +388,7 @@
         })()`;
     }
 
-    // 寬鬆比對：數字容許浮點誤差，文字/布林轉字串比對
+    // 寬鬆比對：數字容許浮點誤差，文字/布林轉字串比對，日期寬鬆比對
     function answersMatch(actual, expected) {
         if (actual && typeof actual === 'object' && actual.__error) return false;
         if (typeof expected === 'number') {
@@ -399,7 +399,23 @@
             const s = String(actual).trim().toUpperCase();
             return s === (expected ? 'TRUE' : 'FALSE') || actual === expected;
         }
-        return String(actual).trim() === String(expected).trim();
+        
+        const actStr = String(actual).trim();
+        const expStr = String(expected).trim();
+        
+        // 日期寬鬆比對：相容 2026/06/21, 2026/6/21, 2026-06-21, 2026年6月21日 等格式
+        const dateRegex = /^\d{4}[-/年]\d{1,2}[-/月]\d{1,2}日?$/;
+        if (dateRegex.test(actStr) && dateRegex.test(expStr)) {
+            const parseDate = (s) => {
+                const parts = s.replace(/日$/, '').replace(/[年月]/g, '/').replace(/-/g, '/').split('/');
+                return parts.map(p => parseInt(p, 10)).join('/');
+            };
+            if (parseDate(actStr) === parseDate(expStr)) {
+                return true;
+            }
+        }
+        
+        return actStr === expStr;
     }
 
     // ========== 33 個技能題目模板 (按 Ribbon/公式 分門別類) ==========
@@ -410,7 +426,8 @@
             build(t, sc) {
                 const sum = t.rows.reduce((s, r) => s + r[4], 0);
                 return {
-                    requirement: `這份名單的「${sc.headers[4]}」欄需要核對總量，請在下方答案格計算「${sc.headers[4]}」欄的總和。（提示：選中格子點擊【常用】➜【自動加總】可以快速產生公式）`,
+                    requirement: `請在下方答案格計算「${sc.headers[4]}」欄的總和。`,
+                    tip: `這份名單的「${sc.headers[4]}」欄需要核對總量。選中答案格點擊【常用】➜【自動加總】可以快速產生公式，或手動輸入 =SUM(E2:E${t.rows.length + 1})。`,
                     correctAnswer: sum,
                     answerLabel: `${sc.headers[4]}總計`
                 };
@@ -420,7 +437,8 @@
             skillId: 'MERGE_CENTER', uiType: 'merge',
             build(t, sc) {
                 return {
-                    requirement: `請選取第 1 列的表頭範圍（A1 至 H1），並點擊【常用】➜【跨欄置中】將表頭合併並置中。`,
+                    requirement: `將表頭範圍（A1 至 H1）合併並置中。`,
+                    tip: `請選取第 1 列的表頭範圍（A1 至 H1），並點擊【常用】➜【跨欄置中】將其合併並置中。`,
                     correctAnswer: { minRow: -1, maxRow: -1, minCol: 0, maxCol: 7 }
                 };
             }
@@ -429,7 +447,8 @@
             skillId: 'BORDER', uiType: 'border',
             build(t, sc) {
                 return {
-                    requirement: `請框選整個表格數據區域（A2 至 H${t.rows.length + 1}），並點擊【常用】➜【所有框線】為試算表繪製清晰的框格。`,
+                    requirement: `為整個表格數據區域（A2 至 H${t.rows.length + 1}）繪製所有框線。`,
+                    tip: `請框選整個表格數據區域（A2 至 H${t.rows.length + 1}），並點擊【常用】➜【所有框線】為其繪製邊框。`,
                     correctAnswer: { minRow: 0, maxRow: t.rows.length - 1, minCol: 0, maxCol: 7 }
                 };
             }
@@ -438,7 +457,8 @@
             skillId: 'FILL_COLOR', uiType: 'fill',
             build(t, sc) {
                 return {
-                    requirement: `請選取第 1 列的表頭範圍（A1 至 H1），並點擊【常用】➜【填滿色彩】為表頭上底色（推薦使用淡雅色彩保護眼睛）。`,
+                    requirement: `為第 1 列的表頭範圍（A1 至 H1）填滿背景色彩。`,
+                    tip: `請選取第 1 列的表頭範圍（A1 至 H1），並點擊【常用】➜【填滿色彩】為其著色。`,
                     correctAnswer: { minRow: -1, maxRow: -1, minCol: 0, maxCol: 7 }
                 };
             }
@@ -447,7 +467,8 @@
             skillId: 'FORMAT', uiType: 'format',
             build(t, sc) {
                 return {
-                    requirement: `第一行數據（A2:H2）已經設定了黃色底色與粗邊框。請選取 A2:H2 範圍，點擊【常用】➜【格式刷】，然後拖曳覆蓋塗刷下方其餘各行（A3:H${t.rows.length + 1}），快速複製排版。`,
+                    requirement: `將 A2:H2 的單元格格式複製套用到其餘的數據行（A3:H${t.rows.length + 1}）。`,
+                    tip: `第一行數據（A2:H2）已經設定了格式。請先選取 A2:H2 範圍，點擊【常用】➜【格式刷】，然後拖曳覆蓋塗刷下方其餘各行（A3:H${t.rows.length + 1}）以進行格式複製。`,
                     correctAnswer: { minRow: 1, maxRow: t.rows.length - 1, minCol: 0, maxCol: 7 }
                 };
             }
@@ -456,7 +477,8 @@
             skillId: 'F', uiType: 'toggle',
             build(t, sc) {
                 return {
-                    requirement: `這份名單較長，向下滾動時首列的標題（${sc.headers.slice(0,4).join('/')}...）會消失。請點選【檢視】➜【凍結頂端列】將首行固定在最上方。`
+                    requirement: `將首行的標題固定在最上方，以防向下滾動時消失。`,
+                    tip: `請點選【檢視】➜【凍結頂端列】將首列標題固定在最上方。`
                 };
             }
         },
@@ -468,7 +490,8 @@
                 const targetRow = pickRandom(t.rows);
                 const targetName = targetRow[1];
                 return {
-                    requirement: `這份名冊很長，請按下 Ctrl + F 快捷鍵打開【尋找】對話框，搜尋業務/名稱為「${targetName}」的項目，並點擊「找下一個」來跳轉選中該格。`,
+                    requirement: `在表格中尋找業務或名稱為「${targetName}」的項目。`,
+                    tip: `請按下 Ctrl + F 快捷鍵打開【尋找】對話框，在尋找目標中輸入「${targetName}」，然後點擊「找下一個」來跳轉選中該格。`,
                     correctAnswer: targetName
                 };
             }
@@ -479,7 +502,8 @@
                 const oldVal = pickRandom(sc.statuses);
                 const newVal = oldVal + "(已審核)";
                 return {
-                    requirement: `請按下 Ctrl + H 快捷鍵打開【取代】對話框，將所有狀態/等第為「${oldVal}」的格子「全部取代」為「${newVal}」。`,
+                    requirement: `將所有狀態或等第為「${oldVal}」的單元格取代為「${newVal}」。`,
+                    tip: `請按下 Ctrl + H 快捷鍵打開【取代】對話框，將「尋找目標」輸入「${oldVal}」，「取代為」輸入「${newVal}」，最後點擊「全部取代」。`,
                     correctAnswer: { oldVal, newVal }
                 };
             }
@@ -487,7 +511,6 @@
         {
             skillId: 'FUZZY', uiType: 'fuzzy',
             build(t, sc) {
-                // 找到一個名字的前兩個字
                 const names = t.rows.map(r => r[1]);
                 let prefix = names[0].substring(0, 2);
                 if (prefix.includes("·") || prefix.includes(" ")) {
@@ -495,7 +518,8 @@
                 }
                 const pattern = prefix + "*";
                 return {
-                    requirement: `請按下 Ctrl + F 快捷鍵打開【尋找】對話框。點開「選項 >>」設定高亮格式為「綠色樣式」，並在尋找目標中輸入模糊比對符「${pattern}」（* 代表任意字元），最後點擊「全部尋找」標記所有符合項目。`,
+                    requirement: `使用模糊比對標記所有符合「${pattern}」格式的項目。`,
+                    tip: `請按下 Ctrl + F 快捷鍵打開【尋找】對話框。點開「選項 >>」設定高亮格式為「綠色樣式」，並在尋找目標中輸入模糊比對符「${pattern}」（* 代表任意字元），最後點擊「全部尋找」。`,
                     correctAnswer: pattern
                 };
             }
@@ -503,10 +527,15 @@
         {
             skillId: 'DATE', uiType: 'single', answerLabel: '登記日期',
             build(t, sc) {
-                const today = new Date().toLocaleDateString();
+                const today = new Date();
+                const y = today.getFullYear();
+                const m = String(today.getMonth() + 1).padStart(2, '0');
+                const d = String(today.getDate()).padStart(2, '0');
+                const todayStr = `${y}/${m}/${d}`;
                 return {
-                    requirement: `請在答案格中插入今天的登記日期。（提示：可以使用快捷鍵 Ctrl + ; 快速插入，或直接輸入 YYYY/MM/DD，如：${today}）。`,
-                    correctAnswer: today
+                    requirement: `在答案格中輸入今天的登記日期。`,
+                    tip: `請選取答案格，使用快捷鍵 Ctrl + ; 快速插入，或直接手動輸入今天的日期 YYYY/MM/DD（例如：${todayStr}）。`,
+                    correctAnswer: todayStr
                 };
             }
         },
@@ -515,7 +544,8 @@
             build(t, sc) {
                 const correct = t.rows.map(r => r[4] + r[5]);
                 return {
-                    requirement: `我們需要計算每個人的數值總和。第一列已經填寫好公式，請選取第 2 列答案格，並點擊右下角「填滿拉柄」向下拖拉，使用「自動填滿」完成整欄計算。`,
+                    requirement: `計算每個人的數值總和，並自動填滿整欄。`,
+                    tip: `第一列已經填寫好公式。請選取第 2 列答案格，點擊右下角「填滿拉柄」向下拖拉，使用「自動填滿」完成整欄計算。`,
                     correctAnswer: correct,
                     initialFormula: `=E2+F2`
                 };
@@ -528,7 +558,8 @@
             build(t, sc) {
                 const cat = pickRandom(t.rows.map(r => r[2]));
                 return {
-                    requirement: `請先點選【資料】➜【篩選】開啟漏斗按鈕，然後點擊「${sc.headers[2]}」欄標題旁的箭頭 ▼，在勾選列表中只勾選「${cat}」（取消其他勾選）進行過濾。`,
+                    requirement: `篩選「${sc.headers[2]}」欄，僅顯示「${cat}」的項目。`,
+                    tip: `請先點選【資料】➜【排序與篩選】➜【篩選】開啟漏斗按鈕，然後點擊「${sc.headers[2]}」欄標題旁的箭頭 ▼，在勾選列表中只勾選「${cat}」（取消其他勾選）進行過濾。`,
                     correctAnswer: cat,
                     colIdx: 2
                 };
@@ -539,7 +570,8 @@
             build(t, sc) {
                 const dir = pickRandom(['desc', 'asc']);
                 return {
-                    requirement: `請選中「${sc.headers[4]}」欄的任意格子，點擊【資料】➜【${dir === 'desc' ? '降序排序' : '升序排序'}】對名冊進行重新排序。`,
+                    requirement: `將表格按「${sc.headers[4]}」欄進行${dir === 'desc' ? '降序' : '升序'}排序。`,
+                    tip: `請選中「${sc.headers[4]}」欄的任意單元格，點擊【資料】➜【排序與篩選】➜【${dir === 'desc' ? '降序排序' : '升序排序'}】對名冊進行排序。`,
                     sortCol: 4, sortDir: dir
                 };
             }
@@ -548,7 +580,8 @@
             skillId: 'SORT_MULTI', uiType: 'sort_dialog',
             build(t, sc) {
                 return {
-                    requirement: `請選中數據區任意格，點擊【資料】➜【自訂排序】打開多重條件對話框。設定「主要條件」為「${sc.headers[3]}」，排序順序為「自訂清單」（手動輸入「${sc.customOrder.join(', ')}」），並點擊確定執行。`,
+                    requirement: `使用自訂的多重條件對數據進行排序。`,
+                    tip: `請選中數據區任意格，點擊【資料】➜【排序與篩選】➜【自訂排序】打開多重條件對話框。設定「主要條件」為「${sc.headers[3]}」，排序順序為「自訂清單」（手動輸入「${sc.customOrder.join(', ')}」），並點擊確定執行。`,
                     correctAnswer: [{ col: 3, order: 'custom_done' }]
                 };
             }
@@ -557,18 +590,9 @@
             skillId: 'SORT_CUSTOM', uiType: 'sort_dialog',
             build(t, sc) {
                 return {
-                    requirement: `這份名冊需要按特定的優先級對齊。請點擊【資料】➜【自訂排序】，選擇欄位為「${sc.headers[3]}」，並設定順序為自訂清單：「${sc.customOrder.join(', ')}」（每行一個項目），確認並套用。`,
+                    requirement: `按特定的優先級對「${sc.headers[3]}」欄進行自訂排序。`,
+                    tip: `請點擊【資料】➜【排序與篩選】➜【自訂排序】，選擇欄位為「${sc.headers[3]}」，並設定順序為自訂清單：「${sc.customOrder.join(', ')}」，點擊確定套用。`,
                     correctAnswer: [{ col: 3, order: 'custom_done' }]
-                };
-            }
-        },
-        {
-            skillId: 'FILTER_ADV', uiType: 'filter_adv',
-            build(t, sc) {
-                const targetCat = t.rows[0][2];
-                return {
-                    requirement: `請點擊【資料】➜【進階篩選】。設定條件為「${sc.headers[2]} 等於 ${targetCat}」或「${sc.headers[3]} 等於 ${sc.customOrder[0]}」（聯動或條件過濾），確認執行進階篩選。`,
-                    correctAnswer: { cat: targetCat, status: sc.customOrder[0] }
                 };
             }
         },
@@ -576,7 +600,8 @@
             skillId: 'OUTLINE', uiType: 'outline_toggle',
             build(t, sc) {
                 return {
-                    requirement: `表格已做好分組。請點擊【檢視】➜【大綱】按鈕，打開/關閉左側的折疊控制面板以方便調整版面。`
+                    requirement: `打開或關閉左側的折疊大綱控制面板以利版面調整。`,
+                    tip: `請點擊【資料】➜【大綱】選項選單，點選【顯示/隱藏大綱】來開啟或關閉左側折疊控制面板。`
                 };
             }
         },
@@ -586,7 +611,8 @@
             skillId: 'VALIDATION', uiType: 'validation_ui',
             build(t, sc) {
                 return {
-                    requirement: `我們需要限制「${sc.headers[5]}」欄的輸入。請點擊該欄頭選中整欄，點擊【資料】➜【資料驗證】，限制為「整數」，介於 ${sc.valBRange[0]} 到 ${sc.valBRange[1]} 之間。`,
+                    requirement: `限制「${sc.headers[5]}」欄的輸入，僅允許介於 ${sc.valBRange[0]} 到 ${sc.valBRange[1]} 之間的整數。`,
+                    tip: `請點擊該欄標頭選中整欄，點擊【資料】➜【資料驗證】，限制儲存格為「整數」，介於 ${sc.valBRange[0]} 到 ${sc.valBRange[1]} 之間，最後點選確定。`,
                     correctAnswer: { col: 5, min: sc.valBRange[0], max: sc.valBRange[1] }
                 };
             }
@@ -595,7 +621,8 @@
             skillId: 'SUBTOTAL', uiType: 'subtotal_ui',
             build(t, sc) {
                 return {
-                    requirement: `請先按「${sc.headers[2]}」欄進行升序排序，然後點擊【資料】➜【小計】。選擇分組欄位為「${sc.headers[2]}」，計算函數為「加總」，加總欄位勾選「${sc.headers[4]}」，執行小計。`,
+                    requirement: `按「${sc.headers[2]}」分組計算「${sc.headers[4]}」的加總小計。`,
+                    tip: `請先按「${sc.headers[2]}」欄進行升序排序，然後點擊【資料】➜【大綱】➜【小計】。選擇分組欄位為「${sc.headers[2]}」，計算函數為「加總」，加總欄位勾選「${sc.headers[4]}」，執行小計。`,
                     correctAnswer: { groupCol: 2, sumCol: 4 }
                 };
             }
@@ -604,7 +631,8 @@
             skillId: 'PIVOT_CREATE', uiType: 'pivot_ui',
             build(t, sc) {
                 return {
-                    requirement: `請選取數據區域任意格，點擊【插入】➜【樞紐分析表】➜【確定】。在右側面板中，拖曳「${sc.headers[2]}」至【列】，拖曳「${sc.headers[4]}」至【值】。`,
+                    requirement: `建立一個樞紐分析表，以「${sc.headers[2]}」為列，統計「${sc.headers[4]}」的總和。`,
+                    tip: `請選取數據區域任意格，點擊【插入】➜【樞紐分析表】➜【確定】。在右側面板中，拖曳「${sc.headers[2]}」至【列】，並拖曳「${sc.headers[4]}」至【值】。`,
                     correctAnswer: { row: sc.headers[2], val: sc.headers[4] }
                 };
             }
@@ -613,7 +641,8 @@
             skillId: 'PIVOT_GROUP', uiType: 'pivot_group_ui',
             build(t, sc) {
                 return {
-                    requirement: `樞紐分析表中已將「${sc.headers[7]}」拖至列區域。請右鍵點擊表格中的月份文字（如三月），點選【組成群組】，將時間歸類方式設定為「季」（Quarters）分組展示。`,
+                    requirement: `將樞紐分析表中的月份數據按「季」進行組成群組。`,
+                    tip: `樞紐分析表中已將「${sc.headers[7]}」拖至列區域。請右鍵點擊表格中的月份文字（如三月），點選【組成群組】，將時間歸類方式設定為「季」（Quarters）分組展示。`,
                     correctAnswer: { key: "季" }
                 };
             }
@@ -623,7 +652,8 @@
             build(t, sc) {
                 const correct = t.rows.map(r => (r[4] >= 60 ? sc.yesVal : sc.noVal) + "-" + r[2]);
                 return {
-                    requirement: `請在「拼接備註」欄寫公式：將判定狀態與分類合併在一起，格式如：「${sc.yesVal}-${t.rows[0][2]}」。公式為：=IF(E2>=60,"${sc.yesVal}","${sc.noVal}")&"-"&C2。`,
+                    requirement: `使用公式合併判定狀態與分類，格式如：「${sc.yesVal}-${t.rows[0][2]}」。`,
+                    tip: `請在答案格中填寫公式：=IF(E2>=60,"${sc.yesVal}","${sc.noVal}")&"-"&C2。該公式判斷分數是否及格，並用 & 與分類欄位拼接。`,
                     correctAnswer: correct
                 };
             }
@@ -635,7 +665,8 @@
             build(t, sc) {
                 const correct = t.rows.map(r => r[4] + r[5]);
                 return {
-                    requirement: `請在「數值總計」欄位使用基礎公式（不使用SUM），計算每筆的「${sc.headers[4]}」加上「${sc.headers[5]}」的和（公式格式如 =E2+F2）。`,
+                    requirement: `使用基礎加法公式計算每筆的「${sc.headers[4]}」加上「${sc.headers[5]}」之總和（不使用 SUM 函數）。`,
+                    tip: `請在「數值總計」欄位使用相對參照相加公式（格式如 =E2+F2），不使用 SUM。`,
                     correctAnswer: correct
                 };
             }
@@ -645,7 +676,8 @@
             build(t, sc) {
                 const correct = t.rows.map(r => r[4] - r[5]);
                 return {
-                    requirement: `請在「數值差值」欄位使用相對引用公式，計算每筆的「${sc.headers[4]}」減去「${sc.headers[5]}」的差額。`,
+                    requirement: `使用相對引用公式計算每筆的「${sc.headers[4]}」減去「${sc.headers[5]}」的差值。`,
+                    tip: `請在「數值差值」欄位使用相對引用公式，計算每筆的減法結果（公式格式如 =E2-F2）。`,
                     correctAnswer: correct
                 };
             }
@@ -653,10 +685,11 @@
         {
             skillId: 'FUNC_SUM_MULTI', uiType: 'single', answerLabel: '指定兩列和',
             build(t, sc) {
-                const idxs = [0, 2]; // 固定的第 2 列與第 4 列
+                const idxs = [0, 2];
                 const sum = idxs.reduce((s, i) => s + t.rows[i][4], 0);
                 return {
-                    requirement: `老闆只想看第 2 列與第 4 列這兩筆的「${sc.headers[4]}」相加。請在答案格中輸入對應公式（如 =E2+E4）。`,
+                    requirement: `計算第 2 列與第 4 列這兩筆的「${sc.headers[4]}」相加總和。`,
+                    tip: `請在指定的答案格中輸入對應單元格相加的公式（格式如 =E2+E4）。`,
                     correctAnswer: sum
                 };
             }
@@ -667,17 +700,19 @@
                 const threshold = pickRandom([50, 60, 70, 80]);
                 const correct = t.rows.map(r => (r[4] >= threshold ? sc.yesVal : sc.noVal));
                 return {
-                    requirement: `請判斷「${sc.headers[4]}」是否達到 ${threshold}：達到填「${sc.yesVal}」，未達到填「${sc.noVal}」，填入「基礎分流」欄。`,
+                    requirement: `使用 IF 公式判斷「${sc.headers[4]}」是否達到 ${threshold}：達到填「${sc.yesVal}」，未達到填「${sc.noVal}」。`,
+                    tip: `請在「基礎分流」欄填入 IF 公式。格式如：=IF(E2>=${threshold},"${sc.yesVal}","${sc.noVal}")。`,
                     correctAnswer: correct
                 };
             }
         },
         {
-            skillId: 'IFS', uiType: 'column', answerHeader: '等第評估',
+            skillId: 'IFS', uiType: 'column', answerHeader: '等等評估',
             build(t, sc) {
                 const correct = t.rows.map(r => sc.ifsCorrect(r[4]));
                 return {
-                    requirement: `請依「${sc.headers[4]}」分數評定等第，規則：${sc.ifsRules}，填入「等第評估」欄。（提示：公式最後可用 TRUE 代表預設值）`,
+                    requirement: `使用 IFS 公式評定等第，規則：${sc.ifsRules}。`,
+                    tip: `請在答案格中填入 IFS 公式。格式如：=IFS(E2>=90,"優",E2>=60,"中等",TRUE,"待加強")。注意最後一組條件可用 TRUE 代表預設值。`,
                     correctAnswer: correct
                 };
             }
@@ -687,7 +722,8 @@
             build(t, sc) {
                 const correct = t.rows.map(r => (r[4] >= 60 && r[5] >= 60) ? "達標" : "");
                 return {
-                    requirement: `只有「${sc.headers[4]}」與「${sc.headers[5]}」都達到 60 以上，才在「雙項檢核」欄填寫「達標」，否則留空。`,
+                    requirement: `判斷「${sc.headers[4]}」與「${sc.headers[5]}」是否都達到 60 以上：是填「達標」，否則留空。`,
+                    tip: `請在答案格結合 IF 與 AND 函數寫公式，格式如：=IF(AND(E2>=60,F2>=60),"達標","")。`,
                     correctAnswer: correct
                 };
             }
@@ -695,10 +731,11 @@
         {
             skillId: 'IF_PLUS', uiType: 'column', answerHeader: '加成結果',
             build(t, sc) {
-                const cat = t.rows[0][2]; // 隨機拿第一個項目的類別
+                const cat = t.rows[0][2];
                 const correct = t.rows.map(r => r[4] + (r[2] === cat ? 10 : 0));
                 return {
-                    requirement: `來自「${cat}」的人，「${sc.headers[4]}」額外加 10 分。請在「加成結果」欄使用邏輯乘加運算（如 =E2+(C2="${cat}")*10）計算總值。`,
+                    requirement: `使用乘加邏輯計算來自「${cat}」者的「${sc.headers[4]}」額外加 10 分後的總值。`,
+                    tip: `請在「加成結果」欄使用邏輯乘加運算。公式格式如：=E2+(C2="${cat}")*10。`,
                     correctAnswer: correct
                 };
             }
@@ -714,7 +751,8 @@
                 });
                 const correct = t.rows.map(r => Math.round(r[4] * rate * 100) / 100);
                 return {
-                    requirement: `每個人的乘積 = 「${sc.headers[4]}」 × 基準倍率（存於 K2 儲存格中，每一行乘數鎖定）。請在「最終乘積」欄寫公式，公式中需用 $ 絕對引用鎖住 K2 儲存格。`,
+                    requirement: `計算「${sc.headers[4]}」乘以基準倍率的最終乘積（基準倍率儲存在 K2 儲存格，每一行乘數鎖定）。`,
+                    tip: `請在「最終乘積」欄寫公式。公式中需使用 $ 絕對引用鎖住 K2 儲存格，格式如：=E2*$K$2。`,
                     correctAnswer: correct
                 };
             }
@@ -726,7 +764,8 @@
                 const sorted = vals.slice().sort((a, b) => b - a);
                 const correct = vals.map(v => sorted.indexOf(v) + 1);
                 return {
-                    requirement: `請在「排名」欄使用 RANK 函數計算每筆「${sc.headers[4]}」的排名。注意：公式中的比對範圍參數必須絕對引用鎖定！`,
+                    requirement: `使用 RANK 函數計算每筆「${sc.headers[4]}」在整欄數據中的排名。`,
+                    tip: `請在「排名」欄輸入 RANK 公式，比對的數值範圍必須使用 $ 進行絕對引用鎖定。格式如：=RANK(E2,$E$2:$E$9)。`,
                     correctAnswer: correct
                 };
             }
@@ -736,7 +775,8 @@
             build(t, sc) {
                 const correct = t.rows.map(r => r[4] > r[5]);
                 return {
-                    requirement: `請在「數值比較」欄輸入比較公式，判斷每一行「${sc.headers[4]}」是否大於「${sc.headers[5]}」，回傳 TRUE 或 FALSE。`,
+                    requirement: `使用比較運算子判斷每一行「${sc.headers[4]}」是否大於「${sc.headers[5]}」，回傳 TRUE 或 FALSE。`,
+                    tip: `請在「數值比較」欄輸入比較公式。例如：=E2>F2。`,
                     correctAnswer: correct
                 };
             }
@@ -746,18 +786,20 @@
             build(t, sc) {
                 const correct = t.rows.map(r => r[5]);
                 return {
-                    requirement: `「${sc.headers[6]}」欄後面多黏了一個文字「${sc.txtSuffix}」，無法直接做數學計算。請在「純數值」欄寫公式，將其轉為純數字。`,
+                    requirement: `將帶有文字後綴「${sc.txtSuffix}」的「${sc.headers[6]}」欄轉為純數字以利數學運算。`,
+                    tip: `「${sc.headers[6]}」包含文字無法直接運算，請在「純數值」欄寫公式將其乘以 1 或使用 VALUE 函數轉換。例如：=G2*1。`,
                     correctAnswer: correct
                 };
             }
         },
         {
-            skillId: 'FILTER', uiType: 'single', answerLabel: '符合數',
+            skillId: 'COUNTIF', uiType: 'single', answerLabel: '符合數',
             build(t, sc) {
                 const cat = t.rows[0][2];
                 const count = t.rows.filter(r => r[2] === cat).length;
                 return {
-                    requirement: `請使用 COUNTIF 統計「${sc.headers[2]}」欄中，為「${cat}」的總筆數，並將結果填寫在下方答案格。`,
+                    requirement: `使用 COUNTIF 函數統計「${sc.headers[2]}」欄中符合「${cat}」的總筆數。`,
+                    tip: `請在答案格中輸入統計公式。例如：=COUNTIF(C2:C9,"${cat}")。`,
                     correctAnswer: count,
                     answerLabel: `${cat} 統計數`
                 };
@@ -765,12 +807,18 @@
         }
     ];
 
-    function drawTask(skillDefs) {
+    function drawTask(skillDefs, targetSkillId) {
         const sc = pickRandom(SCENARIOS);
         const subgroup = pickRandom(sc.subgroups);
         
-        // 隨機抽樣一個技能模板
-        const tpl = pickRandom(TEMPLATES);
+        // 隨機抽樣一個技能模板或選取指定模板
+        let tpl;
+        if (targetSkillId) {
+            tpl = TEMPLATES.find(t => t.skillId === targetSkillId);
+        }
+        if (!tpl) {
+            tpl = pickRandom(TEMPLATES);
+        }
         const table = generatePracticeTableForScenario(sc, subgroup);
         const built = tpl.build(table, sc);
         const def = (skillDefs && skillDefs[tpl.skillId]) || {};

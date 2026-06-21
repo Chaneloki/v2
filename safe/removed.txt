@@ -192,3 +192,105 @@ toggleDebug() {
             table
         }, built);
     }
+
+--- 2026-06-21 ---
+[小型試煉場 33 個題目模板的舊 requirement 定義，將操作路徑與任務目標分離]
+檔案: v2/code/practice_engine.js
+原因: 配合優化，任務目標（requirement）僅顯示預期結果，操作/點擊路徑與公式指引移至提示（tip）屬性。
+部分舊 TEMPLATES 程式碼：
+    const TEMPLATES = [
+        {
+            skillId: 'SUM', uiType: 'single',
+            build(t, sc) {
+                const sum = t.rows.reduce((s, r) => s + r[4], 0);
+                return {
+                    requirement: `這份名單的「\${sc.headers[4]}」欄需要核對總量，請在下方答案格計算「\${sc.headers[4]}」欄的總和。（提示：選中格子點擊【常用】➜【自動加總】可以快速產生公式）`,
+                    correctAnswer: sum,
+                    answerLabel: `\${sc.headers[4]}總計`
+                };
+            }
+        },
+        {
+            skillId: 'MERGE_CENTER', uiType: 'merge',
+            build(t, sc) {
+                return {
+                    requirement: `請選取第 1 列的表頭範圍（A1 至 H1），並點擊【常用】➜【跨欄置中】將表頭合併並置中。`,
+                    correctAnswer: { minRow: -1, maxRow: -1, minCol: 0, maxCol: 7 }
+                };
+            }
+        },
+        // ... 其餘相似的 31 個舊模板定義
+    ];
+
+--- 2026-06-21 ---
+[小型試煉場 資料/檢視 Ribbon 頁籤原按鈕定義，因為需要改為下拉選單]
+檔案: v2/extras.html
+原因: 將排序、篩選合併為「排序與篩選」下拉選單；移除獨立的「小計」，將其移入「大綱」下拉選單。
+原代碼：
+            } else if (tab === 'data') {
+                createRibbonBtn("practice-sort-asc", "升序排序", "icon/sort&filter.png", () => applySortPractice('asc'), true);
+                createRibbonBtn("practice-sort-desc", "降序排序", "icon/sort&filter.png", () => applySortPractice('desc'), true);
+                createRibbonBtn("practice-sort-custom", "自訂排序", "icon/sort&filter.png", openSortDialog, true);
+                createRibbonBtn("practice-filter", "篩選", "icon/sort&filter.png", toggleFilterPractice, true);
+                createRibbonBtn("practice-filter-adv", "進階篩選", "icon/sort&filter.png", openAdvFilterDialog, true);
+                createRibbonBtn("practice-validation", "資料驗證", "icon/資料check.png", openValidationDialog, true);
+                createRibbonBtn("practice-subtotal", "小計", "icon/小計.png", openSubtotalDialog, true);
+            } else if (tab === 'view') {
+                const isFreezeActive = practiceState.frozen;
+                const btn = createRibbonBtn("practice-freeze", "凍結頂端列", "icon/凍結窗格.png", toggleFreezePractice, true);
+                if (isFreezeActive && btn) {
+                    btn.classList.add('active-toggle');
+                    btn.style.background = 'var(--active-blue)';
+                    btn.style.borderColor = '#99bce8';
+                }
+                createRibbonBtn("practice-outline", "大綱", "icon/大綱.png", toggleOutlinePractice, true);
+            }
+
+--- 2026-06-21 ---
+[小型試煉場 renderTask 原表格網格生成邏輯，因為需要區分列字母與第一列 category cells]
+檔案: v2/extras.html
+原因: 重構網格版面為列字母行與 Row 1 分離，資料行與輸入行順延。
+原 renderTask 網格生成代碼：
+            // 2. Render Headers
+            const colHeaders = [];
+            if (practiceState.outlineVisible) {
+                colHeaders.push(`<div class="l-head" style="grid-row: 1; grid-column: 1; position: sticky; top: 0; left: 0; z-index: 1003; font-weight: bold; font-size: 10px; display:flex; justify-content:center; align-items:center; border-right:1px solid #e1e1e1; border-bottom:1px solid #e1e1e1; background:#f5f5f5; color:#333;">1 2</div>`);
+            }
+            // Corner
+            const cornerColIdx = practiceState.outlineVisible ? 2 : 1;
+            colHeaders.push(`<div class="l-head" style="grid-row: 1; grid-column: \${cornerColIdx}; position: sticky; top: 0; left: \${practiceState.outlineVisible ? '40px' : '0'}; z-index: 1002; border-right: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1;"></div>`);
+            
+            // Check if merged header is active
+            const isHeaderMerged = (practiceState.mergedRange && practiceState.mergedRange.minRow === -1 && practiceState.mergedRange.maxRow === -1 && practiceState.mergedRange.minCol === 0 && practiceState.mergedRange.maxCol === 7);
+
+            // A-K
+            header.forEach((h, i) => {
+                const isSelected = practiceState.selectedCol === i;
+                let headerStyle = `grid-row: 1; grid-column: \${practiceState.outlineVisible ? i + 3 : i + 2}; position: sticky; top: 0; z-index: 1000; cursor: cell;` +
+                                    (isSelected ? ' background: rgba(33, 115, 70, 0.15) !important;' : '');
+                
+                if (practiceState.hasHeaderFill) {
+                    headerStyle += ' background-color: #fce4d6 !important; color: #333 !important;';
+                }
+
+                let filterArrow = "";
+                if (practiceState.filterEnabled) {
+                    filterArrow = `<button class="filter-arrow-btn" onclick="openFilterDropdown(event, \${i})" style="margin-left: 5px; font-size: 8px; cursor: pointer; padding: 1px 3px;">▼</button>`;
+                }
+
+                if (isHeaderMerged) {
+                    if (i === 0) {
+                        const spanCols = t.uiType === 'column' ? 9 : 8;
+                        headerStyle += ` grid-column: \${practiceState.outlineVisible ? 3 : 2} / span \${spanCols}; text-align: center; font-weight: bold; background: #fff !important;`;
+                        colHeaders.push(`<div class="cell l-head letter" style="\${headerStyle}" data-row="-1" data-col="\${i}" onmousedown="onCellMouseDown(event, -1, \${i})" onmouseover="onCellMouseOver(event, -1, \${i})">\${h}\${filterArrow}</div>`);
+                    }
+                } else {
+                    colHeaders.push(`<div class="cell l-head letter \${isSelected ? 'l-sel' : ''}" style="\${headerStyle}" data-row="-1" data-col="\${i}" onmousedown="onCellMouseDown(event, -1, \${i})" onmouseover="onCellMouseOver(event, -1, \${i})" oncontextmenu="onCellContextMenu(event, -1, \${i})">\${colLetter(i)}<br>\${h}\${filterArrow}</div>`);
+                }
+            });
+
+            // Column mode extra header
+            if (t.uiType === 'column') {
+                const extraColIdx = practiceState.outlineVisible ? header.length + 3 : header.length + 2;
+                colHeaders.push(`<div class="l-head letter" style="grid-row: 1; grid-column: \${extraColIdx}; position: sticky; top: 0; z-index: 1000;">\${colLetter(header.length)}<br>\${t.answerHeader}</div>`);
+            }

@@ -414,3 +414,19 @@
   原因：phone_helper.js 內容已更新但 ?v= 未變，手機快取同一 URL 舊內容、>10 分鐘仍不刷新。
   bump 版本號使 script URL 改變，強制所有裝置重新抓取最新 phone_helper.js。
   ⚠️ 提醒：日後修改任何 code/*.js 後，務必同步 bump game.html 對應 <script> 的 ?v= 值。
+
+[2026-06-21] 小型試煉題目優化與版面欄位分離
+- 檔案：v2/code/practice_engine.js [MODIFY]
+  - 調整 `TEMPLATES` 中的 33 個題目模板。簡化其 `requirement` (任務目標) 僅保留預期結果（例如「我們需要計算每個人的數值總和」）。
+  - 將具體操作步驟、公式指引與選單點擊路徑分離，移至對應模板的 `tip` 屬性中，當玩家點擊提示時顯示。
+- 檔案：v2/extras.html [MODIFY]
+  - 新增 CSS 樣式 `.excel-ribbon-dropdown` 及 `.excel-ribbon-dropdown .dropdown-item:hover` 用於功能區下拉選單。
+  - 將資料 tab 中的「升序排序、降序排序、自訂排序、篩選、進階篩選」5 個功能鈕合併為單一的「排序與篩選」下拉選單按鈕（`icon/sort&filter.png`）。
+  - 將「大綱」改為下拉選單，包含「顯示/隱藏大綱」與「小計」，移至「資料」tab 內。移除獨立的「小計」按鈕。
+  - 實作 Ribbon 下拉選單處理函數 `openSortFilterDropdown(e)`、`openOutlineDropdown(e)`、`closeAllRibbonDropdowns()` 與點擊外部關閉選單監聽器。
+  - 重構 `renderTask()` 網格布局：
+    - 將列字母標頭（A, B, C...）置於 CSS `grid-row: 1`，點擊支援欄選取，其內不再包含類別文字。
+    - 將行號為 `1` 的第一列單元格單獨置於 CSS `grid-row: 2`（`data-row="-1"`），內容為類別名稱，支援選取、框選與範圍高亮。
+    - 將資料列順延至 CSS `grid-row: i + 3`（Excel Row `i + 2`）。
+    - 移除原本資料列第 2 列因 Freeze 屬性強制黏附的 sticky 邏輯，改為若凍結時使 Excel Row 1（CSS `grid-row: 2`）黏附於 `top: 32px`。
+    - 將單一輸入框答案列順延至 CSS `grid-row: bottomRowNumber + 1`（即 `rows.length + 3`）。
