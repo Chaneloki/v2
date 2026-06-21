@@ -260,7 +260,7 @@ window.V2_CHAPTERS["80"] = {
             { n: "系統", t: "（變故突生——）", a: "system",
               bg: "bg8 hall.png", bgm: "no.mp3", bgPos: "center", bgZoom: 1.1,
               flash: true, flashSFX: "boom.mp3", vol: 0.8, screenEffect: "glitch" },
-            { n: "賽爾", t: "（原本正窩在書頁中的她，一種純粹的警覺令她猛地飛了出來)",bg: "bg8 broke.png", a: "fairy", bgm: "magic.mp3", vol: 0.8, shake: true, charAnim: "bounce" },
+            { n: "賽爾", t: "（原本正窩在書頁中的她，一種純粹的警覺令她猛地飛了出來)",bg: "bg8 broke.png", a: "fairy", bgm: ".main_theme.mp3", vol: 0.8, shake: true, charAnim: "bounce" },
             { n: "賽爾", t: "(翅膀在燭光下繃得筆直）等等——", a: "fairy" },
             { n: "夏特", t: "（他眼神一凜，手下意識地按向腰間，卻撲了個空。宮廷宴會禁止攜帶武器。)", a: "chate",
               se: "clothes1.mp3" },

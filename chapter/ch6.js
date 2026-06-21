@@ -75,27 +75,26 @@ window.V2_CHAPTERS["60"] = {
             { n: "葛蕾", t: "我每天睡前都會在腦子裡過一遍明天的調度清單……"},
             
 
-            { n: "我", t: "（初見面時的風風火火。我沒想過葛蕾有這樣的時刻。）", a: "me"
+            { n: "我", t: "（記憶裡的她總是風風火火，從沒想過她會有這樣安靜到近乎蒼涼的時刻。）", a: "me"
             , bgPos: "center", bgZoom: 1.5, bgDur: "10s",bg:"cg/ch2.5.png",isMemory:true},
-            { n: "我", t: "（帶她走的時候，也沒想過這一層。）", a: "me" ,bg:"cg/ch2.5 coin.png",isMemory:true},
-            { n: "我", t: "（她說得沒錯。等價交換。）", a: "me" ,bg:"cg/ch2.5 last.png",isMemory:true},
-            { n: "我", t: "（她有很好的能力。我也很喜歡跟她共事。）", a: "me" ,bg:"cg/ch2.5 three.png",isMemory:true},
-            { n: "我", t: "（但我真的有想到她嗎？）", a: "me" ,isMemory:true,bgPos: "left top", bgZoom: 1.5,flash: true, flashSFX: "flash.mp3", vol: 1.0},
-            { n: "我", t: "（甚至現在，我想到的反而也是自己。）", a: "me",bg:"bg6_boat night.png"},
+            { n: "我", t: "（帶她走的時候，我以為這只是一場等價交換。）", a: "me" ,bg:"cg/ch2.5 coin.png",isMemory:true},
+            { n: "我", t: "（她有能力，我需要幫手，這本該是純粹的合作。）", a: "me" ,bg:"cg/ch2.5 last.png",isMemory:true},
+            { n: "我", t: "（但我真的有在乎過她嗎？還是說，我只是在透過她，尋找我自己在這場混亂裡的錨點？）", a: "me" ,bg:"cg/ch2.5 three.png",isMemory:true,flash: true, flashSFX: "flash.mp3"},
+            { n: "我", t: "（甚至現在，我感到的愧疚，其實也只是為了安慰我自己。）", a: "me" ,isMemory:true,bgPos: "left top", bgZoom: 1.5, vol: 1.0,bg:"bg6_boat night.png"},
 
-            { n: "我", t: "（我望著月影，語氣平淡）……我每天早上醒來，也不知道今天要做什麼。", a: "me",flash: true, flashSFX: "bell.mp3", vol: 1.0,bgm: ".glea.mp3"},
+            { n: "我", t: "（我望著水面破碎的月影，輕聲說）……我每天早上醒來，也不知道今天要做什麼。", a: "me",flash: true, flashSFX: "bell.mp3", vol: 1.0,bgm: ".glea.mp3"},
             { n: "我", t: "拿到魔導書之前的事，我幾乎都不記得了。", a: "me"
             ,bg:"road night.png",bgBlur: 20, bgPos: "center", bgZoom: 2.0},
-            { n: "我", t: "就像一張被塗黑的表，連自己是誰都看不清。", a: "me", bgPos: "center", bgZoom: 1.5, bgDur: "10s" ,bg:"bg6 boat.png"},
-            { n: "葛蕾", t: "（沒說話，只是看著江面。）", bgPos: "center", bgZoom: 1.5 , bgDur:"10s",bg:"bg6 boat.png"},
+            { n: "我", t: "就像一張被塗黑的表，連我自己是誰都拼湊不出來。", a: "me", bgPos: "center", bgZoom: 1.5, bgDur: "10s" ,bg:"bg6 boat.png"},
+            { n: "葛蕾", t: "（她沒有回應，眼神始終懸在江面那一層漆黑裡。）", bgPos: "center", bgZoom: 1.5 , bgDur:"10s",bg:"bg6 boat.png"},
             { n: "我", t: "但我好像也沒你那麼認真。就只是發呆。", a: "me", se: "girl_embrass.mp3", vol: 1.0,shake:true},
             { n: "葛蕾", t: "……哼。你那是懶。", bgPos: "center", bgZoom: 1.1},
             { n: "我", t: "也許吧。", a: "me"},
             { n: "葛蕾", t: "（良久，她才再次開口，語氣依舊生硬）聽著。", a: "glea",shake:true},
-            { n: "葛蕾", t: "一張表被塗黑了，最好的辦法不是去刮開墨跡，而是直接在新的格子上填入數據。", a: "glea"},
-            { n: "葛蕾", t: "既然現在是空的，那就塞滿它。這是你目前唯一能做的事。", a: "glea",se: "bell.mp3", vol: 1.0},
-            { n: "系統", t: "（她是在安慰我，卻更像是在對她自己說。)", a: "system", bgPos: "center", bgZoom: 1.5 , bgDur:"10s" },
-            { n: "系統", t: "（那種生澀的語氣，反而透著一種令人安心的踏實。）", a: "system" },
+            { n: "葛蕾", t: "一張表被塗黑了，最好的辦法不是去刮開墨跡，因為那只會弄破紙面。", a: "glea"},
+            { n: "葛蕾", t: "直接在新的格子上填數據。既然現在是空的，那就塞滿它。這是你目前唯一能做的事。", a: "glea",se: "bell.mp3", vol: 1.0},
+            { n: "系統", t: "（聽著這番話，我感覺心裡那股無名火像是被澆熄了，取而代之的是一種出奇的踏實。)", a: "system", bgPos: "center", bgZoom: 1.5 , bgDur:"10s" },
+            { n: "系統", t: "（她是在安慰我，還是自己？我不確定，但這份生澀的溫柔，確實讓我好受了些。）", a: "system" },
             { n: "葛蕾", t: "（她站起身，拍掉灰塵）走吧。江風會讓數據分析力下降。回去睡覺。"
             ,env:null, bgPos: "center", bgZoom: 1.2,flash: true, flashSFX: "flash.mp3", vol: 1.0, a: "glea", se: "walk.mp3",bg:"bg6_boat night.png"},
 
