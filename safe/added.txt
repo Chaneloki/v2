@@ -1,3 +1,14 @@
+[2026-06-21] 試算表練習引擎與手感優化
+- 檔案：v2/extras.html [MODIFY]
+  1) 為 #practice-wrapper 增加 scroll-behavior: auto !important; 以解除 smooth 滾動引起的拖曳及手動操作卡頓。
+  2) 調整 .fill-handle 寬高至 10px 且 right/bottom 為 -5px；將 .fill-handle::after 滑鼠感應區邊距從 -6px 擴大為 -12px，顯著提高自動填滿控制柄的觸控精確度。
+  3) 在 allSkillDefs 載入之後，為 'COUNTIF' 任務加上 fallback 名稱與描述。
+- 檔案：v2/style.css [MODIFY]
+  將主遊戲內 .fill-handle 寬高由 7px 放大至 10px，邊距為 -5px，並新增 .fill-handle::after 擁有 12px 點擊感應範圍，優化操作手感。
+- 檔案：v2/code/practice_engine.js [MODIFY]
+  1) 修改 answersMatch，加入 dateRegex 日期寬鬆解析比對（相容年/月/日、斜線、橫線及前導零）。
+  2) 修改 DATE 任務，將預設 correctAnswer 定義為帶前導零的標準 YYYY/MM/DD。
+
 [2026-06-21] 修正 char-float/char-falling 持續性動畫每行重播導致飄浮不連續
 - 檔案：v2/code/ui_v2_story.js [MODIFY]
   原邏輯每行對話都會無條件清除角色立繪上的 char-falling/char-float class，

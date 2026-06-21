@@ -815,22 +815,23 @@
         }
         .fill-handle {
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background-color: #217346;
-            border: 1px solid #fff;
-            right: -4px;
-            bottom: -4px;
+            border: 1.5px solid #fff;
+            right: -5px;
+            bottom: -5px;
             z-index: 10;
             cursor: crosshair;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         .fill-handle::after {
             content: '';
             position: absolute;
-            top: -6px;
-            left: -6px;
-            right: -6px;
-            bottom: -6px;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
             background: transparent;
         }
         .cell.answer-col.fill-drag-target {
@@ -3479,77 +3480,7 @@
             }
         }
 
-        // Advanced Filter
-        function openAdvFilterDialog() {
-            let m = document.getElementById('excel-adv-filter-modal');
-            if (!m) {
-                m = document.createElement('div');
-                m.id = 'excel-adv-filter-modal';
-                m.className = 'modal-layer';
-                m.style.cssText = "position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; display:none; align-items:center; justify-content:center; color:#333;";
-                m.innerHTML = `
-                    <div class="excel-dialog" style="width: 350px; background:#f3f2f1; border:1px solid #999; border-radius:3px; font-family:sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-                        <div class="excel-dialog-header" style="background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; font-size:13px; font-weight:bold;">
-                            <span>進階篩選</span>
-                            <button class="excel-close" onclick="closeAdvFilterDialog()" style="background:none; border:none; cursor:pointer; font-size:16px;">×</button>
-                        </div>
-                        <div class="excel-dialog-body" style="padding: 15px; font-size:12px;">
-                            <div style="font-size:11px; margin-bottom:10px;">方式</div>
-                            <div style="margin-left:20px; font-size:11px; display:flex; flex-direction:column; gap:5px;">
-                                <label><input type="radio" name="filter-action" checked> 在原有區域顯示篩選結果(F)</label>
-                                <label><input type="radio" name="filter-action" disabled> 將篩選結果複製到其他位置(O)</label>
-                            </div>
 
-                            <div style="margin-top:15px; display:grid; grid-template-columns: 80px 1fr 25px; gap:10px; align-items:center;">
-                                <label style="font-size:11px;">資料範圍(L):</label>
-                                <input type="text" value="$A$1:$H$11" disabled style="font-size:11px; padding:2px; border:1px solid #ccc;">
-                                <button style="padding:0; height:18px;">📉</button>
-
-                                <label style="font-size:11px;">條件範圍(C):</label>
-                                <input type="text" id="adv-filter-criteria" placeholder="請輸入條件範圍，如: I1:J2" style="font-size:11px; padding:2px; border:1px solid #217346;">
-                                <button style="padding:0; height:18px;">📉</button>
-                            </div>
-
-                            <div style="margin-top:15px; font-size:11px;">
-                                <label><input type="checkbox"> 僅選取不重複的紀錄(R)</label>
-                            </div>
-                        </div>
-                        <div class="excel-dialog-footer" style="padding: 15px; display:flex; justify-content:flex-end; gap:10px;">
-                            <button class="excel-ok" onclick="confirmAdvFilterDialog()" style="padding: 5px 25px; cursor:pointer;">確定</button>
-                            <button class="excel-cancel" onclick="closeAdvFilterDialog()" style="padding: 5px 25px; cursor:pointer;">取消</button>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(m);
-            }
-            m.style.display = 'flex';
-        }
-
-        function closeAdvFilterDialog() {
-            const m = document.getElementById('excel-adv-filter-modal');
-            if (m) m.style.display = 'none';
-        }
-
-        function confirmAdvFilterDialog() {
-            const crit = document.getElementById('adv-filter-criteria').value.trim().toUpperCase();
-            closeAdvFilterDialog();
-            
-            if (currentTask.skillId === 'FILTER_ADV') {
-                const targetCat = currentTask.correctAnswer.cat;
-                const targetStatus = currentTask.correctAnswer.status;
-                
-                if (crit !== '') {
-                    const allRows = currentTask.table.rows;
-                    practiceState.displayRows = allRows.filter(row => {
-                        return row[2] === targetCat || row[3] === targetStatus;
-                    });
-                    renderTask();
-                    showFeedback(true);
-                } else {
-                    showFeedbackMessage(false, "❌ 請輸入或選取進階篩選條件範圍！");
-                }
-            }
-        }
 
         // Pivot Table Create & Grouping
         function handleRibbonPivot() {

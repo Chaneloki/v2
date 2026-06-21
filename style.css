@@ -462,9 +462,18 @@ body {
 }
 
 .fill-handle {
-    position: absolute; width: 7px; height: 7px; background: var(--excel-green);
-    right: 0; bottom: 0; cursor: crosshair; z-index: 300;
-    border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    position: absolute; width: 10px; height: 10px; background: var(--excel-green);
+    right: -5px; bottom: -5px; cursor: crosshair; z-index: 300;
+    border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.fill-handle::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    right: -12px;
+    bottom: -12px;
+    background: transparent;
 }
 
 /* --- �㴓 Outline Sidebar (Subtotal levels) --- */

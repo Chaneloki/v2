@@ -1,3 +1,27 @@
+--- 2026-06-21 補2 ---
+[移除小型試煉進階篩選任務與相關的死代碼]
+檔案: v2/code/practice_engine.js
+原因: 配合調整移除 FILTER_ADV 進階篩選任務。
+移除以下代碼：
+        {
+            skillId: 'FILTER_ADV', uiType: 'filter_adv',
+            build(t, sc) {
+                const targetCat = t.rows[0][2];
+                return {
+                    requirement: `使用進階篩選過濾出符合複合條件的數據。`,
+                    tip: `請點擊【資料】➜【排序與篩選】➜【進階篩選】。設定條件為「${sc.headers[2]} 等於 ${targetCat}」或「${sc.headers[3]} 等於 ${sc.customOrder[0]}」（聯動或條件過濾），確認執行進階篩選。`,
+                    correctAnswer: { cat: targetCat, status: sc.customOrder[0] }
+                };
+            }
+        },
+
+檔案: v2/extras.html
+原因: 配合移除進階篩選任務，將下拉選單選項及相關 dialog 函數死代碼移除。
+1) 移除下拉選單項：
+<div class="dropdown-item" onclick="openAdvFilterDialog(); closeAllRibbonDropdowns();">進階篩選</div>
+
+2) 移除 openAdvFilterDialog、closeAdvFilterDialog 與 confirmAdvFilterDialog 函數定義。
+
 --- 2026-06-19 補1 ---
 [修正逐字效果造成角色立繪誤觸彩蛋抖動的問題，移除的原代碼]
 檔案: code/ui_v2_story.js
