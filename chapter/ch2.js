@@ -144,17 +144,17 @@ window.V2_CHAPTERS["20"] = {
             { n: "蘭吉教授", t: "這場關於『秩序』的對決，是你贏了。 ", a: "lange",se:"woman_smile.mp3", vol:1.0},
             { n: "蘭吉教授", t: "這是我親筆簽署的王廷推薦函，是你應得的獎賞。 ", a: "lange",se:"paper down.mp3", vol:1.0, bg: "bg2.png" },
             
-            { n: "系統", t: "（夏特看著那份名冊，眼底的高傲微微收斂了一些。）", a: "system", bgm: ".sweet.mp3",bg:"cg/ch2 start.png",bgPos: "right top", bgZoom: 2.0  , se: "paper down.mp3", vol: 0.8 },
+            { n: "系統", t: "（夏特看著那份名冊，原本緊繃的指尖微微顫抖，眼底的高傲像冰層般裂開了縫隙。）", a: "system", bgm: ".sweet.mp3",bg:"cg/ch2 start.png",bgPos: "right top", bgZoom: 2.0  , se: "paper down.mp3", vol: 0.8 },
             { n: "夏特", t: "……是我輸了。", a: "chate", flash:true, flashSFX:"flash.mp3",vol:1.0 },
-            { n: "夏特", t: "（他低聲喃喃自語）徹底打破陳規的切分邏輯……不帶任何諂媚的色彩的流向……", a: "chate",bgPos: "right top", bgZoom: 1.5, bgDur:"5s"},
+            { n: "夏特", t: "（他低聲喃喃自語）不帶任何繁複的修飾，只留下最核心的流向……", a: "chate",bgPos: "right top", bgZoom: 1.5, bgDur:"5s"},
             { n: "夏特", t: "（我曾經也……）", a: "chate" },
-            { n: "系統", t: "（他抬起頭，重新打量著眼前這個不修邊幅的冒險者。）", a: "system"
+            { n: "系統", t: "（他抬起頭，重新打量著眼前這個隨性的冒險者。）", a: "system"
             ,bg:"cg/ch2 main.png",bgPos: "right top", bgZoom: 1.5 },
             { n: "夏特", t: "我原以為在學院這種等級森嚴的地方，沒有人會接受這種實用至上的排版。", a: "chate",bg:"cg/ch2 start.png" },
             { n: "夏特", t: "一個從未受過正統美學訓練的人，竟然能如此理所當然地把它實踐出來。", a: "chate" },
-            { n: "夏特", t: "看來，不被規則定義的自由……確實是存在的。", a: "chate" },
+            { n: "夏特", t: "看來，我一直以來信奉的那些標準，或許並不是唯一的真理。", a: "chate" },
             
-            { n: "我", t: "（我完全沒有察覺到夏特此刻翻江倒海的內心，只是隨意地把推薦函塞進背包。）", a: "me"
+            { n: "我", t: "（我完全沒察覺到他在想什麼，只覺得這傢伙盯著我的眼神怪怪的。）", a: "me"
             ,bg:"cg/ch2 main.png",se:"clothes1.mp3", vol:1.0, flash:true, flashSFX:"flash.mp3",vol:1.0},
             { n: "我", t: "（我伸了個懶腰，隨意地揉了揉早已空空如也的肚子）終於收工了！", a: "me"
             , se: "girl_yes.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.2, bgDur:"5s"  },
@@ -166,15 +166,15 @@ window.V2_CHAPTERS["20"] = {
             { n: "賽爾", t: "給那個把自己關在金絲籠裡的天才，劈開了一扇了不得的命運之窗呢。 ", a: "fairy" },
             { n: "賽爾", t: "算啦！填飽肚子要緊，我們這就出發大餐一頓吧！", a: "fairy",shake:true },
             
-            { n: "系統", t: "（就在我即將踏出試煉廳大門的那一刻，身後傳來了一陣急促的腳步聲。）", a: "system"
+            { n: "系統", t: "（就在我即將走出大門時，夏特追了上來。）", a: "system"
             , se: "run.mp3", bgm: "no.mp3",bgPos: "center", bgZoom: 1.2},
-            { n: "夏特", t: "（他突然大步追了上來，對著我深深地鞠了一躬。）", a: "chate"
+            { n: "夏特", t: "（他站在門檻處，神色顯得有些掙扎。）", a: "chate"
             ,bg: "cg/ch2.png",bgPos: "bottom", bgZoom: 2.0, flash:true, flashSFX:"flash.mp3",vol:1.0},
             { n: "夏特", t: "萬分感謝。這場試煉，確實是我徹底敗北了。 ", a: "chate", bgm: ".sweet.mp3",bgPos: "top", bgZoom: 1.5, bgDur:"8s"  },
-            { n: "夏特", t: "希望在不久的將來，我也能拿出一本真正具備靈魂、不被束縛的作品……", a: "chate" },
-            { n: "夏特", t: "再次請閣下，親自過目。 ", a: "chate" },
+            { n: "夏特", t: "下次再見時，我會拿出讓你也無法忽視的作品。", a: "chate" },
+            { n: "夏特", t: "請務必……親自過目。 ", a: "chate" },
             
-            { n: "我", t: "（我有些驚訝地回過頭，有些侷促地抓著後腦勺。）", a: "me",bg:"cg/ch2 main.png", flash:true, flashSFX:"flash.mp3",vol:1.0 },
+            { n: "我", t: "（愣了一下，這傢伙還真是不服輸啊。）", a: "me",bg:"cg/ch2 main.png", flash:true, flashSFX:"flash.mp3",vol:1.0 },
             { n: "我", t: "（露出豪爽的笑容。）", a: "me" , se: "girl_laugh.mp3", vol: 1.0,bgPos: "center", bgZoom: 1.2, bgDur:"5s" },
             { n: "我", t: "謝我做什麼？你剛才那些表格做得其實也超級厲害啊！", a: "me" },
             { n: "我", t: "每個格子都對得嚴絲合縫，簡直比強迫症還要完美。 ", a: "me",shake:true },
