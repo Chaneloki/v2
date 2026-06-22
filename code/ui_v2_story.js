@@ -699,7 +699,7 @@ UIManager.prototype.updateVisuals = function(line) {
             }
             }
 
-            if (line.bgm === null) {
+            if (line.bgm === null || line.bgm === 'no.mp3') {
                 let a = document.getElementById('bgm');
                 if (a) {
                     a.pause();

@@ -144,7 +144,6 @@ window.GameConstants = {
         START_SIMULATOR: 'startSimulator',
         TASK_CHANGED: 'taskChanged',
         SKILL_UNLOCKED: 'skillUnlocked',
-        COINS_CHANGED: 'coinsChanged',
         SHEET_ADDED: 'sheetAdded',
         SHEET_SWITCHED: 'sheetSwitched',
         PLAY_BGM: 'playBGM'

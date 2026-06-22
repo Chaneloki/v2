@@ -487,7 +487,7 @@ window.V2_CHAPTERS["85"] = {
               a: "system", se: "book.mp3", vol: 0.9,
               bg: "black.png",
               flash: true, flashSFX: "trans.mp3", vol: 0.7,
-              bgm: "begin.mp3", bgmFade: "in" },
+              bgm: "no.mp3", bgmFade: "in" },
             { n: "系統", t: "（世界在瞬間變得沈重且真實。）",
               a: "system" },
             { n: "系統", t: "……",

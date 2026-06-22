@@ -187,7 +187,7 @@ window.V2_CHAPTERS["45"] = {
 
         // ── 結局：收編天才 ─────────────────────
         end: [
-            { n: "系統", t: "（兩小時過後。收容所倉庫門口的隊伍重新歸於秩序。）", a: "system", bg: "bg4.5.png", bgm: "finish.mp3"
+            { n: "系統", t: "（兩小時過後。收容所倉庫門口的隊伍重新歸於秩序。）", a: "system", bg: "bg4.5.png", bgm: ".finish.mp3"
             ,bgPos: "right", bgZoom: 1.5, bgDur:"10s"},
             { n: "系統", t: "（名冊上，命危人員的數據被標成了醒目的緋紅色，一切顯得井然有序。）", a: "system" , se: "paper down.mp3", vol: 0.8 },
             { n: "管事", t: "（他激動得聲音都在顫抖） 這份名冊簡直太清楚了！ ", a: "npc1", se: "happy.mp3", vol: 1.0,shake:true},

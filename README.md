@@ -16,9 +16,28 @@
 ---
 
 ## 🎯 當前目標
-正在開發 **Excel 教學遊戲**。
-- **現狀**：教學內容已設計完成。
-- **任務**：開發遊戲邏輯與功能實作。
+
+**現狀**：主線開發（第1章 ~ 第8.5章）已大致完成，遊戲整體流程已跑通：
+`開場故事 → 遊玩（含中段劇情）→ 結局故事 → RPG 自由轉場（含睡覺過場）→ 下一章節循環`，
+共 16 個章節（1、1.5、2、2.5 … 8、8.5）。
+
+**第8.5章結局選擇邏輯**（核心鎖定內容，已確認、不可變更）：
+- 玩家**抵達**第8.5章時，會永久寫入 `magic_excel_v2_extras_unlocked` 旗標，解鎖 `extras.html` 與選單入口。
+- 選擇「**我想知道**」：劇情正常推進，存檔與 extras 解鎖狀態維持不變。
+- 選擇「**無所謂了**」：視為玩家主動放棄這條故事線，會執行 `localStorage.clear()`，**清空所有存檔（包含主線進度與 extras 解鎖旗標）**，僅保留 `metaChoiceNo = true` 標記，這是刻意設計的懲罰機制。
+- 因為 `metaChoiceNo` 被保留，**下次重新進入第8.5章時**，系統會以縮短版台詞「……我現在再問你一次。你，想不想知道？」再給玩家一次選擇機會；若再選「我想知道」則正常推進並重新解鎖 extras，若再選「無所謂了」則再次清空。
+
+**任務**：目前進入收尾與優化階段，待辦如下：
+
+| 項目 | 內容 | 備註 |
+| :--- | :--- | :--- |
+| 1. 睡覺過場文案調整 | `story_sleep.js` 相關章節銜接對話的文字潤飾 | 屬於文案層級，非邏輯/資料結構異動 |
+| 2. Debug | 排查目前已知或玩家回報的功能性錯誤 | 待提供具體錯誤現象後逐一處理 |
+| 3. Extras 額外劇情補完 | `extras.html` 中尚有 2 名角色的支線故事未撰寫 | 需確認角色名稱與劇情走向 |
+| 4. 使用者體驗優化 | 介面操作流程、提示文字、節奏調整等 | 需先收集具體痛點才能定優化方向 |
+| 5. 收集回饋並改進 | 整理玩家/測試者意見，評估可行的改進項目 | 屬持續性工作，非單次任務 |
+
+**建議處理順序**：debug（2）> 文案/劇情補完（1、3）> UX優化（4）> 持續收集回饋（5）。理由是 bug 可能影響其他項目的測試準確性，文案與劇情屬內容缺口需先補齊，UX優化建議等內容穩定後再進行較有效率。
 
 ---
 
@@ -34,6 +53,7 @@
 ## 🔒 核心鎖定規範 (Immutable Modules)
 為了穩定性，以下內容 **絕對禁止修改**（僅允許非破壞性擴充）：
 - **第一章 至 第8.5章**：包含數據與邏輯、相關對話、BGM/背景資源/effect。
+- **第8.5章結局選擇機制**：包括 `metaChoiceNo`、`magic_excel_v2_extras_unlocked` 旗標邏輯，以及「無所謂了」會 `localStorage.clear()` 清空全部存檔的設計，皆為確認過的最終行為，不得調整。
 
 ---
 
@@ -42,47 +62,50 @@
 2. **新增記錄**：所有新功能代碼需同步記錄至 `safe/added.txt`。
 3. **Change Log**：每次修改必須在該檔案頂部或相關位置留下清楚的異動註記。
 
+## 檔案說明（專案總覽）
 
-此資料夾包含 RPG 自由探索模式（Ch8.5 之後的像素世界）的所有程式碼。
-對應的圖片資源放在專案根目錄的 `rpg/`（`rpg/bg/`、`rpg/charater/`、`rpg/npc/`）。
+### 進入點 (root)
+- **`index.html`** — 遊戲首頁，連結至 `game.html`（主線遊戲）與 `instructions.html`（操作說明）。
+- **`game.html`** — 主遊戲容器，載入所有 `code/`、`chapter/` 腳本並啟動 `orchestrator`。
+- **`instructions.html`** — 操作說明頁。
+- **`extras.html`** — 番外篇與小型試煉頁面，需 `magic_excel_v2_extras_unlocked` 旗標解鎖（見上方第8.5章邏輯）。
+- **`skill_book.html`** — 技能書頁面，由選單（`ui_v2_menus.js`）連結進入。
+- **`admin_comments.html`** — 留言後台檢視頁（對應 `code/firebase-config.js` 的留言系統）。
 
-## 檔案說明
+### `code/`（核心系統，與章節內容無關的通用引擎）
+- **`orchestrator.js`** — 全局總控：`GameState`、章節/階段切換、存讀檔、第8.5章 extras 解鎖旗標寫入點。
+- **`render.js`** — 試算表格線渲染引擎（`GridRenderer`），含公式高亮、寬度同步。
+- **`utils.js`** — 共用工具：文字高亮、背景切換、音效管理。
+- **`ui_v2_core.js`** — `UIManager` 主類別定義與初始化。
+- **`ui_v2_story.js`** — 劇情播放邏輯（逐字顯示效果、存讀檔行號還原、預載機制）。
+- **`ui_v2_menus.js`** — 系統選單、回憶日記、`extras.html`/`skill_book.html` 連結與解鎖檢查。
+- **`ui_v2_audio.js`** — BGM/SFX 播放控制。
+- **`ui_dialogs.js`** — Excel 操作型對話框（排序等）。
+- **`ui_dev.js`** — 開發者工具選單（章節跳轉除錯用）。
+- **`ui_ribbon.js`** — Excel Ribbon 分頁與技能樹 UI。
+- **`practice_engine.js`** — 小型試煉引擎：隨機情境產生器、公式運算器、技能題目模板。
+- **`phone_helper.js`** — 手機模式輔助：鍵盤/滑鼠專屬操作（如 Ctrl+↓）的代為示範執行。
+- **`ext_blur.js`** — 背景模糊視覺擴充插件。
+- **`firebase-config.js`** — 留言系統 Firestore 設定（共用 owe-my-money 專案，獨立 `feedback` collection）。
+- **`rpg/`** — RPG chapter間轉場模式，詳見下方專屬章節。
+
+### `chapter/`
+- 每章一個檔案：`ch1.js`、`ch1_5.js`／`ch2.5.js`...、一路到 `ch8.js`、`ch8_5.js`，共 16 個章節檔。
+  內容為該章節的劇情對話資料與（如有）Excel 檢核點設定，屬核心鎖定範圍（見上方鎖定規範）。
+
+---
+
+## 檔案說明（`code/rpg/` 細項）
 
 - **`rpg_engine.js`** — 核心引擎：角色移動、攝影機、碰撞、對話框、POI 互動派發
   (`window.rpgEngine`)。
-- **`maps/`** — 地圖資料庫 (`window.RPG_MAPS`)。**每個大地圖一個檔案**：
-  - `map1_street.js` — 大地圖 1：城市街道及其室內場景（公會大廳、宿舍、訓練營、
-    道具屋、圖書館、儲藏室、我的房間）。
-  - 未來新增大地圖時，依序新增 `map2_xxx.js`、`map3_xxx.js`...，每個檔案用
-    `window.RPG_MAPS = Object.assign(window.RPG_MAPS || {}, { ... })` 的方式
-    合併自己的地圖資料（不要直接覆寫整個 `RPG_MAPS`），並在 `index.html`
-    新增對應的 `<script>` 標籤。
+- **`maps/`** — 地圖資料庫 (`window.RPG_MAPS`)。
 - **`rpg_interactions.js`** — 特殊 POI 互動處理（公會成員門、訓練營關卡跳轉等）。
-- **`rpg_shop.js`** — 道具屋/角色商店系統（購買並切換可遊玩角色）。
-- **`rpg_practice_mode.js`** — 特訓/練習模式的存檔保護（避免覆寫主線進度）。
 - **`rpg_dialog_ui.js`** — 對話框版面微調與除錯牆顯示。
 - **`story_sleep.js`** — 房間睡覺/章節銜接相關邏輯。
-- **`missions/`** — 自由模式任務線（mission line）：
-  - `mission_engine.js` — 通用任務派發引擎 (`window.missionEngine`)。負責追蹤每條
-    `window.FREE_MISSIONS` 任務目前的階段 (`state.missions[id] = { stage, done }`)，
-    並在 `rpgEngine.interactWith(poi)` 中依 POI 的 `mission`/`missionStages`
-    判斷是否要接管互動、播放對話、或啟動內嵌的 Excel 檢核點
-    (`launchExcelTask`，借用 SIMULATOR 階段，完成後自動還原 RPG 模式)。
-  - `training_records.js` — 第一條任務「訓練營記錄失蹤案」
-    (`window.FREE_MISSIONS["training_records"]`)，示範新任務的資料格式。
-  - **新增任務的方式**：建立 `code/rpg/missions/<id>.js`，內容為
-    `window.FREE_MISSIONS["<id>"] = { id, title, unlocksFlag, <stationKey>: [...對話陣列...], flow: [...] }`。
-    `flow` 是依序執行的階段陣列，每項為
-    `{ stage, lines: "<stationKey>", next, auto?, setFlags? }`（對話階段）
-    或 `{ stage, type: "excel", excelConfig, next }`（Excel 檢核點）。
-    `auto: true` 的階段會在前一階段結束後自動串接執行，不需玩家額外互動。
-    然後在 `maps/mapN_xxx.js` 對應的 POI 上加上
-    `mission: "<id>", missionStages: ["<stageId>", ...]`，
-    並在 `index.html` 加入該檔案的 `<script>` 標籤。
 
 ## 資源位置
 
 - `rpg/bg/` — 地圖背景圖
-- `rpg/charater/` — 主角/可玩角色的行走精靈圖
-- `rpg/npc/` — NPC 圖片（含任務 NPC，例如 `npc_instructor.png`、`npc_librarian.png` 等，
-  檔名對應對話資料中的 `a:` 欄位；圖片不存在時頭像會自動隱藏，不影響對話顯示）
+- `rpg/charater/` 可玩角色的行走圖
+

@@ -202,7 +202,7 @@ window.V2_CHAPTERS["40"] = {
         ],
 
         end: [
-            { n: "系統", t: "（兩個小時後。診所外那條蜿蜒的隊伍已經縮短了一大半。）", a: "system", bg: "bg4 clinic.png", bgm: "finish.mp3"
+            { n: "系統", t: "（兩個小時後。診所外那條蜿蜒的隊伍已經縮短了一大半。）", a: "system", bg: "bg4 clinic.png", bgm: ".finish.mp3"
             , env: "light/1", envFrames: 25, envspeed:80, envDrift:true,bgPos: "center", bgZoom: 1.1},
             { n: "系統", t: "（空氣中原本浮動的焦慮感漸漸消散，病患們安靜地等待著接診。）", a: "system"
             ,bgPos: "center", bgZoom: 2.0, bgDur:"10s"},

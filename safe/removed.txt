@@ -1,3 +1,103 @@
+--- 2026-06-22 補3 ---
+[移除遊戲內金幣系統 (Coins) 與「神秘服飾店」(Avatar Shop)]
+檔案: v2/code/orchestrator.js, v2/code/ui_ribbon.js, v2/code/ui_v2_core.js, v2/code/utils.js,
+      v2/code/ui_v2_menus.js, v2/game.html, v2/style.css
+原因: 使用者確認金幣系統（含其唯一用途：頭像商店解鎖角色）已無實際用途，要求整個移除。
+      商店在程式碼中沒有任何選單/UI 入口呼叫 openAvatarShop()，確認本來就是死功能。
+      unlockedAvatars 解鎖機制本身（供 RPG 模式 Tab 切換角色）保留不動，之後再決定新的
+      解鎖方式；只移除「花金幣購買」這條路徑。
+
+移除以下代碼：
+
+[orchestrator.js] constructor 內：
+        this.coins = 1000;
+
+[orchestrator.js] saveGame() 的 saveData 物件：
+                coins: this.state.coins,
+
+[orchestrator.js] saveGame() 的 metaData 物件：
+                coins: saveData.coins,
+
+[orchestrator.js] getSaveMeta() 降級相容區塊：
+                        coins: data.coins,
+
+[orchestrator.js] loadGame()：
+            this.state.coins = data.coins || 0;
+
+[orchestrator.js] addCoins 方法整段：
+    addCoins(amount) {
+        this.state.coins += amount;
+        this.emit('coinsChanged', { coins: this.state.coins });
+        this.saveGame();
+    }
+
+[orchestrator.js] triggerPhase() SIMULATOR 階段 emit 參數：
+                this.emit('startSimulator', { config: simulator, coins: this.state.coins });
+（改為 this.emit('startSimulator', { config: simulator });）
+
+[orchestrator.js] triggerPhase() STORY_END 階段：
+                this.addCoins(this.state.activeChapterModule.meta.reward || 0);
+
+[orchestrator.js] 全章節完成提示彈窗：
+                <p style="color:#9be8a5; font-weight:bold; margin:10px 0;">總獲取金幣：${this.state.coins} G</p>
+
+[ui_ribbon.js] updateCoins 方法整段：
+UIManager.prototype.updateCoins = function(coins) {
+        const el = document.getElementById('coin-count');
+        if (el) el.innerText = coins;
+    }
+
+[ui_v2_core.js] 事件監聽：
+        window.orchestrator.on('coinsChanged', (data) => this.updateCoins(data.coins));
+
+[utils.js] EVENTS 常數：
+        COINS_CHANGED: 'coinsChanged',
+
+[ui_v2_menus.js] 存讀檔選單 meta 顯示：
+                    <div class="sl-meta">⏳ ${dateStr} | 💰 ${data.coins} G</div>
+（改為 <div class="sl-meta">⏳ ${dateStr}</div>）
+
+[ui_v2_menus.js] openAvatarShop / closeAvatarShop 兩個方法整段（含商店 HTML、購買邏輯、
+價格設定 boy 100G / girl 100G / fairy 500G）：
+UIManager.prototype.openAvatarShop = function() { ... };
+UIManager.prototype.closeAvatarShop = function() { ... };
+
+[game.html] 頂部金幣顯示元素：
+    <div id="coin-display">💰 <span id="coin-count">0</span> G</div>
+
+[game.html] 對應 media query 樣式：
+            #coin-display {
+                right: 68px !important;
+                top: 12px !important;
+                font-size: 13px !important;
+            }
+
+[style.css] 基底樣式：
+#coin-display {
+    position: fixed; top: 20px; right: 100px;
+    background: linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url('BG/intro/2_bg.png') center/cover no-repeat; color: #fff;
+    padding: 8px 20px; border-radius: 50px; font-weight: 800;
+    border: 2px solid rgba(255,215,0,0.7); z-index: 5500;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    display: flex; align-items: center; gap: 8px; font-size: 16px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+[style.css] 對應的 3 處響應式/行動版覆寫規則：
+    #coin-display { right: 75px; top: 15px; padding: 5px 15px; font-size: 14px; }
+body.mode-mobile #coin-display { right: 72px !important; top: 12px !important; font-size: 13px !important; padding: 5px 12px !important; }
+    /* 金幣顯示位置：避免與設定鈕重疊 */
+    #coin-display {
+        right: 72px !important;
+        top: 12px !important;
+        font-size: 13px !important;
+        padding: 5px 12px !important;
+    }
+
+備註: chapter/*.js 各章節對話資料中的 se: "coin.mp3"/"coin2.mp3" 音效檔名與 bg: "cg/ch2.5 coin.png"
+背景圖屬於第1~8.5章鎖定內容（劇情資源），與本次移除的金幣系統無關，未動。各章節 meta.reward
+數值同樣屬鎖定資料，保留不動，僅未被消費（不再呼叫 addCoins）。
+
 --- 2026-06-22 補2 ---
 [移除 style.css 重複定義的 .shake-active / @keyframes stage-shake]
 檔案: v2/style.css

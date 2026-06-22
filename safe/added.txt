@@ -1,3 +1,18 @@
+[2026-06-22] 修正 BGM 線上版本完全無法播放的問題 (Jekyll 排除點開頭檔名)
+- 檔案：v2/.nojekyll [NEW]
+  新增空檔案。GitHub Pages 預設使用 Jekyll 建置，會自動排除所有檔名/資料夾名以
+  「.」或「_」開頭的內容。換掉版權 BGM 音檔時，所有新檔名都改成點開頭
+  （例如 .main_theme.mp3、.daily.mp3），導致線上版本這些檔案全部 404、
+  BGM 永遠播不出來（音效 se 因檔名沒有點開頭，不受影響，所以只有 BGM 啞掉）。
+  加上 .nojekyll 即可關閉 Jekyll 處理，讓這些檔案正常被發布。
+- 檔案：v2/chapter/ch4.js, v2/chapter/ch4.5.js [MODIFY]
+  結局段落殘留漏改的舊檔名 bgm: "finish.mp3"（沒有點開頭），改成 bgm: ".finish.mp3"
+  以對齊 BGM/ 資料夾內實際檔名。
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  各章節劇本中大量使用 bgm: "no.mp3" 作為「暫停 BGM」的語意慣例，但原邏輯只認
+  line.bgm === null 才會靜音，字串 "no.mp3" 會被當成真實檔名嘗試播放（永遠 404）。
+  修改判斷條件為 line.bgm === null || line.bgm === 'no.mp3'，兩者皆視為靜音指令。
+
 [2026-06-21] 試算表練習引擎與手感優化
 - 檔案：v2/extras.html [MODIFY]
   1) 為 #practice-wrapper 增加 scroll-behavior: auto !important; 以解除 smooth 滾動引起的拖曳及手動操作卡頓。

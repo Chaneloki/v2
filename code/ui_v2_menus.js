@@ -58,7 +58,7 @@ UIManager.prototype.openSaveLoadMenu = function(mode) {
             div.innerHTML = `
                 <div class="sl-info">
                     <div class="sl-title">${slotNames[slot]} - 第 ${displayChapter} 章</div>
-                    <div class="sl-meta">⏳ ${dateStr} | 💰 ${data.coins} G</div>
+                    <div class="sl-meta">⏳ ${dateStr}</div>
                 </div>
                 <div class="sl-icon">${mode === 'save' ? '💾' : '📜'}</div>
             `;
@@ -188,101 +188,6 @@ UIManager.prototype.handleSaveLoadClick = function(slot) {
     }
 };
 
-UIManager.prototype.openAvatarShop = function() {
-    let overlay = document.getElementById('avatar-shop-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'avatar-shop-overlay';
-        overlay.className = 'sys-overlay-hide modal-layer';
-        overlay.innerHTML = `
-            <div class="sys-menu-panel" style="max-width: 500px; text-align: center;">
-                <div class="sys-menu-header">
-                    <h2>👗 神秘服飾店 (Avatar Shop)</h2>
-                    <div class="sys-close-btn" onclick="window.uiManager.closeAvatarShop()">×</div>
-                </div>
-                <div style="margin: 15px 0;">
-                    💰 目前持有金幣: <strong id="shop-coin-display" style="color:#217346; font-size:18px;">0</strong> G
-                </div>
-                <div id="shop-items" style="display: flex; flex-wrap:wrap; gap: 15px; justify-content: center;">
-                </div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-    }
-    
-    // 渲染商品
-    const itemsContainer = document.getElementById('shop-items');
-    itemsContainer.innerHTML = '';
-    
-    const state = window.orchestrator.state;
-    const coins = state.coins || 0;
-    document.getElementById('shop-coin-display').innerText = coins;
-    
-    const shopAvatars = [
-        { id: 'boy', name: '王國小男孩', price: 100, icon: '👦' },
-        { id: 'girl', name: '王國小女孩', price: 100, icon: '👧' },
-        { id: 'fairy', name: '賽爾精靈', price: 500, icon: '🧚' }
-    ];
-    
-    shopAvatars.forEach(av => {
-        const isUnlocked = state.unlockedAvatars.includes(av.id);
-        const canBuy = !isUnlocked && coins >= av.price;
-        
-        const card = document.createElement('div');
-        card.style.border = '2px solid ' + (isUnlocked ? '#217346' : '#ccc');
-        card.style.borderRadius = '10px';
-        card.style.padding = '15px';
-        card.style.width = '120px';
-        card.style.background = isUnlocked ? 'rgba(33,115,70,0.1)' : '#fff';
-        card.style.cursor = isUnlocked ? 'default' : (canBuy ? 'pointer' : 'not-allowed');
-        card.style.opacity = (!isUnlocked && !canBuy) ? '0.6' : '1';
-        
-        card.innerHTML = `
-            <div style="font-size:40px;">${av.icon}</div>
-            <div style="font-weight:bold; margin-top:10px;">${av.name}</div>
-            <div style="margin-top:5px; font-size:14px; color:${isUnlocked ? '#217346' : '#8b4513'};">
-                ${isUnlocked ? '已解鎖' : `💰 ${av.price} G`}
-            </div>
-        `;
-        
-        if (!isUnlocked && canBuy) {
-            card.onclick = () => {
-                this.uiConfirm(`確定要花費 ${av.price} G 購買「${av.name}」嗎？`).then((ok) => {
-                    if (ok) {
-                        state.coins -= av.price;
-                        state.unlockedAvatars.push(av.id);
-                        window.orchestrator.saveGame();
-                        this.updateTopBarCoins(); // 更新左上角金幣
-                        this.openAvatarShop(); // 重新渲染商店
-                        this.showMagicToast('購買成功！可以在地圖中按 [Tab] 切換角色。', 'success');
-                    }
-                });
-            };
-        } else if (!isUnlocked) {
-            card.onclick = () => this.showMagicToast('金幣不足！', 'error');
-        }
-        itemsContainer.appendChild(card);
-    });
-    
-    overlay.style.display = 'flex';
-    // Q3 rAF 雙幀取代 void offsetWidth
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-        overlay.classList.remove('sys-overlay-hide');
-        overlay.classList.add('sys-overlay-show');
-    }));
-};
-
-UIManager.prototype.closeAvatarShop = function() {
-    const overlay = document.getElementById('avatar-shop-overlay');
-    if(!overlay) return;
-    overlay.classList.remove('sys-overlay-show');
-    overlay.classList.add('sys-overlay-hide');
-    setTimeout(() => {
-        if(overlay.classList.contains('sys-overlay-hide')) {
-            overlay.style.display = 'none';
-        }
-    }, 200);
-};
 
 // ================= 新增：回憶日記 (Memory Diary) 功能 =================
 UIManager.prototype.openMemoryDiary = function() {

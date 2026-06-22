@@ -154,8 +154,6 @@ class UIManager {
             // 解鎖新技能後重新渲染工具列，確保按鈕能「固定」住
             this.renderRibbon(window.orchestrator.state.activeChapterModule.simulator);
         });
-        window.orchestrator.on('coinsChanged', (data) => this.updateCoins(data.coins));
-        
         // 工作表事件
         window.orchestrator.on('sheetAdded', () => this.renderSheetBar());
         window.orchestrator.on('sheetSwitched', (data) => {

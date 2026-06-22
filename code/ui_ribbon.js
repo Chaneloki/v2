@@ -157,11 +157,6 @@ UIManager.prototype.updateSheetTabUI = function(activeId) {
         });
     }
 
-UIManager.prototype.updateCoins = function(coins) {
-        const el = document.getElementById('coin-count');
-        if (el) el.innerText = coins;
-    }
-
     // --- 技能系統 ---
 UIManager.prototype.openSkills = function() {
         const m = document.getElementById('s-modal');

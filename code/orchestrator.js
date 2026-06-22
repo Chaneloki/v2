@@ -15,7 +15,6 @@ class GameState {
         this.activeSheetId = 'st-1';
         this.cellStyles = {}; // { [cellId]: { CSS props } }
         this.unlockedSkills = [];
-        this.coins = 1000;
         
         // 互動狀態
         this.selectedCell = { r: 0, c: 0 };
@@ -274,7 +273,6 @@ class Orchestrator {
                 activeStoryKey: this.state.activeStoryKey,
                 currentTaskIndex: this.state.currentTaskIndex,
                 unlockedSkills: this.state.unlockedSkills,
-                coins: this.state.coins,
                 playerConfig: this.state.playerConfig,
                 sheets: this.state.sheets,
                 sheetNames: this.state.sheetNames,
@@ -298,7 +296,6 @@ class Orchestrator {
             const metaKey = `${key}_meta`;
             const metaData = {
                 chapter: saveData.currentChapter,
-                coins: saveData.coins,
                 timestamp: saveData.timestamp
             };
             localStorage.setItem(metaKey, JSON.stringify(metaData));
@@ -334,7 +331,6 @@ class Orchestrator {
                     const data = JSON.parse(raw);
                     meta[slot] = {
                         chapter: data.currentChapter,
-                        coins: data.coins,
                         timestamp: data.timestamp
                     };
                     // 順手自動補上 metaKey，下次打開秒進
@@ -374,7 +370,6 @@ class Orchestrator {
             this.state.activeStoryKey = data.activeStoryKey || null;   // [恢復]
             this.state.currentTaskIndex = data.currentTaskIndex || 0;
             this.state.unlockedSkills = data.unlockedSkills || [];
-            this.state.coins = data.coins || 0;
             this.state.playerConfig = data.playerConfig || { gender: 'girl' };
             
             if (data.sheets) this.state.sheets = data.sheets;
@@ -430,12 +425,6 @@ class Orchestrator {
         this.switchSheet(id);
     }
 
-    addCoins(amount) {
-        this.state.coins += amount;
-        this.emit('coinsChanged', { coins: this.state.coins });
-        this.saveGame();
-    }
-
     startFlow() { this.triggerPhase(this.state.currentPhase); }
 
     triggerPhase(phase) {
@@ -480,7 +469,7 @@ class Orchestrator {
                 this.emit('playStory', { type: 'PHASE', data: story.start }); 
                 break;
             case 'SIMULATOR': 
-                this.emit('startSimulator', { config: simulator, coins: this.state.coins }); 
+                this.emit('startSimulator', { config: simulator });
                 if (window.gridRenderer) window.gridRenderer.render();
                 
                 // [新增]: 啟動時播放第一項任務的引導劇情 (如有)
@@ -490,8 +479,7 @@ class Orchestrator {
                     this.playStorySegment(firstTask.storySegmentBefore);
                 }
                 break;
-            case 'STORY_END': 
-                this.addCoins(this.state.activeChapterModule.meta.reward || 0);
+            case 'STORY_END':
                 this.unlockAllChapterSkills(); // [新增]: 章節結束時自動補完解鎖所有技能
                 this.emit('playStory', { type: 'PHASE', data: story.end }); 
                 break;
@@ -720,7 +708,6 @@ class Orchestrator {
             <div style="text-align:center; color:#e8d5a3;">
                 <p style="font-size:18px; margin:0 0 8px;">您已完成了目前開放的所有章節！</p>
                 <p style="margin:0 0 8px;">您的數據禁術已經達到了巔峰等級。</p>
-                <p style="color:#9be8a5; font-weight:bold; margin:10px 0;">總獲取金幣：${this.state.coins} G</p>
                 <hr style="border:1px dashed rgba(255,215,0,0.3); margin:20px 0;">
                 <button id="game-complete-extras-btn" style="width:100%; padding:12px 24px; border-radius:8px; border:1px solid rgba(255,215,0,0.6); background:rgba(255,215,0,0.18); color:#ffd700; font-weight:bold; cursor:pointer; margin-bottom:8px; font-size:0.95rem;">🌙 前往番外篇與小型試煉</button>
                 <p style="font-size:12px; color:#dfb56c; margin:0 0 12px;">下次想再回來，也可以隨時點擊系統選單（⚙️）裡的 🌙 月亮圖示進入！</p>
