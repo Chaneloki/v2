@@ -72,7 +72,7 @@ window.V2_CHAPTERS["50"] = {
 
         // ── 開場：村歌 ──────────────────────────────────────────────
         start: [
-            { n: "系統", t: "（走出了那個壓抑的收容所，迎面而來的陽光倒也乾脆。）", a: "system", bg: "road.png", bgm: ".daily.mp3"
+            { n: "系統", t: "（走出了那個壓抑的收容所，迎面而來的陽光倒也乾脆。）", a: "system", bg: "road.png", bgm: "daily.mp3"
             , env: "light/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true},
             { n: "系統", t: "（四個人沿著官道行，影子在地上拖得老長。）", a: "system"
             , se: "horse run.mp3", vol: 1.0,bgPos: "left", bgZoom: 1.2, bgDur:"5s"},
@@ -86,7 +86,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "米羅", t: "空氣這麼好都被你講壞了。", a: "miro" },
             { n: "夏特", t: "只有盲目樂觀的人才會覺得實話難聽。", a: "chate" },
 
-            { n: "系統", t: "（轉過一個平緩的山坳，風裡忽然捎來一陣若有似無的歌聲。）", a: "system", bgm: ".50_sunset.mp3"
+            { n: "系統", t: "（轉過一個平緩的山坳，風裡忽然捎來一陣若有似無的歌聲。）", a: "system", bgm: "50_sunset.mp3"
             ,bg:"cg/ch5 sing.png",bgPos: "left top", bgZoom: 2.5, bgDur:"10s"},
             { n: "系統", t: "（清脆、稚嫩，是個孩子在哼唱。）", a: "system" },
             { n: "系統", t: "「日頭落了炊煙起，阿娘喚我回家去。」", a: "system" },
@@ -104,7 +104,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "系統", t: "（空氣陷入了短暫而詭異的沉默。兩個人誰都沒開口，卻都在原地定格了許久。）", a: "system"},
 
             { n: "我", t: "（我走在他們中間，將這兩份截然不同卻同樣劇烈的反應看在眼底。）"
-            , a: "me" , bgm: ".sad.mp3", bg: "road.png", se: "bell", vol: 1.0},
+            , a: "me" , bgm: "sad.mp3", bg: "road.png", se: "bell", vol: 1.0},
             { n: "我", t: "（這兩個平時見面就互掐的傢伙，今天怎麼會同步定住了？）", a: "me",flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "賽爾", t: "（也察覺到了氣氛的微妙，飛到我肩上壓低聲音）喂，你也看到了吧？", a: "fairy",bgPos: "right", bgZoom: 1.2},
             { n: "賽爾", t: "那兩個人的表情。", a: "fairy" },
@@ -116,7 +116,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "我", t: "走吧，過去看看是怎麼回事。", a: "me",flash: true, flashSFX: "bell.mp3", vol: 1.0},
 
             { n: "系統", t: "（山坳深處坐落一個靜謐的村落。在亂世中這裡竟維持著一種難得的恬靜與秩序）", a: "system"
-            , bg: "bg5.png", bgm: ".town.mp3",bgPos: "left", bgZoom: 2.0},
+            , bg: "bg5.png", bgm: "town.mp3",bgPos: "left", bgZoom: 2.0},
             { n: "系統", t: "（村中央的曬穀場上堆滿了各家送來的物資——穀物、布匹、柴火、藥材。）", a: "system"
             ,bgPos: "center", bgZoom: 1.1, bgDur:"10s" },
             { n: "系統", t: "（整齊地疊成了幾座小山。）", a: "system" },
@@ -151,7 +151,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "賽爾", t: "這種分類算帳的雜事，正是本仙子最擅長的魔法。", a: "fairy",bgPos: "left", bgZoom: 1.1},
 
             // 兩人各自給自己一個「緩和」的理由 —— 但只敢試探，不敢直問
-            { n: "米羅", t: "（主動湊了過來，眼角卻一直不自覺地瞄著夏特的臉色）", a: "miro", bgm: ".funny.mp3"
+            { n: "米羅", t: "（主動湊了過來，眼角卻一直不自覺地瞄著夏特的臉色）", a: "miro", bgm: "funny.mp3"
             ,bgPos: "center", bgZoom: 1.1},
             { n: "米羅", t: "隊長，我來幫你核對數字吧。", a: "miro", se: "boy_attraction.mp3", vol: 1.0,shake:true},
             { n: "夏特", t: "（竟然也跟著走過來）核對數字這種粗活留給記帳的。版面美觀由我來盯著。", a: "chate"
@@ -244,7 +244,7 @@ window.V2_CHAPTERS["50"] = {
         // ── 結局：試探 → 退縮 → 回歸 ─────────────────────
         end: [
             { n: "系統", t: "（清單整理完畢。每一份物資的來源、總量與分配建議都列得井井有條一目了然）", a: "system", bg: "bg5.png"
-            , bgm: ".finish.mp3", bgPos: "right", bgZoom: 1.2 , bgDur:"10s" },
+            , bgm: "finish.mp3", bgPos: "right", bgZoom: 1.2 , bgDur:"10s" },
             { n: "村正", t: "（雙手捧著名冊，激動得連連作揖）太清楚了！", a: "npc2"
             , se: "woman_smile.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.5,flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "村正", t: "這下大夥兒再也不會為了帳目吵架了。真是太謝謝各位了！", a: "npc2"},
@@ -256,7 +256,7 @@ window.V2_CHAPTERS["50"] = {
 
             // 試探的最後一搏 —— 但誰都不敢真的問清楚
             { n: "米羅", t: "（終於鼓起了所有的勇氣，語氣卻還是繞著圈子）……喂。孔雀。", a: "miro", se: "boy_attraction.mp3", vol: 1.0
-            , bgm: ".miro_chate.mp3",flash: true, flashSFX: "flash.mp3", vol: 1.0},
+            , bgm: "miro_chate.mp3",flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "米羅", t: "你剛才聽到那首歌的時候，是不是也愣住了？", a: "miro" },
             { n: "夏特", t: "（沉默了兩秒，視線游移）……那不過是一首隨處可見的破童謠，誰都能哼上兩句。", a: "chate"
             , se: "clothes1.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.5},
@@ -301,7 +301,7 @@ window.V2_CHAPTERS["50"] = {
 
             // ── 上帝視角：童年的擦身 ─────────────────────
             { n: "系統", t: "許多年以前。螢火村。熱鬧的趕集日。", a: "system", bg: "cg/ch5 childhood.png"
-            , bgPos: "right", bgZoom: 1.5, bgm: ".50_sunset.mp3" , isMemory: true },
+            , bgPos: "right", bgZoom: 1.5, bgm: "50_sunset.mp3" , isMemory: true },
             { n: "系統", t: "井邊那棵高大的老柳樹下，一個滿身是泥的小孩仰著頭望向樹梢，嘴裡含含糊糊地哼著旋律。", a: "system"},
             { n: "泥巴小孩", t: "日頭落了炊煙起…………欸。後面那句是怎麼唱來著？"},
             { n: "系統", t: "就在他身旁一個將衣角摺得整整齊齊的小孩，正蹲在地上專心地將撿來的鵝卵石排成一列。"
@@ -328,7 +328,7 @@ window.V2_CHAPTERS["50"] = {
 
             // 主線鉤：皇宮流言
             { n: "村正", t: "（分發完物資後走過來道謝，順口提了一句）對了，幾位若是繼續往官道走，不妨繞去金穗鎮看看。", a: "npc2"
-            , bgm: ".sad.mp3", bgPos: "center", bgZoom: 1.1 },
+            , bgm: "sad.mp3", bgPos: "center", bgZoom: 1.1 },
             { n: "我", t: "金穗鎮怎麼了？", a: "me",shake:true},
             { n: "村正", t: "聽過路的客商說，那邊有個管事的姑娘攤上麻煩了。帳目出了問題，鬧得有點難看。", a: "npc2" },
             { n: "村正", t: "（笑了笑）那姑娘在附近頗有名氣，挺多人替她說話的，只是……這種事說不清楚。", a: "npc2" },
@@ -343,7 +343,7 @@ window.V2_CHAPTERS["50"] = {
             { n: "米羅", t: "（大聲應了一聲）這就來了！", a: "miro", bgPos: "left", bgZoom: 1.5},
             { n: "夏特", t: "（已經再次走在了最前面，步履從容）真是墨跡。", a: "chate" },
 
-            { n: "系統", t: "（四個人漸漸離開了村子。）", a: "system", bg: "road dust.png", bgm: ".2_emotional.mp3"
+            { n: "系統", t: "（四個人漸漸離開了村子。）", a: "system", bg: "road dust.png", bgm: "2_emotional.mp3"
             , bgPos: "center", bgZoom: 1.5,bgDur:"10s"},
             { n: "系統", t: "（在他們身後，那首古老的歌謠依然在曬穀場上空輕輕地盤旋著。）", a: "system",bg:"cg/ch5 childhood.png",bgBlur:10},
             { n: "系統", t: "（他們誰都沒有回頭去看。）", a: "system",bgBlur:5},
@@ -412,7 +412,7 @@ window.V2_CHAPTERS["50"] = {
     },
 
     simulator: {
-        bgm: "BGM/.game.mp3",
+        bgm: "BGM/game.mp3",
         tasks: [
             {
                 id: "SORT_TASK",

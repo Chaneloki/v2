@@ -75,7 +75,7 @@ window.V2_CHAPTERS["85"] = {
     },
 
     simulator: {
-        bgm: ".game_8bit.mp3",
+        bgm: "game_8bit.mp3",
         tasks: [
             {
                 id:           "IF_BASIC_TASK",
@@ -174,7 +174,7 @@ window.V2_CHAPTERS["85"] = {
  
             // 書脊顫動，光切開虛無
             { n: "系統", t: "（那本書的書脊微微顫動，隨即）",
-              a: "system", bg: "bg8.5 flash in.png", bgm: ".85_pixel_world.mp3", bgmFade: "in",
+              a: "system", bg: "bg8.5 flash in.png", bgm: "85_pixel_world.mp3", bgmFade: "in",
               se: "appear.mp3", vol: 1.2,
               env: "pixel/1", envFrames: 30, envSpeed: 60, envOpacity: 0.8, envDrift: false },
  
@@ -212,7 +212,7 @@ window.V2_CHAPTERS["85"] = {
             { n: "我", t: "（那些幾何狀的結構跟隨著我的意志，生硬卻流暢地變形。）",
               a: "me_rpg" },
             { n: "我", t: "（我握緊拳頭，感受到那真實的力度，只是觸感變得異常平整）",
-              a: "me_rpg",bgm: ".85_pixel_world.mp3", bgmFade: "in",  },
+              a: "me_rpg",bgm: "85_pixel_world.mp3", bgmFade: "in",  },
 
               { n: "我", t: "還是我的手。只是變得方了。",
               a: "me_rpg" },
@@ -366,7 +366,7 @@ window.V2_CHAPTERS["85"] = {
             // 現代字眼（第一個）：「資料夾」「檔案」——出現在旁白，主角毫無所覺
             { n: "系統", t: "（名冊在格子世界裡攤開著，清晰得像從某個資料夾裡直接叫出來的檔案。）",
               a: "system", se: "wind1.mp3", vol: 0.4,
-              bgm: ".game_8bit.mp3", bgmFade: "in" },
+              bgm: "game_8bit.mp3", bgmFade: "in" },
         ],
  
         // ══════════════════════════════════════════
@@ -407,7 +407,7 @@ window.V2_CHAPTERS["85"] = {
             { n: "系統", t: "（我不知道過了多久。在這裡，時間也是格子。）",
               a: "system" },
             { n: "系統", t: "（我繼續工作。）",
-              a: "system", bgm: ".game_8bit.mp3" },
+              a: "system", bgm: "game_8bit.mp3" },
         ],
  
         discovery_IF_PLUS: [
@@ -466,7 +466,7 @@ window.V2_CHAPTERS["85"] = {
         // ══════════════════════════════════════════
         end: [
             { n: "系統", t: "（懸浮在半空的魔導書開始收束光芒）",
-              a: "system", bg: "bg8.5 pixel.png", bgm: ".85_pixel_world.mp3", bgmFade: "in",
+              a: "system", bg: "bg8.5 pixel.png", bgm: "85_pixel_world.mp3", bgmFade: "in",
               bgPos: "center", bgZoom: 1.0, bgDur: "8s",
               env: "light/1", envFrames: 25, envSpeed: 40, envOpacity: 0.3, envDrift: false },
             { n: "系統", t: "（那些原本明亮跳動的格紋數據，如退潮的冷水般一格一格地沒入書脊。）",
@@ -498,7 +498,7 @@ window.V2_CHAPTERS["85"] = {
         // 醒來：監牢
         // ══════════════════════════════════════════
             { n: "系統", t: "（視線重新聚焦時，眼前的金碧輝煌已被粗糙的石牆取代。）",
-              a: "system", bg: "bg8.5 prison.png", bgm: ".sad.mp3", bgmFade: "in",
+              a: "system", bg: "bg8.5 prison.png", bgm: "sad.mp3", bgmFade: "in",
               bgPos: "center", bgZoom: 1.0, bgDur: "0s",
               flash: true, flashSFX: "flash.mp3", vol: 0.6 },
             { n: "系統", t: "（牆面上滿是凝結的濕氣）",
@@ -588,7 +588,7 @@ window.V2_CHAPTERS["85"] = {
             { n: "系統", t: "（鐵柵欄外，晏的身影隨即映入眼簾。她今日未著盛裝）",
               a: "system", bg: "bg8.5 prison.png", bgPos: "center", bgZoom: 1.0,
               flash: true, flashSFX: "trans.mp3", vol: 0.6,
-              bgm: ".prince2.mp3", bgmFade: "in" },
+              bgm: "prince2.mp3", bgmFade: "in" },
             { n: "系統", t: "（平日裡總是一絲不苟的領口此刻略顯凌亂）",
               a: "system" },
             { n: "系統", t: "（髮絲也帶著些許匆忙趕路後的微風）",
@@ -644,7 +644,7 @@ window.V2_CHAPTERS["85"] = {
         // 世界崩裂
         // ══════════════════════════════════════════
             { n: "系統", t: "（晏剛剛離開，整個空間便開始發生劇變。）",
-              a: "system", bg: "bg8_5_cg2.png", bgm: ".intense.mp3", bgmFade: "in",
+              a: "system", bg: "bg8_5_cg2.png", bgm: "intense.mp3", bgmFade: "in",
               bgPos: "center", bgZoom: 1.3, bgDur: "2s", // 快速放大，營造劇烈壓迫感
              shake: true,
               screenEffect: "reality-tear",
@@ -685,7 +685,7 @@ window.V2_CHAPTERS["85"] = {
             { n: "系統", t: "（光芒徹底洗刷了現實的底色，牢獄消失了，走廊消失了）"
             , a: "system", screenEffect: "dissolve-to-light"}, // 劇烈閃白
             { n: "系統", t: "（而在那片純白的盡頭，一個熟悉的背影正緩緩走過。）"
-            , bg: "cg/ch8.5 back.png", a: "system", bgPos: "center", bgZoom: 1.1, bgm: ".touching.mp3", bgmFade: "in"
+            , bg: "cg/ch8.5 back.png", a: "system", bgPos: "center", bgZoom: 1.1, bgm: "touching.mp3", bgmFade: "in"
             , flash: true, flashSFX: "trans.mp3", vol: 0.5, screenEffect: "eye-open"}, // 放慢到3秒
             { n: "系統", t: "（那人手中，那本早已不屬於我們的魔導書，正閃爍著刺目的微光，彷彿在慶祝這場完美的回收。）"
             , a: "system", bg: "white.png", bgPos: "center", bgZoom: 1.5, bgDur: "8s", se: "book_glow.mp3", vol: 0.8, screenEffect: "dissolve-to-light" },
@@ -701,7 +701,7 @@ window.V2_CHAPTERS["85"] = {
             { n: "系統", t: "（光，終結了一切。）", a: "system", bg: "white.png", screenEffect: "dissolve-to-light", bgm: "no.mp3" },
             { n: "系統", t: "（黑屏。寂靜。）", a: "system", bg: "black.png", bgPos: "center", bgZoom: 1.0, bgDur: "15s", auto: 3000, hideBox: true},
             // --- 第一部結尾 ---
-            { n: "系統", t: "【 第一部完 】", a: "system", bg: "black.png", bgm: ".empty.mp3", bgmFade: "in", bgPos: "center", bgZoom: 1.0, bgDur: "12s", screenEffect: "clear" },
+            { n: "系統", t: "【 第一部完 】", a: "system", bg: "black.png", bgm: "empty.mp3", bgmFade: "in", bgPos: "center", bgZoom: 1.0, bgDur: "12s", screenEffect: "clear" },
             { n: "系統", t: "（從踏入這場權力棋局的第一天起，書就一直安靜地躺在身側。）", a: "me_falling", keepChar: true, charAnim: "falling", bgSlideshow: ["cg/ch1.5 road.png","cg/ch1.5 start.png","cg/ch1.5.png","cg/ch2 last.png","cg/ch2 main.png","cg/ch2 start.png","cg/ch2.5 coin.png","cg/ch2.5 last.png","cg/ch2.5 main.png","cg/ch2.5 read.png","cg/ch2.5 three.png","cg/ch3 bond.png","cg/ch3 sick.png","cg/ch3.5 read.png","cg/ch3.5 two.png","cg/ch3.5.png","cg/ch4 all.png","cg/ch4 three.png","cg/ch4.5 all.png","cg/ch4.5 conflict.png","cg/ch4.5.png","cg/ch4.png","cg/ch4 royi.png","cg/ch5 sing.png","cg/ch5.5 join.png","cg/ch5.5 road.png","cg/ch5.5_tent.png","cg/ch6 all.png","cg/ch6 glea.png","cg/ch6.5 bye.png","cg/ch6.5 hand.png","cg/ch6.5 last.png","cg/ch6.5 main.png","cg/ch6.5 prince.png","cg/ch6.5 royi.png","cg/ch7 last.png","cg/ch7 sit.png","cg/ch7.5 royi arrive.png","cg/ch7 prince2.png","cg/ch7 prince.png","cg/ch3 two.png","cg/ch2.png"], bgSlideDur: 1500, bgPos: "center", bgZoom: 1.2, bgDur: "40s", screenEffect: "clear" },
             { n: "系統", t: "（它替我們審核政績，替我們記錄民望，替我們在混亂的宮廷裡劈開一條活路。）", a: "me_falling", keepChar: true, charAnim: "falling", bgSlideshow: ["cg/ch1.5 road.png","cg/ch1.5 start.png","cg/ch1.5.png","cg/ch2 last.png","cg/ch2 main.png","cg/ch2 start.png","cg/ch2.5 coin.png","cg/ch2.5 last.png","cg/ch2.5 main.png","cg/ch2.5 read.png","cg/ch2.5 three.png","cg/ch3 bond.png","cg/ch3 sick.png","cg/ch3.5 read.png","cg/ch3.5 two.png","cg/ch3.5.png","cg/ch4 all.png","cg/ch4 three.png","cg/ch4.5 all.png","cg/ch4.5 conflict.png","cg/ch4.5.png","cg/ch4.png","cg/ch4 royi.png","cg/ch5 sing.png","cg/ch5.5 join.png","cg/ch5.5 road.png","cg/ch5.5_tent.png","cg/ch6 all.png","cg/ch6 glea.png","cg/ch6.5 bye.png","cg/ch6.5 hand.png","cg/ch6.5 last.png","cg/ch6.5 main.png","cg/ch6.5 prince.png","cg/ch6.5 royi.png","cg/ch7 last.png","cg/ch7 sit.png","cg/ch7.5 royi arrive.png","cg/ch7 prince2.png","cg/ch7 prince.png","cg/ch3 two.png","cg/ch2.png"], bgSlideDur: 1500 },
             { n: "系統", t: "（它精準、高效、冷酷。）", a: "me_falling", keepChar: true, charAnim: "falling", bgSlideshow: ["cg/ch1.5 road.png","cg/ch1.5 start.png","cg/ch1.5.png","cg/ch2 last.png","cg/ch2 main.png","cg/ch2 start.png","cg/ch2.5 coin.png","cg/ch2.5 last.png","cg/ch2.5 main.png","cg/ch2.5 read.png","cg/ch2.5 three.png","cg/ch3 bond.png","cg/ch3 sick.png","cg/ch3.5 read.png","cg/ch3.5 two.png","cg/ch3.5.png","cg/ch4 all.png","cg/ch4 three.png","cg/ch4.5 all.png","cg/ch4.5 conflict.png","cg/ch4.5.png","cg/ch4.png","cg/ch4 royi.png","cg/ch5 sing.png","cg/ch5.5 join.png","cg/ch5.5 road.png","cg/ch5.5_tent.png","cg/ch6 all.png","cg/ch6 glea.png","cg/ch6.5 bye.png","cg/ch6.5 hand.png","cg/ch6.5 last.png","cg/ch6.5 main.png","cg/ch6.5 prince.png","cg/ch6.5 royi.png","cg/ch7 last.png","cg/ch7 sit.png","cg/ch7.5 royi arrive.png","cg/ch7 prince2.png","cg/ch7 prince.png","cg/ch3 two.png","cg/ch2.png"], bgSlideDur: 1500, bgPos: "top" },
@@ -724,10 +724,10 @@ window.injectFinalChoiceDialogue = function() {
     window._finalChoiceInjected = true;
     const hasDefied = localStorage.getItem('metaChoiceNo') === 'true';
     if(hasDefied) {
-        window.uiManager.storyQueue.push({ n: "系統", t: "……我現在再問多你一次。你，想不想知道？ ", a: "system", keepChar: true, bg: "black.png", bgm: ".empty.mp3", se: "heartbeat.mp3", flash: true });
+        window.uiManager.storyQueue.push({ n: "系統", t: "……我現在再問多你一次。你，想不想知道？ ", a: "system", keepChar: true, bg: "black.png", bgm: "empty.mp3", se: "heartbeat.mp3", flash: true });
         window.uiManager.storyQueue.push({ t: "", a: "system", se: "trans.mp3", action: "document.getElementById('final-choice-modal').style.display='flex'; document.getElementById('story-overlay').style.pointerEvents='none';" });
     } else {
-        window.uiManager.storyQueue.push({ n: "系統", t: "這是一個簡單的二選一，卻在黑暗中顯得無比沉重。", a: "system", keepChar: true, bg: "black.png", bgm: ".empty.mp3", se: "heartbeat.mp3", screenEffect: "shake" });
+        window.uiManager.storyQueue.push({ n: "系統", t: "這是一個簡單的二選一，卻在黑暗中顯得無比沉重。", a: "system", keepChar: true, bg: "black.png", bgm: "empty.mp3", se: "heartbeat.mp3", screenEffect: "shake" });
         window.uiManager.storyQueue.push({ n: "系統", t: "這條故事線，這群人的命運，這個你曾傾注心血建立起的邏輯世界——就這樣結束了。 ", a: "system", keepChar: true, se: "heartbeat.mp3" });
         window.uiManager.storyQueue.push({ n: "系統", t: "你甘心嗎？或者說，你到底想不想知道發生了什麼事？", a: "system", keepChar: true, se: "heartbeat.mp3", flash: true });
         window.uiManager.storyQueue.push({ t: "", a: "system", se: "trans.mp3", action: "document.getElementById('final-choice-modal').style.display='flex'; document.getElementById('story-overlay').style.pointerEvents='none';" });

@@ -40,7 +40,7 @@ window.V2_CHAPTERS["65"] = {
     story: {
         start: [
             { n: "系統", t: "（翌日。江面反光刺眼，甲板曬得燙腳，空氣裡混著江水和桐油的味道。）", a: "system",
-              bg: "bg6_boat.png", bgm: ".daily.mp3", bgPos: "center", bgZoom: 1.5,
+              bg: "bg6_boat.png", bgm: "daily.mp3", bgPos: "center", bgZoom: 1.5,
               env: "light/1", envFrames: 25, envspeed: 80, envOpacity: 0.4, envDrift: true },
  
             { n: "我", t: "（靠在船舷上，胳膊壓著魔導書，有一搭沒一搭地看江岸。）", a: "me" 
@@ -60,7 +60,7 @@ window.V2_CHAPTERS["65"] = {
             { n: "賽爾", t: "（她晃了晃翅膀，看了看兩岸）今天風裡有股苦苦的香味，不錯嘛。", a: "fairy" },
 
              { n: "系統", t: "（船艙前段，幾口木箱旁邊，有兩個人。）", a: "system"
-              ,bgm: ".royi.mp3",bg: "bg6_boat.png", bgPos: "right", bgZoom: 2.0, se: "put down.mp3", vol: 1.0},
+              ,bgm: "royi.mp3",bg: "bg6_boat.png", bgPos: "right", bgZoom: 2.0, se: "put down.mp3", vol: 1.0},
             { n: "我", t: "（我先看到一截淡青色。)", a: "me"
             ,bgBlur:10, bgPos: "right", bgZoom: 2.5,bgDur:"2s",bg: "cg/ch6.5 royi.png", se: "trans.mp3", vol: 1.0},
             { n: "我", t: "（風吹起來的時候才看清，是髮尾。)", a: "me"
@@ -92,7 +92,7 @@ window.V2_CHAPTERS["65"] = {
  
             { n: "晏", t: "（少年直起身，隨手將皮水袋拋向米羅。)"
             , a: "prince", se: "walk.mp3", vol: 0.7,bg:"cg/ch6.5 prince.png"
-            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "left bottom", bgZoom: 2.0,bgm: ".prince.mp3"},
+            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "left bottom", bgZoom: 2.0,bgm: "prince.mp3"},
             { n: "晏", t: "(浪剛好打在船身，甲板猛地一晃，他站起來的時候腰間的帶子晃了一下)"
             , a: "prince", se: "sea.mp3", vol: 0.7, se: "bell.mp3", vol: 1.0,shake:true, bgPos: "bottom", bgZoom: 2.0},
             { n: "晏", t: "(但甲板搖成這樣，他的重心卻像是釘在那裡的。", a: "prince"
@@ -124,7 +124,7 @@ window.V2_CHAPTERS["65"] = {
             { n: "我", t: "（我看著晏。他笑起來的時候眼睛會瞇成一條線，嘴角先動，聲音後到。)", a: "me",bg:"cg/ch6.5 prince.png", bgPos: "right", bgZoom: 1.1 , bgDur:"10s", se: "girl_laugh.mp3", vol: 1.0 },
             { n: "我", t: "(我不知道自己什麼時候也跟著笑了。）", a: "me" , se: "fairy_smile.mp3", vol: 1.0,shake:true},
  
-            { n: "系統", t: "（柔依再次蹲下。風吹動了她的髮絲。）", a: "system", bgm: ".investigate.mp3"
+            { n: "系統", t: "（柔依再次蹲下。風吹動了她的髮絲。）", a: "system", bgm: "investigate.mp3"
             ,bg: "cg/ch6.5 royi.png", se: "wind1.mp3", vol: 1.0, bgPos: "left", bgZoom: 1.5 , bgDur:"10s"},
             { n: "系統", t: "（她手指在貨單邊緣不安地扣弄著，眉頭擰成了一個結。）", a: "system"},
             { n: "柔依", t: "（她發出一聲很輕的嘆息。）", a: "royi", se: "boy_breath.mp3", vol: 1.0},
@@ -185,7 +185,7 @@ window.V2_CHAPTERS["65"] = {
 
  end: [
              { n: "系統", t: "（傍晚了。江風撲在臉上帶著一股涼意提醒著我們離主城不遠了。）", a: "system",
-       bg: "bg6 boat dusk.png", bgm: ".sweet.mp3", bgPos: "center", bgZoom: 1.1,
+       bg: "bg6 boat dusk.png", bgm: "sweet.mp3", bgPos: "center", bgZoom: 1.1,
        env: "white smoke/1", envFrames: 25, envspeed: 60, envOpacity: 0.15, envDrift: true },
             { n: "系統", t: "（抬頭看見亮橘色的日頭沉了下去，主城外港連綿的屋脊像剪影一樣從薄霧中擠出來。）", a: "system",
             bgPos: "right", bgZoom: 1.5,bgDur: "10s" },
@@ -195,18 +195,18 @@ window.V2_CHAPTERS["65"] = {
               se: "sea2.mp3",vol:1.0},
  
             { n: "米羅", t: "（扛起包袱往舷邊擠，兩眼放光)", a: "miro"
-            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgm: ".finish.mp3", bgPos: "center", bgZoom: 1.1},
+            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgm: "finish.mp3", bgPos: "center", bgZoom: 1.1},
             { n: "米羅", t: "（那種迫不及待想要踏上陸地的樣子，跟前幾天在艙裡暈得半死的人簡直判若兩人。）", a: "miro",
-            bgm: ".finish.mp3" },
+            bgm: "finish.mp3" },
             { n: "米羅", t: "到了！妳看那碼頭的火光，我感覺自己活過來啦！", a: "miro",
-              se: "boy_wa.mp3", vol: 1.0, shake: true, bgm: ".finish.mp3" },
+              se: "boy_wa.mp3", vol: 1.0, shake: true, bgm: "finish.mp3" },
             { n: "夏特", t: "（伸手理了理領口。）", a: "chate"
             , bgPos: "center", bgZoom: 1.5 ,flash: true, flashSFX: "clothes1.mp3", vol: 1.0},
             { n: "夏特", t: "你從未面臨過危險。不過這份解脫感倒是不假。", a: "chate" },
             { n: "米羅", t: "你不懂！", a: "miro",shake:true},
  
             { n: "系統", t: "（晏站在眾人中心。橘色的餘暉落在他半邊臉上。）", a: "system"
-            , bgPos: "left", bgZoom: 1.5,bgm: ".prince2.mp3",bg:"cg/ch6.5 bye.png"},
+            , bgPos: "left", bgZoom: 1.5,bgm: "prince2.mp3",bg:"cg/ch6.5 bye.png"},
             { n: "晏", t: "遇見妳們令這趟水路很精彩。這本書的用法尤其有趣。", a: "prince", bgPos: "center", bgZoom: 1.1,bgDur:"10s" },
             { n: "我", t: "有機會再教妳操作。說到做到。", a: "me",bg:"bg6.5 dock.png",flash: true, flashSFX: "bell.mp3", vol: 1.0},
             { n: "晏", t: "（他爽朗地大笑起來，手指在腦袋旁晃了晃。）", a: "prince",bg:"cg/ch6.5 bye.png"},
@@ -223,7 +223,7 @@ window.V2_CHAPTERS["65"] = {
             { n: "系統", t: "（那個背影走得這樣從容，下一次見面時，一定會很有意思。）", a: "system" },
  
             { n: "系統", t: "（碼頭的味道，魚腥、濕繩、烤餅煙撲面而來。）", a: "system",
-              bg: "cg/ch6.5 all.png", bgm: ".finish.mp3", bgPos: "right", bgZoom: 4.0},
+              bg: "cg/ch6.5 all.png", bgm: "finish.mp3", bgPos: "right", bgZoom: 4.0},
             { n: "柔依", t: "（聲音混著碼頭的風聲傳過來）採購的下一站也在城東商貿區。", a: "royi"
             , bgPos: "center", bgZoom: 1.1,bgDur:"25s" ,se: "wind1.mp3", vol: 1.0},
             { n: "柔依", t: "如果不嫌棄，進城這段路，結個伴？", a: "royi" },
@@ -241,7 +241,7 @@ window.V2_CHAPTERS["65"] = {
             , se: "fairy_sleep.mp3", vol: 1.0},
  
             { n: "系統", t: "（六個人並肩走進了港口的深處。晚霞將大家的影子拉得很長。）", a: "system",
-              bg: "cg/ch6.5 last.png", bgPos: "center", bgZoom: 1.5, bgDur: "5s", se: "sea.mp3",bgm: ".2_emotional.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0 },
+              bg: "cg/ch6.5 last.png", bgPos: "center", bgZoom: 1.5, bgDur: "5s", se: "sea.mp3",bgm: "2_emotional.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0 },
             { n: "我", t: "（米羅還在和夏特為了晚飯吃什麼拌嘴。）", a: "me"},
             { n: "我", t: "（江風刮過，魔導書的硬皮貼著我懷裡，涼得厲害。）", a: "me" },
             { n: "我", t: "(我趕緊快走幾步，跟上他們的腳步。）", a: "me", bgPos: "center", bgZoom: 1.1, se: "walk.mp3", vol: 1.0 },
@@ -254,7 +254,7 @@ window.V2_CHAPTERS["65"] = {
     },
 
     simulator: {
-        bgm: "BGM/.game.mp3",
+        bgm: "BGM/game.mp3",
         tasks: [
             {
                 id: "PIVOT_CREATE_TASK",

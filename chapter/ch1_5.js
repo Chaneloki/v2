@@ -39,14 +39,14 @@ window.V2_CHAPTERS["15"] = {
 
     story: {
         start: [
-            { n: "系統", t: "（我牽著早已疲憊不堪的老馬，在楓鈴驛站那扇略顯破舊的大門前停下腳步。）", a: "me", bgm: ".daily.mp3", bg: "cg/ch1.5 start.png",trans: true,se:"walk.mp3", vol:1.0, bgPos: "center", bgZoom: 1.0,shake: true },
+            { n: "系統", t: "（我牽著早已疲憊不堪的老馬，在楓鈴驛站那扇略顯破舊的大門前停下腳步。）", a: "me", bgm: "daily.mp3", bg: "cg/ch1.5 start.png",trans: true,se:"walk.mp3", vol:1.0, bgPos: "center", bgZoom: 1.0,shake: true },
             { n: "系統", t: "（遠處傳來陣陣馬嘶聲，夾雜著泥土與乾草混合的獨特氣味。）", a: "system",se:"horse.mp3", vol:1.0 , vol:1.0, bgPos: "left", bgZoom: 1.5, bgDur:"3s" },
             { n: "我", t: "（肩膀猛地一沉，賽爾這傢伙不知何時又蹲在了上面，還不安分地晃著它那兩條纖細的小腿。）", a: "me" , bgPos: "right", bgZoom: 1.5, bgDur: "1s", flash:true,se:"fall.mp3", vol:1.0  },
             { n: "我", t: "賽爾，妳能不能稍微安分一點點？妳這麼一直晃，晃得我腦袋都要暈了。 ", a: "me", bgPos: "right top 20%"},
             { n: "賽爾", t: "哼，本仙子這是在幫你鍛鍊肩膀的承重極限，你應當感到榮幸才對！", a: "fairy", se: "fairy.mp3", bgPos: "right", se:"clothes1.mp3", vol:1.0},
             { n: "賽爾", t: "先別管你那可憐的肩膀了，少年，快看那邊！", a: "fairy" },
             { n: "賽爾", t: "那個穿著驛站制服、灰頭土臉的小鬼，看起來簡直快要當眾哭出來了。 ", a: "fairy" },
-            { n: "系統", t: "（一名年輕的驛站職員雙手死死抱著一本封面磨損、幾乎快要散架的《補給總冊》。）", a: "miro", bg: "cg/ch1.5 miro.png", bgm: ".funny.mp3",flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "left bottom", bgZoom: 2.0 },
+            { n: "系統", t: "（一名年輕的驛站職員雙手死死抱著一本封面磨損、幾乎快要散架的《補給總冊》。）", a: "miro", bg: "cg/ch1.5 miro.png", bgm: "funny.mp3",flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "left bottom", bgZoom: 2.0 },
             { n: "系統", t: "（他正對著眼前一名氣勢洶洶的驛站主管，卑微地拼命點頭哈腰。）", a: "miro", vol: 1.0, bgPos: "right top", bgZoom: 2.0  },
             { n: "米羅", t: "主管，真的對不起！前任記錄員走得實在太倉促了，把裡面的編號全弄亂了……", a: "miro", se:"boy_sorry.mp3", vol:1.0, bgPos: "center", bgZoom: 1.0, bgDur:"10s" },
             { n: "米羅", t: "我……我這幾天真的已經盡全力在梳理了，可是……", a: "miro" },
@@ -57,7 +57,7 @@ window.V2_CHAPTERS["15"] = {
             { n: "米羅", t: "可是格式根本不對，編號也完全對不上……這種混亂的帳目，到底要怎麼辦啊。", a: "miro" },
             { n: "米羅", t: "搬了三年貨，好不容易才爭取到這個機會，不能就這樣放棄!", a: "miro" },
             
-            { n: "我", t: "（我看著他那副失魂落魄的模樣，走過去遞給他一塊乾淨的抹布，輕聲開口。）", a: "me",bg:"bg1.5.png", bgm: ".daily.mp3", se: "girl_attraction.mp3", vol: 1.0, trans: true   },
+            { n: "我", t: "（我看著他那副失魂落魄的模樣，走過去遞給他一塊乾淨的抹布，輕聲開口。）", a: "me",bg:"bg1.5.png", bgm: "daily.mp3", se: "girl_attraction.mp3", vol: 1.0, trans: true   },
             { n: "我", t: "打擾一下，這份工作，或許我能幫上一點微薄的小忙。 ", a: "me" },
             { n: "我", t: "我剛好從這邊路過，本來只是想進來討杯水喝，結果聽到了你們主管的咆哮。 ", a: "me" , shake: true },
             { n: "我", t: "你懷裡抱著的這本，應該就是那份讓人生畏的物資清單吧？", a: "me" },
@@ -94,7 +94,7 @@ window.V2_CHAPTERS["15"] = {
             { n: "我", t: "我也得在天黑前，把這後半張迷宮般的表格全部理得乾乾淨淨！", a: "me" }
         ],
         end: [
-            { n: "我", t: "（我重重地將手中的羽毛筆擱在桌案上，發出一聲清脆的響動。）", a: "me", bg: "bg1.5.png", bgm: ".daily.mp3", se: "pen.mp3", vol: 1.0  },
+            { n: "我", t: "（我重重地將手中的羽毛筆擱在桌案上，發出一聲清脆的響動。）", a: "me", bg: "bg1.5.png", bgm: "daily.mp3", se: "pen.mp3", vol: 1.0  },
             { n: "系統", t: "（整個人彷彿脫力一般癱軟在僵硬的木椅上，長長地吐出了一口胸中的濁氣。）", a: "system", se: "girl_ow.mp3", vol: 1.0},
             { n: "我", t: "（一邊機械地揉著那雙酸痛到幾乎失去知覺的手腕，一邊看著眼前整齊劃一的數據。）", a: "me", bg:"stuff/hand pain.png", bgPos:"center", bgZoom:3.0, bgDur:"8s"  },
             { n: "我", t: "呼……總算是將這堆亂麻全部對齊了。 ", a: "me", se: "paper down.mp3", vol: 1.0 },
@@ -103,7 +103,7 @@ window.V2_CHAPTERS["15"] = {
 
             { n: "賽爾", t: "（它輕盈地盤旋在半空，發出一陣戲謔的笑聲）居然真的被你給徹底理乾淨了 ", a: "fairy", se: "fairy_smile.mp3", vol: 1.0 },
             { n: "賽爾", t: "本仙子不在旁邊監督你也能發揮到這種程度，算你這次勉強跨過了及格線吧。", a: "fairy" },
-            { n: "系統", t: "（這時，米羅提著水桶，滿臉疲憊地走進來。目光不經意地掃過桌面的清單。）", a: "miro", se: "boy_wa.mp3", vol: 1.0, bgm: ".sweet.mp3", se: "walk.mp3"  },
+            { n: "系統", t: "（這時，米羅提著水桶，滿臉疲憊地走進來。目光不經意地掃過桌面的清單。）", a: "miro", se: "boy_wa.mp3", vol: 1.0, bgm: "sweet.mp3", se: "walk.mp3"  },
             { n: "米羅", t: "（他愣住了，許久才發出細微的聲音）這……真的是我剛才交給你的那本破爛賬冊嗎？", a: "miro", shake: true, flash: true, flashSFX: "flash.mp3" },
             { n: "米羅", t: "原本估計要耗費數日夜去死磕的跨區編號，你竟然……只是隨手拉一下就全部對齊了？！", a: "miro" },
             { n: "米羅", t: "（他的眼眶漸漸泛紅）以前……公會的人都說我毫無天賦……", a: "miro", se: "boy_tear.mp3", vol: 1.0  },
@@ -121,7 +121,7 @@ window.V2_CHAPTERS["15"] = {
             { n: "我", t: "對了，我叫--。以後若是有緣，這片大陸的某個角落我們總會再見的。 ", a: "me", bgPos:"center", bgZoom:1.0, bgDur:"6s"  }, 
             { n: "系統", t: "（米羅站在塵土飛揚的驛站門口，呆呆地凝視著你翻身上馬、逐漸遠去的背影。）", a: "miro", bg: "bg1.5.png", se: "horse run.mp3", vol: 1.0  },
             { n: "米羅", t: "--……我記住了。我一定會瘋狂練習，直到比誰都熟練的那一天！", a: "miro", shake:true },
-            { n: "系統", t: "（賽爾優哉游哉地盤腿坐在我的肩膀上)", a: "fairy", bg: "cg/ch1.5 road.png", bgm: ".2_emotional.mp3", bgPos:"right", bgZoom:3.0 },
+            { n: "系統", t: "（賽爾優哉游哉地盤腿坐在我的肩膀上)", a: "fairy", bg: "cg/ch1.5 road.png", bgm: "2_emotional.mp3", bgPos:"right", bgZoom:3.0 },
             { n: "系統", t: "(饒有興致地回頭望了一眼那個在夕陽下依舊挺立的身影。）", a: "fairy"},
             { n: "賽爾", t: "（它嘴角露出一抹難得的淺笑）", a: "fairy", se: "fairy_smile.mp3", vol: 1.0, bgPos:"center", bgZoom:1.0, bgDur:"15s" },
             { n: "賽爾", t: "那小子剛才看你的那種眼神……讓我想起了很久以前見過的某位大人物。", a: "fairy"},

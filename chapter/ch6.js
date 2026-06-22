@@ -49,7 +49,7 @@ window.V2_CHAPTERS["60"] = {
 
     story: {
         start: [
-            { n: "系統", t: "（離開金穗鎮的第三天。通往王城的官道被坍塌的巨木與碎石死死堵住）", a: "system", bg: "road.png", bgm: ".daily.mp3", trans: true, bgPos: "center", bgZoom: 1.2 },
+            { n: "系統", t: "（離開金穗鎮的第三天。通往王城的官道被坍塌的巨木與碎石死死堵住）", a: "system", bg: "road.png", bgm: "daily.mp3", trans: true, bgPos: "center", bgZoom: 1.2 },
             { n: "米羅", t: "（揉著酸痛的小腿，踢開腳邊的碎石）……這得繞多遠？我的腿已經沒知覺了。", a: "miro", se: "boy_breath.mp3", shake: true },
             { n: "夏特", t: "（拍掉披風下擺的落葉）所以我說過，步行是效率最低的移動方式。", a: "chate", bgPos: "left", bgZoom: 1.5 , shake: true },
             { n: "夏特", t: "那邊有馬車不坐，非要走這條小路。", a: "chate"},
@@ -60,12 +60,12 @@ window.V2_CHAPTERS["60"] = {
 
             { n: "系統", t: "（河口鎮碼頭。江風帶著腥味，一艘客貨兩用的木船收起跳板。）", a: "system", bg: "bg6_dock.png"
             , bgPos: "center", bgZoom: 1.5,bgDur:"8s"  , env: "white smoke/1", envFrames: 25, envspeed: 80, envOpacity: 0.2, envDrift: true },
-            { n: "系統", t: "（船離了岸。兩岸的燈火在水波的搖晃中退遠。）", a: "system", bg: "bg6_boat.png", bgm: ".town.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0  },
+            { n: "系統", t: "（船離了岸。兩岸的燈火在水波的搖晃中退遠。）", a: "system", bg: "bg6_boat.png", bgm: "town.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0  },
 
             { n: "系統", t: "（深夜。江水拍打船腹。月光把甲板的木紋照得發白。）", a: "system", bgPos: "right", bgZoom: 1.3, bgDur: "5s"
             , se: "wind1.mp3",bg:"bg6_boat night.png"},
             { n: "系統", t: "（我獨自走出船艙。卻看見葛蕾正靜靜地坐在船尾的陰影處。）", a: "system",bg:"bg6 boat.png"
-            ,bgm: ".glea.mp3",flash: true, flashSFX: "flash.mp3", vol: 1.0},
+            ,bgm: "glea.mp3",flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "葛蕾", t: "（聽見腳步聲，沒有回頭）……睡不著？", se: "girl_breath.mp3", bgPos: "left", bgZoom: 1.5},
             { n: "我", t: "（我在她旁邊的貨堆坐下）嗯。妳呢。在這裡坐很久了吧。", a: "me", se: "clothes1.mp3"},
             { n: "葛蕾", t: "（她沒有接話。江風吹亂她的短髮)", se: "wind1.mp3", vol: 1.0},
@@ -82,7 +82,7 @@ window.V2_CHAPTERS["60"] = {
             { n: "我", t: "（但我真的有在乎過她嗎？還是說，我只是在透過她，尋找我自己在這場混亂裡的錨點？）", a: "me" ,bg:"cg/ch2.5 three.png",isMemory:true,flash: true, flashSFX: "flash.mp3"},
             { n: "我", t: "（甚至現在，我感到的愧疚，其實也只是為了安慰我自己。）", a: "me" ,isMemory:true,bgPos: "left top", bgZoom: 1.5, vol: 1.0,bg:"bg6_boat night.png"},
 
-            { n: "我", t: "（我望著水面破碎的月影，輕聲說）……我每天早上醒來，也不知道今天要做什麼。", a: "me",flash: true, flashSFX: "bell.mp3", vol: 1.0,bgm: ".glea.mp3"},
+            { n: "我", t: "（我望著水面破碎的月影，輕聲說）……我每天早上醒來，也不知道今天要做什麼。", a: "me",flash: true, flashSFX: "bell.mp3", vol: 1.0,bgm: "glea.mp3"},
             { n: "我", t: "拿到魔導書之前的事，我幾乎都不記得了。", a: "me"
             ,bg:"road night.png",bgBlur: 20, bgPos: "center", bgZoom: 2.0},
             { n: "我", t: "就像一張被塗黑的表，連我自己是誰都拼湊不出來。", a: "me", bgPos: "center", bgZoom: 1.5, bgDur: "10s" ,bg:"bg6 boat.png"},
@@ -99,7 +99,7 @@ window.V2_CHAPTERS["60"] = {
             ,env:null, bgPos: "center", bgZoom: 1.2,flash: true, flashSFX: "flash.mp3", vol: 1.0, a: "glea", se: "walk.mp3",bg:"bg6_boat night.png"},
 
             { n: "系統", t: "（翌日清晨。晨光撕裂了江面的薄霧。）", a: "system"
-            , bg: "bg6_boat.png", bgm: ".funny.mp3", env: "light/1", envFrames: 25, envspeed: 80, envDrift: true },
+            , bg: "bg6_boat.png", bgm: "funny.mp3", env: "light/1", envFrames: 25, envspeed: 80, envDrift: true },
             { n: "米羅", t: "（扶著欄杆，臉色慘白得像張紙）……嘔……為什麼……這船一直在晃……", a: "miro", se: "boy_breath.mp3", shake: true },
             { n: "夏特", t: "（悠雅地坐在甲板上看書，眼皮都沒抬一下）", a: "chate", bgPos: "left", bgZoom: 1.5, se: "boy attraction.mp3", vol: 1.0},
             { n: "夏特", t: "因為你在呼吸，而大自然在嫌棄你。離我遠點，別吐在我的靴子上。", a: "chate",shake:true},
@@ -170,7 +170,7 @@ window.V2_CHAPTERS["60"] = {
 
         end: [
             { n: "系統", t: "（入夜。商人高興地帶著帳冊走了，留下了滿滿一籃熱騰騰的當地烤魚和乾糧。）", a: "system"
-            , bgm: ".funny.mp3",bg:"bg6_boat night.png", bgPos: "center", bgZoom: 1.5 , bgDur:"8s"},
+            , bgm: "funny.mp3",bg:"bg6_boat night.png", bgPos: "center", bgZoom: 1.5 , bgDur:"8s"},
             { n: "米羅", t: "（終於擺脫了暈船，兩眼放光地抓起烤魚）嗚喔喔喔！活過來了！這魚也太香了吧！", a: "miro", shake: true
             , se: "boy_wa.mp3", vol: 1.0},
             { n: "夏特", t: "（用手帕墊著，動作優雅地撕開餅乾）", a: "chate", se: "paper down.mp3", vol: 1.0},
@@ -179,7 +179,7 @@ window.V2_CHAPTERS["60"] = {
             { n: "米羅", t: "夏特你這傢伙還不是在偷吃！", a: "miro",shake:true, bgPos: "left", bgZoom: 1.1},
             { n: "夏特", t: "（挑了挑眉，語氣平靜）這叫品鑑。而且，如果沒有我盯著數據排版，這張表根本沒法看。", a: "chate", se: "boy_attraction.mp3", vol: 1.0},
             { n: "葛蕾", t: "（手裡拿著筆記，正快速地寫著什麼）……幼稚。", a: "glea", bgPos: "left", bgZoom: 2.0, se: "paper down.mp3", vol: 1.0},
-            { n: "我", t: "（我走過去看了一眼）明天的清單列好了!", a: "me", bgm: ".glea.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0},
+            { n: "我", t: "（我走過去看了一眼）明天的清單列好了!", a: "me", bgm: "glea.mp3",flash: true, flashSFX: "bell.mp3", vol: 1.0},
             { n: "葛蕾", t: "（停下筆，沉默了片刻）……嗯。", a: "glea", se: "pen.mp3", vol: 1.0 },
             { n: "葛蕾", t: "第一條是：盯好那本魔導書，別讓賽爾又把墨水灑在重要記錄上。"
             , a: "glea",bg:"cg/ch6 glea.png",flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1},
@@ -187,14 +187,14 @@ window.V2_CHAPTERS["60"] = {
             { n: "葛蕾", t: "畢竟現在有人幫我找活幹，要是連工具都壞了，會很困擾。", a: "glea" },
 
             { n: "系統", t: "（江風微涼。五個人就這樣坐在甲板上。雖然彼此嫌棄，但沒人打算離開。）", a: "system"
-            ,bg:"cg/ch6 all.png", bgPos: "center", bgZoom: 1.1, bgDur: "10s" , bgm: ".sweet.mp3"},
+            ,bg:"cg/ch6 all.png", bgPos: "center", bgZoom: 1.1, bgDur: "10s" , bgm: "sweet.mp3"},
             { n: "賽爾", t: "（在眾人頭頂盤旋）餵！給我留點肉乾啊！你們這些自私的人類！", a: "fairy", bgPos: "top", bgZoom: 2.0 , shake:true},
             { n: "米羅", t: "賽爾妳又不吃飯！過來幫我吹吹風啦，我又有點暈了……", a: "miro",flash: true, flashSFX: "flash.mp3", vol: 1.0,bgPos: "top", bgZoom: 1.5 },
-            { n: "夏特", t: "（嘆了口氣，卻默默遞給米羅一塊手帕）……廢物。",a: "chate", bgm: ".miro_chate.mp3", bgPos: "left", bgZoom: 2.0, bgDur:"2s" },
+            { n: "夏特", t: "（嘆了口氣，卻默默遞給米羅一塊手帕）……廢物。",a: "chate", bgm: "miro_chate.mp3", bgPos: "left", bgZoom: 2.0, bgDur:"2s" },
             { n: "葛蕾", t: "（看著吵鬧的眾人，嘴角極細微地牽動了一下，隨即又恢復了嚴肅）", a: "glea", bgPos: "right", bgZoom: 1.5,bgDur:"2s" },
             { n: "我", t: "（我看著這一幕。是什麼時候變成這樣的呢。）", a: "me", bgPos: "center", bgZoom: 1.1,bgDur:"10s"
             ,bgm:"no.mp3", se:"sea.mp3"},
-            { n: "我", t: "（上一次獨自一人趕路，好像已經是很久以前的事了。）", a: "me",bgm: ".2_emotional.mp3"},
+            { n: "我", t: "（上一次獨自一人趕路，好像已經是很久以前的事了。）", a: "me",bgm: "2_emotional.mp3"},
             { n: "我", t: "（看著這群人……我突然覺得，有大家在就夠了。）", a: "me" , flash: true, flashSFX: "flash.mp3" },
             { n: "系統", t: "（江水奔流不息。五個人的影子交疊在一起。）", a: "system",bg:"cg/ch6 last.png", bgPos: "right", bgZoom: 1.5,bgDur:"5s", se:"sea.mp3"},
             { n: "系統", t: "（木船載著這群靈魂，緩緩駛入了主城外港的燈火之中。）", a: "system" }
@@ -206,7 +206,7 @@ window.V2_CHAPTERS["60"] = {
     },
 
     simulator: {
-        bgm: "BGM/.game.mp3",
+        bgm: "BGM/game.mp3",
         tasks: [
             {
                 id: "PIVOT_CREATE_TASK",

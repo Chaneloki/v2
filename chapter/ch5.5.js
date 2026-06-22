@@ -82,7 +82,7 @@ window.V2_CHAPTERS["55"] = {
 
         start: [
             { n: "系統", t: "（房間安靜得讓人有些發冷。）", a: "system", bg: "cg/ch5.5 head.png"
-            , bgm: ".investigate.mp3", bgPos: "bottom", bgZoom: 2.0,bgBlur: 20},
+            , bgm: "investigate.mp3", bgPos: "bottom", bgZoom: 2.0,bgBlur: 20},
             { n: "系統", t: "（窗外的光影在地板上靜靜挪動，感受不到半絲風的流動。）", a: "system"
             , env: "light/1", envFrames: 25, envspeed:40, envOpacity: 0.2, envDrift:true, bgPos: "center", bgZoom: 1.1 , bgDur:"10s",bgBlur: 20 },
             { n: "???", t: "金穗鎮那邊，交給你。", a: "head",bgBlur: 10},
@@ -90,7 +90,7 @@ window.V2_CHAPTERS["55"] = {
             { n: "???", t: "你去的話，小心一點。", a: "head", bgPos: "left bottom",bgBlur: 10},
             { n: "系統", t: "（那個人沒有回話，只是停在門口的腳步略微頓了一下。）", a: "system", bgPos: "center bottom", bgZoom: 1.5,bgBlur: 5, se: "walk.mp3", vol: 1.0 },
             { n: "系統", t: "（木門合上的聲音很輕，室內的光影依舊，彷彿什麼都沒有變。）", a: "system",bgBlur: 5 },
-            { n: "系統", t: "（兩天後。金穗鎮。）", a: "system", bg: "bg5.5.png", bgm: ".town.mp3"
+            { n: "系統", t: "（兩天後。金穗鎮。）", a: "system", bg: "bg5.5.png", bgm: "town.mp3"
             ,env:null, bgPos: "center", bgZoom: 1.1 , bgDur:"10s"},
             { n: "我", t: "（上一次來這裡的時候，廣場上還堆滿了為了豐收祭而準備的鮮艷橫幅。）", a: "me"},
             { n: "我", t: "（現在那些燦爛的色彩都不見了，取而代之的是一排排灰濛濛的臨時帳篷。）", a: "me"
@@ -101,7 +101,7 @@ window.V2_CHAPTERS["55"] = {
             { n: "夏特", t: "（白金披風在晨風中微微飄動）撥款一旦斷絕，鎮子就得自己想辦法在亂世求生。", a: "chate", bgPos: "left"},
             { n: "夏特", t: "在哪裡都一樣。", a: "chate" },
 
-            { n: "鎮民甲", t: "（揉了揉眼睛，認出你後驚叫出聲）啊！你不就是上次幫忙整理名冊的那位！", a: "npc1", bgm: ".suspense.mp3",shake:true, se: "paper down.mp3", vol: 0.8 },
+            { n: "鎮民甲", t: "（揉了揉眼睛，認出你後驚叫出聲）啊！你不就是上次幫忙整理名冊的那位！", a: "npc1", bgm: "suspense.mp3",shake:true, se: "paper down.mp3", vol: 0.8 },
             { n: "我", t: "大叔好。聽說這邊最近出了點岔子？", a: "me",se: "girl_en1.mp3", vol: 1.0 },
             { n: "鎮民甲", t: "（臉色瞬間沉了下來）唉，葛蕾姑娘這次是攤上大麻煩了。", a: "npc1",se: "man ha.mp3", vol: 1.0 
             , bgPos: "center", bgZoom: 1.1},
@@ -121,7 +121,7 @@ window.V2_CHAPTERS["55"] = {
             { n: "賽爾", t: "本仙子在旁邊盯著。 ", a: "fairy" },
 
             { n: "系統", t: "（掀開帳篷，一股墨水與蠟燭燃燒後的氣味撲面而來。）", a: "system"
-            , bg: "cg/ch5.5_tent.png",se: "paper down.mp3", vol: 1.0, bgm: ".sad.mp3",env:null},
+            , bg: "cg/ch5.5_tent.png",se: "paper down.mp3", vol: 1.0, bgm: "sad.mp3",env:null},
             { n: "系統", t: "（葛蕾依舊坐在那張凌亂的桌前，眼下的青黑濃得有些嚇人。）", a: "system", bgPos: "top", bgZoom: 1.1 , bgDur:"5s"},
 
             { n: "葛蕾", t: "三月初七，藥材八十。", a: "glea",flash: true, flashSFX: "flash.mp3", vol: 1.0},
@@ -214,7 +214,7 @@ window.V2_CHAPTERS["55"] = {
         ],
 
         end: [
-            { n: "系統", t: "（帳篷外的風聲漸漸止了。）", bg: "bg5.5.png", a: "system", bgm: ".finish.mp3", bgPos: "left", bgZoom: 1.1 , bgDur:"10s"},
+            { n: "系統", t: "（帳篷外的風聲漸漸止了。）", bg: "bg5.5.png", a: "system", bgm: "finish.mp3", bgPos: "left", bgZoom: 1.1 , bgDur:"10s"},
             { n: "系統", t: "（葛蕾推開門簾走出，身後是那頂依舊殘留著墨水與蠟燭焦味的辦公帳篷。）", a: "system", se: "clothes1.mp3", vol: 1.0 },
             { n: "葛蕾", t: "（她毫不客氣地將那疊厚重且修正過的帳冊塞進了管事的手裡，動作利落得不帶一絲猶豫。）", a: "glea"
             , se: "paper down.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.5},
@@ -238,7 +238,7 @@ window.V2_CHAPTERS["55"] = {
             { n: "我", t: "（我看著那封信，心頭微微一沉）先收起來吧。", a: "me", se: "girl_en1.mp3", vol: 1.0  },
             { n: "我", t: "這背後的深水，我們到了官道上再行商量。", a: "me" },
 
-            { n: "葛蕾", t: "（她忽然抬起頭，目光銳利如刃）你們接下來，打算往哪個方向走？", a: "glea", bgm: ".funny.mp3"
+            { n: "葛蕾", t: "（她忽然抬起頭，目光銳利如刃）你們接下來，打算往哪個方向走？", a: "glea", bgm: "funny.mp3"
             , se: "girl_attraction.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.5},
             { n: "我", t: "暫時還沒定論。不過，既然王城盛情難卻，我們也該去看看那座權力中心的真面目。", a: "me" , se: "girl_ow.mp3", vol: 1.0 },
             { n: "葛蕾", t: "（指尖在桌沿輕輕一敲，發出清脆的、不容置疑的聲響）既然如此，帶上我一起走。", a: "glea", se: "put down.mp3", vol: 1.0 
@@ -271,7 +271,7 @@ window.V2_CHAPTERS["55"] = {
             { n: "賽爾", t: "（在魔導書的扉頁裡笑得打滾）哈哈哈哈！銀毛孔雀遇到剋星了！", a: "fairy", se:"fairy_laugh.mp3", vol: 1.0,shake:true },
             { n: "賽爾", t: "本仙子對這個新來的守門人非常滿意！", a: "fairy" },
 
-            { n: "系統", t: "（夕陽的餘暉將五個人的影子拉得極長。）", a: "system", bg: "road dust.png", bgm: ".2_emotional.mp3", bgPos: "center", bgZoom: 1.5 , bgDur:"10s"},
+            { n: "系統", t: "（夕陽的餘暉將五個人的影子拉得極長。）", a: "system", bg: "road dust.png", bgm: "2_emotional.mp3", bgPos: "center", bgZoom: 1.5 , bgDur:"10s"},
             { n: "系統", t: "（在那片漸漸模糊的暮色中，他們緩緩離開了這片重歸秩序的金穗鎮。）", a: "system",se:"horse run.mp3",vol:1.0},
             { n: "系統", t: "（走出鎮門的那一刻，葛蕾回頭望向那片金色的麥田，看了很久。）", a: "system",bg:"cg/ch5.5 road.png",flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "系統", t: "（隨後她毅然轉身，腳步踏在官道的塵土上，再無半點遲疑。）", a: "system", se:"clothes1.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1}
@@ -306,7 +306,7 @@ window.V2_CHAPTERS["55"] = {
     },
 
     simulator: {
-        bgm: "BGM/.game.mp3",
+        bgm: "BGM/game.mp3",
         tasks: [
             {
                 id: "SORT_TASK",

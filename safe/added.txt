@@ -1,3 +1,14 @@
+[2026-06-22 補2] 修正 BGM 線上版本完全無法播放的真正原因：GitHub Pages 不會發布點開頭檔名
+- 實測證實 .nojekyll 對此無效：用乾淨的（從未請求過、排除 CDN 快取干擾的）路徑直接測試
+  https://chaneloki.github.io/v2/BGM/.daily.mp3 等，在 .nojekyll 與 build 都成功的情況下
+  仍然 404，而同目錄非點開頭檔案（sound_effect/bell.mp3 等）正常 200。證明 GitHub Pages
+  的靜態檔案伺服器本身就不發布點開頭路徑，跟 Jekyll 處理與否無關，.nojekyll 救不了。
+- 檔案：v2/BGM/.*.mp3 → v2/BGM/*.mp3 [RENAME] 全部 30 個 BGM 檔案改名移除開頭的點
+  （例如 .main_theme.mp3 → main_theme.mp3、.daily.mp3 → daily.mp3）。
+- 檔案：v2/chapter/ch1.js ~ ch8_5.js（全 16 個章節檔）、v2/code/orchestrator.js、
+  v2/index.html [MODIFY] 同步把所有 bgm: ".xxx.mp3" / BGM/.xxx.mp3 的參照
+  移除開頭的點，對齊上面的改名。
+
 [2026-06-22] 修正 BGM 線上版本完全無法播放的問題 (Jekyll 排除點開頭檔名)
 - 檔案：v2/.nojekyll [NEW]
   新增空檔案。GitHub Pages 預設使用 Jekyll 建置，會自動排除所有檔名/資料夾名以
@@ -5,6 +16,7 @@
   （例如 .main_theme.mp3、.daily.mp3），導致線上版本這些檔案全部 404、
   BGM 永遠播不出來（音效 se 因檔名沒有點開頭，不受影響，所以只有 BGM 啞掉）。
   加上 .nojekyll 即可關閉 Jekyll 處理，讓這些檔案正常被發布。
+  [後續更新：實測證實這個診斷不完整，.nojekyll 沒有解決問題，真正修法見上方補2項目。]
 - 檔案：v2/chapter/ch4.js, v2/chapter/ch4.5.js [MODIFY]
   結局段落殘留漏改的舊檔名 bgm: "finish.mp3"（沒有點開頭），改成 bgm: ".finish.mp3"
   以對齊 BGM/ 資料夾內實際檔名。

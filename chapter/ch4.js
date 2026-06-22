@@ -79,13 +79,13 @@ window.V2_CHAPTERS["40"] = {
     story: {
         start: [
             { n: "系統", t: "（結伴上路的第一天。三個人一匹馬，還有一本在夕陽餘暉下泛著微光的魔導書）", a: "system"
-            , bg: "cg/ch4 three.png", bgm: ".daily.mp3",bgPos: "center", bgZoom: 1.1, bgDur:"2s"},
+            , bg: "cg/ch4 three.png", bgm: "daily.mp3",bgPos: "center", bgZoom: 1.1, bgDur:"2s"},
             { n: "系統", t: "（官道上的泥土還帶著雨後的潮氣。那匹老馬喘著粗氣，勉強負載三個人的行囊。）", a: "system"
             , env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.2, envDrift:true},
             { n: "賽爾", t: "（它輕盈地陷在行李包最柔軟的褶皺裡，悠閒地晃動著透明的小腳丫。）", a: "fairy",
             bgPos: "right top", bgZoom: 2.0, bgDur:"5s"
              },
-            { n: "賽爾", t: " 本仙子現在正式宣布：今天的天氣真的很好哦。", a: "fairy", bgm: ".funny.mp3",se: "fairy_laugh.mp3", vol: 1.0  },
+            { n: "賽爾", t: " 本仙子現在正式宣布：今天的天氣真的很好哦。", a: "fairy", bgm: "funny.mp3",se: "fairy_laugh.mp3", vol: 1.0  },
             { n: "米羅", t: "（他在前面牽著馬，回頭露出一抹溫和的笑意。）", a: "miro"
             ,bgPos: "right", bgZoom: 2.0, bgDur:"3s"
              },
@@ -103,7 +103,7 @@ window.V2_CHAPTERS["40"] = {
             ,bgPos: "center", bgZoom: 1.1},
 
             { n: "米羅", t: "隊長你看，前面好像有個規模不小的城鎮。", a: "miro",flash: true, flashSFX: "flash.mp3", vol: 1.0 },
-            { n: "賽爾", t: "（它好奇地從行李頂端探出小腦袋） 有炊煙，有繁忙的市集……", a: "fairy", bg: "bg4 out.png", bgm: ".daily.mp3"},
+            { n: "賽爾", t: "（它好奇地從行李頂端探出小腦袋） 有炊煙，有繁忙的市集……", a: "fairy", bg: "bg4 out.png", bgm: "daily.mp3"},
             { n: "賽爾", t: "哎呀，那邊好多人在排隊啊。", a: "fairy",shake:true},
             { n: "我", t: "（我抬頭望去。街道盡頭那間原本應當平靜的小診所正被厚重的人聲所包圍。）", a: "me", se: "people.mp3", vol: 1.0
             ,bgPos: "right", bgZoom: 2.0, bgDur:"10s"},
@@ -114,7 +114,7 @@ window.V2_CHAPTERS["40"] = {
             { n: "賽爾", t: "你怎麼第一眼就注意到這種奇怪的地方了？", a: "fairy" },
             { n: "我", t: "沒辦法，可能是這幾天整理表格留下的職業病吧。", a: "me", se: "girl_attraction.mp3", vol: 1.0 },
 
-            { n: "柔依", t: "（一名扎著俐落高馬尾的女孩神色匆匆，猛地從診所那扇厚重的木門後衝了出來。）", a: "royi", bgm: ".royi.mp3", se: "pa.mp3", vol: 1.0
+            { n: "柔依", t: "（一名扎著俐落高馬尾的女孩神色匆匆，猛地從診所那扇厚重的木門後衝了出來。）", a: "royi", bgm: "royi.mp3", se: "pa.mp3", vol: 1.0
             ,bg:"cg/ch4.png",bgPos: "center", bgZoom: 1.1,flash:true,flashSFX:"flash.mp3"},
             { n: "柔依", t: "（她懷裡死死抱著一疊邊緣捲曲、厚重的紙張，險些撞上迎面的路人。）", a: "royi", se: "run.mp3", vol: 1.0,shake:true},
             { n: "柔依", t: " 借過！請大家讓一讓，急診！", a: "royi",shake:true},
@@ -202,7 +202,7 @@ window.V2_CHAPTERS["40"] = {
         ],
 
         end: [
-            { n: "系統", t: "（兩個小時後。診所外那條蜿蜒的隊伍已經縮短了一大半。）", a: "system", bg: "bg4 clinic.png", bgm: ".finish.mp3"
+            { n: "系統", t: "（兩個小時後。診所外那條蜿蜒的隊伍已經縮短了一大半。）", a: "system", bg: "bg4 clinic.png", bgm: "finish.mp3"
             , env: "light/1", envFrames: 25, envspeed:80, envDrift:true,bgPos: "center", bgZoom: 1.1},
             { n: "系統", t: "（空氣中原本浮動的焦慮感漸漸消散，病患們安靜地等待著接診。）", a: "system"
             ,bgPos: "center", bgZoom: 2.0, bgDur:"10s"},
@@ -217,19 +217,19 @@ window.V2_CHAPTERS["40"] = {
             { n: "柔依", t: "那麼，你們接下來打算往哪個方向繼續前進？", a: "royi" },
             { n: "我", t: "我們也還沒定。哪裡有緊急任務，我們就往哪裡走吧。", a: "me" },
             { n: "柔依", t: "（她突然把手裡最後一份厚重、泛黃的統計記錄遞了過來。） ", a: "royi", bg: "cg/ch4 royi.png", se: "paper down.mp3"
-            , vol: 1.0, bgm: ".sweet.mp3",bgPos: "top", bgZoom: 2.0},
+            , vol: 1.0, bgm: "sweet.mp3",bgPos: "top", bgZoom: 2.0},
             { n: "柔依", t: "這份是今天的就診統計，你們順便幫我歸檔，作為謝禮。", a: "royi",bgPos: "center", bgZoom: 1.1,bgDur:"10s"},
             { n: "我", t: "居然拿「派發新工作」來當作謝禮？我說，妳以後肯定會是個不得了的人物。", a: "me"},
             { n: "柔依", t: "（她已經帥氣地轉身離去，輕快的笑聲在夕照中遠遠地飄過來。） ", a: "royi", se: "girl_smile1.mp3", vol: 1.0   },
             { n: "柔依", t: "謝禮本來就應該讓對方再做點事，才顯得更有誠意嘛。", a: "royi" },
             { n: "賽爾", t: "（它目送著女孩遠去的背影，意味深長地嘖嘖兩聲） ", a: "fairy" },
             { n: "賽爾", t: "這個小姑娘，倒是個挺有意思的狠角色。", a: "fairy" },
-            { n: "米羅", t: "（他走到我身邊，聲音壓得很低） 隊長你有注意到嗎？", a: "miro" , bg: "bg4 clinic.png", bgm: ".sweet.mp3"
+            { n: "米羅", t: "（他走到我身邊，聲音壓得很低） 隊長你有注意到嗎？", a: "miro" , bg: "bg4 clinic.png", bgm: "sweet.mp3"
             ,flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "米羅", t: "剛才她注視魔導書的時候，眼神明顯停滯了一下。", a: "miro"},
             { n: "我", t: "我當然注意到了。（我默默地把記錄收入行囊） 沒關係，我們走吧。", a: "me" , se: "put down.mp3", vol: 1.0  },
 
-            { n: "系統", t: "（傍晚時分。晚霞將長街照得一片金紅，三個人重新踏上旅程。）", a: "system", bg: "bg4 road.png", bgm: ".2_emotional.mp3",env:null
+            { n: "系統", t: "（傍晚時分。晚霞將長街照得一片金紅，三個人重新踏上旅程。）", a: "system", bg: "bg4 road.png", bgm: "2_emotional.mp3",env:null
             ,bgPos: "center", bgZoom: 1.5
             },
             { n: "系統", t: "（小鎮街道旁的燈籠一盞接一盞地亮起，光影在青石板路上交錯重疊。）", a: "system"
@@ -280,7 +280,7 @@ window.V2_CHAPTERS["40"] = {
     },
 
     simulator: {
-        bgm: "BGM/.game.mp3",
+        bgm: "BGM/game.mp3",
         tasks: [
             {
                 id: "SORT_LIMIT_TASK",

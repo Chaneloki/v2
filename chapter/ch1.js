@@ -41,14 +41,14 @@ window.V2_CHAPTERS["10"] = {
 
     story: {
         start: [
-            { n: "我", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: ".hero.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s" },
+            { n: "我", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: "hero.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s" },
             { n: "我", t: "看著我的背影吧！沒錯，我就是那個傳說中的王牌冒險者，公會最鋒利的那把劍。", bg: "cg/ch1 main.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "我", t: "無論是多麼險惡的戰役，只要我踏入戰場，局勢就會立刻倒向我們這一邊。" },
             { n: "我", t: "因為這座公會需要我，這個國家的人民依賴著我的力量，我是所有人最後的希望。" },
             { n: "我", t: "想要挑戰我？在那之前，先學會怎麼仰望我那輝煌的背影吧！", bg: "war.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "系統", t: "（轟隆——！耳邊炸開一聲巨響，腦袋裡英雄的輝煌幻象被刺鼻的鏽味擊得粉碎）", bg: "bg1.png", flash: true, flashSFX: "boom.mp3", vol: 1.0, shake: true, bgZoom: 1.0, bgDur: "0.2s" },
             // ...接著接回原本的倉庫開場
-            { n: "系統", t: "咳、咳……嘔！（一股刺鼻鐵鏽感直直灌進我的鼻腔，差點沒把我當場嗆暈過去）", a: "system", bg: "bg1.png", bgm: ".funny.mp3", bgPos: "center", bgZoom: 1.15, bgDur: "15s" },
+            { n: "系統", t: "咳、咳……嘔！（一股刺鼻鐵鏽感直直灌進我的鼻腔，差點沒把我當場嗆暈過去）", a: "system", bg: "bg1.png", bgm: "funny.mp3", bgPos: "center", bgZoom: 1.15, bgDur: "15s" },
             { n: "系統", t: "（頭頂那盞老舊的魔導燈泡忽明忽暗，把四周堆得跟小山一樣的破爛物照得像一具具直立的乾屍）", a: "system", env: "light/1/0.png", envOpacity: 0.4, envDrift: true },
             { n: "我", t: "（我低頭看著手裡那張破損不堪、邊緣捲曲的羊皮紙清單。）", se: "paper down.mp3", vol: 1.0 },
             { n: "我", t: "（掌心黏糊糊的，不知什麼時候已經沁出了一層冷汗，把羊皮紙的邊角都浸得有些發軟）", a: "me", se: "heartbeat.mp3", vol: 1.0 },
@@ -57,7 +57,7 @@ window.V2_CHAPTERS["10"] = {
             { n: "我", t: "結果誰能想到，我那所謂的專屬『武器』，竟然只是一支毛尖開了叉的破舊毛筆。", a: "me" },
             { n: "我", t: "（視線落在清單上，那些被劣質墨水糊成一團的數字，看得我一陣暈眩。）", a: "me", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "我", t: "鐵劍三百、鋼盔五百，還有這些……甚至都不知道有沒有過期的解毒劑。", a: "me" },
-            { n: "我", t: "這歪歪扭扭的字跡，簡直就像是史萊姆爬過一樣，根本無法閱讀。 ", a: "me", bg: "bg1.png", bgm: ".daily.mp3", bgmFade: "in", env: "light/1/0.png", envOpacity: 0.5, envDrift: true, bgPos: "center", bgZoom: 1.0, bgDur: "8s" },
+            { n: "我", t: "這歪歪扭扭的字跡，簡直就像是史萊姆爬過一樣，根本無法閱讀。 ", a: "me", bg: "bg1.png", bgm: "daily.mp3", bgmFade: "in", env: "light/1/0.png", envOpacity: 0.5, envDrift: true, bgPos: "center", bgZoom: 1.0, bgDur: "8s" },
             { n: "我", t: "這哪裡是在經歷什麼史詩冒險，這分明是一場針對我視神經的公開酷刑。我想回家。", a: "me", se: "paper down.mp3" },
 
             { n: "系統", t: "（砰！一聲巨響，沉重的倉庫鐵門被人猛力踹開。）", a: "system", se: "pa.mp3", vol: 1.0, shake: true, flash: true, flashSFX: "boom.mp3", screenEffect: "glow" },
@@ -85,7 +85,7 @@ window.V2_CHAPTERS["10"] = {
             { n: "系統", t: "（一抹耀眼的流光瞬間噴湧而出，將這間潮濕昏暗的倉庫映照得宛如白晝。）", a: "system", se: "appear.mp3", vol: 1.0, screenEffect: "glow", env: "light/1/0.png", envOpacity: 1.0, envDrift: true, flash: true, flashSFX: "flash.mp3" },
 
             { n: "系統", t: "（一隻巴掌大小、生著網格狀半透明翅膀的精靈，輕盈地從小抽屜裡振翅飛出。）", a: "system", se: "fun1.mp3", vol: 1.0 },
-            { n: "賽爾", t: "（它在空中得意地劃過一個優美的圓弧，綠色的光塵點點飄落。）", a: "fairy", bgm: ".funny.mp3", charAnim: "bounce" },
+            { n: "賽爾", t: "（它在空中得意地劃過一個優美的圓弧，綠色的光塵點點飄落。）", a: "fairy", bgm: "funny.mp3", charAnim: "bounce" },
             { n: "賽爾", t: "哈！整整三百年了，總算有個倒霉蛋……啊不，有緣人把這道命運的抽屜打開了。 ", a: "fairy", charAnim: "bounce" },
             { n: "賽爾", t: "少年，雖然你一臉寫滿了絕望，但卻沒在那老頭的咆哮下拔腿就跑", a: "fairy", shake: true },
             { n: "賽爾", t: "這份骨氣，本仙子倒是不討厭。 ", a: "fairy", se: "fairy_smile.mp3", vol: 1.0 },
@@ -101,7 +101,7 @@ window.V2_CHAPTERS["10"] = {
             { n: "賽爾", t: "你的命運轉職，現在正式拉開序幕！", a: "fairy", flash: true, flashSFX: "boom.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.0 }
         ],
         end: [
-            { n: "我", t: "（我緩緩放下那支早已被握得發燙的毛筆。）", a: "me", bg: "bg1.png", bgm: ".finish.mp3", bgmFade: "in", se: "pen.mp3", vol: 1.0, env: "light/1/0.png", envOpacity: 0.6, envDrift: true, bgPos: "center", bgZoom: 1.1, bgDur: "10s" },
+            { n: "我", t: "（我緩緩放下那支早已被握得發燙的毛筆。）", a: "me", bg: "bg1.png", bgm: "finish.mp3", bgmFade: "in", se: "pen.mp3", vol: 1.0, env: "light/1/0.png", envOpacity: 0.6, envDrift: true, bgPos: "center", bgZoom: 1.1, bgDur: "10s" },
             { n: "我", t: "（揉了揉那雙因為長時間專注而酸澀無比的手腕。）", bg: "stuff/hand pain.png" },
             { n: "我", t: "（我看著眼前這份變得煥然一新的清單，長長地舒了一口氣。）", bg: "bg1.png", a: "me", se: "paper down.mp3", vol: 1.0 },
             { n: "我", t: "呼，總算是在極限邊緣搞定了。這招『凍結視窗』的魔法也太過驚人了。 ", a: "me", se: "girl_smile1.mp3" },
@@ -120,7 +120,7 @@ window.V2_CHAPTERS["10"] = {
             { n: "系統", t: "（他的一隻手重重按在桌面上，開始逐行逐格地審視起來。）", a: "system", bg: "cg/ch1.png", se: "book.mp3", vol: 1.0, bgPos: "center 20%", bgZoom: 1.5, bgDur: "10s" },
             { n: "系統", t: "（當他的指尖停留在被完美凍結的標題以及精準得無懈可擊的彙整數據時）", a: "system", bg: "cg/ch1.png", se: "book.mp3", vol: 1.0 },
             { n: "系統", t: "（他的呼吸變得急促起來。）", a: "system", bg: "cg/ch1.png", se: "boy_breath.mp3", vol: 1.0 },
-            { n: "系統", t: "（那一瞬間，他看向清單的眼神中，閃過了一抹深深的悸動。）", a: "system", bg: "cg/ch1.png", bgm: ".daily.mp3", flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.0, bgDur: "0.2s" },
+            { n: "系統", t: "（那一瞬間，他看向清單的眼神中，閃過了一抹深深的悸動。）", a: "system", bg: "cg/ch1.png", bgm: "daily.mp3", flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.0, bgDur: "0.2s" },
             { n: "冒險者公會會長", t: "無懈可擊、一格不差，連這複雜的總額數據，竟然都計算得如此精確……", a: "head", bg: "cg/ch1.png" },
             { n: "冒險者公會會長", t: "我這輩子親自送走過十七個新人，從未見過有人能將清單整理到如此境界。 ", a: "head", bg: "cg/ch1.png" },
             { n: "我", t: "我只是單純不想在後半生與後山的飛龍糞便為伍罷了。", a: "me", bg: "cg/ch1.png" },
@@ -136,7 +136,7 @@ window.V2_CHAPTERS["10"] = {
             { n: "系統", t: "（隨著會長那豪邁的腳步聲遠去，地下室再次回歸寂靜。）", a: "system", se: "pa.mp3", vol: 1.0, bgm: "no.mp3" },
             { n: "系統", t: "（昏暗的地下室裡，只剩下你與漂浮在半空的賽爾。）", a: "system" },
             { n: "系統", t: "（此時，一隻摺疊成飛鳥狀、散發著淡淡香氣的燙金信箋從窄小的氣窗外悠然飛入。）", a: "system", se: "bird.mp3", vol: 1.0, screenEffect: "glow", bgPos: "top", bgZoom: 1.1, bgDur: "8s" },
-            { n: "系統", t: "（信箋劃過一道優美的弧線，穩穩地降落在這張落滿塵埃的桌面上。）", a: "system", bgm: ".kingdom.mp3", bgmFade: "in", env: "light/1/0.png", envOpacity: 0.6, envDrift: true, bgPos: "center", bgDur: "4s" },
+            { n: "系統", t: "（信箋劃過一道優美的弧線，穩穩地降落在這張落滿塵埃的桌面上。）", a: "system", bgm: "kingdom.mp3", bgmFade: "in", env: "light/1/0.png", envOpacity: 0.6, envDrift: true, bgPos: "center", bgDur: "4s" },
             { n: "我", t: "這是……什麼？那封蠟上的印記，居然是皇宮禁衛軍的專屬紋章。 ", a: "me", se: "girl_scare", vol: 1.0 },
             { n: "我", t: "難道這是一封指名道姓寄給我的信函嗎？", a: "me", letter: true },
             { n: "賽爾", t: "（它從小抽屜邊緣探出半個身子，瞇起眼盯著那枚燙金紋章。）", a: "fairy" },

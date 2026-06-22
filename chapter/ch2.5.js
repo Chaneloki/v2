@@ -56,7 +56,7 @@ window.V2_CHAPTERS["25"] = {
     story: {
         "start": [
             { n: "系統", t: "（金穗鎮繁忙的廣場上）", a: "system"
-            , bg: "bg2.5 ppl.png", bgm: ".funny.mp3",bgPos: "center", bgZoom: 1.1 },
+            , bg: "bg2.5 ppl.png", bgm: "funny.mp3",bgPos: "center", bgZoom: 1.1 },
             { n: "系統", t: "（鼎沸的人聲與遠處的麥浪聲交織在一起。）"
             , a: "system", se: "people.mp3", vol: 1.0,bgPos: "right bottom", bgZoom: 2.0 },
             { n: "我", t: "（我望著眼前那疊堆積如山的祭典文書，感到一陣隱隱作痛的頭大。）", a: "me"
@@ -73,7 +73,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "我", t: "好吧，至少這份義務比回後山去跟雙足飛龍的糞便打交道要強得多了。", a: "me"
             , isMemory: true, bg: "bg1.png"},
             { n: "系統", t: "（空氣中瀰漫著剛出爐烤麵包的香甜與釀造中的麥酒那股醇厚氣息。）", a: "system"
-            , bg: "bg2.5.png", bgm: ".town.mp3", 
+            , bg: "bg2.5.png", bgm: "town.mp3", 
             env: "trans1/1", envFrames: 21, envspeed:100, envOpacity: 1.0,envDrift:true, envLoop: false,se:"fun1.mp3",vol:1.0},
             { n: "賽爾", t: "這地方看起來充滿了生命力呢。 ", a: "fairy", se: "fairy_laugh.mp3", vol: 1.0
             ,bgPos: "center", bgZoom: 1.5,env:null},
@@ -262,7 +262,7 @@ window.V2_CHAPTERS["25"] = {
     initialGridData: generateCh2_5Data(),
 
     simulator: {
-        bgm: ".game.mp3",
+        bgm: "game.mp3",
         tasks: [
             {
                 id: "MERGE_TASK",
