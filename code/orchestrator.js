@@ -439,9 +439,9 @@ class Orchestrator {
             if (simulator.bgm) {
                 this.emit('playBGM', { file: simulator.bgm.replace(/^BGM\//, '') });
             } else if (this.state.currentChapter.toString() === '85') {
-                this.emit('playBGM', { file: 'rpg game_bgm.mp3' });
+                this.emit('playBGM', { file: 'game_8bit.mp3' });
             } else {
-                this.emit('playBGM', { file: 'game_bgm.mp3' });
+                this.emit('playBGM', { file: 'game.mp3' });
             }
         } else {
             const lines = (phase === 'STORY_START') ? story.start : (phase === 'STORY_END' ? story.end : []);

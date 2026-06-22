@@ -246,7 +246,7 @@ window.V2_CHAPTERS["10"] = {
 
     simulator: {
         mode: 'GUIDED',
-        bgm: '.game.mp3',
+        bgm: 'game.mp3',
         defaultTab: 'view', // 第一章預設開啟「檢視」分頁
         tasks: [
             {

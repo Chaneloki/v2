@@ -129,7 +129,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "我", t: "（在那一刻，我在內心深處，做出了一個大膽且不合規矩的決定。）", a: "me" }
         ],
         "end": [
-            { n: "系統", t: "（落日的餘暉透過帳篷的縫隙灑入。）", bgm: '.town.mp3', bg: 'bg2.5.png'
+            { n: "系統", t: "（落日的餘暉透過帳篷的縫隙灑入。）", bgm: 'town.mp3', bg: 'bg2.5.png'
             , bgPos: "left top", bgZoom: 1.5, bgDur: "3s"
             , env: "light/1", envFrames: 25, envspeed:50, envOpacity: 0.8, envDrift:true}, 
             { n: "系統", t: "（葛蕾急匆匆地推簾而入，步履依舊匆忙。）", bg:"cg/ch2.5.png", se: "run.mp3", vol: 1.0
@@ -142,7 +142,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "系統", t: "（葛蕾有些狐疑地翻開名冊，原本麻利的動作）", a: "system", bg: 'cg/ch2.5 read.png', bgm: 'no.mp3' , se: "paper down.mp3", vol: 0.8 },
             { n: "系統", t: "（在觸碰到第一頁的瞬間，徹底凝固了。）", a: "system" , se: "heartbeat.mp3", vol: 1.0, flash: true, flashSFX: "flash.mp3" },
             { n: "系統", t: "（在名冊最顯眼的位置，那個原本被邊緣化的『後勤支援組』，被賦予了最為宏大的標題與配色。）", a: "system", bg: 'cg/ch2.5 read.png', se: "book.mp3", vol: 1.0 },
-            { n: "系統", t: "（在那行工整的文字下方，我悄悄刻上了一句備註：）", a: "system", bg: 'cg/ch2.5 read.png', bgm: '.2_emotional.mp3' },
+            { n: "系統", t: "（在那行工整的文字下方，我悄悄刻上了一句備註：）", a: "system", bg: 'cg/ch2.5 read.png', bgm: '2_emotional.mp3' },
             { n: "系統", t: "（『致使這場豐收祭成真的每一雙手』。）", a: "system",flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "系統", t: "（她有些失神地往後翻閱，指尖在紙面上輕輕顫抖著。）", a: "system", bg: 'cg/ch2.5 read.png',shake:true
             ,bgPos: "bottom", bgZoom: 1.5, bgDur: "8s"},
@@ -190,7 +190,7 @@ window.V2_CHAPTERS["25"] = {
 
             { n: "系統", t: "（隨着鎮長那爽朗的笑聲遠去，空蕩蕩的帳篷內，再次只剩下我與葛蕾兩個人。）", 
             a: "system", bgm: 'no.mp3', se: "wind1.mp3", vol: 1.0,bg:"cg/ch2.5 two.png",bgPos: "bottom", bgZoom: 2.0},
-            { n: "葛蕾", t: "你這傢伙……膽子真的比我想像中的還要大。 ", a: "glea", bgm: '.sweet.mp3'
+            { n: "葛蕾", t: "你這傢伙……膽子真的比我想像中的還要大。 ", a: "glea", bgm: 'sweet.mp3'
             ,bgPos: "left top", bgZoom: 2.0, bgDur:"4s"},
             { n: "葛蕾", t: "自作主張改動呈報的名冊，萬一鎮長發起火來，公會那邊可護不住你。", a: "glea" , se: "paper down.mp3", vol: 0.8 },
             { n: "我", t: "我有什麼好畏懼的？鎮長剛才不是已經親口給出答案了嗎？", a: "me",bgPos: "right top", bgZoom: 2.0, bgDur:"4s" },
@@ -233,7 +233,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "賽爾", t: "少年，這裡的因果已經圓滿了。我們走吧！", a: "fairy" },
             { n: "賽爾", t: "正式踏入那條通往王城的官道！", a: "fairy" },
             { n: "系統", t: "（就在葛蕾踏入帳篷深處，背對着你，身影即將消失在陰影中的那一刻。）", a: "system", bgm: 'no.mp3', se: "wind1.mp3", vol: 1.0 },
-            { n: "葛蕾", t: "（她的腳步頓了一下，聲音清冷卻依舊清晰地傳來）", a: "glea", bgm: '.sweet.mp3'
+            { n: "葛蕾", t: "（她的腳步頓了一下，聲音清冷卻依舊清晰地傳來）", a: "glea", bgm: 'sweet.mp3'
             ,flash:true,flashSFX:"flash.mp3", bg:"cg/ch2.5 last.png" ,bgPos: "center", bgZoom: 1.1},
             { n: "葛蕾", t: "金穗鎮的紅茶，確實是全大陸最頂尖的。 ", a: "glea" , se: "girl_attraction.mp3", vol: 1.0
             ,bgPos: "center", bgZoom: 1.5, bgDur:"4s"},

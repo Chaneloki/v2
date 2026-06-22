@@ -145,7 +145,7 @@ window.V2_CHAPTERS["15"] = {
 
     simulator: {
         mode: 'GUIDED',
-        bgm: '.game.mp3',
+        bgm: 'game.mp3',
         defaultTab: 'view',
         tasks: [
             { 

@@ -1,3 +1,13 @@
+[2026-06-22 補3] 補修：上一次改名漏掉單引號寫法的 bgm 參照，導致「試煉/Excel 操作關卡」階段沒有 BGM
+- 原因：補2的 sed 只處理了雙引號 bgm: ".xxx.mp3" 寫法，但 ch1.js / ch1_5.js 的
+  simulator.bgm（決定試煉關卡 BGM）以及 ch2.5.js 部分對話行用的是單引號
+  bgm: '.xxx.mp3'，沒被改到，因此關卡畫面（SIMULATOR 階段）仍然啞掉，
+  劇情（STORY_START/END）因為用雙引號所以已經修好了。
+- 檔案：v2/chapter/ch1.js, ch1_5.js, ch2.5.js [MODIFY] 補上單引號版本的去點修正。
+- 檔案：v2/code/orchestrator.js [MODIFY] triggerPhase() 的 SIMULATOR 預設 BGM
+  fallback（無章節自訂 simulator.bgm 時使用）原本寫死舊檔名 'rpg game_bgm.mp3' /
+  'game_bgm.mp3'，這兩個檔案改名後已不存在，改成現有檔名 'game_8bit.mp3' / 'game.mp3'。
+
 [2026-06-22 補2] 修正 BGM 線上版本完全無法播放的真正原因：GitHub Pages 不會發布點開頭檔名
 - 實測證實 .nojekyll 對此無效：用乾淨的（從未請求過、排除 CDN 快取干擾的）路徑直接測試
   https://chaneloki.github.io/v2/BGM/.daily.mp3 等，在 .nojekyll 與 build 都成功的情況下
