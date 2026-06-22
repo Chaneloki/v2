@@ -446,8 +446,10 @@ class Orchestrator {
         const simulator = this.state.activeChapterModule.simulator || {};
 
         if (phase === 'SIMULATOR') {
-            // [核心規範]: 遊戲階段使用預設或專屬 BGM
-            if (this.state.currentChapter.toString() === '85') {
+            // [核心規範]: 遊戲階段優先使用章節自訂 BGM，否則使用預設值
+            if (simulator.bgm) {
+                this.emit('playBGM', { file: simulator.bgm.replace(/^BGM\//, '') });
+            } else if (this.state.currentChapter.toString() === '85') {
                 this.emit('playBGM', { file: 'rpg game_bgm.mp3' });
             } else {
                 this.emit('playBGM', { file: 'game_bgm.mp3' });

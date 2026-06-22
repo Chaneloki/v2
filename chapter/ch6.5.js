@@ -195,9 +195,9 @@ window.V2_CHAPTERS["65"] = {
               se: "sea2.mp3",vol:1.0},
  
             { n: "米羅", t: "（扛起包袱往舷邊擠，兩眼放光)", a: "miro"
-            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgm: "finish.mp3", bgPos: "center", bgZoom: 1.1},
-            { n: "米羅", t: "（那種迫不及待想要踏上陸地的樣子，跟前幾天在艙裡暈得半死的人簡直判若兩人。）", a: "miro", 
-            bgm: "finish.mp3" },
+            ,flash: true, flashSFX: "flash.mp3", vol: 1.0, bgm: ".finish.mp3", bgPos: "center", bgZoom: 1.1},
+            { n: "米羅", t: "（那種迫不及待想要踏上陸地的樣子，跟前幾天在艙裡暈得半死的人簡直判若兩人。）", a: "miro",
+            bgm: ".finish.mp3" },
             { n: "米羅", t: "到了！妳看那碼頭的火光，我感覺自己活過來啦！", a: "miro",
               se: "boy_wa.mp3", vol: 1.0, shake: true, bgm: ".finish.mp3" },
             { n: "夏特", t: "（伸手理了理領口。）", a: "chate"
@@ -248,7 +248,7 @@ window.V2_CHAPTERS["65"] = {
             { n: "系統", t: "（江水被拋在身後了。腳下的路，終於不再搖晃。）", a: "system" }
         ],
  
-        fail_PIVOT_wrong: [ { n: "系統", t: "（欄位似乎迷路了。產地去列，月份去欄，收購價(銀幣)去值。再試一次吧。）", a: "system" } ],
+        fail_PIVOT_wrong: [ { n: "系統", t: "（欄位似乎迷路了。產地去列，藥材種類去欄，收購價(銀幣)去值。再試一次吧。）", a: "system" } ],
         fail_METHOD_wrong: [ { n: "系統", t: "（她需要的是單價的平均值。雙擊值欄位切換吧。）", a: "system" } ],
         fail_GROUP_wrong: [ { n: "系統", t: "（右鍵點擊月份，選「組成群組」，整併為季節大局吧。）", a: "system" } ]
     },
