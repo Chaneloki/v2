@@ -1,3 +1,10 @@
+[2026-06-22 補4] 補修：RPG 自由探索地圖完全沒有 BGM
+- 原因：code/rpg/maps/map1_street.js 的 "my_room" 地圖 bgm: "begin.mp3"，
+  這個檔名在換版權 BGM 時就沒有被遷移到任何新曲目（不是漏了點，是新版 BGM/
+  資料夾裡從頭就沒有對應檔案），rpg_engine.js:170-171 嘗試播放時必定 404。
+  經使用者確認，改用 daily.mp3（與睡覺過場、許多日常對話同一首）。
+- 檔案：v2/code/rpg/maps/map1_street.js [MODIFY] bgm: "begin.mp3" → bgm: "daily.mp3"
+
 [2026-06-22 補3] 補修：上一次改名漏掉單引號寫法的 bgm 參照，導致「試煉/Excel 操作關卡」階段沒有 BGM
 - 原因：補2的 sed 只處理了雙引號 bgm: ".xxx.mp3" 寫法，但 ch1.js / ch1_5.js 的
   simulator.bgm（決定試煉關卡 BGM）以及 ch2.5.js 部分對話行用的是單引號

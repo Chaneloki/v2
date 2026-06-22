@@ -8,7 +8,7 @@ window.RPG_MAPS = Object.assign(window.RPG_MAPS || {}, {
   "my_room": {
     name: "我的房間",
     bg: "rpg/bg/room.png",
-    bgm: "begin.mp3",
+    bgm: "daily.mp3",
     width: 1197,
     height: 768,
     spawnPoint: { x: 600, y: 500 },
