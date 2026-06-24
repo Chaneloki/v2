@@ -28,7 +28,8 @@ UIManager.prototype.playBGM = function(f) {
         if (currentSrc !== newSrc) {
             a.src = newSrc;
             a.setAttribute('data-current', newSrc);
-            a.volume = 0.3; // [修正]: 降低背景音樂音量，避免蓋過音效與對話
+            // [優化]: 戰鬥與趣味曲目預設音量調低 (hero.mp3 / miro.mp3 設為 0.08，funny.mp3 設為 0.4)，其餘背景音樂預設為 0.45 (45%)
+            a.volume = (f === 'hero.mp3' || f === 'miro.mp3') ? 0.08 : ((f === 'funny.mp3') ? 0.4 : 0.45); 
         }
 
         // 強制執行播放 (處理暫停或被阻擋的情況)
@@ -53,7 +54,8 @@ UIManager.prototype.fadeInBGM = function(f) {
         
         a.play().then(() => {
             let vol = 0;
-            const targetVol = 0.3;
+            // [優化]: 戰鬥與趣味曲目預設目標音量調低 (hero.mp3 / miro.mp3 設為 0.08，funny.mp3 設為 0.4)，其餘背景音樂預設為 0.45 (45%)
+            const targetVol = (f === 'hero.mp3' || f === 'miro.mp3') ? 0.08 : ((f === 'funny.mp3') ? 0.4 : 0.45);
             if (this.bgmFadeInterval) clearInterval(this.bgmFadeInterval);
             this.bgmFadeInterval = setInterval(() => {
                 vol += 0.05;

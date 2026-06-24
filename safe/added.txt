@@ -1,3 +1,78 @@
+[2026-06-24 補9] 修改背景音樂 (BGM) 預設選單音量值為 45%
+- 原因：應要求將首次進入遊戲、設定選單預設音量等 fallback 的背景音樂 (BGM) 音量由 60% (0.6) 調整至 45% (0.45)。
+- 檔案：v2/code/ui_v2_audio.js [MODIFY]
+  1) 將 playBGM() 與 fadeInBGM() 中除特殊曲目以外的預設音量 / 漸入目標音量由 0.6 調降為 0.45。
+- 檔案：v2/game.html [MODIFY]
+  1) 將 patchPlayBGM、initBGMGain、load 事件監聽器及選單打開時同步邏輯中的 BGM 預設 fallback 音量值由 0.6 調降為 0.45。
+  2) 更新 ui_v2_audio.js 的快取破壞版本標記至 v=1782100800005。
+
+[2026-06-24 補8] 調低趣味背景音樂 funny.mp3 的預設與比例音量
+- 原因：應要求調低 funny.mp3 預設音量，使其稍低於一般背景音樂。
+- 檔案：v2/code/ui_v2_audio.js [MODIFY]
+  1) 在 playBGM() 中，若播放檔名為 'funny.mp3'，音量預設設為 0.4（其餘常規背景音量維持 0.6）。
+  2) 在 fadeInBGM() 中，若播放檔名為 'funny.mp3'，目標音量 (targetVol) 設為 0.4。
+- 檔案：v2/game.html [MODIFY]
+  1) 在 getAdjustedBGMVolume 中加入對 'funny.mp3' 的比例衰減（乘以 0.67），使其在預設 60% 音量時為 ~0.4。
+  2) 更新 ui_v2_audio.js 的快取破壞版本標記至 v=1782100800004。
+
+[2026-06-24 補7] 再次調低戰鬥背景音樂 miro.mp3 的預設音量與比例音量
+- 原因：miro.mp3 預設音量仍然偏大，應要求將其預設與漸入音量進一步調低至與 hero.mp3 相同（0.08），並更新音量比例乘數。
+- 檔案：v2/code/ui_v2_audio.js [MODIFY]
+  1) 在 playBGM() 中，若播放檔名為 'miro.mp3'，音量由 0.15 調降至 0.08。
+  2) 在 fadeInBGM() 中，若播放檔名為 'miro.mp3'，目標音量 (targetVol) 由 0.15 調降至 0.08。
+- 檔案：v2/game.html [MODIFY]
+  1) 在 getAdjustedBGMVolume 中，將 'miro.mp3' 的比例衰減由 0.25 降至 0.13；同時將 'hero.mp3' 的比例衰減由 0.15 調整至 0.13，使其在預設 60% 音量時皆為 ~0.08。
+  2) 更新 ui_v2_audio.js 的快取破壞版本標記至 v=1782100800003。
+
+[2026-06-24 補6] 降低戰鬥背景音樂 miro.mp3 的預設音量
+- 原因：miro.mp3 預設音量過大，容易蓋過音效與語音，應要求將其預設與漸入的音量調低。
+- 檔案：v2/code/ui_v2_audio.js [MODIFY]
+  1) 在 playBGM() 中，若播放檔名為 'miro.mp3'，音量由 0.6 調降至 0.15。
+  2) 在 fadeInBGM() 中，若播放檔名為 'miro.mp3'，目標音量 (targetVol) 由 0.6 調降至 0.15。
+- 檔案：v2/game.html [MODIFY]
+  1) 在 getAdjustedBGMVolume 中加入對 'miro.mp3' 的比例衰減 (乘以 0.25)，保證選單調整音量時同步按比例衰減。
+
+[2026-06-24 補5] 修改背景音樂 (BGM) 預設音量值為 60%
+- 原因：應要求將首次進入遊戲、設定選單預設音量等 fallback 的背景音樂 (BGM) 音量由 30% (0.3) 提昇至 60% (0.6)。
+- 檔案：v2/code/ui_v2_audio.js [MODIFY]
+  1) 將 playBGM() 與 fadeInBGM() 中除 hero.mp3 以外的預設音量 / 漸入目標音量由 0.3 調升為 0.6。
+- 檔案：v2/game.html [MODIFY]
+  1) 將 patchPlayBGM、initBGMGain、load 事件監聽器及選單打開時同步邏輯中的 BGM 預設 fallback 音量值由 0.3 調升為 0.6。
+
+[2026-06-24 補4] 降低戰鬥背景音樂 hero.mp3 的預設音量
+- 原因：hero.mp3 預設音量過大，容易蓋過音效與語音，應要求將其預設與漸入的音量調低。
+- 檔案：v2/code/ui_v2_audio.js [MODIFY]
+  1) 在 playBGM() 中，若播放檔名為 'hero.mp3'，音量由 0.3 調降至 0.08。
+  2) 在 fadeInBGM() 中，若播放檔名為 'hero.mp3'，目標音量 (targetVol) 由 0.3 調降至 0.08。
+
+[2026-06-24 補3] 修正劇情舞台運鏡縮放與平移不同步跳動問題
+- 原因：原本方案中直接修改 transform-origin 與 scale，當 transform-origin 改變時，縮放中心點立刻改變導致畫面瞬間跳動 (直接移動到目標位置再緩慢縮放)。改為固定中心點 transform-origin: 50% 50%，並將位置轉化為 translation 坐標因子，透過 translate3d 與 scale 同步進行 transform 過渡。
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  1) 引入 currentBgZoom、currentBgFx、currentBgFy 全局狀態變量。
+  2) 在 renderCurrentStoryLine 中，使用 translate3d(tx%, ty%, 0) scale(zoom) 取代直接修改 transformOrigin。
+  3) 在 syncVisualsToCurrentIndex 中同步還原 translate3d 的運鏡狀態。
+- 檔案：v2/code/ui_dev.js [MODIFY]
+  1) 在 _resetStoryEffects() 中同步重置 currentBgZoom、currentBgFx、currentBgFy 狀態。
+
+[2026-06-24 補2] 劇情舞台運鏡與 RPG 移動效能優化
+- 原因：解決劇情舞台運鏡與特效卡頓、RPG 模式下鏡頭跟隨與角色移動嚴重抖動滯後等效能問題。
+- 檔案：v2/game.html [MODIFY]
+  1) 在 #story-stage 內新增 #story-bg-layer 獨立背景層。
+  2) 移除 #rpg-world 與 #rpg-player 的 CSS linear transition，防止其與 JS 幀循環坐標更新衝突。
+- 檔案：v2/style.css [MODIFY]
+  1) 新增 #story-bg-layer 基礎樣式，將 will-change 設為 transform。
+  2) 修改 bgPanFalling 動畫為操作 transform (scale & translate3d) 以實現 GPU 加速。
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  1) 將背景設定與輪播作業移至 #story-bg-layer。
+  2) 將 bgPos 與 bgZoom 運鏡轉換為 GPU 加速的 transformOrigin 與 transform: scale()。
+  3) 在 syncVisualsToCurrentIndex 讀檔復原與 renderCurrentStoryLine 初始化時加入運鏡狀態的復原與重置邏輯。
+- 檔案：v2/code/ext_blur.js [MODIFY]
+  1) 改為在 #story-bg-layer 上直接設定 CSS filter: blur(...) 取代開銷高昂的 backdrop-filter。
+- 檔案/v2/code/rpg/rpg_engine.js [MODIFY]
+  1) 將 updateCamera() 內的玩家坐標更新方式由 style.left/top 改為 GPU 硬件加速的 translate3d。
+- 檔案：v2/code/ui_dev.js [MODIFY]
+  1) 在 _resetStoryEffects() 內加入對 #story-bg-layer 運鏡與模糊狀態的清除。
+
 [2026-06-24 補1] 修正打字機點擊跳行體驗：打字中點擊僅瞬間補完，再次點擊才跳至下一行
 - 原因：應玩家要求，當字元還在逐個跳出時，第一次點擊先暫停打字效果並瞬間顯示完整該行句子；當前句子已完整顯示時，下一次點擊才跳行。
 - 檔案：v2/code/ui_v2_story.js [MODIFY]

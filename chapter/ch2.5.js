@@ -91,10 +91,10 @@ window.V2_CHAPTERS["25"] = {
             { n: "系統", t: "（一名英氣十足、穿著俐落後勤制服的女性朝你走來）", a: "system", se: "walk.mp3", vol: 1.0,
             bg:"cg/ch2.5.png",bgPos: "center top 20%", bgZoom: 2.5,flash:true, flashSFX:"flash.mp3",vol:1.0 
              },
-            { n: "系統", t: "（腳步聲乾脆而急促。）", a: "system" , se: "walk.mp3", vol: 1.0 },
+            { n: "系統", t: "（腳步聲乾脆而急促。）", a: "system",bgPos: "left top", bgZoom: 1.5},
             { n: "葛蕾", t: "你就是公會派過來的那個援手？", a: "glea", se: "girl_hi.mp3", vol: 1.0  },
             { n: "葛蕾", t: "太好了。我是後勤組的葛蕾。 ", a: "glea" },
-            { n: "葛蕾", t: "這本《豐收祭嘉獎名冊》三天後就必須呈遞給鎮長", a: "glea",bgPos: "center", bgZoom: 2.5, bgDur:"3s" , se: "paper down.mp3", vol: 0.8 },
+            { n: "葛蕾", t: "這本《豐收祭嘉獎名冊》三天後就必須呈遞給鎮長", a: "glea",bgPos: "center", bgZoom: 1.1 , se: "paper down.mp3", vol: 0.8 },
             { n: "葛蕾", t: "現在它簡直就是個災難。 ", a: "glea" }, 
             { n: "葛蕾", t: "你看，標題歪七扭八，數據毫無裝幀可言，", a: "glea",bgPos: "right bottom", bgZoom: 1.5, bgDur:"3s" },
             { n: "葛蕾", t: "連最基本的邊框都缺漏嚴重。 ", a: "glea" },
@@ -130,10 +130,10 @@ window.V2_CHAPTERS["25"] = {
         ],
         "end": [
             { n: "系統", t: "（落日的餘暉透過帳篷的縫隙灑入。）", bgm: 'town.mp3', bg: 'bg2.5.png'
-            , bgPos: "left top", bgZoom: 1.5, bgDur: "3s"
+            , bgPos: "center", bgZoom: 1.5, bgDur: "3s"
             , env: "light/1", envFrames: 25, envspeed:50, envOpacity: 0.8, envDrift:true}, 
             { n: "系統", t: "（葛蕾急匆匆地推簾而入，步履依舊匆忙。）", bg:"cg/ch2.5.png", se: "run.mp3", vol: 1.0
-            , bgPos: "center top", bgZoom: 2.0}, 
+            , bgPos: "left top", bgZoom: 2.0}, 
             { n: "葛蕾", t: "那本名冊的重塑工作到底完成了沒有？", a: "glea" , se: "paper down.mp3", vol: 0.8 },
             { n: "葛蕾", t: "鎮長那邊已經開始在桌子上拍巴掌了。 ", a: "glea" , shake: true },
             { n: "我",   t: "（我將那本被魔法重新賦予了秩序的名冊，重重地推到了她的面前。）", a: "me", bg: 'cg/ch2.5 read.png'
@@ -241,7 +241,7 @@ window.V2_CHAPTERS["25"] = {
             { n: "我", t: "（我對著那個背影大聲回應）我記住了！", a: "me", bg:"cg/ch2.5 main.png" ,bgPos: "right", bgZoom: 1.1 },
             { n: "我", t: "等我見過國王回來，一定打擾！", a: "me" },
             { n: "葛蕾", t: "總之……一路上小心王城官僚。 ", a: "glea", bg:"cg/ch2.5 last.png",bgPos: "center", bgZoom: 1.1},
-            { n: "我", t: "嗯！賽爾，我們走吧！", a: "me", bg:"cg/ch2 last.png",env:null },
+            { n: "我", t: "嗯！賽爾，我們走吧！", a: "me", bg:"road dust.png"},
             { n: "系統", t: "（賽爾輕盈地坐在我的肩膀上，目光越過地平線）", a: "system" },
             { n: "系統", t: "（望向遠方那座沈睡在暮色中的宏偉王城。）", a: "system" },
         ],

@@ -404,10 +404,10 @@ class RPGEngine {
 
         // 修正視覺偏移，讓 sprite 完美對齊碰撞框
         // 碰撞框的 bottom 是 y + 85。div 寬高是 120x120
+        // [優化]: 改用 translate3d 以啟用 GPU 硬體加速，免除 Reflow 排版重繪開銷
         let px = this.state.x + cx - 60; 
         let py = this.state.y + cy - 35; 
-        this.playerEl.style.left = `${px}px`;
-        this.playerEl.style.top = `${py}px`;
+        this.playerEl.style.transform = `translate3d(${px}px, ${py}px, 0)`;
     }
 
     checkCollisions() {

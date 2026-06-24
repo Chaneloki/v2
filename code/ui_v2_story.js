@@ -62,6 +62,9 @@ UIManager.prototype.syncVisualsToCurrentIndex = function() {
         let lastBG = null;
         let lastBGM = null;
         let lastMemory = false;
+        let lastBgZoom = 1.0;
+        let lastBgFx = 0;
+        let lastBgFy = 0;
 
         // 向前掃描到當前行
         for (let i = 0; i <= this.currentStoryIndex; i++) {
@@ -70,25 +73,59 @@ UIManager.prototype.syncVisualsToCurrentIndex = function() {
             if (line.bg) lastBG = line.bg;
             if (line.bgm) lastBGM = line.bgm;
             if (line.isMemory !== undefined) lastMemory = line.isMemory;
+            if (line.bgZoom !== undefined) {
+                lastBgZoom = isNaN(line.bgZoom) ? parseFloat(line.bgZoom) : line.bgZoom;
+            }
+            if (line.bgPos) {
+                const posFactors = {
+                    'center': [0, 0],
+                    'left': [1, 0],
+                    'right': [-1, 0],
+                    'top': [0, 1],
+                    'bottom': [0, -1],
+                    'left bottom': [1, -1],
+                    'right bottom': [-1, -1],
+                    'left top': [1, 1],
+                    'right top': [-1, 1],
+                    'top left': [1, 1],
+                    'top right': [-1, 1],
+                    'center bottom': [0, -1]
+                };
+                const cleanPos = line.bgPos.trim().toLowerCase();
+                const factors = posFactors[cleanPos] || [0, 0];
+                lastBgFx = factors[0];
+                lastBgFy = factors[1];
+            }
         }
 
         // 應用背景
         if (lastBG) {
             const stage = document.getElementById('story-stage');
-            if (stage) {
+            const bgLayer = document.getElementById('story-bg-layer');
+            if (stage && bgLayer) {
                 const fullPath = (lastBG.includes('/')) ? lastBG : `BG/${lastBG}`;
-                stage.style.backgroundImage = `url('${fullPath}')`;
+                bgLayer.style.backgroundImage = `url('${fullPath}')`;
                     
-                    // [新增]: 像素世界掃描線與群像判定
-                    if (lastBG.includes('pixel') || lastBG === 'cg/ch8_5_cg1.png') {
-                        stage.classList.add('rpg-scanlines', 'rpg-ensemble');
-                    } else if (lastBG !== 'black.png' && lastBG !== 'white.png' && !lastBG.includes('flash') && lastBG !== 'cg/ch8_5_cg1.png') {
-                        stage.classList.remove('rpg-scanlines', 'rpg-ensemble');
-                    }
+                // [新增]: 像素世界掃描線與群像判定
+                if (lastBG.includes('pixel') || lastBG === 'cg/ch8_5_cg1.png') {
+                    stage.classList.add('rpg-scanlines', 'rpg-ensemble');
+                } else if (lastBG !== 'black.png' && lastBG !== 'white.png' && !lastBG.includes('flash') && lastBG !== 'cg/ch8_5_cg1.png') {
+                    stage.classList.remove('rpg-scanlines', 'rpg-ensemble');
+                }
                 
                 // 同時恢復回憶濾鏡
                 if (lastMemory) stage.classList.add('memory-filter');
                 else stage.classList.remove('memory-filter');
+
+                // 恢復鏡頭運鏡狀態 (Sticky Camera Movement)
+                this.currentBgZoom = lastBgZoom;
+                this.currentBgFx = lastBgFx;
+                this.currentBgFy = lastBgFy;
+
+                bgLayer.style.transformOrigin = '50% 50%';
+                const tx = lastBgFx * (lastBgZoom - 1) / 2 * 100;
+                const ty = lastBgFy * (lastBgZoom - 1) / 2 * 100;
+                bgLayer.style.transform = `translate3d(${tx}%, ${ty}%, 0) scale(${lastBgZoom})`;
             }
         }
 
@@ -191,6 +228,21 @@ UIManager.prototype.renderCurrentStoryLine = function() {
         if (this.currentStoryIndex >= this.storyQueue.length) {
             this.finishStoryGroup();
             return;
+        }
+
+        // [優化]: 每當開始一個新的故事組時，將背景層的運鏡狀態初始化
+        if (this.currentStoryIndex === 0) {
+            this.currentBgZoom = 1.0;
+            this.currentBgFx = 0;
+            this.currentBgFy = 0;
+            const bgLayer = document.getElementById('story-bg-layer');
+            if (bgLayer) {
+                bgLayer.style.transition = 'none';
+                bgLayer.style.transform = 'translate3d(0px, 0px, 0px) scale(1)';
+                bgLayer.style.transformOrigin = '50% 50%';
+                bgLayer.style.filter = 'none';
+                bgLayer.classList.remove('bg-falling-pan', 'bg-myst-falling');
+            }
         }
 
         const line = this.storyQueue[this.currentStoryIndex];
@@ -498,10 +550,11 @@ UIManager.prototype.updateVisuals = function(line) {
 
             if (line.bg) {
                 const stage = document.getElementById('story-stage');
-                if (stage) {
+                const bgLayer = document.getElementById('story-bg-layer');
+                if (stage && bgLayer) {
                     // [修正]: 如果路徑已經包含目錄(如 cg/)，則不重複加上 BG/
                     const fullPath = (line.bg.includes('/') ) ? line.bg : `BG/${line.bg}`;
-                    stage.style.backgroundImage = `url('${fullPath}')`;
+                    bgLayer.style.backgroundImage = `url('${fullPath}')`;
                     
                     // [新增]: 像素世界掃描線與群像判定
                     if (line.bg.includes('pixel') || line.bg === 'cg/ch8_5_cg1.png') {
@@ -512,9 +565,9 @@ UIManager.prototype.updateVisuals = function(line) {
                     
                     // [新增]: 結局魔導書的墜落與神祕濾鏡延續
                     if (line.bg.includes('magic_book_glow.png')) {
-                        stage.classList.add('bg-myst-falling');
+                        bgLayer.classList.add('bg-myst-falling');
                     } else {
-                        stage.classList.remove('bg-myst-falling');
+                        bgLayer.classList.remove('bg-myst-falling');
                     }
                 }
             }
@@ -531,16 +584,20 @@ UIManager.prototype.updateVisuals = function(line) {
                     const setSlideBg = () => {
                         const nextBg = line.bgSlideshow[ssIdx];
                         const fp = (nextBg.includes('/')) ? nextBg : `BG/${nextBg}`;
-                        const stg = document.getElementById('story-stage');
-                        if (stg) {
+                        const bgLayer = document.getElementById('story-bg-layer');
+                        if (bgLayer) {
                             // 放大背景以便進行平移，並套用連續向下平移的動畫，營造主角往下墜落的錯覺
-                            stg.style.backgroundSize = '130%';
-                            stg.classList.add('bg-falling-pan');
+                            bgLayer.classList.add('bg-falling-pan');
                             
                             // 加入黑色半透明漸層遮罩，讓畫面具有空虛、透明的回憶感
-                            stg.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('${fp}')`;
-                            stg.classList.add('screen-flash');
-                            setTimeout(() => stg.classList.remove('screen-flash'), 100);
+                            bgLayer.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('${fp}')`;
+                            
+                            // 閃光依然做在舞台
+                            const stage = document.getElementById('story-stage');
+                            if (stage) {
+                                stage.classList.add('screen-flash');
+                                setTimeout(() => stage.classList.remove('screen-flash'), 100);
+                            }
                             if (window.orchestrator && window.orchestrator.audio) window.orchestrator.audio.playSFX('trans.mp3', 0.1);
                         }
                     };
@@ -557,23 +614,52 @@ UIManager.prototype.updateVisuals = function(line) {
                     clearInterval(this.bgSlideshowInterval); 
                     this.bgSlideshowInterval = null; 
                     this.currentSlideshow = null; 
-                    const stg = document.getElementById('story-stage');
-                    if (stg) stg.classList.remove('bg-falling-pan');
+                    const bgLayer = document.getElementById('story-bg-layer');
+                    if (bgLayer) bgLayer.classList.remove('bg-falling-pan');
                 }
             }
 
             // [新增]: 處理背景/CG 的位移、縮放與鏡頭運動 (Sticky Camera Movement)
             const stage = document.getElementById('story-stage');
-            if (stage) {
+            const bgLayer = document.getElementById('story-bg-layer');
+            if (stage && bgLayer) {
                 const duration = line.bgDur || "0.5s";
-                stage.style.transition = `background 0.5s ease-out, background-position ${duration} ease-in-out, background-size ${duration} ease-in-out`;
+                bgLayer.style.transition = `transform ${duration} ease-in-out, background-image 0.5s ease-out`;
 
-                // [優化]: 狀態持久化 (Sticky)
-                // 只有在劇本中有明確定義時才更新位移與縮放，否則維持上一行的狀態
-                if (line.bgPos) stage.style.backgroundPosition = line.bgPos;
-                if (line.bgZoom) {
-                    stage.style.backgroundSize = isNaN(line.bgZoom) ? line.bgZoom : `${line.bgZoom * 100}%`;
+                // [優化]: 狀態初始化與持久化 (Sticky)
+                if (this.currentBgZoom === undefined) this.currentBgZoom = 1.0;
+                if (this.currentBgFx === undefined) this.currentBgFx = 0;
+                if (this.currentBgFy === undefined) this.currentBgFy = 0;
+
+                if (line.bgZoom !== undefined) {
+                    this.currentBgZoom = isNaN(line.bgZoom) ? parseFloat(line.bgZoom) : line.bgZoom;
                 }
+                if (line.bgPos) {
+                    const posFactors = {
+                        'center': [0, 0],
+                        'left': [1, 0],
+                        'right': [-1, 0],
+                        'top': [0, 1],
+                        'bottom': [0, -1],
+                        'left bottom': [1, -1],
+                        'right bottom': [-1, -1],
+                        'left top': [1, 1],
+                        'right top': [-1, 1],
+                        'top left': [1, 1],
+                        'top right': [-1, 1],
+                        'center bottom': [0, -1]
+                    };
+                    const cleanPos = line.bgPos.trim().toLowerCase();
+                    const factors = posFactors[cleanPos] || [0, 0];
+                    this.currentBgFx = factors[0];
+                    this.currentBgFy = factors[1];
+                }
+
+                // 保持 transform-origin 為中心點以避免瞬間跳動，並透過平移 translate3d 與縮放 scale 同時過渡
+                bgLayer.style.transformOrigin = '50% 50%';
+                const tx = this.currentBgFx * (this.currentBgZoom - 1) / 2 * 100;
+                const ty = this.currentBgFy * (this.currentBgZoom - 1) / 2 * 100;
+                bgLayer.style.transform = `translate3d(${tx}%, ${ty}%, 0) scale(${this.currentBgZoom})`;
 
                 // 回憶濾鏡特效
                 if (line.isMemory) {

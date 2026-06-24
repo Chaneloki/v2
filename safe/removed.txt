@@ -1,3 +1,65 @@
+--- 2026-06-24 補9 ---
+[調降預設背景音樂選單音量至 45%]
+檔案: code/ui_v2_audio.js, game.html
+原因: 將所有常規與 fallback BGM 音量預設從 60% (0.6) 調整為 45% (0.45)。
+移除以下代碼：
+1) code/ui_v2_audio.js 中的舊常規預設音量 0.6 設定與三元表達式結尾：
+   ... : 0.6;
+2) game.html 中的 0.6 預設與 fallback 值：
+   const baseVol = isNaN(saved) ? 0.6 : saved;
+   gain.gain.value = parseFloat(localStorage.getItem(LS_BGM)) || 0.6;
+   applyBGM(isNaN(bgmSaved) ? 0.6 : bgmSaved);
+   applyBGM(a ? a.volume : (parseFloat(localStorage.getItem(LS_BGM)) || 0.6));
+3) game.html 中的舊 ui_v2_audio.js 引用標籤：
+   <script src="code/ui_v2_audio.js?v=1782100800004"></script>
+
+--- 2026-06-24 補8 ---
+[調降趣味背景音樂 funny.mp3 預設與比例音量代碼]
+檔案: code/ui_v2_audio.js, game.html
+原因: 調降 funny.mp3 預設音量，將其乘數設為 0.67。
+移除以下代碼：
+1) code/ui_v2_audio.js 中的舊三元表達式：
+   a.volume = (f === 'hero.mp3' || f === 'miro.mp3') ? 0.08 : 0.6;
+   const targetVol = (f === 'hero.mp3' || f === 'miro.mp3') ? 0.08 : 0.6;
+2) game.html 中的舊 ui_v2_audio.js 引用標籤：
+   <script src="code/ui_v2_audio.js?v=1782100800003"></script>
+
+--- 2026-06-24 補7 ---
+[調降戰鬥背景音樂預設與比例音量代碼]
+檔案: code/ui_v2_audio.js, game.html
+原因: 調降 miro.mp3 預設音量並統一 hero.mp3 和 miro.mp3 乘數至 0.13。
+移除以下代碼：
+1) code/ui_v2_audio.js 中原為 0.15 預設/目標音量的三元表達式：
+   a.volume = (f === 'hero.mp3') ? 0.08 : ((f === 'miro.mp3') ? 0.15 : 0.6);
+   const targetVol = (f === 'hero.mp3') ? 0.08 : ((f === 'miro.mp3') ? 0.15 : 0.6);
+2) game.html 中原為 0.15/0.25 乘數的比例設定：
+   return Math.min(1.0, baseVol * 0.15); // Lower hero.mp3 volume by 85%
+   return Math.min(1.0, baseVol * 0.25); // Lower miro.mp3 volume by 75%
+3) game.html 中的舊 ui_v2_audio.js 引用標籤：
+   <script src="code/ui_v2_audio.js?v=1781286453925"></script>
+
+--- 2026-06-24 補3 ---
+[移除背景圖層動態修改 transform-origin 以避免縮放中心點突變]
+檔案: code/ui_v2_story.js
+原因: 改用 translate3d 位移與 scale 同步進行 transform 動畫。
+移除以下代碼：
+1) 運鏡時動態修改 transformOrigin 的對應關係代碼：
+                if (line.bgPos) {
+                    const originMap = { ... };
+                    bgLayer.style.transformOrigin = originMap[line.bgPos.trim().toLowerCase()] || line.bgPos;
+                }
+2) 讀檔恢復視覺狀態時對 transformOrigin 的動態設定。
+
+--- 2026-06-24 補2 ---
+[移除劇情舞台原本 transition 運鏡代碼與 RPG 原本的 style.left/top 定位代碼]
+檔案: game.html, style.css, code/ui_v2_story.js, code/ext_blur.js, code/rpg/rpg_engine.js
+原因: 重構為獨立背景圖層與 GPU 加速的 transform 運鏡，並優化 RPG 坐標定位以徹底消除卡頓與抖動。
+移除以下代碼：
+1) game.html 與 style.css 內原本對 #rpg-world / #rpg-player 的 transition 與 #story-stage 的背景 transition 樣式。
+2) code/ui_v2_story.js 內對 stage.style.backgroundImage、stage.style.backgroundPosition、stage.style.backgroundSize 的設定。
+3) code/ext_blur.js 內對 blurLayer.style.backdropFilter 的昂貴處理。
+4) code/rpg/rpg_engine.js 內對 playerEl.style.left 與 playerEl.style.top 的直接操作。
+
 --- 2026-06-24 補1 ---
 [調整打字機逐字顯示點擊邏輯，移除直接跳行代碼]
 檔案: code/ui_v2_story.js

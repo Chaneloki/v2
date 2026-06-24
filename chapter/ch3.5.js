@@ -82,7 +82,7 @@ window.V2_CHAPTERS["35"] = {
 
     story: {
         start: [
-            { n: "系統", t: "（楓鈴驛站。隔日清晨。）", a: "system", bg: "bg3.5 room.png", bgm: "hero.mp3"
+            { n: "系統", t: "（楓鈴驛站。隔日清晨。）", a: "system", bg: "bg3.5 room.png", bgm: "investigate.mp3"
             ,trans:true,se:"wind1.mp3",vol:1.0 },
             { n: "系統", t: "（昨夜掛起的燈籠尚未熄滅，在稀薄的晨霧中沈默地搖曳著。）", a: "system"
             , env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true},
@@ -105,7 +105,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "我", t: "昨晚睡前她明明還在的，現在竟然消失得無影無蹤了。", a: "me" },
             { n: "系統", t: "（米羅輕輕地將粥碗擱下，神色前所未有地認真，往四周的陰影中打量了一圈。）", a: "miro", se: "put down.mp3", vol: 1.0
             ,bgPos: "right"},
-            { n: "米羅", t: "那位總是在發光的精靈姐姐……真的不在這裡了嗎？", a: "miro" },
+            { n: "米羅", t: "那位總是在發光的精靈……真的不在這裡了嗎？", a: "miro" },
             { n: "我", t: "（我急切地扯開魔導書的扉頁。）", a: "me", se: "book.mp3", vol: 1.0
             ,bgPos: "left",stuff:"charater/魔導書.png",stuffScale: 0.5, stuffPos: "right",stuffVPos:"bottom"},
             { n: "系統", t: "（在書皮與內頁的夾縫間，一張被折疊得極其歪斜的小紙條，無聲無息地滑落了下來。）", a: "system", se: "paper down.mp3", vol: 1.0
@@ -136,7 +136,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "我", t: "我們必須重塑秩序。唯有如此，當她回來的那一刻才能看見一個能讓她落腳的歸宿", a: "me" },
 
             { n: "系統", t: "（就在這時，院牆外傳來了一陣急促且沈重的馬蹄聲像是敲碎了這清晨最後的寂靜）", a: "system"
-            , bgm: "hero.mp3", se:"horse run.mp3",vol:1.0,
+            , bgm: "investigate.mp3", se:"horse run.mp3",vol:1.0,
             env: "horse run/1", envFrames: 24, envspeed:80, envOpacity: 1.0, envDrift:true  },
             { n: "系統", t: "（一名滿面塵埃、幾乎脫力的少年信使，踉踉蹌蹌地從馬背上跌落在地。）", a: "system"
             , se:"door open.mp3",vol:1.0, bg:"bg1.5.png",env:null},
@@ -225,15 +225,15 @@ window.V2_CHAPTERS["35"] = {
             , se: "boy_breath.mp3", vol: 1.0,env:null },
             { n: "我", t: "嗯。我們做到了。 ", a: "me", bg: "bg1.5.png", se: "girl_en1.mp3", vol: 1.0
             ,bgPos: "center", bgZoom: 1.1},
-            { n: "米羅", t: "雖然這一次，精靈姐姐不在身邊時刻『咆哮』……", a: "miro", bg: "cg/ch3.5 letter.png"
-            ,bgPos: "right", bgZoom: 1.5, bgDur:"3s"},
+            { n: "米羅", t: "雖然這一次，沒有精靈身邊時刻『咆哮』……", a: "miro", bg: "cg/ch3.5 letter.png"
+            ,bgPos: "left", bgZoom: 1.5, bgDur:"3s"},
             { n: "米羅", t: "但隊長你，終究還是憑藉著自己的意志，將那些深奧的禁術全部具現化了呢。 ", a: "miro"},
             { n: "我", t: "（我沈默地將魔導書收回背包深處）", a: "me", se: "paper down.mp3", vol: 1.0
-            ,bgPos: "left", bgZoom: 1.5},
+            ,bgPos: "right", bgZoom: 1.5},
             { n: "我", t: "她平日教我的時候雖然語氣冷冽。 ", a: "me" },
             { n: "我", t: "但現在回想起來，每一句話其實都切中了數據最核心的要害。 ", a: "me" },
             { n: "米羅", t: "（他壓低了聲音，悄悄靠了過來，眼神中透著一絲純粹的好奇）", a: "miro"
-            ,bgPos: "right", bgZoom: 1.5, bgDur:"5s"},
+            ,bgPos: "left", bgZoom: 1.5, bgDur:"5s"},
             { n: "米羅", t: "對了隊長……那張紙條上被刻意塗抹掉的那行字……你猜，她究竟寫了些什麼？", a: "miro"},
             { n: "我", t: "我想……大概是一些聽起來極其肉麻卻溫柔的話吧。 ", a: "me", bg: "bg1.5.png"
             ,bgPos: "center", bgZoom: 1.1, bgDur:"10s"},
@@ -248,7 +248,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "系統", t: "（但她隨即被某種自尊心支撐著，倔強地端正了姿態清了清嘶啞的嗓子）", a: "fairy", bg: "bg1.5.png",se: "girl_attraction.mp3", vol: 1.0 
             ,bgPos: "center", bgZoom: 1.5},
             { n: "賽爾", t: "怎麼？本仙子才稍微離開了那麼一小會兒，你們就把名冊給搞砸了嗎？", a: "fairy", bg: "bg1.5.png",shake:true , se: "paper down.mp3", vol: 0.8 },
-            { n: "我", t: "（我瞪大了雙眼，驚喜地看著眼前這個滿身倦意的小生命）  ", a: "me", bg: "bg1.5.png", bgm: "sweet.mp3"
+            { n: "我", t: "（我瞪大了雙眼，驚喜地看著眼前這個滿身倦意的小生命）  ", a: "me", bg: "bg1.5.png", bgm: "miro.mp3"
             ,bgPos: "center", bgZoom: 1.1,flash: true, flashSFX: "flash.mp3", vol: 1.0},
             { n: "我", t: "賽爾！妳這傢伙……總算捨得滾回來了。 ", a: "me", bg: "bg1.5.png" },
             { n: "賽爾", t: "我辦完該辦的麻煩事，自然就會回來了。瞧你那副沒見過世面的樣子。 ", a: "fairy", bg: "bg1.5.png", se: "fairy.mp3", vol: 1.0   },

@@ -90,7 +90,7 @@ window.V2_CHAPTERS["30"] = {
             { n: "系統", t: "（米羅猛地回過頭，視線在不經意間撞見了我的身影。）", a: "miro",bgPos: "center", bgZoom: 1.1 },
             { n: "系統", t: "（他整個人瞬間僵立在了原地，手中的賬冊險些跌落塵土。）", a: "miro" , flash: true, flashSFX: "flash.mp3" },
             { n: "米羅", t: "你？（他的聲音在劇烈地顫抖著）", a: "miro", shake:true},
-            { n: "米羅", t: "你為什麼……為什麼會在這個時候，出現在這種地獄般的荒野？", a: "miro" },
+            { n: "米羅", t: "你為什麼……為什麼會在這個時候，出現在這種地方？", a: "miro" },
             { n: "我", t: "米羅，先冷靜下來。看著我，聽我說完這一切。 ", a: "me" },
             { n: "我", t: "（我深吸了一口氣，胸口感到一陣壓抑的沈重）", a: "me", bgm: "no.mp3", se: "wind1.mp3", vol: 1.0 },
             { n: "我", t: "這段時間發生的變故，我必須從頭向你解釋。 ", a: "me"},
@@ -178,21 +178,21 @@ window.V2_CHAPTERS["30"] = {
         ],
         end: [
             { n: "系統", t: "（夜幕降臨。驛站的院子裡總算是恢復了久違的、名為『秩序』的安寧。）"
-            , bg: "bg3 rule.png", a: "system", bgm: "investigate.mp3",bgPos: "center", bgZoom: 1.1  },
+            , bg: "bg3 rule.png", a: "system", bgm: "2_emotional.mp3",bgPos: "center", bgZoom: 1.1  },
             { n: "系統", t: "（旅客們依照名冊上精確的號次，一列一列、安安靜靜地領到了今晚維持生命的口糧。）", a: "system"
             ,bgPos: "center", bgZoom: 1.5, bgDur:"8s"},
             { n: "米羅", t: "（他那雙粗糙的手顫抖著捧起這本煥然一新的名冊，聲音因為過度的激動而哽咽。）", a: "miro new"
             , se: "clothes1.mp3", vol: 1.0, shake:true},
             { n: "米羅", t: "一千兩百一十七個靈魂……現在，全部都精確地對上號了。 ", a: "miro new"
-            ,flash:true,bg:"cg/ch3 two.png",bgPos: "right", bgZoom: 2.0, bgDur:"3s"},
+            ,flash:true,bg:"cg/ch3 two.png",bgPos: "center top", bgZoom: 1.5, bgDur:"3s"},
             { n: "米羅", t: "誰該排在第一順位、糧食儲備還能支撐多少個晝夜……這一切，現在都像星空一樣清晰。 ", a: "miro new" },
             { n: "米羅", t: "三天前對我來說還像大山一樣沉重得要壓斷我脊樑的東西，現在我終於能捧得動了。 ", a: "miro new" },
             { n: "我", t: "米羅。我那天在官道上問你的那個關於未來的抉擇，你現在，心裡有答案了嗎？", a: "me"
-            ,bgPos: "left"},
+            ,bgPos: "right"},
             { n: "米羅", t: "（他點了點頭，眼神中展現出一種脫胎換骨般的清澈）想清楚了。 ", a: "miro new"
-            ,bgPos: "right",flash:true,flashSFX:"flash.mp3" },
+            ,bgPos: "center top",flash:true,flashSFX:"flash.mp3" },
             { n: "米羅", t: "你那天跟我說過：唯有當我先徹底理清了驛站的這場亂象……", a: "miro new" , bg: "cg/ch3 bond.png"
-            , bgm: "2_emotional.mp3",bgPos: "left", bgZoom: 1.1, bgDur:"10s" },
+            , bgm: "miro.mp3",bgPos: "right", bgZoom: 1.1, bgDur:"10s" },
             { n: "米羅", t: "我才有資格，去與你談論所謂的『走』與『不走』。 ", a: "miro new" },
             { n: "米羅", t: "（他用那佈滿老繭的手掌，用力拍了拍那本名冊） ", a: "miro new" , se: "paper down.mp3", vol: 0.8 , shake: true },
             { n: "米羅", t: "現在，這本秩序之冊，就是這裡的規矩。 ", a: "miro new" },

@@ -187,6 +187,20 @@ UIManager.prototype._resetStoryEffects = function() {
         if (stage) stage.classList.remove('shake-active');
         const stuffContainer = document.getElementById('stuff-container');
         if (stuffContainer) stuffContainer.classList.remove('shake-active');
+        
+        // 重置獨立背景層的運鏡與模糊狀態
+        this.currentBgZoom = 1.0;
+        this.currentBgFx = 0;
+        this.currentBgFy = 0;
+        const bgLayer = document.getElementById('story-bg-layer');
+        if (bgLayer) {
+            bgLayer.style.transition = 'none';
+            bgLayer.style.transform = 'translate3d(0px, 0px, 0px) scale(1)';
+            bgLayer.style.transformOrigin = '50% 50%';
+            bgLayer.style.filter = 'none';
+            bgLayer.classList.remove('bg-falling-pan', 'bg-myst-falling');
+        }
+
         const blurLayer = document.getElementById('story-bg-blur');
         if (blurLayer) {
             blurLayer.style.backdropFilter = 'blur(0px)';

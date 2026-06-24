@@ -146,7 +146,7 @@ window.V2_CHAPTERS["20"] = {
             
             { n: "系統", t: "（夏特看著那份名冊，原本緊繃的指尖微微顫抖，眼底的高傲像冰層般裂開了縫隙。）", a: "system", bgm: "sweet.mp3",bg:"cg/ch2 start.png",bgPos: "right top", bgZoom: 2.0  , se: "paper down.mp3", vol: 0.8 },
             { n: "夏特", t: "……是我輸了。", a: "chate", flash:true, flashSFX:"flash.mp3",vol:1.0 },
-            { n: "夏特", t: "（他低聲喃喃自語）不帶任何繁複的修飾，只留下最核心的流向……", a: "chate",bgPos: "right top", bgZoom: 1.5, bgDur:"5s"},
+            { n: "夏特", t: "（他低聲喃喃自語）不帶任何繁複的修飾，只留下最核心的流向……", a: "chate",bgPos: "center", bgZoom: 1.5, bgDur:"10s"},
             { n: "夏特", t: "（我曾經也……）", a: "chate" },
             { n: "系統", t: "（他抬起頭，重新打量著眼前這個隨性的冒險者。）", a: "system"
             ,bg:"cg/ch2 main.png",bgPos: "right top", bgZoom: 1.5 },
@@ -188,7 +188,7 @@ window.V2_CHAPTERS["20"] = {
             { n: "夏特", t: "（他在風中輕聲呢喃）我們一定，會在王城再見的。 ", a: "chate" },
             
             { n: "系統", t: "（賽爾咻地一聲竄回了我的肩頭，用一種調侃的眼神看著我。）", a: "system"
-            , flash:true, flashSFX:"fun1.mp3",vol:1.0, bg: "cg/ch2 last.png",bgPos: "right", bgZoom: 2.0 },
+            , flash:true, flashSFX:"fun1.mp3",vol:1.0, bg: "cg/ch1.5 road.png",bgPos: "right", bgZoom: 2.0 },
             { n: "賽爾", t: "好了啦！別在這裡跟那位憂鬱的天才依依不捨了，簡直看得我肉麻。 ", a: "fairy" },
             { n: "賽爾", t: "全速出發吧少年！目標是——王城！！", a: "fairy",shake:true },
             { n: "我", t: "（一開始，真的只是想混口飯吃，活著就好。）", a: "me",bgPos: "center", bgZoom: 1.5, bgDur:"4s", bgm: "2_emotional.mp3"  },                             

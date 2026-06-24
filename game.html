@@ -1039,6 +1039,8 @@
         onclick="window.uiManager.nextStoryLine()">
 
         <div id="story-stage">
+            <!-- [新增] 獨立背景層，用於 GPU 加速運鏡與模糊 -->
+            <div id="story-bg-layer"></div>
             <!-- [新增] 背景模糊層：位於背景之上，人物之下 -->
             <div id="story-bg-blur"></div>
             <div class="char-container"><img src="" id="a-ma" class="char-img"></div>
@@ -1074,10 +1076,10 @@
     <div id="rpg-container" class="rpg-scanlines"
         style="display:none; opacity:0; transition:opacity 0.5s; width:816px; height:624px; max-width:95vw; max-height:95vh; overflow:hidden; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index:5; background:#000; border:4px solid #e0d5c1; border-radius:12px; box-shadow:0 0 30px rgba(0,0,0,0.8); image-rendering: pixelated;">
         <div id="rpg-world"
-            style="position:absolute; width:2000px; height:2000px; background-size:cover; transition:transform 0.1s linear; image-rendering: pixelated;">
+            style="position:absolute; width:2000px; height:2000px; background-size:cover; image-rendering: pixelated;">
         </div>
         <div id="rpg-player"
-            style="position:absolute; width:120px; height:120px; z-index:10; transition:all 0.1s linear; background-size:contain; background-repeat:no-repeat; background-position:center; image-rendering: pixelated;">
+            style="position:absolute; width:120px; height:120px; z-index:10; left:0; top:0; background-size:contain; background-repeat:no-repeat; background-position:center; image-rendering: pixelated;">
         </div>
         <div id="rpg-overlay-layer"
             style="position:absolute; inset:0; background:black; opacity:0; pointer-events:none; transition:opacity 0.5s; z-index:20;">
@@ -2327,7 +2329,7 @@
     <!-- <script src="code/ui.js?v=1781286453925"></script> -->
     <script src="code/ui_v2_core.js?v=1782100800002"></script>
     <script src="code/ui_v2_story.js?v=1782100800002"></script>
-    <script src="code/ui_v2_audio.js?v=1781286453925"></script>
+    <script src="code/ui_v2_audio.js?v=1782100800005"></script>
     <script src="code/ui_v2_menus.js?v=1782100800000"></script>
     <script src="code/ui_dialogs.js?v=1781286453925"></script>
     <script src="code/ui_ribbon.js?v=1782100800000"></script>
@@ -2682,6 +2684,15 @@
                 if (filename.includes('town.mp3')) {
                     return Math.min(1.0, baseVol * 1.3); // Boost town.mp3 volume by 30%
                 }
+                if (filename.includes('funny.mp3')) {
+                    return Math.min(1.0, baseVol * 0.67); // Lower funny.mp3 volume by 33%
+                }
+                if (filename.includes('hero.mp3')) {
+                    return Math.min(1.0, baseVol * 0.13); // Lower hero.mp3 volume by 87%
+                }
+                if (filename.includes('miro.mp3')) {
+                    return Math.min(1.0, baseVol * 0.13); // Lower miro.mp3 volume by 87%
+                }
                 return baseVol;
             }
 
@@ -2728,7 +2739,7 @@
                 if (!isNaN(seSaved)) window._seVol = seSaved;
             }
 
-            // Patch playBGM to re-apply saved volume after it hardcodes 0.3
+            // Patch playBGM to re-apply saved volume after it hardcodes BGM defaults
             (function patchPlayBGM() {
                 const orig = UIManager.prototype.playBGM;
                 UIManager.prototype.playBGM = function (f) {
@@ -2736,7 +2747,7 @@
                     const saved = parseFloat(localStorage.getItem(LS_BGM));
                     const a = getBGMEl();
                     if (a) {
-                        const baseVol = isNaN(saved) ? 0.3 : saved;
+                        const baseVol = isNaN(saved) ? 0.45 : saved;
                         const finalVol = getAdjustedBGMVolume(baseVol, f);
                         a.volume = finalVol;
                         if (window._bgmGainNode) window._bgmGainNode.gain.value = finalVol;
@@ -2750,7 +2761,7 @@
                     setTimeout(() => {
                         const a = getBGMEl();
                         if (a) {
-                            const baseVol = isNaN(saved) ? 0.3 : saved;
+                            const baseVol = isNaN(saved) ? 0.45 : saved;
                             const finalVol = getAdjustedBGMVolume(baseVol, f);
                             a.volume = finalVol;
                             if (window._bgmGainNode) window._bgmGainNode.gain.value = finalVol;
@@ -2781,7 +2792,7 @@
                     const ctx = new (window.AudioContext || window.webkitAudioContext)();
                     const src = ctx.createMediaElementSource(bgmEl);
                     const gain = ctx.createGain();
-                    gain.gain.value = parseFloat(localStorage.getItem(LS_BGM)) || 0.3;
+                    gain.gain.value = parseFloat(localStorage.getItem(LS_BGM)) || 0.45;
                     src.connect(gain);
                     gain.connect(ctx.destination);
                     window._bgmAudioCtx = ctx;
@@ -2836,7 +2847,7 @@
                 const bgmSaved = parseFloat(localStorage.getItem(LS_BGM));
                 const seSaved = parseFloat(localStorage.getItem(LS_SE));
                 const sidebarSaved = parseInt(localStorage.getItem(LS_SIDEBAR));
-                applyBGM(isNaN(bgmSaved) ? 0.3 : bgmSaved);
+                applyBGM(isNaN(bgmSaved) ? 0.45 : bgmSaved);
                 applySE(isNaN(seSaved) ? 1.0 : seSaved);
                 applySidebarW(isNaN(sidebarSaved) ? 26 : sidebarSaved);
                 try {
@@ -2862,7 +2873,7 @@
                     if (!modal) return;
                     // Sync sliders to current live values
                     const a = getBGMEl();
-                    applyBGM(a ? a.volume : (parseFloat(localStorage.getItem(LS_BGM)) || 0.3));
+                    applyBGM(a ? a.volume : (parseFloat(localStorage.getItem(LS_BGM)) || 0.45));
                     applySE(window._seVol ?? (parseFloat(localStorage.getItem(LS_SE)) || 1.0));
                     applySidebarW(parseInt(localStorage.getItem(LS_SIDEBAR)) || 26);
                     buildSwatches();

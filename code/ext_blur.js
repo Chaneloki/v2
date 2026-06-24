@@ -19,24 +19,13 @@
             // 執行原始邏輯
             originalUpdateVisuals.call(this, line);
 
-            const blurLayer = document.getElementById('story-bg-blur');
-            if (blurLayer) {
+            const bgLayer = document.getElementById('story-bg-layer');
+            if (bgLayer) {
                 if (line.bgBlur !== undefined && line.bgBlur !== null) {
-                    // [Fix 2026-06-19] backdrop-filter 是手機 GPU 最貴的操作之一，手機模式下略過
-                    if (localStorage.getItem('v2_device_mode') !== 'mobile') {
-                        const blurValue = typeof line.bgBlur === 'number' ? `${line.bgBlur}px` : line.bgBlur;
-                        blurLayer.style.backdropFilter = `blur(${blurValue})`;
-                        blurLayer.style.webkitBackdropFilter = `blur(${blurValue})`;
-                    }
+                    const blurValue = typeof line.bgBlur === 'number' ? `${line.bgBlur}px` : line.bgBlur;
+                    bgLayer.style.filter = `blur(${blurValue})`;
                 } else {
-                    /* [修復 2026-06-24]: 移除 isMemory 自動延續模糊的全局邏輯。
-                       原本「回憶模式且本行未指定 bgBlur」會直接保留上一行的模糊值，
-                       導致角色立繪在沒有明確設定的行也被模糊/抖動，且效果完全
-                       取決於前面哪一行設了 bgBlur，難以從章節腳本預期行為。
-                       改為：每一行沒寫 bgBlur 就一律清除，模糊完全由 chapter/*.js
-                       逐行的 bgBlur 欄位控制。 */
-                    blurLayer.style.backdropFilter = 'blur(0px)';
-                    blurLayer.style.webkitBackdropFilter = 'blur(0px)';
+                    bgLayer.style.filter = 'none';
                 }
             }
         };
