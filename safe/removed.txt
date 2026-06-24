@@ -1,3 +1,62 @@
+--- 2026-06-24 補1 ---
+[調整打字機逐字顯示點擊邏輯，移除直接跳行代碼]
+檔案: code/ui_v2_story.js
+原因: 改回「若在打字中點擊，僅完成打字不換行；已打字完成時點擊才換行」的體驗，移除原本「點擊直接補完字並立刻換至下一行」的單次點擊設定。
+移除以下代碼：
+
+        // [2026-06-19 修正]: 原本設計成「第一次點擊只補完文字、第二次才換行」，
+        // 結果玩家在等文字跳完時會多點好幾次，點到角色立繪會誤觸 ui_v2_core.js 裡
+        // 既有的全域「.elf-wow」彩蛋動畫（縮放+旋轉），看起來像角色一直在抖動。
+        // 改回維持原本「點一下＝換下一行」的單次點擊習慣：若該行還在逐字顯示中，
+        // 就先把文字瞬間補完，同一次點擊馬上接著換下一行，不需要點第二次。
+        this._skipActiveTyping();
+
+--- 2026-06-24 ---
+[移除妖精與主角互動彩蛋功能與隨機台詞]
+檔案: code/ui_v2_core.js
+原因: 配合使用者需求，判定此互動彩蛋功能（點擊觸發隨機對話與抖動）非必要，將 showEasterEgg 功能完全移除，簡化點擊事件處理。
+移除以下代碼：
+
+1) 構造函數內：
+        this.isShowingEasterEgg = false; // [新增] 紀錄是否正在顯示彩蛋台詞
+
+2) 點擊事件監聽器內：
+            const isElf = el.id === 'elf-img' || el.id === 'a-f' || (el.classList.contains('char-img') && el.id !== 'a-m');
+            const isPlayer = el.id === 's-btn' || el.id === 'a-m';
+            
+            if (isElf && !this.currentStoryType) {
+                console.log(`✅ [UIManager] 觸發妖精互動 (ID: ${el.id})`);
+                el.classList.add('elf-wow');
+                setTimeout(() => el.classList.remove('elf-wow'), 400);
+
+                // [優化]: 只有在非劇情進行中才觸發隨機台詞
+                if (window.orchestrator.state.currentPhase === 'SIMULATOR') {
+                    this.showEasterEgg('fairy');
+                }
+            }
+
+            if (isPlayer && !this.currentStoryType) {
+                console.log(`✅ [UIManager] 觸發主角互動`);
+                this.showEasterEgg('me');
+            }
+
+            // [新增]: 點擊氣泡回到任務提示
+            if (isBubble && window.orchestrator.state.currentPhase === 'SIMULATOR' && this.isShowingEasterEgg) {
+                const state = window.orchestrator.state;
+                const task = state.activeChapterModule.simulator.tasks[state.currentTaskIndex];
+                this.updateTutorUI(task);
+            }
+
+檔案: code/ui_v2_story.js
+原因: 配合使用者需求，將已不再需要的 showEasterEgg 方法及相關狀態重置代碼完全移除。
+移除以下代碼：
+
+1) UIManager.prototype.updateTutorUI 內：
+        this.isShowingEasterEgg = false; // [新增] 重置彩蛋狀態
+
+2) UIManager.prototype.showEasterEgg 方法整段：
+UIManager.prototype.showEasterEgg = function(role) { ... }
+
 --- 2026-06-22 補3 ---
 [移除遊戲內金幣系統 (Coins) 與「神秘服飾店」(Avatar Shop)]
 檔案: v2/code/orchestrator.js, v2/code/ui_ribbon.js, v2/code/ui_v2_core.js, v2/code/utils.js,

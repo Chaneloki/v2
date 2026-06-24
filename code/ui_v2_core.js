@@ -13,7 +13,6 @@ class UIManager {
         this.fairyAppeared = false; // [新增] 紀錄賽爾是否已登場過 (用於觸發特效)
         this.isTrialActive = false; // [新增] 紀錄目前是否正在進行試煉 (用於阻斷操作)
         this.isCurrentCG = false; // [新增] 紀錄當前是否處於 CG 背景
-        this.isShowingEasterEgg = false; // [新增] 紀錄是否正在顯示彩蛋台詞
         this.searchTimeout = null; // [新增] 用於搜尋防抖 (Debounce)
         this.envAnimInterval = null; // [新增] 環境特效動畫計時器
         this.currentEnvFolder = null; // [新增] 紀錄當前動畫資料夾，避免重複啟動
@@ -44,11 +43,9 @@ class UIManager {
     initEventListeners() {
         console.info("🚀 [UIManager] 事件系統初始化中...");
 
-        // [核心優化]: 監聽所有妖精與主角（模擬器與劇情中）的點擊，觸發彩蛋
+        // [核心優化]: 監聽劇情模式 (SEGMENT) 下，點擊側邊欄任何氣泡區域都觸發下一行
         document.addEventListener('click', (e) => {
             const el = e.target;
-            const isElf = el.id === 'elf-img' || el.id === 'a-f' || el.classList.contains('char-img');
-            const isPlayer = el.id === 's-btn' || el.id === 'a-m';
             const isBubble = el.id === 'elf-bubble' || el.id === 'e-t' || el.closest('#elf-bubble') || el.id === 'player-box' || el.id === 'p-t' || el.closest('#player-box');
             
             // [關鍵修正]: 劇情模式 (SEGMENT) 下，點擊側邊欄任何氣泡區域都觸發下一行
@@ -57,29 +54,6 @@ class UIManager {
                 e.stopPropagation();
                 this.nextStoryLine();
                 return;
-            }
-
-            if (isElf) {
-                console.log(`✅ [UIManager] 觸發妖精互動 (ID: ${el.id})`);
-                el.classList.add('elf-wow');
-                setTimeout(() => el.classList.remove('elf-wow'), 400);
-
-                // [優化]: 只有在非劇情進行中才觸發隨機台詞
-                if (window.orchestrator.state.currentPhase === 'SIMULATOR' && this.currentStoryType !== 'SEGMENT') {
-                    this.showEasterEgg('fairy');
-                }
-            }
-
-            if (isPlayer) {
-                console.log(`✅ [UIManager] 觸發主角互動`);
-                this.showEasterEgg('me');
-            }
-
-            // [新增]: 點擊氣泡回到任務提示
-            if (isBubble && window.orchestrator.state.currentPhase === 'SIMULATOR' && this.isShowingEasterEgg) {
-                const state = window.orchestrator.state;
-                const task = state.activeChapterModule.simulator.tasks[state.currentTaskIndex];
-                this.updateTutorUI(task);
             }
         }, true); 
 

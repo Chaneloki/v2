@@ -82,7 +82,7 @@ window.V2_CHAPTERS["35"] = {
 
     story: {
         start: [
-            { n: "系統", t: "（楓鈴驛站。隔日清晨。）", a: "system", bg: "bg1.5.png", bgm: "hero.mp3"
+            { n: "系統", t: "（楓鈴驛站。隔日清晨。）", a: "system", bg: "bg3.5 room.png", bgm: "hero.mp3"
             ,trans:true,se:"wind1.mp3",vol:1.0 },
             { n: "系統", t: "（昨夜掛起的燈籠尚未熄滅，在稀薄的晨霧中沈默地搖曳著。）", a: "system"
             , env: "white smoke/1", envFrames: 25, envspeed:80, envOpacity: 0.4, envDrift:true},
@@ -95,7 +95,7 @@ window.V2_CHAPTERS["35"] = {
             { n: "系統", t: "（唯有遠處幾聲稀疏的雞鳴，在大地沈睡的邊緣不安地迴盪著。）", a: "system", se: "chicken.mp3", vol: 1.0
             ,bgPos: "left", bgZoom: 1.1, bgDur:"10s"},
             { n: "我", t: "（我猛地站起身，焦急地環視了一圈這個空曠且寂寥的院落。）", a: "me" , se: "heartbeat.mp3", vol: 1.0
-            ,bgPos: "center", bgZoom: 1.5},
+            ,bg:"bg1.5.png",bgPos: "center", bgZoom: 1.5},
             { n: "我", t: "賽爾！別開這種無聊的玩笑了，趕快給我出來！", a: "me",flash: true, flashSFX: "flash.mp3", vol: 1.0,shake:true , se: "girl_laugh.mp3", vol: 1.0 },
 
             { n: "系統", t: "（米羅端著兩碗正冒著熱氣的稀粥走進了視野，看著我失態的模樣，不由得愣住了。）", a: "miro", se: "walk.mp3", vol: 1.0  },

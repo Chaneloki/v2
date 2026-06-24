@@ -1,3 +1,21 @@
+[2026-06-24 補1] 修正打字機點擊跳行體驗：打字中點擊僅瞬間補完，再次點擊才跳至下一行
+- 原因：應玩家要求，當字元還在逐個跳出時，第一次點擊先暫停打字效果並瞬間顯示完整該行句子；當前句子已完整顯示時，下一次點擊才跳行。
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  1) 修改 nextStoryLine 判斷：使用 `this._skipActiveTyping()` 判定是否有正在跳字的元素。若有跳字元素被補完，則立即 `return`，不觸發換行。
+- 檔案：v2/game.html [MODIFY]
+  1) 更新 ui_v2_core.js 與 ui_v2_story.js 的載入快取版本標記為 v=1782100800002，強制生效。
+
+[2026-06-24] 徹底移除妖精與主角互動彩蛋功能，並修正劇情播放時的主角抖動問題
+- 原因：配合使用者需求，將非必要的點擊互動彩蛋及隨機對話功能（showEasterEgg）徹底移除，簡化點擊處理以防主角立繪在對話播放時因點擊螢幕推進劇情而誤觸抖動動畫。
+- 檔案：v2/code/ui_v2_core.js [MODIFY]
+  1) 移除 constructor 內的 this.isShowingEasterEgg 初始化。
+  2) 簡化全域 click 監聽器，僅保留劇情模式（SEGMENT）下點擊側邊欄氣泡推進對話的邏輯，將所有 isElf/isPlayer 彩蛋及抖動相關邏輯移除。
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  1) 移除 updateTutorUI 內重置 this.isShowingEasterEgg 的代碼。
+  2) 徹底刪除 UIManager.prototype.showEasterEgg 方法。
+- 檔案：v2/game.html [MODIFY]
+  1) 更新 ui_v2_core.js 與 ui_v2_story.js 的載入快取版本標記為 v=1782100800001，強制生效。
+
 [2026-06-22 補4] 補修：RPG 自由探索地圖完全沒有 BGM
 - 原因：code/rpg/maps/map1_street.js 的 "my_room" 地圖 bgm: "begin.mp3"，
   這個檔名在換版權 BGM 時就沒有被遷移到任何新曲目（不是漏了點，是新版 BGM/

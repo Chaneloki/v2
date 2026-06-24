@@ -167,12 +167,12 @@ UIManager.prototype._skipActiveTyping = function() {
     }
 
 UIManager.prototype.nextStoryLine = function() {
-        // [2026-06-19 修正]: 原本設計成「第一次點擊只補完文字、第二次才換行」，
-        // 結果玩家在等文字跳完時會多點好幾次，點到角色立繪會誤觸 ui_v2_core.js 裡
-        // 既有的全域「.elf-wow」彩蛋動畫（縮放+旋轉），看起來像角色一直在抖動。
-        // 改回維持原本「點一下＝換下一行」的單次點擊習慣：若該行還在逐字顯示中，
-        // 就先把文字瞬間補完，同一次點擊馬上接著換下一行，不需要點第二次。
-        this._skipActiveTyping();
+        // [2026-06-24 修正]: 若該行還在逐字顯示中，點擊先瞬間補完當前文字（跳過打字動畫），而不換行。
+        // 當文字已經完全顯示時，下一次點擊才會換下一行。
+        const skipped = this._skipActiveTyping();
+        if (skipped) {
+            return;
+        }
 
         if (this.autoAdvanceTimer) {
             clearTimeout(this.autoAdvanceTimer);
@@ -835,7 +835,6 @@ UIManager.prototype.hideOverlay = function() { document.getElementById('story-ov
 
 UIManager.prototype.updateTutorUI = function(task) {
         if (!task) return;
-        this.isShowingEasterEgg = false; // [新增] 重置彩蛋狀態
         const et = document.getElementById('e-t'), tt = document.getElementById('t-t'), pt = document.getElementById('p-t');
         
         const fullHint = task.tutorHint || "";
@@ -945,41 +944,7 @@ UIManager.prototype._applySelectableKeywords = function(el, task) {
     });
 };
 
-UIManager.prototype.showEasterEgg = function(role) {
-        const eggs = {
-            fairy: [
-                "別直盯著我瞧，快去算賬！",
-                "本仙子今天的翅膀也閃閃發亮呢！",
-                "這招『自動填滿』可是我研究了三百年的禁術！",
-                "哎呀！你點到我的隱形魔杖了。",
-                "如果你能一秒做完這張表，我就告訴你一個祕密。",
-                "Excel 的靈魂不在滑鼠，在你的手指（快捷鍵）！",
-                "剛才……是不是有一格數據跳了一下？"
-            ],
-            me: [
-                "（這支分叉毛筆到底能不能用啊……）",
-                "（等這份工打完，我一定要去喝杯最貴的麥酒。）",
-                "（賽爾這傢伙，總是坐在我肩膀上偷懶。）",
-                "（這表頭怎麼比龍鱗還硬，凍結不動？）",
-                "（剛才那格數據……是我的幻覺嗎？）",
-                "（我真的能在沙漏漏完前對齊所有格子嗎？）"
-            ]
-        };
-
-        const pool = eggs[role];
-        const randomLine = pool[Math.floor(Math.random() * pool.length)];
-        
-        if (role === 'fairy') {
-            const et = document.getElementById('e-t');
-            const hint = "<br><span style='font-size:10px; color:#666; font-style:italic'>(點擊氣泡回到任務)</span>";
-            if (et) et.innerHTML = `<strong>賽爾：</strong><br>${randomLine}${hint}`;
-            this.playSFX('wow.mp3');
-            this.isShowingEasterEgg = true;
-        } else {
-            const pt = document.getElementById('p-t');
-            if (pt) pt.innerHTML = `「${randomLine}」`;
-        }
-    }
+// 移除已不再需要的彩蛋對話功能
 
 UIManager.prototype.highlightText = function(txt) { 
         if (window.textHighlighter) return window.textHighlighter.highlight(txt);
