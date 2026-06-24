@@ -41,16 +41,16 @@ window.V2_CHAPTERS["10"] = {
 
     story: {
         start: [
-            { n: "我", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: "hero.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s" },
-            { n: "我", t: "看著我的背影吧！沒錯，我就是那個傳說中的王牌冒險者，公會最鋒利的那把劍。", bg: "cg/ch1 main.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
-            { n: "我", t: "無論是多麼險惡的戰役，只要我踏入戰場，局勢就會立刻倒向我們這一邊。" },
-            { n: "我", t: "因為這座公會需要我，這個國家的人民依賴著我的力量，我是所有人最後的希望。" },
-            { n: "我", t: "想要挑戰我？在那之前，先學會怎麼仰望我那輝煌的背影吧！", bg: "war.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
+            { n: "我", a: "me", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: "hero.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s" },
+            { n: "我", a: "me", t: "看著我的背影吧！沒錯，我就是那個傳說中的王牌冒險者，公會最鋒利的那把劍。", bg: "cg/ch1 main.png", flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1 },
+            { n: "我", a: "me", t: "無論是多麼險惡的戰役，只要我踏入戰場，局勢就會立刻倒向我們這一邊。", bgPos: "left", bgZoom: 1.0, bgDur: "6s" },
+            { n: "我", a: "me", t: "因為這座公會需要我，這個國家的人民依賴著我的力量，我是所有人最後的希望。" },
+            { n: "我", a: "me", t: "想要挑戰我？在那之前，先學會怎麼仰望我那輝煌的背影吧！", bg: "war.png", flash: true, flashSFX: "flash.mp3", vol: 1.0 },
             { n: "系統", t: "（轟隆——！耳邊炸開一聲巨響，腦袋裡英雄的輝煌幻象被刺鼻的鏽味擊得粉碎）", bg: "bg1.png", flash: true, flashSFX: "boom.mp3", vol: 1.0, shake: true, bgZoom: 1.0, bgDur: "0.2s" },
             // ...接著接回原本的倉庫開場
             { n: "系統", t: "咳、咳……嘔！（一股刺鼻鐵鏽感直直灌進我的鼻腔，差點沒把我當場嗆暈過去）", a: "system", bg: "bg1.png", bgm: "funny.mp3", bgPos: "center", bgZoom: 1.15, bgDur: "15s" },
             { n: "系統", t: "（頭頂那盞老舊的魔導燈泡忽明忽暗，把四周堆得跟小山一樣的破爛物照得像一具具直立的乾屍）", a: "system", env: "light/1/0.png", envOpacity: 0.4, envDrift: true },
-            { n: "我", t: "（我低頭看著手裡那張破損不堪、邊緣捲曲的羊皮紙清單。）", se: "paper down.mp3", vol: 1.0 },
+            { n: "我", a: "me", t: "（我低頭看著手裡那張破損不堪、邊緣捲曲的羊皮紙清單。）", se: "paper down.mp3", vol: 1.0 },
             { n: "我", t: "（掌心黏糊糊的，不知什麼時候已經沁出了一層冷汗，把羊皮紙的邊角都浸得有些發軟）", a: "me", se: "heartbeat.mp3", vol: 1.0 },
             { n: "我", t: "我是不是被公會那幫老傢伙給騙了？", a: "me", se: "ha.mp3", vol: 1.0 },
             { n: "我", t: "當初招募時說得天花亂墜，什麼『許你踏上通往榮耀與史詩的冒險者之路』。", a: "me" },
@@ -102,7 +102,7 @@ window.V2_CHAPTERS["10"] = {
         ],
         end: [
             { n: "我", t: "（我緩緩放下那支早已被握得發燙的毛筆。）", a: "me", bg: "bg1_desk.png", bgm: "finish.mp3", bgmFade: "in", se: "pen.mp3", vol: 1.0, env: "light/1/0.png", envOpacity: 0.6, envDrift: true, bgPos: "center", bgZoom: 1.1, bgDur: "10s" },
-            { n: "我", t: "（揉了揉那雙因為長時間專注而酸澀無比的手腕。）", bg: "stuff/hand pain.png" },
+            { n: "我", a: "me", t: "（揉了揉那雙因為長時間專注而酸澀無比的手腕。）", bg: "stuff/hand pain.png" },
             { n: "我", t: "（我看著眼前這份變得煥然一新的清單，長長地舒了一口氣。）", bg: "bg1_desk.png", a: "me", se: "paper down.mp3", vol: 1.0 },
             { n: "我", t: "呼，總算是在極限邊緣搞定了。這招『凍結視窗』的魔法也太過驚人了。 ", a: "me", se: "girl_smile1.mp3", bg: "bg1.png" },
             { n: "我", t: "無論我如何將視角向下延伸，那行關鍵的表頭竟然都穩如泰山。", a: "me" },

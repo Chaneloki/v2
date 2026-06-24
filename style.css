@@ -70,13 +70,18 @@ body {
 } 
 
 /* [雿滨蔭�芸�]嚗帋蜓閫鍦𤐄摰𡁜銁撌血�銝磰�撠𧶏�NPC 蝯曹��箏��冽迤銝剖亢 */
-#main-char-container { 
-    left: 7%; 
-    transform: translateX(-50%) scale(0.5); 
-    transform-origin: bottom;
-    z-index: 4; 
+/* [修復 2026-06-24]: 改用 width/height 直接縮小容器尺寸，取代 transform: scale(0.5)。
+   CSS transform scale 會讓瀏覽器對已經渲染好的圖片做 GPU 紋理縮放取樣，容易產生
+   模糊與邊緣微抖的視覺瑕疵，且只有主角容器有這個 scale，導致只有主角立繪看起來
+   比其他角色模糊/不穩定。直接縮小寬高不需要額外的取樣縮放，畫面更銳利穩定。 */
+#main-char-container {
+    left: 7%;
+    width: 500%;
+    height: 50vh;
+    transform: translateX(-50%);
+    z-index: 4;
     transition: none !important; /* 銝餉�摰孵膥�⊿�皜� */
-} 
+}
 #story-stage .char-container:not(#main-char-container) { 
     left: 50%; 
     transform: translateX(-50%); 

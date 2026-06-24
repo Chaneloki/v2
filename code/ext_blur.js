@@ -28,8 +28,13 @@
                         blurLayer.style.backdropFilter = `blur(${blurValue})`;
                         blurLayer.style.webkitBackdropFilter = `blur(${blurValue})`;
                     }
-                } else if (!line.isMemory) {
-                    // 非回憶模式下自動恢復清晰
+                } else {
+                    /* [修復 2026-06-24]: 移除 isMemory 自動延續模糊的全局邏輯。
+                       原本「回憶模式且本行未指定 bgBlur」會直接保留上一行的模糊值，
+                       導致角色立繪在沒有明確設定的行也被模糊/抖動，且效果完全
+                       取決於前面哪一行設了 bgBlur，難以從章節腳本預期行為。
+                       改為：每一行沒寫 bgBlur 就一律清除，模糊完全由 chapter/*.js
+                       逐行的 bgBlur 欄位控制。 */
                     blurLayer.style.backdropFilter = 'blur(0px)';
                     blurLayer.style.webkitBackdropFilter = 'blur(0px)';
                 }

@@ -178,13 +178,30 @@ UIManager.prototype.confirmColumnFilter = async function(colIdx) {
         this.hideFilterDropdown();
     };
 
+// [修復 2026-06-24]: 開發者選單跳轉時，清除上一章殘留的 shake/blur 視覺狀態。
+// 跳轉不會逐行經過 updateVisuals 的重置邏輯，若前一章最後播放的行帶有
+// shake/bgBlur，殘留的 class 與模糊濾鏡會一路帶到新章節，造成「莫名其妙
+// 在不該抖動/模糊的行也抖動模糊」的現象。
+UIManager.prototype._resetStoryEffects = function() {
+        const stage = document.getElementById('story-stage');
+        if (stage) stage.classList.remove('shake-active');
+        const stuffContainer = document.getElementById('stuff-container');
+        if (stuffContainer) stuffContainer.classList.remove('shake-active');
+        const blurLayer = document.getElementById('story-bg-blur');
+        if (blurLayer) {
+            blurLayer.style.backdropFilter = 'blur(0px)';
+            blurLayer.style.webkitBackdropFilter = 'blur(0px)';
+        }
+    };
+
 UIManager.prototype.jumpToChapter = async function(chapterId, phase) {
         this.openDevMenu();
         this.hideOverlay();
         document.getElementById('game-main').classList.remove('in-story');
-        
+        this._resetStoryEffects();
+
         console.log(`[DevTool] 跳轉至章節 ${chapterId}, 階段 ${phase}`);
-        
+
         // 更新章節並載入
         window.orchestrator.state.currentChapter = chapterId;
         await window.orchestrator.loadChapter(chapterId);
@@ -196,5 +213,6 @@ UIManager.prototype.jumpTo = function(phase) {
         // 確保先關閉當前可能正在運行的劇情
         this.hideOverlay();
         document.getElementById('game-main').classList.remove('in-story');
+        this._resetStoryEffects();
         window.orchestrator.triggerPhase(phase);
     };

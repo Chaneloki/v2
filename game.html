@@ -2674,10 +2674,13 @@
             function getAdjustedBGMVolume(baseVol, filename) {
                 if (!filename) return baseVol;
                 if (filename.includes('daily.mp3')) {
-                    return Math.min(1.0, baseVol * 1.5); // Boost daily.mp3 volume by 50%
+                    return Math.min(1.0, baseVol * 0.5); // Lower daily.mp3 volume by 50%
                 }
-                if (filename.includes('sweet.mp3') || filename.includes('town.mp3')) {
-                    return Math.min(1.0, baseVol * 1.3); // Boost sweet.mp3 & town.mp3 volume by 30%
+                if (filename.includes('sweet.mp3')) {
+                    return Math.min(1.0, baseVol * 1.8); // Boost sweet.mp3 volume by 80%
+                }
+                if (filename.includes('town.mp3')) {
+                    return Math.min(1.0, baseVol * 1.3); // Boost town.mp3 volume by 30%
                 }
                 return baseVol;
             }

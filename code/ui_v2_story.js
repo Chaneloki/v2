@@ -322,8 +322,19 @@ UIManager.prototype.hideLetter = function() {
     }
 
 UIManager.prototype.updateVisuals = function(line) {
+        /* [修復 2026-06-24]: 修正特效 class 的競態條件 (race condition)。
+           本函式有多處用 rAF(rAF(...add class...)) 延遲套用特效 class（為了強制
+           reflow 讓動畫重新播放）。若玩家快速點擊，下一行的 updateVisuals 在這個
+           雙重 rAF 還沒執行完前就被呼叫，新一行會先同步 remove 掉特效 class，
+           但前一行排隊中的 add 仍會在隨後的動畫幀執行，導致「這一行明明沒設定
+           shake/screenEffect，畫面卻還是抖動/變化」的詭異現象。
+           用一個世代計數器把每次 updateVisuals 呼叫標記起來，過期的 rAF callback
+           直接跳過，不套用 class。 */
+        const _visualsCallId = (this._visualsCallId = (this._visualsCallId || 0) + 1);
+        const _isStaleCall = () => this._visualsCallId !== _visualsCallId;
+
         // v45 ID 對照表
-        const charMap = { 
+        const charMap = {
             'me': 'a-m', 
             'fairy': 'a-f', 
             'head': 'a-ma', 
@@ -409,6 +420,22 @@ UIManager.prototype.updateVisuals = function(line) {
             if (!this._charImgEls || this._charImgEls.length === 0) {
                 this._charImgEls = Array.from(document.querySelectorAll('.char-img'));
             }
+
+            // [關鍵點]: 記錄並更新目前是否為 CG 模式
+            if (line.bg) {
+                this.isCurrentCG = line.bg.startsWith('cg/');
+            }
+
+            /* [修復 2026-06-24]: 沒有寫 a 欄位的旁白行（純描述句），不應該把目前畫面上
+               的角色立繪整批隱藏掉。原本每一行都會先把所有立繪 opacity 清成 0，下一行
+               若重新指定 a 才重新淡入＋從偏移位置歸位，造成角色在這種旁白行之間反覆
+               消失又淡入。連續快速點擊時，畫面剛好停在淡入過渡的中間，看起來就像角色
+               莫名其妙模糊或抖動了一下。
+               現在：沒有 a 欄位時完全跳過立繪顯示/隱藏邏輯，維持目前畫面原樣，只有
+               明確指定要切換角色的行才會觸發淡出/淡入。 */
+            if (line.a === undefined) {
+                // 不更動任何立繪，保留目前正在顯示的角色
+            } else {
             this._charImgEls.forEach(img => {
                 img.classList.remove('char-active');
                 img.classList.remove('fairy-appear', 'char-bounce', 'char-sink', 'char-slideIn', 'char-dissolve', 'char-pixel-dissolve', 'char-shake', 'char-rpg-idle');
@@ -416,11 +443,6 @@ UIManager.prototype.updateVisuals = function(line) {
                 // 改由下方依「是否仍是本行目標角色 + 是否仍是同一個動畫」決定是否保留，
                 // 避免每一行都重新觸發 rAF 重綁導致動畫從頭重播（飄浮感不連續）。
             });
-
-            // [關鍵點]: 記錄並更新目前是否為 CG 模式
-            if (line.bg) {
-                this.isCurrentCG = line.bg.startsWith('cg/');
-            }
 
             if ((!this.isCurrentCG || line.keepChar) && line.a !== 'system') {
                 const targetImg = document.getElementById(charMap[line.a]);
@@ -451,7 +473,7 @@ UIManager.prototype.updateVisuals = function(line) {
                         if (!(_isContinuous && targetImg.classList.contains(_animClass))) {
                             targetImg.classList.remove('char-float', 'char-falling');
                             // Q3 rAF 雙幀取代 void offsetWidth
-                            requestAnimationFrame(() => requestAnimationFrame(() => targetImg.classList.add(_animClass)));
+                            requestAnimationFrame(() => requestAnimationFrame(() => { if (!_isStaleCall()) targetImg.classList.add(_animClass); }));
                         }
                     } else {
                         targetImg.classList.remove('char-float', 'char-falling');
@@ -471,6 +493,7 @@ UIManager.prototype.updateVisuals = function(line) {
             } else {
                 // 本行未保留任何立繪 (CG 全屏模式或系統旁白)，持續性動畫一律清除
                 this._charImgEls.forEach(img => img.classList.remove('char-float', 'char-falling'));
+            }
             }
 
             if (line.bg) {
@@ -634,7 +657,7 @@ UIManager.prototype.updateVisuals = function(line) {
                     document.body.appendChild(flashEl);
                 }
                 flashEl.classList.remove('flash-active');
-                requestAnimationFrame(() => requestAnimationFrame(() => flashEl.classList.add('flash-active')));
+                requestAnimationFrame(() => requestAnimationFrame(() => { if (!_isStaleCall()) flashEl.classList.add('flash-active'); }));
                 
                 // 閃光通常伴隨震動音效 (可選)
                 if (line.flashSFX) this.playSFX(line.flashSFX);
@@ -645,7 +668,7 @@ UIManager.prototype.updateVisuals = function(line) {
                 const stage = document.getElementById('story-stage');
                 if (stage) {
                     stage.classList.remove('shake-active');
-                    requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.add('shake-active')));
+                    requestAnimationFrame(() => requestAnimationFrame(() => { if (!_isStaleCall()) stage.classList.add('shake-active'); }));
                 }
             } else {
                 /* [修復 2026-06-19]: 此行沒有 shake，清除上一行殘留的 shake-active。
@@ -663,7 +686,7 @@ UIManager.prototype.updateVisuals = function(line) {
                 if (stage) {
                     stage.classList.remove('screen-glitch', 'screen-heartbeat', 'screen-dissolve', 'screen-glow', 'screen-reality-tear', 'screen-reality-tear-slow', 'screen-eye-open', 'screen-dissolve-to-light', 'screen-clear');
                     const _effect = line.screenEffect;
-                    requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.add(`screen-${_effect}`)));
+                    requestAnimationFrame(() => requestAnimationFrame(() => { if (!_isStaleCall()) stage.classList.add(`screen-${_effect}`); }));
                 }
             }
             
@@ -677,7 +700,7 @@ UIManager.prototype.updateVisuals = function(line) {
                     document.body.appendChild(whiteoutEl);
                 }
                 whiteoutEl.classList.remove('whiteout-active');
-                requestAnimationFrame(() => requestAnimationFrame(() => whiteoutEl.classList.add('whiteout-active')));
+                requestAnimationFrame(() => requestAnimationFrame(() => { if (!_isStaleCall()) whiteoutEl.classList.add('whiteout-active'); }));
             }
             
             // [新增]: 清除全屏白化 (用於強烈轉場)
@@ -694,7 +717,7 @@ UIManager.prototype.updateVisuals = function(line) {
                 const stuffContainer = document.getElementById('stuff-container');
                 if (stuffContainer) {
                     stuffContainer.classList.remove('shake-active');
-                    requestAnimationFrame(() => requestAnimationFrame(() => stuffContainer.classList.add('shake-active')));
+                    requestAnimationFrame(() => requestAnimationFrame(() => { if (!_isStaleCall()) stuffContainer.classList.add('shake-active'); }));
                 }
             }
             }

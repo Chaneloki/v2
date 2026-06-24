@@ -80,7 +80,7 @@ window.V2_CHAPTERS["30"] = {
             { n: "我", t: "（孩子的小臉燒得如炭火般通紅，那種近乎沈寂的虛弱，令人感到一陣錐心的寒意。）", a: "me", bgm: "sad.mp3"  },
             { n: "我", t: "我從王城那片死寂中一路馬不停蹄地趕回楓鈴驛站，只為了找到米羅……", a: "me"
             ,bgPos: "top", bgZoom: 1.5, bgDur:"4s"},
-            { n: "我", t: "我原以為，在那扇冰冷的城門前已經見識過了這世間最壞的光景。 "
+            { n: "我", a: "me", t: "我原以為，在那扇冰冷的城門前已經見識過了這世間最壞的光景。 "
             ,flash:true,flashSFX:"flash.mp3", bg:"bg3 kingdom.png" ,bgPos: "bottom", bgZoom: 1.5, isMemory:true},
             { n: "我", t: "但沒想到，這裡所承載的痛苦與混亂，竟比那座王城還要厚重得多。 ", a: "me"
             , bg:"cg/ch3 sick.png",bgPos: "center", bgZoom: 1.1, bgDur:"4s"},
