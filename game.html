@@ -966,9 +966,12 @@
 
     <!-- [Title Screen] 全新 RPG 標題畫面 -->
     <div id="title-screen-overlay"
-        style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background-color:#0d0a05; background-image:url('BG/intro/all.png'); background-size:cover; background-position:center; background-repeat:no-repeat;">
+        style="position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center; color:#fff; transition:0.8s opacity; overflow:hidden; background-color:#080504;">
 
-        <!-- BG loading shimmer — fades out once all.png is loaded -->
+        <video id="title-bg-video" class="title-video-bg" src="BG/intro/0625.mp4" autoplay muted loop playsinline
+            preload="auto" aria-hidden="true"></video>
+
+        <!-- BG loading shimmer fades out once the title video is ready -->
         <div id="title-bg-loading"
             style="position:absolute;inset:0;z-index:2;pointer-events:none;transition:opacity 1.2s ease;background:radial-gradient(ellipse at 50% 40%, rgba(80,50,15,0.55) 0%, rgba(10,7,2,0.9) 100%);">
             <div
@@ -976,61 +979,21 @@
                 <div
                     style="width:38px;height:38px;border:3px solid rgba(255,215,0,0.25);border-top-color:rgba(255,215,0,0.85);border-radius:50%;animation:titleBgSpin 1s linear infinite;">
                 </div>
-                <span
-                    style="font-size:0.72rem;letter-spacing:3px;color:rgba(255,215,0,0.6);font-family:serif;">載入中…</span>
             </div>
         </div>
 
         <!-- 漸層遮罩 -->
-        <div
-            style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.08) 100%);">
-        </div>
+        <div class="title-atmosphere" aria-hidden="true"></div>
 
-        <!-- 中央三角色按鈕群 (glea正中, chate偏左, miro偏右) -->
-        <div id="intro-char-group"
-            style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;width:760px;height:100%;z-index:4;pointer-events:none;">
-
-            <!-- 3_glea.png：正中央 (z:1) -->
-            <div class="char-btn" id="char-glea"
-                style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;z-index:1;"
-                onclick="window.uiManager.openSaveLoadMenu('load')">
-                <img src="BG/intro/3_glea.png" style="height:90vh;object-fit:contain;display:block;" alt="">
-                <div class="char-btn-label">📜 讀取記憶</div>
+        <div id="title-content" class="start-ornate-menu" aria-label="Game start menu">
+            <div class="start-menu-buttons">
+                <button class="ornate-start-btn" type="button" aria-label="Start new game"
+                    onclick="window.uiManager.startNewGame()"><span>New Game</span></button>
+                <button class="ornate-start-btn" type="button" aria-label="Load game"
+                    onclick="window.uiManager.openSaveLoadMenu('load')"><span>Load Game</span></button>
+                <button class="ornate-start-btn" type="button" aria-label="Skill book"
+                    onclick="window.location.href='skill_book.html'"><span>Skill Book</span></button>
             </div>
-
-            <!-- 2_miro.png：glea右側 (z:3) -->
-            <div class="char-btn" id="char-miro" style="position:absolute;left:58%;bottom:0;z-index:3;"
-                onclick="window.location.href='skill_book.html'">
-                <img src="BG/intro/2_miro.png" style="height:52vh;object-fit:contain;display:block;" alt="">
-                <div class="char-btn-label">📖 禁術大全</div>
-            </div>
-
-            <!-- 4_chate.png：glea左側 (z:4) -->
-            <div class="char-btn" id="char-chate" style="position:absolute;right:55%;bottom:0;z-index:4;"
-                onclick="window.uiManager.startNewGame()">
-                <img src="BG/intro/4_chate.png" style="height:68vh;object-fit:contain;display:block;" alt="">
-                <div class="char-btn-label">✨ 開始新冒險</div>
-            </div>
-        </div>
-
-        <!-- 全版面絕對定位內容 -->
-        <div id="title-content"
-            style="position:absolute;inset:0;z-index:5;animation:fadeInDown 1.5s ease-out;pointer-events:none;">
-
-            <!-- 標題 WordArt：左 Excel(綠) 透視向右 + 右 魔法冒險(金) 透視向左 -->
-            <div style="position:absolute;top:5vh;left:2vw;perspective:400px;">
-                <span class="title-word-excel"
-                    style="display:inline-block;transform:rotateY(-18deg);transform-origin:left center;">Excel</span>
-            </div>
-            <div style="position:absolute;top:5vh;right:2vw;perspective:400px;">
-                <span class="title-word-magic"
-                    style="display:inline-block;transform:rotateY(18deg);transform-origin:right center;">魔法冒險</span>
-            </div>
-
-            <!-- 版本資訊 -->
-            <p
-                style="position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;color:rgba(255,255,255,0.5);text-shadow:1px 1px 2px #000;letter-spacing:2px;white-space:nowrap;">
-                V2 終極版</p>
         </div>
     </div>
 
@@ -2276,6 +2239,382 @@
             box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
         }
 
+        /* === Ornate wordless start menu === */
+        .title-video-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            background: #080504;
+        }
+
+        .title-atmosphere {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 50% 72%, rgba(80, 18, 38, 0.2), transparent 46%),
+                linear-gradient(90deg, rgba(4, 2, 5, 0.78), rgba(31, 9, 19, 0.1) 42%, rgba(4, 2, 5, 0.78)),
+                linear-gradient(180deg, rgba(2, 1, 3, 0.26), rgba(5, 2, 3, 0.42));
+        }
+
+        .start-ornate-menu {
+            position: relative;
+            z-index: 5;
+            width: min(860px, calc(100vw - 48px));
+            min-height: clamp(230px, 32vh, 330px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(34px, 5vw, 62px);
+            pointer-events: auto;
+            isolation: isolate;
+            background:
+                radial-gradient(ellipse at 50% 16%, rgba(255, 223, 150, 0.11), transparent 38%),
+                linear-gradient(135deg, rgba(43, 8, 24, 0.78), rgba(16, 7, 14, 0.72) 54%, rgba(50, 13, 32, 0.78));
+            border: 1px solid rgba(229, 185, 92, 0.68);
+            box-shadow:
+                0 28px 80px rgba(0, 0, 0, 0.54),
+                inset 0 0 0 1px rgba(255, 244, 198, 0.16),
+                inset 0 0 52px rgba(94, 18, 45, 0.42);
+            clip-path: polygon(5% 0, 95% 0, 100% 14%, 100% 86%, 95% 100%, 5% 100%, 0 86%, 0 14%);
+        }
+
+        .start-ornate-menu::before,
+        .start-ornate-menu::after {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            pointer-events: none;
+            border: 1px solid rgba(247, 212, 132, 0.56);
+            clip-path: polygon(5% 0, 95% 0, 100% 14%, 100% 86%, 95% 100%, 5% 100%, 0 86%, 0 14%);
+        }
+
+        .start-ornate-menu::before {
+            background:
+                linear-gradient(90deg, transparent 0 8%, rgba(240, 200, 112, 0.18) 8.5%, transparent 9% 91%, rgba(240, 200, 112, 0.18) 91.5%, transparent 92%),
+                repeating-linear-gradient(45deg, rgba(255, 238, 178, 0.045) 0 1px, transparent 1px 12px);
+        }
+
+        .start-ornate-menu::after {
+            inset: 26px;
+            border-color: rgba(120, 68, 33, 0.55);
+            box-shadow: inset 0 0 30px rgba(12, 3, 7, 0.55);
+        }
+
+        .start-filigree {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .start-filigree::before,
+        .start-filigree::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 142px;
+            height: 142px;
+            border: 1px solid rgba(242, 203, 116, 0.52);
+            border-radius: 50%;
+            box-shadow:
+                inset 0 0 0 12px rgba(83, 17, 38, 0.2),
+                inset 0 0 0 18px rgba(235, 188, 96, 0.08),
+                0 0 24px rgba(229, 185, 92, 0.18);
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .start-filigree::before {
+            left: -72px;
+        }
+
+        .start-filigree::after {
+            right: -72px;
+        }
+
+        .start-menu-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(18px, 3.2vw, 34px);
+            width: 100%;
+        }
+
+        .ornate-start-btn {
+            position: relative;
+            width: clamp(150px, 21vw, 220px);
+            height: clamp(58px, 8vw, 78px);
+            padding: 0;
+            border: 1px solid rgba(250, 219, 139, 0.74);
+            color: transparent;
+            cursor: pointer;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(86, 20, 45, 0.88), rgba(27, 7, 22, 0.94)),
+                radial-gradient(ellipse at center, rgba(255, 223, 156, 0.28), transparent 62%);
+            box-shadow:
+                0 14px 32px rgba(0, 0, 0, 0.38),
+                inset 0 1px 0 rgba(255, 246, 205, 0.26),
+                inset 0 -12px 22px rgba(9, 2, 5, 0.42),
+                0 0 0 4px rgba(57, 16, 32, 0.52);
+            clip-path: polygon(12% 0, 88% 0, 100% 50%, 88% 100%, 12% 100%, 0 50%);
+            transition: transform 180ms ease, border-color 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+        }
+
+        .ornate-start-btn::before,
+        .ornate-start-btn::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ornate-start-btn::before {
+            inset: 8px 14px;
+            border-top: 1px solid rgba(255, 231, 160, 0.78);
+            border-bottom: 1px solid rgba(255, 231, 160, 0.46);
+            background:
+                radial-gradient(circle at 50% 50%, rgba(255, 235, 167, 0.28) 0 3px, transparent 4px),
+                linear-gradient(90deg, transparent, rgba(255, 225, 145, 0.16), transparent);
+            clip-path: polygon(8% 0, 92% 0, 100% 50%, 92% 100%, 8% 100%, 0 50%);
+        }
+
+        .ornate-start-btn::after {
+            inset: 0;
+            background:
+                radial-gradient(circle at 16% 50%, rgba(255, 232, 160, 0.72) 0 2px, transparent 3px),
+                radial-gradient(circle at 84% 50%, rgba(255, 232, 160, 0.72) 0 2px, transparent 3px),
+                linear-gradient(100deg, transparent 10%, rgba(255, 252, 220, 0.18) 48%, transparent 58%);
+            opacity: 0.72;
+            transform: translateX(-18%);
+            transition: opacity 180ms ease, transform 220ms ease;
+        }
+
+        .ornate-start-btn:hover {
+            transform: translateY(-4px) scale(1.025);
+            border-color: rgba(255, 239, 174, 0.98);
+            filter: saturate(1.12) brightness(1.08);
+            box-shadow:
+                0 18px 40px rgba(0, 0, 0, 0.44),
+                0 0 34px rgba(238, 191, 95, 0.26),
+                inset 0 1px 0 rgba(255, 248, 213, 0.36),
+                inset 0 -10px 22px rgba(9, 2, 5, 0.36),
+                0 0 0 4px rgba(86, 20, 45, 0.58);
+        }
+
+        .ornate-start-btn:hover::after {
+            opacity: 1;
+            transform: translateX(18%);
+        }
+
+        .ornate-start-btn:active {
+            transform: translateY(1px) scale(0.985);
+            filter: brightness(0.92) saturate(1.18);
+            border-color: rgba(188, 128, 54, 0.95);
+            box-shadow:
+                0 8px 18px rgba(0, 0, 0, 0.52),
+                inset 0 8px 24px rgba(0, 0, 0, 0.46),
+                inset 0 0 24px rgba(255, 209, 120, 0.12),
+                0 0 0 4px rgba(36, 8, 22, 0.64);
+        }
+
+        .ornate-start-btn:focus-visible {
+            outline: 2px solid rgba(255, 245, 190, 0.95);
+            outline-offset: 5px;
+        }
+
+        @media screen and (max-width: 720px) {
+            .start-ornate-menu {
+                width: min(430px, calc(100vw - 32px));
+                min-height: auto;
+                padding: 42px 30px;
+            }
+
+            .start-menu-buttons {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .ornate-start-btn {
+                width: min(260px, 72vw);
+                height: 62px;
+            }
+
+            .start-filigree::before,
+            .start-filigree::after {
+                width: 104px;
+                height: 104px;
+            }
+
+            .start-filigree::before {
+                left: -54px;
+            }
+
+            .start-filigree::after {
+                right: -54px;
+            }
+        }
+
+        /* === Refined bottom-docked start composition === */
+        .start-ornate-menu {
+            position: absolute;
+            left: 50%;
+            bottom: clamp(26px, 8vh, 76px);
+            z-index: 5;
+            width: min(690px, calc(100vw - 48px));
+            min-height: 0;
+            padding: 17px 24px;
+            transform: translateX(-50%);
+            background:
+                linear-gradient(180deg, rgba(16, 12, 25, 0.76), rgba(7, 5, 12, 0.72)),
+                rgba(12, 8, 18, 0.72);
+            border: 1px solid rgba(219, 177, 92, 0.36);
+            border-radius: 8px;
+            clip-path: none;
+            box-shadow:
+                0 22px 56px rgba(0, 0, 0, 0.58),
+                0 0 34px rgba(216, 174, 84, 0.13),
+                inset 0 1px 0 rgba(255, 236, 180, 0.12),
+                inset 0 -1px 0 rgba(255, 236, 180, 0.08);
+            backdrop-filter: blur(10px) saturate(1.08);
+            -webkit-backdrop-filter: blur(10px) saturate(1.08);
+        }
+
+        .start-ornate-menu::before,
+        .start-ornate-menu::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            clip-path: none;
+        }
+
+        .start-ornate-menu::before {
+            inset: 8px 18px;
+            border-top: 1px solid rgba(236, 198, 112, 0.72);
+            border-bottom: 1px solid rgba(236, 198, 112, 0.58);
+            background: none;
+            box-shadow:
+                0 -8px 18px rgba(236, 198, 112, 0.05),
+                0 8px 18px rgba(236, 198, 112, 0.04);
+        }
+
+        .start-ornate-menu::after {
+            inset: 0;
+            border: 0;
+            background:
+                radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.045) 0 1px, transparent 1.5px),
+                radial-gradient(circle at 72% 66%, rgba(255, 255, 255, 0.035) 0 1px, transparent 1.5px),
+                repeating-linear-gradient(110deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 8px);
+            opacity: 0.55;
+            mix-blend-mode: screen;
+        }
+
+        .start-filigree {
+            display: none;
+        }
+
+        .start-menu-buttons {
+            position: relative;
+            z-index: 1;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .ornate-start-btn {
+            width: clamp(148px, 16vw, 190px);
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            clip-path: none;
+            color: #f4dfaa;
+            font-family: Georgia, "Times New Roman", "Noto Serif TC", serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background:
+                linear-gradient(180deg, rgba(42, 28, 48, 0.86), rgba(18, 13, 27, 0.9)),
+                radial-gradient(ellipse at 50% 0%, rgba(69, 87, 145, 0.18), transparent 58%);
+            border: 1px solid rgba(224, 184, 95, 0.58);
+            box-shadow:
+                0 10px 22px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 235, 177, 0.17),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+        }
+
+        .ornate-start-btn span {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.75);
+        }
+
+        .ornate-start-btn::before {
+            inset: 6px 10px;
+            border: 0;
+            border-top: 1px solid rgba(255, 226, 151, 0.26);
+            border-bottom: 1px solid rgba(255, 226, 151, 0.16);
+            background: linear-gradient(90deg, transparent, rgba(255, 222, 140, 0.09), transparent);
+            clip-path: none;
+            border-radius: 5px;
+        }
+
+        .ornate-start-btn::after {
+            inset: -1px;
+            border-radius: 8px;
+            background: linear-gradient(105deg, transparent 15%, rgba(255, 239, 181, 0.22) 46%, transparent 62%);
+            opacity: 0;
+            transform: translateX(-34%);
+        }
+
+        .ornate-start-btn:hover {
+            transform: translateY(-3px) scale(1.035);
+            color: #fff2c2;
+            border-color: rgba(255, 222, 139, 0.9);
+            filter: brightness(1.08) saturate(1.05);
+            box-shadow:
+                0 14px 28px rgba(0, 0, 0, 0.42),
+                0 0 26px rgba(218, 174, 84, 0.32),
+                inset 0 1px 0 rgba(255, 239, 194, 0.28);
+        }
+
+        .ornate-start-btn:hover::after {
+            opacity: 1;
+            transform: translateX(26%);
+        }
+
+        .ornate-start-btn:active {
+            transform: translateY(0) scale(0.985);
+            color: #d9b870;
+            filter: brightness(0.9);
+            box-shadow:
+                0 7px 14px rgba(0, 0, 0, 0.5),
+                inset 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        @media screen and (max-width: 720px) {
+            .start-ornate-menu {
+                width: min(342px, calc(100vw - 30px));
+                bottom: max(22px, env(safe-area-inset-bottom));
+                padding: 18px 18px;
+            }
+
+            .start-menu-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .ornate-start-btn {
+                width: min(248px, 72vw);
+                height: 46px;
+                font-size: 14px;
+            }
+        }
+
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -3302,15 +3641,52 @@
         (function () {
             var loader = document.getElementById('title-bg-loading');
             if (!loader) return;
-            var img = new Image();
-            img.onload = function () {
+            var video = document.getElementById('title-bg-video');
+            var done = false;
+            function hideLoader() {
+                if (done) return;
+                done = true;
                 loader.style.opacity = '0';
                 setTimeout(function () { loader.style.display = 'none'; }, 1300);
-            };
-            img.onerror = function () {
-                loader.style.opacity = '0';
-            };
-            img.src = 'BG/intro/all.png';
+            }
+            if (video) {
+                video.addEventListener('canplay', hideLoader, { once: true });
+                video.addEventListener('loadeddata', hideLoader, { once: true });
+                video.play && video.play().catch(function () { });
+            }
+            setTimeout(hideLoader, 1800);
+        })();
+    </script>
+
+    <script>
+        (function () {
+            var titleTrack = 'main_theme.mp3';
+            var attempted = false;
+
+            function isTitleVisible() {
+                var overlay = document.getElementById('title-screen-overlay');
+                return overlay && overlay.style.display !== 'none';
+            }
+
+            function playTitleMusic() {
+                if (attempted || !isTitleVisible()) return;
+                attempted = true;
+                var bgm = document.getElementById('bgm');
+                if (!bgm) return;
+                if (bgm.getAttribute('data-current') !== 'BGM/' + titleTrack) {
+                    bgm.src = 'BGM/' + titleTrack;
+                    bgm.setAttribute('data-current', 'BGM/' + titleTrack);
+                }
+                bgm.volume = parseFloat(localStorage.getItem('v2_bgm_vol')) || 0.45;
+                bgm.play().catch(function () { attempted = false; });
+            }
+
+            window.addEventListener('load', function () {
+                setTimeout(playTitleMusic, 350);
+            });
+            document.addEventListener('pointerdown', playTitleMusic);
+            document.addEventListener('keydown', playTitleMusic);
+            document.addEventListener('touchstart', playTitleMusic, { passive: true });
         })();
     </script>
 
