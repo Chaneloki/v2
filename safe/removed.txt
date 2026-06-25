@@ -1,3 +1,16 @@
+--- 2026-06-26 補1 ---
+[新增第一章開場引導對話與載入小提示元件，更新腳本與 UI 載入版本]
+檔案: chapter/ch1.js, game.html, code/ui_v2_story.js
+原因: 為了引導玩家點擊右上角齒輪選單，在第一章開場前增加一行指引，並在載入畫面下增加提示條。
+移除以下代碼：
+1) chapter/ch1.js 中舊的 story.start 第一行對話（無 action）：
+   { n: "我", a: "me", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: "hero.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s" },
+2) game.html 中舊版 `game-init-loading` 舊腳本載入版本號如下：
+   <script src="chapter/ch1.js?v=1782100000000"></script>
+   <script src="code/ui_v2_core.js?v=1782100800002"></script>
+   <script src="code/ui_v2_story.js?v=1782100800002"></script>
+3) code/ui_v2_story.js 中舊的 showPreloader 中無 tips 容器的 innerHTML 元素。
+
 --- 2026-06-24 補9 ---
 [調降預設背景音樂選單音量至 45%]
 檔案: code/ui_v2_audio.js, game.html

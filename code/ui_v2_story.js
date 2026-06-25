@@ -1128,7 +1128,8 @@ UIManager.prototype.showPreloader = function() {
                 box-shadow: 0 0 25px rgba(33, 115, 70, 0.5);
             "></div>
             <div style="font-size: 1.6em; text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); margin-bottom: 10px; letter-spacing: 3px; font-weight: bold;">正在吟唱載入魔法...</div>
-            <div style="font-size: 0.95em; color: rgba(255, 255, 255, 0.75); letter-spacing: 1px;" id="story-preloader-text">正在翻閱試算表魔導書...</div>
+            <div style="font-size: 0.95em; color: rgba(255, 255, 255, 0.75); letter-spacing: 1px; margin-bottom: 15px;" id="story-preloader-text">正在翻閱試算表魔導書...</div>
+            <div style="font-size: 0.8rem; color: rgba(232, 213, 163, 0.8); max-width: 340px; text-align: center; line-height: 1.6; font-family: sans-serif; padding: 0 15px; border-top: 1px dashed rgba(255, 215, 0, 0.2); padding-top: 15px; margin-top: 5px;" id="story-preloader-tip"></div>
         `;
         document.body.appendChild(preloader);
         
@@ -1145,6 +1146,14 @@ UIManager.prototype.showPreloader = function() {
             document.head.appendChild(style);
         }
     }
+    
+    // [新增] 載入時隨機選取並呈現選單 Tips
+    const tipEl = document.getElementById('story-preloader-tip');
+    if (tipEl && window.LOADING_TIPS) {
+        const randomTip = window.LOADING_TIPS[Math.floor(Math.random() * window.LOADING_TIPS.length)];
+        tipEl.textContent = "💡 " + randomTip;
+    }
+
     preloader.style.display = 'flex';
     // Q3 rAF 雙幀取代 void offsetWidth
     requestAnimationFrame(() => requestAnimationFrame(() => { preloader.style.opacity = '1'; }));

@@ -572,9 +572,17 @@ class UIManager {
         }, 3000);
     }
 
+    highlightSystemMenu(active) {
+        const btn = document.getElementById('sys-menu-btn');
+        if (!btn) return;
+        if (active) {
+            btn.classList.add('menu-highlight-active');
+        } else {
+            btn.classList.remove('menu-highlight-active');
+        }
+    }
+
 }
-
-
 
 // --- Initialize UI Manager ---
 window.uiManager = new UIManager();

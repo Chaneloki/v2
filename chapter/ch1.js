@@ -41,7 +41,17 @@ window.V2_CHAPTERS["10"] = {
 
     story: {
         start: [
-            { n: "我", a: "me", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: "hero.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s" },
+            {
+                n: "系統",
+                a: "system",
+                t: "（提示：點擊畫面右上角的齒輪圖示 ⚙️，即可開啟「系統選單」，進行手動存檔、讀取進度、切換全螢幕與設定音量，通關後亦可點此進入番外篇。隨時善用存檔，開啟你的冒險吧！）",
+                bg: "black.png",
+                bgm: "story_bgm1.mp3",
+                bgPos: "center",
+                bgZoom: 1.0,
+                action: "window.uiManager.highlightSystemMenu(true);"
+            },
+            { n: "我", a: "me", t: "（挺起胸膛，眼神如鷹般掃視著前方。）", bg: "war.png", bgm: "hero.mp3", bgPos: "top", bgZoom: 1.1, bgDur: "20s", action: "window.uiManager.highlightSystemMenu(false);" },
             { n: "我", a: "me", t: "看著我的背影吧！沒錯，我就是那個傳說中的王牌冒險者，公會最鋒利的那把劍。", bg: "cg/ch1 main.png", flash: true, flashSFX: "flash.mp3", vol: 1.0, bgPos: "center", bgZoom: 1.1 },
             { n: "我", a: "me", t: "無論是多麼險惡的戰役，只要我踏入戰場，局勢就會立刻倒向我們這一邊。", bgPos: "left", bgZoom: 1.0, bgDur: "6s" },
             { n: "我", a: "me", t: "因為這座公會需要我，這個國家的人民依賴著我的力量，我是所有人最後的希望。" },

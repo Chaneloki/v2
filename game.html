@@ -7,7 +7,8 @@
     <title>Excel 魔法冒險 V2 - 巔峰視覺版</title>
     <!-- [基因還原] 使用 v45 原始樣式表 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1782100800000">
+    <link rel="stylesheet" href="style.css?v=1782100800002">
+
     <style>
         /* === Cinematic Title Buttons === */
         .cinematic-btn-primary {
@@ -938,6 +939,10 @@
         </div>
         <span id="game-init-pct"
             style="font-size:0.7rem;letter-spacing:2px;color:rgba(255,215,0,0.45);font-family:serif;">0%</span>
+        <div id="game-init-tip"
+            style="margin-top:15px;font-size:0.75rem;color:rgba(232,213,163,0.8);max-width:320px;text-align:center;line-height:1.6;font-family:sans-serif;padding: 0 15px;">
+            💡 載入中...
+        </div>
     </div>
     <script>
         // Global safety: remove overlay after 90s even if window.load never fires
@@ -947,6 +952,15 @@
             ol.style.opacity = '0';
             setTimeout(function () { if (ol.parentNode) ol.remove(); }, 650);
         }, 90000);
+
+        // [新增] 全局選單提示庫 (僅限系統選單相關提示)
+        window.LOADING_TIPS = [
+            "提示：點擊右上角的 ⚙️ 齒輪圖示，可以開啟系統選單進行手動存檔與讀檔。",
+            "提示：系統選單中可切換全螢幕模式，讓冒險畫面更具沉浸感。",
+            "提示：系統選單提供環境設定，若覺得背景音樂太大聲，可在此處調整音量。",
+            "提示：在通關第 8.5 章後，系統選單的 🌙 月亮圖示將解鎖番外篇入口。",
+            "提示：冒險過程中請養成隨時存檔的好習慣，以防進度遺失。"
+        ];
 
         document.addEventListener('DOMContentLoaded', function () {
             var bar = document.getElementById('game-init-bar');
@@ -961,6 +975,13 @@
                 if (bar) bar.style.width = cur.toFixed(1) + '%';
                 if (lbl) lbl.textContent = Math.round(cur) + '%';
             }, 300);
+
+            // [新增] 載入畫面隨機小提示邏輯
+            var tipEl = document.getElementById('game-init-tip');
+            if (tipEl && window.LOADING_TIPS) {
+                var randomTip = window.LOADING_TIPS[Math.floor(Math.random() * window.LOADING_TIPS.length)];
+                tipEl.textContent = "💡 " + randomTip;
+            }
         });
     </script>
 
@@ -2639,7 +2660,7 @@
     <script src="code/rpg/rpg_engine.js?v=1781373500002"></script>
     <script src="code/utils.js?v=1781286453925"></script>
     <script src="code/orchestrator.js?v=1781286453925"></script>
-    <script src="chapter/ch1.js?v=1782100000000"></script>
+    <script src="chapter/ch1.js?v=1782100000001"></script>
     <script src="chapter/ch1_5.js?v=1782100000000"></script>
     <script src="chapter/ch2.js?v=1782100000000"></script>
     <script src="chapter/ch2.5.js?v=1782100000000"></script>
@@ -2666,8 +2687,8 @@
     <script src="action/ch85_actions.js?v=1781286453925"></script>
     <script src="code/bridge.js?v=1781286453925"></script>
     <!-- <script src="code/ui.js?v=1781286453925"></script> -->
-    <script src="code/ui_v2_core.js?v=1782100800002"></script>
-    <script src="code/ui_v2_story.js?v=1782100800002"></script>
+    <script src="code/ui_v2_core.js?v=1782100800003"></script>
+    <script src="code/ui_v2_story.js?v=1782100800003"></script>
     <script src="code/ui_v2_audio.js?v=1782100800005"></script>
     <script src="code/ui_v2_menus.js?v=1782100800000"></script>
     <script src="code/ui_dialogs.js?v=1781286453925"></script>

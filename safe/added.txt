@@ -1,3 +1,17 @@
+[2026-06-26 補1] 優化系統選單引導與加入載入畫面提示
+- 原因：部分玩家不知道如何開啟功能選單，在第一章開場前增加視覺強引導，並在兩個載入畫面增加系統選單的動態隨機 Tips。
+- 檔案：v2/style.css [MODIFY]
+  1) 新增 .menu-highlight-active 特效樣式，使齒輪按鈕帶有金色光暈脈動，並加入指向性文字引導氣泡。
+- 檔案：v2/code/ui_v2_core.js [MODIFY]
+  1) 新增 UIManager.prototype.highlightSystemMenu 控制齒輪高亮之啟用狀態。
+- 檔案：v2/chapter/ch1.js [MODIFY]
+  1) 在 story.start 首行插入「系統」發言之齒輪選單引導，並在對話開始與結束時動態呼叫 action 開關高亮。
+- 檔案：v2/game.html [MODIFY]
+  1) 在初始載入介面新增隨機小提示池 window.LOADING_TIPS 與 #game-init-tip 顯示元件。
+  2) 更新關卡 ch1.js 與代碼 ui_v2_core.js、ui_v2_story.js 之引用版本號。
+- 檔案：v2/code/ui_v2_story.js [MODIFY]
+  1) 修改 showPreloader 以在過場中讀取 window.LOADING_TIPS 並隨機填入對應的氣泡提示。
+
 [2026-06-24 補9] 修改背景音樂 (BGM) 預設選單音量值為 45%
 - 原因：應要求將首次進入遊戲、設定選單預設音量等 fallback 的背景音樂 (BGM) 音量由 60% (0.6) 調整至 45% (0.45)。
 - 檔案：v2/code/ui_v2_audio.js [MODIFY]
