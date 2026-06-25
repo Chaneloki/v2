@@ -7,6 +7,8 @@ UIManager.prototype.playSFX = function(f) {
         if (window.soundManager) window.soundManager.playSFX(`sound_effect/${f}`);
     }
 
+UIManager.prototype.BGM_CACHE_VERSION = '20260625';
+
 UIManager.prototype.playBGM = function(f) {
         console.log(`[UIManager] 嘗試播放 BGM: ${f}`);
         let a = document.getElementById('bgm');
@@ -14,8 +16,8 @@ UIManager.prototype.playBGM = function(f) {
             console.error("[UIManager] 找不到 ID 為 'bgm' 的 audio 標籤");
             return;
         }
-        
-        const newSrc = `BGM/${f}`;
+
+        const newSrc = `BGM/${f}?v=${this.BGM_CACHE_VERSION}`;
         const currentSrc = a.getAttribute('data-current');
 
         // 如果來源相同且正在播放，則跳過 (避免重啟)
@@ -46,7 +48,7 @@ UIManager.prototype.fadeInBGM = function(f) {
         if (!a) return;
         
         a.volume = 0;
-        const newSrc = `BGM/${f}`;
+        const newSrc = `BGM/${f}?v=${this.BGM_CACHE_VERSION}`;
         if (a.getAttribute('data-current') !== newSrc) {
             a.src = newSrc;
             a.setAttribute('data-current', newSrc);
